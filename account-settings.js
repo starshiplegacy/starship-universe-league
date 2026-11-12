@@ -88,12 +88,15 @@
     } catch(error) {
       console.warn("No se pudieron consultar los beneficios personales:",error);
     }
-    const hasExoplanet = badges.some(item=>item.badge_key==="exoplanet");
-    const hasCreator = badges.some(item=>item.badge_key==="creator_verified");
+    const serverAccess = window.starshipEntitlements?.state;
+    const hasExoplanet = Boolean(serverAccess?.loaded && window.starshipEntitlements?.has("exoplanet")) || badges.some(item=>item.badge_key==="exoplanet");
+    const hasCreator = Boolean(serverAccess?.loaded && window.starshipEntitlements?.has("creator_verified")) || badges.some(item=>item.badge_key==="creator_verified");
     content.innerHTML =
       '<section class="personal-benefits-panel"><span class="personal-benefits-kicker">PRIVATE ACCOUNT · INTERNAL WHITELIST</span><h3>Perfil personal</h3><p>Este perfil personal está separado de la identidad de trabajo y tiene beneficios especiales asignados por la administración.</p>' +
       '<dl><div><dt>Correo personal</dt><dd>'+escapeHtml(session.user.email || "kimheewonoff@gmail.com")+'</dd></div><div><dt>ID público</dt><dd>JENNIE</dd></div></dl>' +
       '<h4>Beneficios habilitados</h4><div class="personal-benefit-tags"><span class="'+(hasExoplanet?"active":"")+'">♃ Exoplanet '+(hasExoplanet?"· Activo":"· Pendiente")+'</span><span class="'+(hasCreator?"active":"")+'">✓ Creator Verified '+(hasCreator?"· Activo":"· Pendiente")+'</span></div>' +
+      (hasExoplanet?'<div class="personal-entitlement-list"><h4>Temas Exoplanet desbloqueados</h4><p>Jupiter · Sum · Ruby · Astroblue · Neonblue · Green Blue · Orbit Green</p></div>':'') +
+      (hasCreator?'<div class="personal-entitlement-list"><h4>Temas Creator desbloqueados</h4><p>Neon Moon · Neon Blue Aura · Neon Reimbow · Green Light · Blue Light · Grey Sky · Blue Sky</p><p class="settings-muted">El espacio de creación de CC y Mods se habilitará cuando se publique su módulo.</p></div>':'') +
       '<p class="settings-muted">Los beneficios están asociados a tu cuenta y no dependen de una compra. La lista blanca es interna y no se muestra en tu perfil público.</p></section>';
   }
   function renderProfile() {
