@@ -28,16 +28,16 @@
       <div class="theme-picker">
         <button class="theme-toggle" id="themeToggle" type="button" aria-expanded="false" aria-controls="themeOptions"><span class="theme-icon">◐</span><span class="current-theme">Claro</span><span class="theme-chevron">⌄</span></button>
         <div class="theme-options" id="themeOptions" hidden>
-          <button type="button" data-theme-choice="light" aria-pressed="true"><span class="swatch swatch-light"></span>Claro</button>
-          <button type="button" data-theme-choice="dark" aria-pressed="false"><span class="swatch swatch-dark"></span>Oscuro</button>
-          <button type="button" data-theme-choice="green" aria-pressed="false"><span class="swatch swatch-green"></span>Verde</button>
-          <button type="button" data-theme-choice="nature" aria-pressed="false"><span class="swatch swatch-nature"></span>Naturaleza</button>
+          <button type="button" data-theme-choice="light" aria-pressed="true"><span class="swatch swatch-light"></span><span data-theme-label>Claro</span></button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false"><span class="swatch swatch-dark"></span><span data-theme-label>Oscuro</span></button>
+          <button type="button" data-theme-choice="green" aria-pressed="false"><span class="swatch swatch-green"></span><span data-theme-label>Verde</span></button>
+          <button type="button" data-theme-choice="nature" aria-pressed="false"><span class="swatch swatch-nature"></span><span data-theme-label>Naturaleza</span></button>
           <button type="button" data-theme-choice="neon" aria-pressed="false"><span class="swatch swatch-neon"></span>Neon</button>
-          <button type="button" data-theme-choice="galaxy" aria-pressed="false"><span class="swatch swatch-galaxy"></span>Galaxy</button>
-          <button type="button" data-theme-choice="autumn" aria-pressed="false"><span class="swatch swatch-autumn"></span>Otoño</button>
-          <button type="button" data-theme-choice="winter" aria-pressed="false"><span class="swatch swatch-winter"></span>Invierno</button>
-          <button type="button" data-theme-choice="spring" aria-pressed="false"><span class="swatch swatch-spring"></span>Primavera</button>
-          <button type="button" data-theme-choice="summer" aria-pressed="false"><span class="swatch swatch-summer"></span>Verano</button>
+          <button type="button" data-theme-choice="galaxy" aria-pressed="false"><span class="swatch swatch-galaxy"></span><span data-theme-label>Galaxy</span></button>
+          <button type="button" data-theme-choice="autumn" aria-pressed="false"><span class="swatch swatch-autumn"></span><span data-theme-label>Otoño</span></button>
+          <button type="button" data-theme-choice="winter" aria-pressed="false"><span class="swatch swatch-winter"></span><span data-theme-label>Invierno</span></button>
+          <button type="button" data-theme-choice="spring" aria-pressed="false"><span class="swatch swatch-spring"></span><span data-theme-label>Primavera</span></button>
+          <button type="button" data-theme-choice="summer" aria-pressed="false"><span class="swatch swatch-summer"></span><span data-theme-label>Verano</span></button>
         </div>
       </div>
       <label class="sr-only" for="languageSelect">Language</label>
@@ -87,7 +87,7 @@
   <footer class="site-footer"><a class="footer-brand" href="#home">STARSHIP UNIVERSE LEAGUE</a><span>© <span id="year"></span> UNIVERSE LEAGUE</span><span class="footer-credit">A STARSHIP LEGACY ENTERTAINMENT, LLC COMPANY</span></footer>
 
   <dialog class="game-dialog" id="gameDialog" aria-labelledby="gameDialogTitle">
-    <button class="dialog-close" id="gameDialogClose" type="button" aria-label="Cerrar">×</button>
+    <button class="dialog-close" id="gameDialogClose" type="button" aria-label="Cerrar" data-i18n-aria="closeDialog">×</button>
     <div class="dialog-kicker" id="gameDialogCategory"></div>
     <h2 id="gameDialogTitle"></h2>
     <span class="dialog-status" data-i18n="inDevelopment">En desarrollo</span>
@@ -95,7 +95,7 @@
     <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
     <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
   </dialog>
-  <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
   <script src="./app.js"></script>
 </body>
 </html>
