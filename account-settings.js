@@ -76,6 +76,7 @@
       '<div class="settings-two-col"><label>Instagram<input name="instagram" maxlength="100" placeholder="@usuario" value="' + escapeHtml(p.instagram) + '"></label><label>YouTube<input name="youtube" maxlength="200" placeholder="Canal o URL" value="' + escapeHtml(p.youtube) + '"></label></div>',
       '<label>X<input name="x_profile" maxlength="100" placeholder="@usuario" value="' + escapeHtml(p.x_profile) + '"></label>',
       '<label>Correo electrónico<input value="' + escapeHtml(session.user.email) + '" disabled></label>',
+      '<label>ID de usuario <span class="settings-id-row"><input value="' + escapeHtml(p.public_id || "Asignando ID…") + '" readonly><button type="button" class="settings-copy-id" id="copyPublicId">Copiar</button></span><small class="settings-muted">Identificador único y permanente de tu cuenta STARSHIP UNIVERSE LEAGUE.</small></label>',
       '<button class="settings-primary" type="submit">Guardar perfil</button></form>'
     ].join("");
     $("profileForm").addEventListener("submit", async event => {
@@ -91,6 +92,10 @@
     });
     $("profilePhoto").addEventListener("change", uploadPhoto);
     $("removePhoto").addEventListener("click", removePhoto);
+    $("copyPublicId")?.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(profile.public_id); say("ID copiado.","success"); }
+      catch { say("No se pudo copiar el ID en este navegador.","error"); }
+    });
   }
   async function uploadPhoto(event) {
     const file = event.target.files?.[0];
@@ -161,7 +166,7 @@
     });
   }
   function renderActivity() {
-    $("accountPanelContent").innerHTML = '<div class="settings-facts"><div><small>Cuenta creada</small><strong>'+escapeHtml(dateLabel(session.user.created_at))+'</strong></div><div><small>Último inicio de sesión</small><strong>'+escapeHtml(dateLabel(session.user.last_sign_in_at))+'</strong></div><div><small>Método de acceso</small><strong>'+escapeHtml((session.user.app_metadata?.provider || "email").toUpperCase())+'</strong></div><div><small>ID de usuario</small><strong class="settings-id">'+escapeHtml(session.user.id)+'</strong></div></div><p class="settings-muted">Este panel muestra la información de actividad disponible actualmente para tu cuenta.</p>';
+    $("accountPanelContent").innerHTML = '<div class="settings-facts"><div><small>Cuenta creada</small><strong>'+escapeHtml(dateLabel(session.user.created_at))+'</strong></div><div><small>Último inicio de sesión</small><strong>'+escapeHtml(dateLabel(session.user.last_sign_in_at))+'</strong></div><div><small>Método de acceso</small><strong>'+escapeHtml((session.user.app_metadata?.provider || "email").toUpperCase())+'</strong></div><div><small>ID de usuario</small><strong class="settings-id">'+escapeHtml(profile?.public_id || "—")+'</strong></div></div><p class="settings-muted">Este panel muestra la información de actividad disponible actualmente para tu cuenta.</p>';
   }
   function renderFeedback() {
     $("accountPanelContent").innerHTML = '<form id="feedbackForm" class="settings-form"><label>Tipo de mensaje<select name="category"><option value="suggestion">Sugerencia</option><option value="bug">Reportar un problema</option><option value="question">Consulta</option><option value="other">Otro</option></select></label><label>Asunto<input name="subject" minlength="3" maxlength="120" required></label><label>Mensaje<textarea name="message" minlength="10" maxlength="3000" rows="5" required></textarea></label><button class="settings-primary" type="submit">Enviar mensaje</button></form>';
