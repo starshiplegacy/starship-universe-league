@@ -460,3 +460,38 @@
   .poster-play{right:12px;bottom:12px;padding:10px 16px;min-width:102px}
   .poster-status{top:12px;left:12px}
 }
+
+/* Free Astronaut games */
+.astronaut-games-section{margin-top:54px;padding:28px;border:1px solid var(--line);border-radius:24px;background:var(--surface-2)}
+.astronaut-games-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}
+.astronaut-games-heading h3{margin:8px 0 5px;font:700 clamp(19px,2.5vw,27px) "Space Grotesk",sans-serif}
+.astronaut-games-heading p,.astronaut-game-copy{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
+.astronaut-free-tag,.free-coming{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border:1px solid rgba(93,177,151,.45);border-radius:99px;background:rgba(93,177,151,.1);color:#23866d;font-size:8px;font-weight:900;letter-spacing:.1em;white-space:nowrap}
+.astronaut-game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.astronaut-game-card{overflow:hidden}.astronaut-game-art{height:245px;position:relative;display:grid;place-items:center;overflow:hidden}
+.chess-art{background:radial-gradient(circle at 50% 45%,#6451a9,#1a1732 70%)}.pixxy-art{background:radial-gradient(circle at 50% 45%,#247f91,#10263b 70%)}
+.game-app-icon{width:116px;height:116px;filter:drop-shadow(0 14px 24px #0005);transition:transform .3s ease}
+.astronaut-game-card:hover .game-app-icon{transform:translateY(-6px) rotate(-3deg)}
+.astronaut-game-symbol{position:absolute;right:24px;top:17px;color:#fff9;font-size:35px}.astronaut-art-caption{position:absolute;bottom:17px;left:20px;color:#fff9;font-size:8px;font-weight:900;letter-spacing:.22em}
+.astronaut-game-card .game-info{align-items:flex-end}.astronaut-game-copy{max-width:340px;margin-top:7px}.astronaut-game-card .game-details-button{white-space:nowrap}
+.mini-game-dialog{width:min(760px,calc(100% - 24px));max-height:92vh;overflow:auto;padding:30px;border:1px solid var(--line);border-radius:24px;background:var(--surface);color:var(--ink)}
+.mini-game-dialog::backdrop{background:rgba(8,10,25,.72);backdrop-filter:blur(7px)}.mini-game-dialog h2{margin:5px 0;font:700 clamp(26px,4vw,38px) "Space Grotesk",sans-serif}
+.mini-game-subtitle{margin:0 0 18px;color:var(--muted);font-size:11px}.mini-game-mode-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0}
+.mini-mode{padding:12px 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--ink);font:800 11px "DM Sans",sans-serif;cursor:pointer}
+.mini-mode small{display:block;margin-top:4px;color:var(--muted);font-size:8px;font-weight:500}.mini-mode.active{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}.mini-mode.active small{color:inherit;opacity:.8}
+.mini-game-custom-time{display:flex;align-items:center;gap:9px;margin:10px 0;padding:12px;border-radius:12px;background:var(--surface-2)}.mini-game-custom-time label{font-size:10px;font-weight:700}
+.mini-game-custom-time input{width:80px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.mini-game-custom-time button,.mini-game-actions button{padding:9px 13px;border:0;border-radius:9px;background:var(--accent);color:var(--accent-ink);font:800 10px "DM Sans",sans-serif;cursor:pointer}
+.mini-game-status{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0;padding:11px 13px;border-radius:11px;background:var(--surface-2);font-size:10px}.mini-game-status strong{font:800 17px "Space Grotesk",sans-serif;font-variant-numeric:tabular-nums}
+.mini-game-board{min-height:150px;display:grid;place-items:center;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.chess-board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));width:min(100%,440px);aspect-ratio:1;border:5px solid #30264a;border-radius:9px;overflow:hidden}
+.chess-square{display:grid;place-items:center;position:relative;min-width:0;border:0;padding:0;font-size:clamp(19px,4vw,38px);cursor:pointer}
+.chess-square.light{background:#eee7dc}.chess-square.dark{background:#796b91}.chess-square.selected{outline:4px solid #e4c75a;outline-offset:-4px}
+.chess-square.legal:after{content:"";position:absolute;width:22%;aspect-ratio:1;border-radius:50%;background:#2e8d6b99}.chess-square.capture:after{content:"";position:absolute;inset:3px;border:4px solid #d65b6c;border-radius:50%}
+.chess-piece-white{color:#fff;text-shadow:0 2px 3px #252039,0 0 2px #252039}.chess-piece-black{color:#252039;text-shadow:0 1px 1px #fff8}
+.pixxy-board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;width:100%;max-width:560px}
+.pixxy-tile{min-width:0;aspect-ratio:1;display:grid;place-items:center;border:1px solid #ffffff65;border-radius:11px;background:linear-gradient(145deg,#fff,#dfe8ff);color:#314267;font-size:clamp(17px,3vw,29px);box-shadow:0 3px 0 #aab6d1;cursor:pointer}
+.pixxy-tile.selected{outline:3px solid #e3a8ee;transform:translateY(-3px)}.pixxy-tile.blocked{opacity:.35;filter:grayscale(1);cursor:not-allowed}.pixxy-tile.removed{visibility:hidden;pointer-events:none}
+.mini-game-actions{display:flex;gap:8px;justify-content:center;margin:13px 0}.mini-game-actions button+button{background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.mini-game-help{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.6;text-align:center}
+@media(max-width:650px){.astronaut-games-section{padding:18px 13px}.astronaut-games-heading{align-items:flex-start;flex-direction:column}.astronaut-game-grid{grid-template-columns:1fr}.astronaut-game-art{height:215px}.mini-game-dialog{padding:24px 15px}.mini-game-mode-row{gap:5px}.mini-mode{font-size:9px;padding:10px 4px}.pixxy-board{gap:4px}.pixxy-tile{border-radius:7px}}
