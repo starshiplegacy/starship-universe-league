@@ -326,3 +326,64 @@
 .geffenland-card .settings-primary{width:100%;opacity:.6;cursor:not-allowed}
 .creator-theme-list{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
 @media(max-width:700px){.geffenland-grid{grid-template-columns:1fr}.geffenland-card ul{min-height:0}}
+
+
+/* Geffenland layout refinement: balanced cards and reliable dialog scrolling */
+.account-dialog{
+  box-sizing:border-box;
+  width:min(1040px,calc(100% - 32px));
+  max-height:90vh;
+  max-height:90dvh;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+.account-panel,.account-panel-content{min-width:0}
+.geffenland-intro{max-width:820px;margin:0 auto 22px;text-align:center}
+.geffenland-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:16px;
+}
+.geffenland-card{
+  box-sizing:border-box;
+  min-width:0;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  padding:20px 18px;
+}
+.geffenland-card h4{min-height:42px;margin:7px 0 12px}
+.geffenland-prices{min-height:57px}
+.geffenland-themes{min-height:90px}
+.geffenland-themes>div{align-content:flex-start}
+.geffenland-card ul{
+  flex:1 1 auto;
+  min-height:0;
+  margin:10px 0 18px;
+  padding-left:18px;
+  line-height:1.75;
+}
+.geffenland-card .settings-primary{margin-top:auto}
+@media(max-width:820px){
+  .account-dialog{width:min(720px,calc(100% - 24px))}
+  .geffenland-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .account-dialog{
+    width:calc(100% - 16px);
+    max-height:92vh;
+    max-height:92dvh;
+    padding:24px 16px;
+    border-radius:20px;
+  }
+  .geffenland-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .geffenland-card{padding:18px 16px}
+  .geffenland-card h4{min-height:0}
+  .geffenland-themes{min-height:0}
+  .geffenland-prices{min-height:0}
+  .account-panel-heading{align-items:flex-start;flex-wrap:wrap}
+  .account-panel-heading h3{min-width:0;overflow-wrap:anywhere}
+}
