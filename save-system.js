@@ -28,14 +28,18 @@
       tx.onerror = () => { db.close(); reject(tx.error); };
     });
   }
-  async function localGet(game) {
+  async function localGetRow(game) {
     const db = await openDb();
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE, "readonly");
       const req = tx.objectStore(STORE).get((userId || "unbound") + ":" + game);
-      req.onsuccess = () => { const row = req.result; db.close(); resolve(row?.state || null); };
+      req.onsuccess = () => { const row = req.result; db.close(); resolve(row || null); };
       req.onerror = () => { db.close(); reject(req.error); };
     });
+  }
+  async function localGet(game) {
+    const row = await localGetRow(game);
+    return row?.state || null;
   }
   function showStatus(message, state = "saved") {
     const el = document.getElementById("saveSystemStatus");
@@ -104,13 +108,14 @@
     if (!userId) { showStatus("Inicia sesión para guardar tu progreso", "offline"); return; }
     for (const game of ALLOWED) {
       try {
-        const local = await localGet(game);
-        if (local) {
+        const localRow = await localGetRow(game);
+        if (localRow?.state) {
           const { data, error } = await client.from("game_saves").select("updated_at").eq("user_id", userId).eq("game_key", game).eq("save_slot", "autosave").maybeSingle();
           if (error) throw error;
-          if (!data) {
-            const state = local;
-            pending.set(game, state);
+          const localTime = Date.parse(localRow.savedAt || 0);
+          const cloudTime = Date.parse(data?.updated_at || 0);
+          if (!data || localTime > cloudTime) {
+            pending.set(game, localRow.state);
             await flush(game);
           }
         }
