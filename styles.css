@@ -144,3 +144,36 @@
 @media(max-width:900px){.social-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.footer-socials{order:3;width:100%;justify-content:flex-start}.site-footer{align-items:flex-start}}
 @media(max-width:420px){.social-links{grid-template-columns:1fr}}
+
+
+/* Authenticated-only Gallery and private account hub */
+.gallery-button{border:1px solid var(--line);border-radius:99px;background:var(--surface);color:var(--ink);padding:10px 15px;font:800 9px "Space Grotesk",sans-serif;letter-spacing:.14em;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.gallery-button:hover{background:var(--surface-2);border-color:var(--accent);transform:translateY(-2px)}
+.gallery-button[hidden],.account-button[hidden],.login-button[hidden]{display:none}
+.account-button{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:#111;cursor:pointer;transition:transform .2s,border-color .2s}
+.account-button:hover{transform:translateY(-2px);border-color:var(--accent)}
+.account-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.gallery-dialog,.account-dialog{position:relative;width:min(720px,calc(100% - 30px));max-height:86vh;overflow:auto;border:1px solid var(--line);border-radius:25px;padding:clamp(25px,5vw,42px);background:var(--surface);color:var(--ink);box-shadow:0 30px 100px rgba(0,0,0,.32)}
+.gallery-dialog::backdrop,.account-dialog::backdrop{background:rgba(9,8,20,.76);backdrop-filter:blur(8px)}
+.gallery-dialog h2,.account-dialog h2{font:700 clamp(30px,5vw,42px)/1.05 "Space Grotesk",sans-serif;letter-spacing:-.05em;margin:0 36px 10px 0}
+.gallery-intro,.account-intro{font-size:13px;line-height:1.8;color:var(--muted);margin:0 0 22px}
+.gallery-categories{display:grid;gap:12px}
+.gallery-category{display:grid;grid-template-columns:54px 1fr;gap:15px;padding:19px;border:1px solid var(--line);border-radius:17px;background:var(--surface-2)}
+.gallery-number{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;background:var(--surface);color:var(--accent);font:700 15px "Space Grotesk",sans-serif}
+.gallery-category h3{margin:1px 0 6px;font:700 14px "Space Grotesk",sans-serif;letter-spacing:.04em}
+.gallery-category p{margin:0 0 9px;color:var(--muted);font-size:12px;line-height:1.7}
+.gallery-status{font-size:8px;font-weight:800;letter-spacing:.14em;color:var(--accent)}
+.account-dialog{width:min(540px,calc(100% - 30px))}
+.account-sections{display:grid;gap:8px}
+.account-sections button{display:grid;grid-template-columns:34px 1fr 18px;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--ink);text-align:left;cursor:pointer}
+.account-sections button>span:first-child{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--surface);color:var(--accent);font-size:16px}
+.account-sections button>span:nth-child(2){display:grid;gap:3px}
+.account-sections b{font-size:11px}.account-sections small{font-size:9px;color:var(--muted)}
+.account-sections i{font-style:normal;color:var(--accent);font-size:20px}
+.account-sections button:hover{border-color:var(--accent)}
+.account-section-note{margin:14px 0;padding:11px 12px;border-radius:11px;background:var(--surface-2);color:var(--muted);font-size:10px;line-height:1.6}
+.account-signout{width:100%;padding:12px;border:1px solid rgba(210,75,100,.35);border-radius:12px;background:transparent;color:#c64d65;font:700 11px "DM Sans",sans-serif;cursor:pointer}
+.account-signout:hover{background:rgba(210,75,100,.08)}
+.account-signout:disabled{opacity:.55;cursor:wait}
+@media(max-width:760px){.gallery-button{padding:9px 10px;font-size:8px}.account-button{width:34px;height:34px}.gallery-dialog,.account-dialog{padding:25px 19px}}
+@media(max-width:420px){.gallery-category{grid-template-columns:40px 1fr;padding:13px}.gallery-number{width:36px;height:36px}}
