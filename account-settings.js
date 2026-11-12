@@ -63,7 +63,10 @@
   }
   async function saveProfile(fields) {
     const updates = {...fields, id:session.user.id, updated_at:new Date().toISOString()};
+    if (typeof updates.public_id === "string") updates.public_id = updates.public_id.trim();
     const {error} = await client.from("profiles").upsert(updates,{onConflict:"id"});
+    if (error?.code === "23505") throw new Error("Ese ID ya está en uso. Prueba con otro.");
+    if (error?.code === "23514") throw new Error("El ID debe tener entre 3 y 24 caracteres y usar solo letras, números, punto, guion o guion bajo.");
     if (error) throw error;
     profile = {...profile,...updates};
   }
@@ -78,7 +81,7 @@
       '<div class="settings-two-col"><label>Instagram<input name="instagram" maxlength="100" placeholder="@usuario" value="' + escapeHtml(p.instagram) + '"></label><label>YouTube<input name="youtube" maxlength="200" placeholder="Canal o URL" value="' + escapeHtml(p.youtube) + '"></label></div>',
       '<label>X<input name="x_profile" maxlength="100" placeholder="@usuario" value="' + escapeHtml(p.x_profile) + '"></label>',
       '<label>Correo electrónico<input value="' + escapeHtml(session.user.email) + '" disabled></label>',
-      '<label>ID de usuario <span class="settings-id-row"><input value="' + escapeHtml(p.public_id || "Asignando ID…") + '" readonly><button type="button" class="settings-copy-id" id="copyPublicId">Copiar</button></span><small class="settings-muted">Identificador único y permanente de tu cuenta STARSHIP UNIVERSE LEAGUE.</small></label>',
+      '<label>Tu ID público <span class="settings-id-row"><input name="public_id" value="' + escapeHtml(p.public_id || "") + '" minlength="3" maxlength="24" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,23}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Ej. StarHee_01" required><button type="button" class="settings-copy-id" id="copyPublicId">Copiar</button></span><small class="settings-muted">Personalízalo con 3–24 caracteres: letras, números, punto, guion o guion bajo. Debe ser único.</small></label>',
       '<button class="settings-primary" type="submit">Guardar perfil</button></form>'
     ].join("");
     $("profileForm").addEventListener("submit", async event => {
@@ -95,7 +98,7 @@
     $("profilePhoto").addEventListener("change", uploadPhoto);
     $("removePhoto").addEventListener("click", removePhoto);
     $("copyPublicId")?.addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(profile.public_id); say("ID copiado.","success"); }
+      try { await navigator.clipboard.writeText($("profileForm").elements.public_id.value.trim()); say("ID copiado.","success"); }
       catch { say("No se pudo copiar el ID en este navegador.","error"); }
     });
   }
