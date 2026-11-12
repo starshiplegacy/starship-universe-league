@@ -68,6 +68,32 @@ Object.assign(translations.es,{"accessTitle":"Accede a tu cuenta","accessIntro":
 Object.assign(translations.en,{"accessTitle":"Sign in to your account","accessIntro":"We are preparing secure access to STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continue with Google","accessApple":"Continue with Apple","accessSoon":"Coming soon","accessOr":"OR","accessPending":"Email and password sign-in will also be available once the account system is connected.","accessSecurity":"We will not request or store your account credentials until secure sign-in is configured.","accessClose":"Close"});
 Object.assign(translations.ko,{"accessTitle":"계정에 로그인","accessIntro":"STARSHIP UNIVERSE LEAGUE의 안전한 로그인을 준비하고 있습니다.","accessGoogle":"Google로 계속하기","accessApple":"Apple로 계속하기","accessSoon":"준비 중","accessOr":"또는","accessPending":"계정 시스템이 연결되면 이메일과 비밀번호 로그인도 이용할 수 있습니다.","accessSecurity":"안전한 로그인이 설정되기 전까지 계정 정보나 비밀번호를 요청하거나 저장하지 않습니다.","accessClose":"닫기"});
 Object.assign(translations.ja,{"accessTitle":"アカウントにログイン","accessIntro":"STARSHIP UNIVERSE LEAGUEの安全なログインを準備しています。","accessGoogle":"Googleで続行","accessApple":"Appleで続行","accessSoon":"近日公開","accessOr":"または","accessPending":"アカウントシステムの接続後、メールアドレスとパスワードでもログインできるようになります。","accessSecurity":"安全なログイン設定が完了するまで、アカウント情報やパスワードを要求・保存することはありません。","accessClose":"閉じる"});
+
+Object.assign(translations.es, {
+  navMultimedia:"Multimedia", navNewRelease:"New Release",
+  multimediaKicker:"MIRA Y DESCUBRE", multimediaTitle:"Multimedia", multimediaNote:"VIDEOS Y CONTENIDO DE UNIVERSE LEAGUE.",
+  releaseKicker:"LANZAMIENTOS DESTACADOS", releaseTitle:"New Release", releaseNote:"DESCUBRE Y ESCUCHA NUESTROS LANZAMIENTOS.",
+  releaseItem:"Lanzamiento musical", releaseOpen:"Abrir en ONCE ↗"
+});
+Object.assign(translations.en, {
+  navMultimedia:"Multimedia", navNewRelease:"New Release",
+  multimediaKicker:"WATCH AND DISCOVER", multimediaTitle:"Multimedia", multimediaNote:"VIDEOS AND CONTENT FROM UNIVERSE LEAGUE.",
+  releaseKicker:"FEATURED RELEASES", releaseTitle:"New Release", releaseNote:"DISCOVER AND LISTEN TO OUR RELEASES.",
+  releaseItem:"Music release", releaseOpen:"Open on ONCE ↗"
+});
+Object.assign(translations.ko, {
+  navMultimedia:"멀티미디어", navNewRelease:"New Release",
+  multimediaKicker:"보고 발견하기", multimediaTitle:"멀티미디어", multimediaNote:"UNIVERSE LEAGUE의 영상과 콘텐츠.",
+  releaseKicker:"주요 발매", releaseTitle:"New Release", releaseNote:"새로운 음악 발매를 만나보세요.",
+  releaseItem:"음악 발매", releaseOpen:"ONCE에서 열기 ↗"
+});
+Object.assign(translations.ja, {
+  navMultimedia:"マルチメディア", navNewRelease:"New Release",
+  multimediaKicker:"見て、発見しよう", multimediaTitle:"マルチメディア", multimediaNote:"UNIVERSE LEAGUEの動画とコンテンツ。",
+  releaseKicker:"注目のリリース", releaseTitle:"New Release", releaseNote:"新しい音楽リリースをチェック。",
+  releaseItem:"音楽リリース", releaseOpen:"ONCEで開く ↗"
+});
+
 const root = document.documentElement;
 const themeSelect = document.getElementById("themeSelect");
 const languageSelect = document.getElementById("languageSelect");
