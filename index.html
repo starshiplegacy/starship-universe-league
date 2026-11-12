@@ -45,6 +45,8 @@
       <label class="sr-only" for="languageSelect">Language</label>
       <div class="language-wrap"><span class="language-star" aria-hidden="true">✦</span><select id="languageSelect" aria-label="Select language"><option value="es">ES</option><option value="en">EN</option><option value="ko">한국어</option><option value="ja">日本語</option></select></div>
       <button class="icon-button search-button" id="searchToggle" aria-label="Buscar"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+      <button class="gallery-button" id="galleryOpen" type="button" hidden>GALLERY</button>
+      <button class="account-button" id="accountOpen" type="button" aria-label="Configuración de usuario" title="Configuración de usuario" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></button>
       <button class="login-button" id="accessOpen" type="button" data-i18n="login">Acceder</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -135,6 +137,31 @@
     <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
     <section id="gameDialogExtra" hidden></section>
     <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
+  </dialog>
+  <dialog class="gallery-dialog" id="galleryDialog" aria-labelledby="galleryTitle">
+    <button class="dialog-close" id="galleryClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE · MEMBERS</div><h2 id="galleryTitle">GALLERY</h2>
+    <p class="gallery-intro">Explora los universos, personajes y proyectos de nuestros videojuegos.</p>
+    <div class="gallery-categories">
+      <article class="gallery-category"><span class="gallery-number">01</span><div><h3>THE LYRIELIFE</h3><p>Casas, interiores, personajes, ropa, peinados, accesorios y objetos del juego.</p><span class="gallery-status">GALERÍA EN PREPARACIÓN</span></div></article>
+      <article class="gallery-category"><span class="gallery-number">02</span><div><h3>LEAGUE OF LEGACY</h3><p>Conoce a los Guestar, los guerreros de League of Legacy, sus diseños, clases y habilidades.</p><span class="gallery-status">GALERÍA EN PREPARACIÓN</span></div></article>
+      <article class="gallery-category"><span class="gallery-number">03</span><div><h3>OTROS JUEGOS</h3><p>Descubre los próximos proyectos y sus novedades a medida que sean anunciados.</p><span class="gallery-status">PRÓXIMAMENTE</span></div></article>
+    </div>
+  </dialog>
+  <dialog class="account-dialog" id="accountDialog" aria-labelledby="accountTitle">
+    <button class="dialog-close" id="accountClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE · ACCOUNT</div><h2 id="accountTitle">Configuración de Usuario</h2>
+    <p class="account-intro">Administra tu cuenta y tus preferencias. Esta información solo está disponible para ti.</p>
+    <div class="account-sections">
+      <button type="button" data-account-section="profile"><span>◉</span><span><b>Perfil de Usuario</b><small>Avatar, ID, biografía y redes sociales</small></span><i>›</i></button>
+      <button type="button" data-account-section="feedback"><span>✉</span><span><b>Quejas y Sugerencias</b><small>Comparte una consulta o una propuesta</small></span><i>›</i></button>
+      <button type="button" data-account-section="security"><span>⌑</span><span><b>Seguridad</b><small>Contraseña y acceso a tu cuenta</small></span><i>›</i></button>
+      <button type="button" data-account-section="privacy"><span>◇</span><span><b>Privacidad</b><small>Control de tu información personal</small></span><i>›</i></button>
+      <button type="button" data-account-section="preferences"><span>⚙</span><span><b>Preferencias</b><small>Idioma y apariencia</small></span><i>›</i></button>
+      <button type="button" data-account-section="activity"><span>◷</span><span><b>Mis Actividades</b><small>Tu historial personal</small></span><i>›</i></button>
+    </div>
+    <p class="account-section-note" id="accountSectionNote" aria-live="polite">Selecciona una sección para continuar con su configuración.</p>
+    <button class="account-signout" id="accountSignOut" type="button">Cerrar Sesión</button>
   </dialog>
   <dialog class="access-dialog" id="accessDialog" aria-labelledby="accessTitle">
     <button class="dialog-close" id="accessClose" type="button" aria-label="Cerrar">×</button>
