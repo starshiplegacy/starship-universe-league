@@ -143,6 +143,13 @@ function setTheme(theme){
   themeOptions.hidden = true;
   themeToggle.setAttribute("aria-expanded","false");
 }
+window.applyUniverseTheme = setTheme;
+window.applyUniverseLanguage = language => {
+  if (!translations[language]) return;
+  languageSelect.value = language;
+  applyLanguage(language);
+  setTheme(root.dataset.theme || "light");
+};
 themeToggle.addEventListener("click",()=>{
   const opening = themeOptions.hidden;
   themeOptions.hidden = !opening;
