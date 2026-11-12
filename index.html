@@ -140,13 +140,31 @@
   </dialog>
   <dialog class="gallery-dialog" id="galleryDialog" aria-labelledby="galleryTitle">
     <button class="dialog-close" id="galleryClose" type="button" aria-label="Cerrar">×</button>
-    <div class="dialog-kicker">UNIVERSE LEAGUE · MEMBERS</div><h2 id="galleryTitle">GALLERY</h2>
-    <p class="gallery-intro">Explora los universos, personajes y proyectos de nuestros videojuegos.</p>
-    <div class="gallery-categories">
-      <article class="gallery-category"><span class="gallery-number">01</span><div><h3>THE LYRIELIFE</h3><p>Casas, interiores, personajes, ropa, peinados, accesorios y objetos del juego.</p><span class="gallery-status">GALERÍA EN PREPARACIÓN</span></div></article>
-      <article class="gallery-category"><span class="gallery-number">02</span><div><h3>LEAGUE OF LEGACY</h3><p>Conoce a los Guestar, los guerreros de League of Legacy, sus diseños, clases y habilidades.</p><span class="gallery-status">GALERÍA EN PREPARACIÓN</span></div></article>
-      <article class="gallery-category"><span class="gallery-number">03</span><div><h3>OTROS JUEGOS</h3><p>Descubre los próximos proyectos y sus novedades a medida que sean anunciados.</p><span class="gallery-status">PRÓXIMAMENTE</span></div></article>
+    <div class="dialog-kicker">UNIVERSE LEAGUE · COMMUNITY</div>
+    <div class="gallery-heading-row"><div><h2 id="galleryTitle">GALLERY</h2><p class="gallery-intro">Un espacio para compartir recursos, descubrir creaciones y conectar con otros jugadores.</p></div><button class="gallery-refresh" id="galleryRefresh" type="button">↻ Actualizar</button></div>
+    <div class="gallery-community-tools">
+      <div class="gallery-filter-row" id="galleryCategoryFilters">
+        <button type="button" class="active" data-gallery-filter="all">Todo</button>
+        <button type="button" data-gallery-filter="the_lyrielife">The LyrieLife</button>
+        <button type="button" data-gallery-filter="league_of_legacy">League Of Legacy</button>
+        <button type="button" data-gallery-filter="other">Otros juegos</button>
+      </div>
+      <button class="gallery-upload-toggle" id="galleryUploadToggle" type="button">＋ Compartir recurso</button>
     </div>
+    <section class="gallery-upload-panel" id="galleryUploadPanel" hidden>
+      <h3>Publicar en la comunidad</h3>
+      <p>Los recursos enviados pasan por revisión antes de aparecer públicamente en Gallery.</p>
+      <form id="gallerySubmitForm" class="gallery-submit-form">
+        <label>Título<input name="title" maxlength="140" minlength="3" required placeholder="Nombre de tu creación"></label>
+        <label>Juego o categoría<select name="category"><option value="the_lyrielife">The LyrieLife</option><option value="league_of_legacy">League Of Legacy</option><option value="other">Otros juegos</option></select></label>
+        <label>Descripción<textarea name="description" maxlength="3000" rows="3" placeholder="Cuéntanos sobre este recurso…"></textarea></label>
+        <label>Archivo (máximo 50 MB)<input name="asset" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,.zip,.rar,.7z,.package,.ts4script"></label>
+        <button class="gallery-upload-submit" id="gallerySubmitButton" type="submit">Enviar a revisión</button>
+      </form>
+    </section>
+    <p class="gallery-notice" id="galleryNotice" role="status" aria-live="polite"></p>
+    <div class="gallery-feed" id="galleryFeed"><p class="gallery-loading">Abriendo Gallery…</p></div>
+    <div class="gallery-community-legend"><span>♡ Corazón gris: todavía no has esparcido Starlight</span><span>💖 Corazón arcoíris: ya has esparcido Starlight</span></div>
   </dialog>
   <dialog class="account-dialog" id="accountDialog" aria-labelledby="accountTitle">
     <button class="dialog-close" id="accountClose" type="button" aria-label="Cerrar">×</button>
@@ -208,6 +226,6 @@
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
   <script>window.UNIVERSE_SUPABASE_URL="https://wvyveduslbsuvyekeccf.supabase.co";window.UNIVERSE_SUPABASE_KEY="sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz";</script>
   <script src="./app.js"></script>
-  <script src="./account-settings.js"></script>
+  <script src="./account-settings.js"></script>\n  <script src="./gallery.js"></script>
 </body>
 </html>
