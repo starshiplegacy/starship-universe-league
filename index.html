@@ -11,8 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
+<body class="auth-checking">
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <section class="welcome-gate" id="welcomeGate" aria-labelledby="welcomeTitle" hidden>
+    <div class="welcome-topbar"><a class="brand" href="#welcome" aria-label="STARSHIP UNIVERSE LEAGUE"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 20 8 7l12 7a17 17 0 0 1 8 0l12-7-2 13a16 16 0 1 1-28 0Z"/><path d="M17 25h.2M31 25h.2M19 33q5 4 10 0"/></svg></span><span class="brand-name">STARSHIP <b>UNIVERSE</b><small>LEAGUE</small></span></a><div class="welcome-theme" aria-label="Apariencia"><button type="button" data-welcome-theme="light" aria-pressed="true">Claro</button><button type="button" data-welcome-theme="dark" aria-pressed="false">Oscuro</button></div></div>
+    <div class="welcome-content"><div class="welcome-copy"><span class="welcome-kicker">ONE UNIVERSE · INFINITE WAYS TO PLAY</span><h1 id="welcomeTitle">Tu universo.<br><em>Tu próxima historia.</em></h1><p>Bienvenido a STARSHIP UNIVERSE LEAGUE, un universo de videojuegos, creatividad y experiencias que crecen junto a su comunidad.</p><div class="welcome-actions"><button type="button" class="primary-button" id="welcomeLogin">Iniciar sesión <span>↗</span></button><button type="button" class="welcome-secondary" id="welcomeRegister">Crear una cuenta</button></div><span class="welcome-note">Únete como Astronauta para entrar a tu universo.</span></div><div class="welcome-art" aria-hidden="true"><div class="welcome-orbit welcome-orbit-one"></div><div class="welcome-orbit welcome-orbit-two"></div><div class="welcome-planet"></div><span class="welcome-star welcome-star-one">✦</span><span class="welcome-star welcome-star-two">✧</span><span class="welcome-art-label">STARSHIP UNIVERSE / 01</span></div></div>
+    <section class="welcome-history" aria-labelledby="welcomeHistoryTitle"><span class="welcome-kicker">OUR STORY · OUR WORLDS</span><h2 id="welcomeHistoryTitle">Desarrollo e historia</h2><p>UNIVERSE LEAGUE es un espacio creativo dedicado a imaginar, desarrollar y compartir experiencias interactivas. Cada proyecto nace de una idea y evoluciona para convertirse en un mundo propio. Conoce nuestros universos y acompaña su desarrollo desde el comienzo.</p><div class="welcome-worlds"><span>THE LYRIELIFE <small>Simulación de vida</small></span><span>LEAGUE OF LEGACY <small>Battle arena</small></span></div></section>
+    <footer class="welcome-footer">© <span id="welcomeYear"></span> UNIVERSE LEAGUE · A STARSHIP LEGACY ENTERTAINMENT, LLC COMPANY</footer>
+  </section>
   <header class="site-header">
     <a class="brand" href="#home" aria-label="STARSHIP UNIVERSE LEAGUE — inicio">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 20 8 7l12 7a17 17 0 0 1 8 0l12-7-2 13a16 16 0 1 1-28 0Z"/><path d="M17 25h.2M31 25h.2M19 33q5 4 10 0"/></svg></span>
