@@ -113,3 +113,16 @@
 .auth-message.error{color:#d04b64}.auth-message.success{color:#31946a}
 .access-provider button{cursor:pointer}
 @media(max-width:520px){.access-dialog{width:min(94vw,460px);padding:25px 20px}.auth-tabs{margin-top:16px}}
+
+
+/* Horizontal carousels: Multimedia and New Release */
+.carousel-shell{position:relative;display:flex;align-items:center;gap:12px;min-width:0}
+.carousel-track{display:flex!important;flex-wrap:nowrap;grid-template-columns:none!important;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0;flex:1;padding:8px 2px 18px}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-track>.media-card{flex:0 0 clamp(270px,42vw,490px);scroll-snap-align:start}
+.carousel-track>.release-card{flex:0 0 clamp(250px,30vw,360px);scroll-snap-align:start}
+.carousel-arrow{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--accent);font:400 26px/1 "DM Sans",sans-serif;box-shadow:var(--card-shadow);transition:transform .2s,background .2s,border-color .2s}
+.carousel-arrow:hover:not(:disabled){transform:scale(1.08);background:var(--surface-2);border-color:var(--accent)}
+.carousel-arrow:disabled{opacity:.28;cursor:default;box-shadow:none}
+@media(max-width:720px){.carousel-shell{gap:7px}.carousel-arrow{flex-basis:32px;width:32px;height:32px;font-size:22px}.carousel-track>.media-card{flex-basis:min(78vw,390px)}.carousel-track>.release-card{flex-basis:min(76vw,330px)}}
+@media(prefers-reduced-motion:reduce){.carousel-track{scroll-behavior:auto}}
