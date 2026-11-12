@@ -51,3 +51,15 @@
 .game-dialog section p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}
 .dialog-note{margin:24px 0 0;padding:13px 15px;border-radius:13px;background:var(--surface-2);font-size:10px;line-height:1.7;color:var(--muted)}
 @media(max-width:480px){.game-details-button{padding:9px 11px}}
+
+
+/* League Of Legacy controls and combat guide */
+#gameDialogExtra[hidden]{display:none}
+#gameDialogExtra .control-intro{margin:0 0 14px}
+#gameDialogExtra h4{font:700 12px "Space Grotesk",sans-serif;margin:15px 0 8px;color:var(--ink)}
+#gameDialogExtra ul{margin:0;padding-left:19px;color:var(--muted);font-size:12px;line-height:1.85}
+#gameDialogExtra .key-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+#gameDialogExtra .key-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);font-size:11px;color:var(--muted)}
+#gameDialogExtra kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;padding:0 6px;border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;background:var(--surface);color:var(--ink);font:700 11px "Space Grotesk",sans-serif}
+#gameDialogExtra .control-callout{padding:11px 13px;margin-top:12px;border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:11px;line-height:1.75}
+@media(max-width:480px){#gameDialogExtra .key-list{grid-template-columns:1fr}}
