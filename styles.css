@@ -287,3 +287,26 @@
 @media(max-width:700px){.gallery-feed{grid-template-columns:1fr}.gallery-dialog{width:calc(100% - 16px);padding:24px 16px}.gallery-heading-row{display:block}.gallery-refresh{margin:0 0 12px}.gallery-submit-form{grid-template-columns:1fr}.gallery-submit-form label,.gallery-submit-form label:nth-child(3),.gallery-submit-form label:nth-child(4),.gallery-submit-form button{grid-column:1}}
 
 .gallery-starlight.is-active .starlight-heart{background:linear-gradient(90deg,#ff5b75,#f4a340,#f4d84c,#55c978,#4a9cff,#ad70e8);-webkit-background-clip:text;background-clip:text;color:transparent;filter:none}
+
+/* Verification center */
+.verification-tier-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.verification-tier{padding:13px 9px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);text-align:center}
+.verification-symbol{display:grid;place-items:center;width:35px;height:35px;margin:0 auto 7px;border-radius:50%;font-size:22px}
+.verification-tier h4,.creator-verified-panel h4{margin:0 0 4px;font:700 12px "Space Grotesk",sans-serif}
+.verification-tier p{margin:0 0 7px;color:var(--muted);font-size:9px}
+.verification-tier small{font-size:8px;color:var(--muted);line-height:1.4}
+.verification-tier.baby .verification-symbol{background:#fff1ae;color:#c08c00}
+.verification-tier.moon .verification-symbol{background:#e9e1ff;color:#7c65c7}
+.verification-tier.planet .verification-symbol{background:#deedff;color:#3f78b9}
+.creator-verified-panel{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);margin:18px 0 10px}
+.creator-verified-mark{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#d8f3e8;color:#187c59;font-weight:900;font-size:19px}
+.creator-verified-panel p{margin:0;color:var(--muted);font-size:9px;line-height:1.6}
+.creator-requirements{padding-left:20px;color:var(--muted);font-size:10px;line-height:1.9}
+.verification-status{margin:12px 0;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:10px;line-height:1.6}
+.verification-status[data-status="approved"]{border-color:#58ae8b;color:#187c59}
+.verification-status[data-status="rejected"]{border-color:#d65d73;color:#c64d65}
+.creator-application-form{margin-top:14px;padding-top:15px;border-top:1px solid var(--line)}
+.creator-application-form h4{margin:0;font:700 14px "Space Grotesk",sans-serif}
+.creator-application-form .settings-check{display:flex;align-items:center;gap:8px}
+.creator-application-form .settings-check input{width:auto}
+@media(max-width:440px){.verification-tier-grid{grid-template-columns:1fr}.verification-tier{display:grid;grid-template-columns:35px 1fr;column-gap:9px;text-align:left;align-items:center}.verification-symbol{grid-row:span 3;margin:0}.verification-tier h4,.verification-tier p,.verification-tier small{grid-column:2}}
