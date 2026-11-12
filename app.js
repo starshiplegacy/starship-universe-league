@@ -239,6 +239,31 @@ gameDialog.addEventListener("click", event => {
 });
 
 
+// Accessible horizontal carousels for Multimedia and New Release
+document.querySelectorAll(".carousel-shell").forEach(shell=>{
+  const track=shell.querySelector(".carousel-track");
+  if(!track)return;
+  const previous=shell.querySelector("[data-carousel-prev]");
+  const next=shell.querySelector("[data-carousel-next]");
+  const step=()=> {
+    const card=track.firstElementChild;
+    if(!card)return track.clientWidth;
+    const styles=getComputedStyle(track);
+    const gap=parseFloat(styles.columnGap||styles.gap)||0;
+    return card.getBoundingClientRect().width+gap;
+  };
+  const update=()=>{
+    const max=track.scrollWidth-track.clientWidth;
+    if(previous)previous.disabled=track.scrollLeft<=2;
+    if(next)next.disabled=track.scrollLeft>=max-2;
+  };
+  previous?.addEventListener("click",()=>track.scrollBy({left:-step(),behavior:"smooth"}));
+  next?.addEventListener("click",()=>track.scrollBy({left:step(),behavior:"smooth"}));
+  track.addEventListener("scroll",update,{passive:true});
+  window.addEventListener("resize",update);
+  update();
+});
+ 
 // STARSHIP UNIVERSE LEAGUE — Supabase Auth
 (async function initUniverseAuth(){
   const dialog=document.getElementById("accessDialog");
