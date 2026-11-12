@@ -219,3 +219,69 @@
 .settings-id-row{display:flex;gap:8px;align-items:center}
 .settings-id-row input{flex:1;font-family:monospace;letter-spacing:.04em}
 .settings-copy-id{border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink);padding:10px 12px;font:700 10px "DM Sans",sans-serif;cursor:pointer}
+
+
+/* Community Gallery */
+.gallery-dialog{width:min(980px,calc(100% - 28px));max-height:90vh}
+.gallery-heading-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.gallery-refresh,.gallery-filter-row button,.gallery-upload-toggle,.gallery-upload-submit{border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--ink);padding:10px 14px;font:700 10px "DM Sans",sans-serif;cursor:pointer}
+.gallery-refresh:hover,.gallery-filter-row button:hover,.gallery-upload-toggle:hover{border-color:var(--accent)}
+.gallery-community-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 15px;flex-wrap:wrap}
+.gallery-filter-row{display:flex;gap:7px;flex-wrap:wrap}
+.gallery-filter-row button{padding:8px 12px;font-size:9px}
+.gallery-filter-row button.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gallery-upload-toggle,.gallery-upload-submit{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:800}
+.gallery-upload-panel{padding:18px;margin:0 0 18px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.gallery-upload-panel h3{margin:0 0 5px;font:700 16px "Space Grotesk",sans-serif}
+.gallery-upload-panel>p{margin:0 0 14px;color:var(--muted);font-size:11px;line-height:1.6}
+.gallery-submit-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gallery-submit-form label{display:grid;gap:6px;color:var(--ink);font-size:10px;font-weight:700}
+.gallery-submit-form label:nth-child(3),.gallery-submit-form label:nth-child(4),.gallery-submit-form button{grid-column:1/-1}
+.gallery-submit-form input,.gallery-submit-form select,.gallery-submit-form textarea,.gallery-comment-form input{width:100%;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:500 11px "DM Sans",sans-serif}
+.gallery-submit-form textarea{resize:vertical}
+.gallery-upload-submit{justify-self:start;padding:11px 18px}
+.gallery-upload-submit:disabled{opacity:.6;cursor:wait}
+.gallery-notice{min-height:0;margin:0;color:var(--muted);font-size:10px}
+.gallery-notice:not(:empty){padding:9px 11px;margin:0 0 12px;border-radius:9px;background:var(--surface-2)}
+.gallery-notice[data-type="error"]{color:#d65d73}
+.gallery-notice[data-type="success"]{color:#238b69}
+.gallery-feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.gallery-post{min-width:0;padding:15px;border:1px solid var(--line);border-radius:17px;background:var(--surface-2)}
+.gallery-post-head{display:flex;align-items:center;gap:9px;min-width:0}
+.gallery-post-avatar{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:var(--surface);color:var(--accent);font-weight:800}
+.gallery-post-author{display:grid;gap:3px;min-width:0;flex:1}
+.gallery-post-author strong{font-size:10px;overflow-wrap:anywhere}
+.gallery-post-author small{font-size:8px;color:var(--muted);overflow-wrap:anywhere}
+.gallery-post-category{font-size:7px;letter-spacing:.08em;color:var(--muted);text-align:right}
+.gallery-user-badge{display:inline-grid;place-items:center;width:16px;height:16px;margin-left:3px;border-radius:50%;font-size:10px;vertical-align:middle}
+.badge-baby{background:#fff1ae;color:#bd8a00}.badge-moon{background:#e8e0ff;color:#7963c4}.badge-exoplanet{background:#dcecff;color:#386eae}.badge-creator{background:#d8f3e8;color:#187c59}
+.gallery-post-copy{padding:13px 0 10px}
+.gallery-post-copy h3{margin:0 0 5px;font:700 16px "Space Grotesk",sans-serif}
+.gallery-post-copy p{margin:0;color:var(--muted);font-size:10px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.gallery-asset-image{display:block;overflow:hidden;border-radius:12px;background:var(--surface);max-height:320px}
+.gallery-asset-image img{display:block;width:100%;max-height:320px;object-fit:cover}
+.gallery-download{display:flex;align-items:center;gap:12px;padding:15px;border:1px dashed var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+.gallery-download>span:first-child{font-size:24px;color:var(--accent)}
+.gallery-download>span:last-child{display:grid;gap:4px;min-width:0}
+.gallery-download b{font-size:10px;overflow-wrap:anywhere}.gallery-download small{font-size:8px;color:var(--muted)}
+.gallery-post-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 0;border-bottom:1px solid var(--line)}
+.gallery-starlight{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--ink);font:700 9px "DM Sans",sans-serif;cursor:pointer;padding:4px 0}
+.gallery-starlight b{color:var(--muted)}
+.gallery-starlight .starlight-heart{font-size:17px;color:#9aa0aa}
+.gallery-starlight.is-active .starlight-heart{filter:saturate(1.3)}
+.gallery-starlight:disabled{opacity:.5;cursor:wait}
+.gallery-comment-count{font-size:8px;color:var(--muted)}
+.gallery-comments{display:grid;gap:9px;padding:10px 0}
+.gallery-comment>div{font-size:9px}.gallery-comment>div span{font-size:8px;color:var(--muted)}
+.gallery-comment p{margin:3px 0 0;font-size:9px;line-height:1.5;overflow-wrap:anywhere}
+.gallery-mention{color:var(--accent);font-weight:800}
+.gallery-no-comments,.gallery-loading{margin:0;padding:14px 0;color:var(--muted);font-size:10px;text-align:center}
+.gallery-comment-form{display:flex;gap:7px}
+.gallery-comment-form input{padding:9px 10px;font-size:9px}
+.gallery-comment-form button{flex:0 0 34px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:900;cursor:pointer}
+.gallery-empty{grid-column:1/-1;padding:40px 18px;text-align:center;border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+.gallery-empty>span{font-size:30px;color:var(--accent)}
+.gallery-empty h3{margin:10px 0 6px;color:var(--ink);font:700 16px "Space Grotesk",sans-serif}
+.gallery-empty p{margin:0;font-size:10px;line-height:1.6}
+.gallery-community-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:8px}
+@media(max-width:700px){.gallery-feed{grid-template-columns:1fr}.gallery-dialog{width:calc(100% - 16px);padding:24px 16px}.gallery-heading-row{display:block}.gallery-refresh{margin:0 0 12px}.gallery-submit-form{grid-template-columns:1fr}.gallery-submit-form label,.gallery-submit-form label:nth-child(3),.gallery-submit-form label:nth-child(4),.gallery-submit-form button{grid-column:1}}
