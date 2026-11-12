@@ -6,6 +6,13 @@ const translations = {
     gamesKicker:"ENCUENTRA TU MUNDO",gamesTitle:"Nuestros juegos",gamesNote:"DOS UNIVERSOS EN DESARROLLO",lifeCategory:"SIMULACIÓN DE VIDA",fightCategory:"PELEA",inDevelopment:"En desarrollo",
     joinKicker:"CREA CON NOSOTROS",joinTitle:'Las grandes ideas<br><em>necesitan un equipo.</em>',joinText:"¿Te apasionan los videojuegos, el diseño, la tecnología o contar historias? Hay un lugar para tu talento.",joinButton:"Trabaja con nosotros",
     updatesKicker:"MANTENTE AL DÍA",newsTitle:"Qué hay de nuevo",newsNote:"PRÓXIMAMENTE, MÁS NOTICIAS DEL UNIVERSO.",newsEmpty:"Las próximas novedades aparecerán aquí.",searchLabel:"¿Qué estás buscando?"
+    descriptionHeading:"Descripción",howToPlayHeading:"Forma de jugar",developmentNote:"Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.",
+    lyrieDescription:"Es una serie de videojuegos de simulación de vida desarrollada por UNIVERSE LEAGUE, Starship Plus y 1TheS y publicada por Starship Universe League.",
+    lyrieGameplay:"Crea y personaliza a tu personaje, dale vida, trabajo y propósito, y procura que no pise el plano astral.",
+    legacyDescription:"Conocido comúnmente como Lea, es un videojuego multijugador en línea de arena de batalla desarrollado y publicado por UNIVERSE LEAGUE. Cuenta con cámara libre y opción de primera persona.",
+    legacyGameplay:"En el modo 05 VS 05, los equipos deben destruir tres Torres Localizadoras que atacan. Recolecta frutas y esferas para recargar tu poder. Derrota a los monstruos del bosque llamados Shadowmonters para convertirlos en aliados y ayudarte a destruir al equipo rival.",
+    searchEmpty:"Escribe algo para buscar.",searchNoResults:"No encontramos resultados. Intenta con otro término.",
+    themeNames:{light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neón",galaxy:"Galaxia",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"}
   },
   en: {
     navAbout:"About Us",navGames:"Our Games",navCareers:"Careers",navNews:"News",login:"Sign in",
@@ -14,6 +21,13 @@ const translations = {
     gamesKicker:"FIND YOUR WORLD",gamesTitle:"Our games",gamesNote:"TWO WORLDS IN DEVELOPMENT",lifeCategory:"LIFE SIMULATION",fightCategory:"FIGHTING",inDevelopment:"In development",
     joinKicker:"CREATE WITH US",joinTitle:'Great ideas<br><em>need a team.</em>',joinText:"Are you passionate about games, design, technology or storytelling? There is a place for your talent.",joinButton:"Work with us",
     updatesKicker:"STAY UP TO DATE",newsTitle:"What's new",newsNote:"MORE NEWS FROM THE UNIVERSE COMING SOON.",newsEmpty:"The latest updates will appear here.",searchLabel:"What are you looking for?"
+    descriptionHeading:"Description",howToPlayHeading:"How to play",developmentNote:"This game is still in development. The play option will be available when it is released.",
+    lyrieDescription:"A life simulation video game series developed by UNIVERSE LEAGUE, Starship Plus and 1TheS, and published by Starship Universe League.",
+    lyrieGameplay:"Create and customize your character, give them a life, a job and a purpose, and make sure they do not step into the astral plane.",
+    legacyDescription:"Commonly known as Lea, this is an online multiplayer battle arena developed and published by UNIVERSE LEAGUE. It features a free camera with an optional first-person view.",
+    legacyGameplay:"In 05 VS 05 mode, teams must destroy three attacking Locator Towers. Collect fruits and spheres to fuel your power. Defeat forest monsters called Shadowmonters to turn them into allies and help take down the opposing team.",
+    searchEmpty:"Type something to search.",searchNoResults:"No results found. Try another search term.",
+    themeNames:{light:"Light",dark:"Dark",green:"Green",nature:"Nature",neon:"Neon",galaxy:"Galaxy",autumn:"Autumn",winter:"Winter",spring:"Spring",summer:"Summer"}
   },
   ko: {
     navAbout:"회사 소개",navGames:"게임",navCareers:"채용 정보",navNews:"뉴스",login:"로그인",
@@ -22,6 +36,13 @@ const translations = {
     gamesKicker:"나만의 세계 찾기",gamesTitle:"우리의 게임",gamesNote:"두 개의 세계 개발 중",lifeCategory:"라이프 시뮬레이션",fightCategory:"격투",inDevelopment:"개발 중",
     joinKicker:"함께 만들어요",joinTitle:'멋진 아이디어에는<br><em>팀이 필요해요.</em>',joinText:"게임, 디자인, 기술 또는 스토리텔링을 좋아하시나요? 당신의 재능을 펼칠 자리가 있습니다.",joinButton:"함께하기",
     updatesKicker:"새로운 소식",newsTitle:"새로운 소식",newsNote:"더 많은 소식이 곧 공개됩니다.",newsEmpty:"새로운 소식이 여기에 업데이트됩니다.",searchLabel:"무엇을 찾고 있나요?"
+    descriptionHeading:"게임 소개",howToPlayHeading:"플레이 방법",developmentNote:"이 게임은 현재 개발 중입니다. 정식 출시 후 플레이할 수 있습니다.",
+    lyrieDescription:"UNIVERSE LEAGUE, Starship Plus, 1TheS가 개발하고 Starship Universe League가 퍼블리싱하는 라이프 시뮬레이션 게임 시리즈입니다.",
+    lyrieGameplay:"캐릭터를 만들고 꾸며 삶과 직업, 목적을 부여하세요. 그리고 아스트랄 차원에 발을 들이지 않도록 조심하세요.",
+    legacyDescription:"Lea라는 이름으로도 알려진 온라인 멀티플레이어 배틀 아레나 게임으로, UNIVERSE LEAGUE가 개발하고 퍼블리싱합니다. 자유 시점 카메라와 선택 가능한 1인칭 시점을 지원합니다.",
+    legacyGameplay:"05 대 05 모드에서 각 팀은 공격하는 세 개의 위치 탐지탑을 파괴해야 합니다. 과일과 구슬을 모아 힘을 충전하고, Shadowmonters라는 숲의 몬스터를 물리쳐 아군으로 만들어 상대 팀을 무너뜨리세요.",
+    searchEmpty:"검색어를 입력하세요.",searchNoResults:"검색 결과가 없습니다. 다른 검색어를 입력해 보세요.",
+    themeNames:{light:"밝게",dark:"어둡게",green:"초록",nature:"자연",neon:"네온",galaxy:"은하",autumn:"가을",winter:"겨울",spring:"봄",summer:"여름"}
   },
   ja: {
     navAbout:"私たちについて",navGames:"ゲーム",navCareers:"採用情報",navNews:"ニュース",login:"ログイン",
@@ -34,7 +55,9 @@ const translations = {
     lyrieDescription:"『The LyrieLife』は、UNIVERSE LEAGUE、Starship Plus、1TheSが開発し、Starship Universe Leagueが発売するライフシミュレーションゲームシリーズです。自分だけのLyrieを作り、その人生を描こう。",
     lyrieGameplay:"キャラクターを作成・カスタマイズし、人生や仕事、目的を与えて世界で暮らそう。そして、アストラル界に足を踏み入れないように気をつけよう。",
     legacyDescription:"『League Of Legacy』（通称 Lea）は、UNIVERSE LEAGUEが開発・発売するオンラインマルチプレイヤー・バトルアリーナです。自由視点カメラに対応し、オプションで一人称視点も選べます。",
-    legacyGameplay:"05対05のチーム戦で、攻撃してくる3つの「位置探知塔」を破壊しよう。フルーツやオーブを集めてパワーを補給し、森のモンスター「Shadowmonters」を倒して味方に加え、敵チームの攻略を助けてもらおう。"
+    legacyGameplay:"05対05のチーム戦で、攻撃してくる3つの「位置探知塔」を破壊しよう。フルーツやオーブを集めてパワーを補給し、森のモンスター「Shadowmonters」を倒して味方に加え、敵チームの攻略を助けてもらおう。",
+    searchEmpty:"検索する言葉を入力してください。",searchNoResults:"結果が見つかりません。別の言葉でお試しください。",
+    themeNames:{light:"ライト",dark:"ダーク",green:"グリーン",nature:"自然",neon:"ネオン",galaxy:"銀河",autumn:"秋",winter:"冬",spring:"春",summer:"夏"}
   }
 };
 const root = document.documentElement;
@@ -49,15 +72,31 @@ function applyLanguage(language){
   document.documentElement.lang = language;
   document.querySelectorAll("[data-i18n]").forEach(node => {
     const key = node.dataset.i18n;
-    if (dictionary[key]) node.innerHTML = dictionary[key];
+    if (Object.hasOwn(dictionary, key)) node.innerHTML = dictionary[key];
   });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(node => {
+    const key = node.dataset.i18nPlaceholder;
+    if (Object.hasOwn(dictionary, key)) node.placeholder = dictionary[key];
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(node => {
+    const key = node.dataset.i18nAria;
+    if (Object.hasOwn(dictionary, key)) node.setAttribute("aria-label", dictionary[key]);
+  });
+  document.querySelectorAll("[data-theme-choice]").forEach(node => {
+    const names = dictionary.themeNames || translations.es.themeNames;
+    const label = node.querySelector("[data-theme-label]");
+    if (label) label.textContent = names[node.dataset.themeChoice] || node.dataset.themeChoice;
+  });
+  const current = themeToggle?.querySelector(".current-theme");
+  if (current) current.textContent = (dictionary.themeNames || translations.es.themeNames)[root.dataset.theme] || root.dataset.theme;
+  if (gameDialog?.open && activeGameKey) renderGameDialog(activeGameKey);
   localStorage.setItem("universe-language", language);
 }
 applyLanguage(languageSelect.value);
 languageSelect.addEventListener("change", event => applyLanguage(event.target.value));
 const themeOptions = document.getElementById("themeOptions");
 const themeToggle = document.getElementById("themeToggle");
-const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neon",galaxy:"Galaxy",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"};
+const themeNames = translations.es.themeNames;
 function setTheme(theme){
   if (!Object.hasOwn(themeNames,theme)) return;
   root.dataset.theme = theme;
@@ -65,7 +104,7 @@ function setTheme(theme){
   document.querySelectorAll("[data-theme-choice]").forEach(button => {
     button.setAttribute("aria-pressed",String(button.dataset.themeChoice===theme));
   });
-  themeToggle.querySelector(".current-theme").textContent = themeNames[theme];
+  themeToggle.querySelector(".current-theme").textContent = (translations[languageSelect.value]?.themeNames || themeNames)[theme];
   themeOptions.hidden = true;
   themeToggle.setAttribute("aria-expanded","false");
 }
@@ -96,11 +135,11 @@ overlay.addEventListener("click",event=>{if(event.target===overlay)closeSearch()
 document.addEventListener("keydown",event=>{if(event.key==="Escape")closeSearch();});
 function searchSite(){
  const query=searchInput.value.trim().toLocaleLowerCase();
- if(!query){feedback.textContent="Escribe algo para buscar.";return;}
+ if(!query){feedback.textContent=translations[languageSelect.value].searchEmpty;return;}
  const targets=[...document.querySelectorAll("main h1,main h2,main h3,main p")];
  const match=targets.find(node=>node.textContent.toLocaleLowerCase().includes(query));
  if(match){closeSearch();match.scrollIntoView({behavior:"smooth",block:"center"});feedback.textContent="";}
- else feedback.textContent="No encontramos resultados. Intenta con otro término.";
+ else feedback.textContent=translations[languageSelect.value].searchNoResults;
 }
 document.getElementById("searchGo").addEventListener("click",searchSite);
 searchInput.addEventListener("keydown",event=>{if(event.key==="Enter")searchSite();});
@@ -136,15 +175,19 @@ const gameDialogCategory = document.getElementById("gameDialogCategory");
 const gameDialogTitle = document.getElementById("gameDialogTitle");
 const gameDialogDescription = document.getElementById("gameDialogDescription");
 const gameDialogGameplay = document.getElementById("gameDialogGameplay");
-document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
-  const game = gameContent[button.dataset.openGame];
+let activeGameKey = null;
+function renderGameDialog(key){
+  const game = gameContent[key];
   if (!game) return;
-  const language = languageSelect.value;
-  const localized = game.i18n[language];
-  gameDialogCategory.textContent = localized?.[0] || game.category;
+  const dictionary = translations[languageSelect.value] || translations.es;
+  gameDialogCategory.textContent = dictionary[key === "lyrie" ? "lifeCategory" : "fightCategory"];
   gameDialogTitle.textContent = game.title;
-  gameDialogDescription.textContent = localized?.[1] || game.description;
-  gameDialogGameplay.textContent = localized?.[2] || game.gameplay;
+  gameDialogDescription.textContent = dictionary[key === "lyrie" ? "lyrieDescription" : "legacyDescription"];
+  gameDialogGameplay.textContent = dictionary[key === "lyrie" ? "lyrieGameplay" : "legacyGameplay"];
+}
+document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
+  activeGameKey = button.dataset.openGame;
+  renderGameDialog(activeGameKey);
   gameDialog.showModal();
 }));
 document.getElementById("gameDialogClose").addEventListener("click", () => gameDialog.close());
