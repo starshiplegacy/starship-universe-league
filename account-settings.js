@@ -38,6 +38,7 @@
     if (name === "privacy") renderPrivacy();
     if (name === "activity") renderActivity();
     if (name === "feedback") renderFeedback();
+    if (name === "verification") renderVerification();
   }
   function renderAvatar(url) {
     if (!avatarButton) return;
@@ -170,6 +171,80 @@
   function renderActivity() {
     $("accountPanelContent").innerHTML = '<div class="settings-facts"><div><small>Cuenta creada</small><strong>'+escapeHtml(dateLabel(session.user.created_at))+'</strong></div><div><small>Último inicio de sesión</small><strong>'+escapeHtml(dateLabel(session.user.last_sign_in_at))+'</strong></div><div><small>Método de acceso</small><strong>'+escapeHtml((session.user.app_metadata?.provider || "email").toUpperCase())+'</strong></div><div><small>ID de usuario</small><strong class="settings-id">'+escapeHtml(profile?.public_id || "—")+'</strong></div></div><p class="settings-muted">Este panel muestra la información de actividad disponible actualmente para tu cuenta.</p>';
   }
+  async function renderVerification() {
+    const content = $("accountPanelContent");
+    content.innerHTML = '<div class="verification-tier-grid">' +
+      '<article class="verification-tier baby"><span class="verification-symbol">★</span><h4>Baby-Star</h4><p>Estrella amarilla</p><small>Insignia de apoyo · Próximamente</small></article>' +
+      '<article class="verification-tier moon"><span class="verification-symbol">☾</span><h4>Young-Moon</h4><p>Media luna</p><small>Insignia de apoyo · Próximamente</small></article>' +
+      '<article class="verification-tier planet"><span class="verification-symbol">♃</span><h4>Exoplanet</h4><p>Júpiter</p><small>Insignia de apoyo · Próximamente</small></article>' +
+      '</div><p class="settings-muted">Estas insignias serán de pago y servirán para apoyar a STARSHIP UNIVERSE LEAGUE. Los precios, pagos y beneficios todavía no están definidos. No se realizará ningún cobro desde aquí.</p>' +
+      '<div class="creator-verified-panel"><span class="creator-verified-mark">✓</span><div><h4>Creator Verified</h4><p>Verificación para creadores de contenido. No se compra: requiere cumplir los criterios y pasar una revisión.</p></div></div>' +
+      '<ul class="creator-requirements"><li>25,000 seguidores como mínimo.</li><li>Icono y banner públicos en el perfil.</li><li>Al menos seis meses creando contenido sobre juegos oficiales y de terceros.</li></ul>' +
+      '<p class="settings-muted"><strong>Beneficio confirmado:</strong> acceso a una plataforma para crear CC y mods para juegos de simulación de vida.</p>' +
+      '<div id="creatorApplicationStatus" class="verification-status">Consultando tus solicitudes…</div>' +
+      '<form id="creatorApplicationForm" class="settings-form creator-application-form">' +
+      '<h4>Solicitar Creator Verified</h4>' +
+      '<label>Seguidores<input name="follower_count" type="number" min="25000" step="1" required placeholder="25000"></label>' +
+      '<label>Enlace público de tu icono<input name="icon_url" type="url" required placeholder="https://…"></label>' +
+      '<label>Enlace público de tu banner<input name="banner_url" type="url" required placeholder="https://…"></label>' +
+      '<label class="settings-check"><input name="icon_is_public" type="checkbox" required><span>Confirmo que mi icono es público.</span></label>' +
+      '<label class="settings-check"><input name="banner_is_public" type="checkbox" required><span>Confirmo que mi banner es público.</span></label>' +
+      '<label>¿Desde cuándo creas contenido?<input name="creator_since" type="date" required></label>' +
+      '<label>Enlaces a tus canales y ejemplos de contenido<textarea name="portfolio_links" rows="4" required placeholder="Un enlace por línea"></textarea></label>' +
+      '<label>Información adicional (opcional)<textarea name="notes" maxlength="2000" rows="3"></textarea></label>' +
+      '<button class="settings-primary" type="submit">Enviar solicitud</button>' +
+      '</form>';
+    const statusEl = $("creatorApplicationStatus");
+    const form = $("creatorApplicationForm");
+    const minDate = new Date(); minDate.setMonth(minDate.getMonth()-6);
+    form.elements.creator_since.max = minDate.toISOString().slice(0,10);
+    try {
+      const {data,error} = await client.from("creator_verification_applications").select("status,reviewer_note,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
+      if (error) throw error;
+      if (data) {
+        const labels = {pending:"Tu solicitud está pendiente de revisión.",approved:"Tu solicitud fue aprobada. ¡Felicidades!",rejected:"Tu solicitud fue rechazada.",needs_changes:"El equipo necesita que realices algunos cambios."};
+        statusEl.textContent = (labels[data.status] || "Solicitud registrada.") + (data.reviewer_note ? " Nota del equipo: " + data.reviewer_note : "");
+        statusEl.dataset.status = data.status;
+        if (data.status === "pending" || data.status === "approved") form.hidden = true;
+      } else {
+        statusEl.textContent = "Aún no has enviado una solicitud.";
+      }
+    } catch (error) {
+      statusEl.textContent = "No pudimos consultar tus solicitudes. " + (error.message || "");
+    }
+    form.addEventListener("submit",async event=>{
+      event.preventDefault();
+      const button=form.querySelector('[type="submit"]');
+      const values=Object.fromEntries(new FormData(form).entries());
+      const creatorSince = values.creator_since;
+      const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth()-6);
+      if(new Date(creatorSince+"T00:00:00")>cutoff){say("Necesitas al menos seis meses creando contenido.","error");return;}
+      const links=String(values.portfolio_links||"").split(/\r?\n/).map(v=>v.trim()).filter(Boolean);
+      if(!links.length || links.some(v=>!/^https?:\/\//i.test(v))){say("Añade al menos un enlace público válido (https://…).","error");return;}
+      button.disabled=true; say("Enviando solicitud…");
+      try {
+        const payload={
+          user_id:session.user.id,
+          follower_count:Number(values.follower_count),
+          icon_url:values.icon_url.trim(),
+          banner_url:values.banner_url.trim(),
+          icon_is_public:form.elements.icon_is_public.checked,
+          banner_is_public:form.elements.banner_is_public.checked,
+          creator_since:creatorSince,
+          portfolio_links:links,
+          notes:String(values.notes||"").trim()||null,
+          status:"pending"
+        };
+        const {error}=await client.from("creator_verification_applications").insert(payload);
+        if(error) throw error;
+        statusEl.textContent="Solicitud recibida. El equipo revisará los datos y los enlaces que compartiste.";
+        statusEl.dataset.status="pending";
+        form.hidden=true;
+        say("Tu solicitud fue enviada correctamente.","success");
+      } catch(error) { say(error.message || "No se pudo enviar la solicitud.","error"); }
+      finally { button.disabled=false; }
+    });
+  }
   function renderFeedback() {
     $("accountPanelContent").innerHTML = '<form id="feedbackForm" class="settings-form"><label>Tipo de mensaje<select name="category"><option value="suggestion">Sugerencia</option><option value="bug">Reportar un problema</option><option value="question">Consulta</option><option value="other">Otro</option></select></label><label>Asunto<input name="subject" minlength="3" maxlength="120" required></label><label>Mensaje<textarea name="message" minlength="10" maxlength="3000" rows="5" required></textarea></label><button class="settings-primary" type="submit">Enviar mensaje</button></form>';
     $("feedbackForm").addEventListener("submit",async event=>{
@@ -179,7 +254,7 @@
       finally{button.disabled=false;}
     });
   }
-  const sectionTitles = {profile:"Perfil de Usuario",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+  const sectionTitles = {profile:"Perfil de Usuario",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
