@@ -305,6 +305,9 @@
     if (personalProfileSection) personalProfileSection.hidden = session?.user?.id !== "a22969c5-4660-487b-9b26-010a6fdada9c";
   }
   syncPersonalProfileVisibility();
+  window.addEventListener("universe-entitlements-change",()=>{
+    if (!panel.hidden && title.textContent === "Perfil personal" && session?.user) renderPersonalProfile();
+  });
   window.addEventListener("universe-auth-change",async event=>{
     session=event.detail?.session || null;
     syncPersonalProfileVisibility();
