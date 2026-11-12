@@ -310,3 +310,19 @@
 .creator-application-form .settings-check{display:flex;align-items:center;gap:8px}
 .creator-application-form .settings-check input{width:auto}
 @media(max-width:440px){.verification-tier-grid{grid-template-columns:1fr}.verification-tier{display:grid;grid-template-columns:35px 1fr;column-gap:9px;text-align:left;align-items:center}.verification-symbol{grid-row:span 3;margin:0}.verification-tier h4,.verification-tier p,.verification-tier small{grid-column:2}}
+
+/* Geffenland / Stellar-Llaves */
+.geffenland-intro{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 16px}
+.geffenland-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.geffenland-card{padding:15px 12px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2);min-width:0}
+.geffenland-symbol{font-size:25px}.geffenland-level{font-size:8px;letter-spacing:.16em;color:var(--muted);font-weight:800}
+.geffenland-card h4{font:700 17px "Space Grotesk",sans-serif;margin:5px 0 10px}
+.geffenland-prices{display:flex;flex-direction:column;gap:3px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.geffenland-prices strong{font-size:17px}.geffenland-prices strong small,.geffenland-prices span{font-size:9px;color:var(--muted);font-weight:500}
+.geffenland-themes{margin:12px 0}.geffenland-themes>b,.creator-theme-list>strong{font-size:9px}
+.geffenland-themes>div,.creator-theme-list>div{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.geffenland-themes span,.creator-theme-list span{padding:5px 7px;border:1px solid var(--line);border-radius:99px;font-size:8px;color:var(--muted)}
+.geffenland-card ul{padding-left:15px;min-height:190px;font-size:9px;line-height:1.7;color:var(--muted)}
+.geffenland-card .settings-primary{width:100%;opacity:.6;cursor:not-allowed}
+.creator-theme-list{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+@media(max-width:700px){.geffenland-grid{grid-template-columns:1fr}.geffenland-card ul{min-height:0}}
