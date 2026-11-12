@@ -64,10 +64,10 @@ const translations = {
     themeNames:{light:"ライト",dark:"ダーク",green:"グリーン",nature:"自然",neon:"ネオン",galaxy:"銀河",autumn:"秋",winter:"冬",spring:"春",summer:"夏"}
   }
 };
-Object.assign(translations.es,{"accessTitle":"Accede a tu cuenta","accessIntro":"Estamos preparando el acceso seguro a STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continuar con Google","accessApple":"Continuar con Apple","accessSoon":"Próximamente","accessOr":"O","accessPending":"El inicio de sesión con correo y contraseña también estará disponible cuando conectemos el sistema de cuentas.","accessSecurity":"Tus cuentas y contraseñas no se solicitarán ni almacenarán hasta que el acceso seguro esté configurado.","accessClose":"Cerrar"});
-Object.assign(translations.en,{"accessTitle":"Sign in to your account","accessIntro":"We are preparing secure access to STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continue with Google","accessApple":"Continue with Apple","accessSoon":"Coming soon","accessOr":"OR","accessPending":"Email and password sign-in will also be available once the account system is connected.","accessSecurity":"We will not request or store your account credentials until secure sign-in is configured.","accessClose":"Close"});
-Object.assign(translations.ko,{"accessTitle":"계정에 로그인","accessIntro":"STARSHIP UNIVERSE LEAGUE의 안전한 로그인을 준비하고 있습니다.","accessGoogle":"Google로 계속하기","accessApple":"Apple로 계속하기","accessSoon":"준비 중","accessOr":"또는","accessPending":"계정 시스템이 연결되면 이메일과 비밀번호 로그인도 이용할 수 있습니다.","accessSecurity":"안전한 로그인이 설정되기 전까지 계정 정보나 비밀번호를 요청하거나 저장하지 않습니다.","accessClose":"닫기"});
-Object.assign(translations.ja,{"accessTitle":"アカウントにログイン","accessIntro":"STARSHIP UNIVERSE LEAGUEの安全なログインを準備しています。","accessGoogle":"Googleで続行","accessApple":"Appleで続行","accessSoon":"近日公開","accessOr":"または","accessPending":"アカウントシステムの接続後、メールアドレスとパスワードでもログインできるようになります。","accessSecurity":"安全なログイン設定が完了するまで、アカウント情報やパスワードを要求・保存することはありません。","accessClose":"閉じる"});
+Object.assign(translations.es,{"accessTitle":"Accede a tu cuenta","accessIntro":"Estamos preparando el acceso seguro a STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continuar con Google","accessApple":"Continuar con Apple","accessSoon":"Próximamente","accessOr":"O","accessPending":"El inicio de sesión con correo y contraseña también estará disponible cuando conectemos el sistema de cuentas.","accessSecurity":"Tus cuentas y contraseñas no se solicitarán ni almacenarán hasta que el acceso seguro esté configurado.","accessClose":"Cerrar","accessTitle":"Accede a tu cuenta","accessIntro":"Accede o crea tu cuenta de STARSHIP UNIVERSE LEAGUE.","accessSecurity":"Tu contraseña se gestiona de forma segura mediante Supabase Auth.","authRegisterTab":"Registrarse","authLoginTab":"Iniciar sesión","authFirstName":"Nombre(s)","authLastName":"Apellido(s)","authEmail":"Correo","authPassword":"Contraseña","authConfirmPassword":"Confirmar contraseña","authLoginButton":"Iniciar sesión","authForgot":"¿Olvidaste tu contraseña?"});
+Object.assign(translations.en,{"accessTitle":"Sign in to your account","accessIntro":"We are preparing secure access to STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continue with Google","accessApple":"Continue with Apple","accessSoon":"Coming soon","accessOr":"OR","accessPending":"Email and password sign-in will also be available once the account system is connected.","accessSecurity":"We will not request or store your account credentials until secure sign-in is configured.","accessClose":"Close","accessTitle":"Access your account","accessIntro":"Sign in or create your STARSHIP UNIVERSE LEAGUE account.","accessSecurity":"Your password is securely managed by Supabase Auth.","authRegisterTab":"Sign up","authLoginTab":"Sign in","authFirstName":"First name(s)","authLastName":"Last name(s)","authEmail":"Email","authPassword":"Password","authConfirmPassword":"Confirm password","authLoginButton":"Sign in","authForgot":"Forgot your password?"});
+Object.assign(translations.ko,{"accessTitle":"계정에 로그인","accessIntro":"STARSHIP UNIVERSE LEAGUE의 안전한 로그인을 준비하고 있습니다.","accessGoogle":"Google로 계속하기","accessApple":"Apple로 계속하기","accessSoon":"준비 중","accessOr":"또는","accessPending":"계정 시스템이 연결되면 이메일과 비밀번호 로그인도 이용할 수 있습니다.","accessSecurity":"안전한 로그인이 설정되기 전까지 계정 정보나 비밀번호를 요청하거나 저장하지 않습니다.","accessClose":"닫기","accessTitle":"계정에 접속","accessIntro":"STARSHIP UNIVERSE LEAGUE 계정에 로그인하거나 새로 만드세요.","accessSecurity":"비밀번호는 Supabase Auth에서 안전하게 관리됩니다.","authRegisterTab":"회원가입","authLoginTab":"로그인","authFirstName":"이름","authLastName":"성","authEmail":"이메일","authPassword":"비밀번호","authConfirmPassword":"비밀번호 확인","authLoginButton":"로그인","authForgot":"비밀번호를 잊으셨나요?"});
+Object.assign(translations.ja,{"accessTitle":"アカウントにログイン","accessIntro":"STARSHIP UNIVERSE LEAGUEの安全なログインを準備しています。","accessGoogle":"Googleで続行","accessApple":"Appleで続行","accessSoon":"近日公開","accessOr":"または","accessPending":"アカウントシステムの接続後、メールアドレスとパスワードでもログインできるようになります。","accessSecurity":"安全なログイン設定が完了するまで、アカウント情報やパスワードを要求・保存することはありません。","accessClose":"閉じる","accessTitle":"アカウントにアクセス","accessIntro":"STARSHIP UNIVERSE LEAGUEのアカウントにログインまたは新規登録。","accessSecurity":"パスワードはSupabase Authで安全に管理されます。","authRegisterTab":"新規登録","authLoginTab":"ログイン","authFirstName":"名","authLastName":"姓","authEmail":"メールアドレス","authPassword":"パスワード","authConfirmPassword":"パスワード確認","authLoginButton":"ログイン","authForgot":"パスワードをお忘れですか？"});
 
 Object.assign(translations.es, {
   navMultimedia:"Multimedia", navNewRelease:"New Release",
@@ -237,3 +237,88 @@ document.getElementById("gameDialogClose").addEventListener("click", () => gameD
 gameDialog.addEventListener("click", event => {
   if (event.target === gameDialog) gameDialog.close();
 });
+
+
+// STARSHIP UNIVERSE LEAGUE — Supabase Auth
+(async function initUniverseAuth(){
+  const dialog=document.getElementById("accessDialog");
+  const form=document.getElementById("authForm");
+  if(!dialog || !form) return;
+  const $=id=>document.getElementById(id);
+  const copy={
+    es:{register:"Registrarse",login:"Iniciar sesión",first:"Nombre(s)",last:"Apellido(s)",email:"Correo",password:"Contraseña",confirm:"Confirmar contraseña",forgot:"¿Olvidaste tu contraseña?",create:"Crear cuenta",signIn:"Iniciar sesión",needNames:"Completa tus nombres y apellidos.",passwordMismatch:"Las contraseñas no coinciden.",passwordLength:"La contraseña debe tener al menos 8 caracteres.",checkEmail:"Revisa tu correo para confirmar tu cuenta.",signedIn:"Sesión iniciada correctamente.",resetSent:"Si el correo está registrado, recibirás instrucciones para restablecer la contraseña.",resetPrompt:"Escribe tu correo primero.",signOut:"Cerrar sesión",oauthError:"No se pudo iniciar con este proveedor. Comprueba que esté habilitado en Supabase.",generic:"No se pudo completar la operación. Inténtalo de nuevo."},
+    en:{register:"Sign up",login:"Sign in",first:"First name(s)",last:"Last name(s)",email:"Email",password:"Password",confirm:"Confirm password",forgot:"Forgot your password?",create:"Create account",signIn:"Sign in",needNames:"Enter your first and last name.",passwordMismatch:"Passwords do not match.",passwordLength:"Password must be at least 8 characters.",checkEmail:"Check your email to confirm your account.",signedIn:"You are signed in.",resetSent:"If this email is registered, reset instructions will be sent.",resetPrompt:"Enter your email first.",signOut:"Sign out",oauthError:"This provider could not sign in. Check that it is enabled in Supabase.",generic:"The operation could not be completed. Please try again."},
+    ko:{register:"회원가입",login:"로그인",first:"이름",last:"성",email:"이메일",password:"비밀번호",confirm:"비밀번호 확인",forgot:"비밀번호를 잊으셨나요?",create:"계정 만들기",signIn:"로그인",needNames:"이름과 성을 입력하세요.",passwordMismatch:"비밀번호가 일치하지 않습니다.",passwordLength:"비밀번호는 8자 이상이어야 합니다.",checkEmail:"이메일을 확인하여 계정을 인증하세요.",signedIn:"로그인되었습니다.",resetSent:"등록된 이메일인 경우 비밀번호 재설정 안내가 전송됩니다.",resetPrompt:"먼저 이메일을 입력하세요.",signOut:"로그아웃",oauthError:"로그인 제공자를 사용할 수 없습니다. Supabase 설정을 확인하세요.",generic:"요청을 완료할 수 없습니다. 다시 시도하세요."},
+    ja:{register:"新規登録",login:"ログイン",first:"名",last:"姓",email:"メールアドレス",password:"パスワード",confirm:"パスワード確認",forgot:"パスワードをお忘れですか？",create:"アカウントを作成",signIn:"ログイン",needNames:"名と姓を入力してください。",passwordMismatch:"パスワードが一致しません。",passwordLength:"パスワードは8文字以上にしてください。",checkEmail:"メールを確認してアカウントを認証してください。",signedIn:"ログインしました。",resetSent:"登録済みの場合、再設定の案内をメールで送信します。",resetPrompt:"先にメールアドレスを入力してください。",signOut:"ログアウト",oauthError:"このプロバイダーでログインできません。Supabaseの設定を確認してください。",generic:"処理を完了できませんでした。もう一度お試しください。"}
+  };
+  const dict=()=>copy[languageSelect?.value||"es"]||copy.es;
+  let mode="login",supabase=null;
+  const message=(text,type="")=>{const el=$("authMessage");el.textContent=text;el.className="auth-message "+type;};
+  function setMode(next){
+    mode=next;
+    $("registerFields").hidden=mode!=="register";
+    $("confirmPasswordField").hidden=mode!=="register";
+    $("firstName").required=mode==="register";
+    $("lastName").required=mode==="register";
+    $("confirmPassword").required=mode==="register";
+    $("authPassword").autocomplete=mode==="register"?"new-password":"current-password";
+    $("authPassword").value="";$("confirmPassword").value="";
+    $("showRegister").classList.toggle("active",mode==="register");
+    $("showLogin").classList.toggle("active",mode==="login");
+    $("showRegister").setAttribute("aria-pressed",String(mode==="register"));
+    $("showLogin").setAttribute("aria-pressed",String(mode==="login"));
+    $("authSubmit").textContent=mode==="register"?dict().create:dict().signIn;
+    $("authReset").hidden=mode==="register";
+    message("");
+  }
+  $("showRegister").addEventListener("click",()=>setMode("register"));
+  $("showLogin").addEventListener("click",()=>setMode("login"));
+  try{
+    const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
+    supabase=createClient(window.UNIVERSE_SUPABASE_URL,window.UNIVERSE_SUPABASE_KEY);
+  }catch(e){message(dict().generic,"error");}
+  form.addEventListener("submit",async event=>{
+    event.preventDefault();
+    if(!supabase){message(dict().generic,"error");return;}
+    const email=$("authEmail").value.trim();
+    const password=$("authPassword").value;
+    const submit=$("authSubmit");submit.disabled=true;
+    try{
+      if(mode==="register"){
+        const first=$("firstName").value.trim(),last=$("lastName").value.trim();
+        if(!first||!last){message(dict().needNames,"error");return;}
+        if(password.length<8){message(dict().passwordLength,"error");return;}
+        if(password!==$("confirmPassword").value){message(dict().passwordMismatch,"error");return;}
+        const {data,error}=await supabase.auth.signUp({email,password,options:{data:{first_name:first,last_name:last},emailRedirectTo:window.location.origin}});
+        if(error) throw error;
+        message(data.session?dict().signedIn:dict().checkEmail,"success");
+        if(data.session) setTimeout(()=>dialog.close(),1200);
+      }else{
+        const {error}=await supabase.auth.signInWithPassword({email,password});
+        if(error) throw error;
+        message(dict().signedIn,"success");setTimeout(()=>dialog.close(),900);
+      }
+    }catch(error){message(error.message||dict().generic,"error");}
+    finally{submit.disabled=false;}
+  });
+  $("authReset").addEventListener("click",async()=>{
+    if(!supabase)return;
+    const email=$("authEmail").value.trim();
+    if(!email){message(dict().resetPrompt,"error");return;}
+    const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
+    message(error?(error.message||dict().generic):dict().resetSent,error?"error":"success");
+  });
+  async function oauth(provider){
+    if(!supabase){message(dict().generic,"error");return;}
+    const {error}=await supabase.auth.signInWithOAuth({provider,options:{redirectTo:window.location.origin}});
+    if(error) message(error.message||dict().oauthError,"error");
+  }
+  $("googleAuth").addEventListener("click",()=>oauth("google"));
+  $("appleAuth").addEventListener("click",()=>oauth("apple"));
+  supabase?.auth.onAuthStateChange((event,session)=>{
+    if(event==="SIGNED_IN"&&session) message(dict().signedIn,"success");
+  });
+  setMode("login");
+  const previousApplyLanguage=window.applyUniverseAuthLanguage;
+  window.applyUniverseAuthLanguage=()=>setMode(mode);
+})();
