@@ -43,7 +43,7 @@
       <label class="sr-only" for="languageSelect">Language</label>
       <div class="language-wrap"><span class="language-star" aria-hidden="true">✦</span><select id="languageSelect" aria-label="Select language"><option value="es">ES</option><option value="en">EN</option><option value="ko">한국어</option><option value="ja">日本語</option></select></div>
       <button class="icon-button search-button" id="searchToggle" aria-label="Buscar"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
-      <a class="login-button" href="#access" data-i18n="login">Acceder</a>
+      <button class="login-button" id="accessOpen" type="button" data-i18n="login">Acceder</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
@@ -95,6 +95,19 @@
     <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
     <section id="gameDialogExtra" hidden></section>
     <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
+  </dialog>
+  <dialog class="access-dialog" id="accessDialog" aria-labelledby="accessTitle">
+    <button class="dialog-close" id="accessClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE ACCOUNT</div>
+    <h2 id="accessTitle" data-i18n="accessTitle">Accede a tu cuenta</h2>
+    <p class="access-intro" data-i18n="accessIntro">Estamos preparando el acceso seguro a STARSHIP UNIVERSE LEAGUE.</p>
+    <div class="access-provider" aria-label="Métodos de acceso">
+      <button type="button" disabled><span class="provider-mark">G</span><span data-i18n="accessGoogle">Continuar con Google</span><small data-i18n="accessSoon">Próximamente</small></button>
+      <button type="button" disabled><span class="provider-mark">●</span><span data-i18n="accessApple">Continuar con Apple</span><small data-i18n="accessSoon">Próximamente</small></button>
+    </div>
+    <div class="access-divider"><span data-i18n="accessOr">O</span></div>
+    <p class="access-pending" data-i18n="accessPending">El inicio de sesión con correo y contraseña también estará disponible cuando conectemos el sistema de cuentas.</p>
+    <p class="access-footnote" data-i18n="accessSecurity">Tus cuentas y contraseñas no se solicitarán ni almacenarán hasta que el acceso seguro esté configurado.</p>
   </dialog>
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
   <script src="./app.js"></script>
