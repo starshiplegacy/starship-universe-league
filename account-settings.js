@@ -52,6 +52,8 @@
     const {data,error} = await client.from("profiles").select("*").eq("id",session.user.id).maybeSingle();
     if (error) throw error;
     profile = data || {id:session.user.id,first_name:session.user.user_metadata?.first_name || "",last_name:session.user.user_metadata?.last_name || ""};
+    if (profile.theme && typeof window.applyUniverseTheme === "function") window.applyUniverseTheme(profile.theme);
+    if (profile.language && typeof window.applyUniverseLanguage === "function") window.applyUniverseLanguage(profile.language);
     signedAvatarUrl = null;
     if (profile.avatar_path) {
       const {data: signed,error:signedError} = await client.storage.from("universe-avatars").createSignedUrl(profile.avatar_path,3600);
@@ -137,11 +139,8 @@
       event.preventDefault(); const values=Object.fromEntries(new FormData(event.currentTarget).entries());
       try {
         await saveProfile(values);
-        document.documentElement.dataset.theme=values.theme; localStorage.setItem("universe-theme",values.theme);
-        const themeButton=document.querySelector("[data-theme-choice='"+values.theme+"']"); if(themeButton) themeButton.click();
-        const languageSelect=$("languageSelect");
-        if(languageSelect && languageSelect.value!==values.language){languageSelect.value=values.language;languageSelect.dispatchEvent(new Event("change"));}
-        localStorage.setItem("universe-language",values.language);
+        if (typeof window.applyUniverseTheme === "function") window.applyUniverseTheme(values.theme);
+        if (typeof window.applyUniverseLanguage === "function") window.applyUniverseLanguage(values.language);
         say("Preferencias guardadas.","success");
       } catch(error) { say(error.message || "No se pudieron guardar las preferencias.","error"); }
     });
