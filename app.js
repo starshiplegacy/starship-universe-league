@@ -295,6 +295,10 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   function renderSession(session){
     currentSession=session||null;
     const signedIn=Boolean(currentSession?.user);
+    document.body.classList.toggle("is-authenticated",signedIn);
+    document.body.classList.remove("auth-checking");
+    const welcomeGate=$("welcomeGate");
+    if(welcomeGate)welcomeGate.hidden=signedIn;
     if(galleryOpen)galleryOpen.hidden=!signedIn;
     if(accountOpen)accountOpen.hidden=!signedIn;
     if(accessOpen)accessOpen.hidden=signedIn;
@@ -329,6 +333,15 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   }
   $("showRegister").addEventListener("click",()=>setMode("register"));
   $("showLogin").addEventListener("click",()=>setMode("login"));
+  $("welcomeLogin")?.addEventListener("click",()=>{setMode("login");dialog.showModal();});
+  $("welcomeRegister")?.addEventListener("click",()=>{setMode("register");dialog.showModal();});
+  document.querySelectorAll("[data-welcome-theme]").forEach(button=>button.addEventListener("click",()=>{
+    if(!document.body.classList.contains("is-authenticated") && typeof window.applyUniverseTheme==="function"){
+      window.applyUniverseTheme(button.dataset.welcomeTheme);
+      document.querySelectorAll("[data-welcome-theme]").forEach(option=>option.setAttribute("aria-pressed",String(option===button)));
+    }
+  }));
+  const welcomeYear=$("welcomeYear");if(welcomeYear)welcomeYear.textContent=new Date().getFullYear();
   try{
     const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
     supabase=createClient(window.UNIVERSE_SUPABASE_URL,window.UNIVERSE_SUPABASE_KEY);
