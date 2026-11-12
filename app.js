@@ -5,7 +5,7 @@ const translations = {
     aboutKicker:"EL UNIVERSO",aboutTitle:'Más que juegos.<br><em>Un universo por descubrir.</em>',aboutText:"Somos UNIVERSE LEAGUE, un espacio creativo dedicado a imaginar, desarrollar y compartir experiencias interactivas. Cada juego abre una puerta a algo diferente.",
     gamesKicker:"ENCUENTRA TU MUNDO",gamesTitle:"Nuestros juegos",gamesNote:"DOS UNIVERSOS EN DESARROLLO",lifeCategory:"SIMULACIÓN DE VIDA",fightCategory:"PELEA",inDevelopment:"En desarrollo",
     joinKicker:"CREA CON NOSOTROS",joinTitle:'Las grandes ideas<br><em>necesitan un equipo.</em>',joinText:"¿Te apasionan los videojuegos, el diseño, la tecnología o contar historias? Hay un lugar para tu talento.",joinButton:"Trabaja con nosotros",
-    updatesKicker:"MANTENTE AL DÍA",newsTitle:"Qué hay de nuevo",newsNote:"PRÓXIMAMENTE, MÁS NOTICIAS DEL UNIVERSO.",newsEmpty:"Las próximas novedades aparecerán aquí.",searchLabel:"¿Qué estás buscando?"
+    updatesKicker:"MANTENTE AL DÍA",newsTitle:"Qué hay de nuevo",newsNote:"PRÓXIMAMENTE, MÁS NOTICIAS DEL UNIVERSO.",newsEmpty:"Las próximas novedades aparecerán aquí.",searchLabel:"¿Qué estás buscando?",
     descriptionHeading:"Descripción",howToPlayHeading:"Forma de jugar",developmentNote:"Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.",
     lyrieDescription:"Es una serie de videojuegos de simulación de vida desarrollada por UNIVERSE LEAGUE, Starship Plus y 1TheS y publicada por Starship Universe League.",
     lyrieGameplay:"Crea y personaliza a tu personaje, dale vida, trabajo y propósito, y procura que no pise el plano astral.",
@@ -21,7 +21,7 @@ const translations = {
     aboutKicker:"THE UNIVERSE",aboutTitle:'More than games.<br><em>A universe to discover.</em>',aboutText:"We are UNIVERSE LEAGUE, a creative space dedicated to imagining, developing and sharing interactive experiences. Every game opens a door to something different.",
     gamesKicker:"FIND YOUR WORLD",gamesTitle:"Our games",gamesNote:"TWO WORLDS IN DEVELOPMENT",lifeCategory:"LIFE SIMULATION",fightCategory:"FIGHTING",inDevelopment:"In development",
     joinKicker:"CREATE WITH US",joinTitle:'Great ideas<br><em>need a team.</em>',joinText:"Are you passionate about games, design, technology or storytelling? There is a place for your talent.",joinButton:"Work with us",
-    updatesKicker:"STAY UP TO DATE",newsTitle:"What's new",newsNote:"MORE NEWS FROM THE UNIVERSE COMING SOON.",newsEmpty:"The latest updates will appear here.",searchLabel:"What are you looking for?"
+    updatesKicker:"STAY UP TO DATE",newsTitle:"What's new",newsNote:"MORE NEWS FROM THE UNIVERSE COMING SOON.",newsEmpty:"The latest updates will appear here.",searchLabel:"What are you looking for?",
     descriptionHeading:"Description",howToPlayHeading:"How to play",developmentNote:"This game is still in development. The play option will be available when it is released.",
     lyrieDescription:"A life simulation video game series developed by UNIVERSE LEAGUE, Starship Plus and 1TheS, and published by Starship Universe League.",
     lyrieGameplay:"Create and customize your character, give them a life, a job and a purpose, and make sure they do not step into the astral plane.",
@@ -37,7 +37,7 @@ const translations = {
     aboutKicker:"우리의 우주",aboutTitle:'게임 그 이상.<br><em>발견할 세계.</em>',aboutText:"UNIVERSE LEAGUE는 인터랙티브 경험을 상상하고 개발하며 공유하는 크리에이티브 공간입니다. 모든 게임은 새로운 세계로 향하는 문입니다.",
     gamesKicker:"나만의 세계 찾기",gamesTitle:"우리의 게임",gamesNote:"두 개의 세계 개발 중",lifeCategory:"라이프 시뮬레이션",fightCategory:"격투",inDevelopment:"개발 중",
     joinKicker:"함께 만들어요",joinTitle:'멋진 아이디어에는<br><em>팀이 필요해요.</em>',joinText:"게임, 디자인, 기술 또는 스토리텔링을 좋아하시나요? 당신의 재능을 펼칠 자리가 있습니다.",joinButton:"함께하기",
-    updatesKicker:"새로운 소식",newsTitle:"새로운 소식",newsNote:"더 많은 소식이 곧 공개됩니다.",newsEmpty:"새로운 소식이 여기에 업데이트됩니다.",searchLabel:"무엇을 찾고 있나요?"
+    updatesKicker:"새로운 소식",newsTitle:"새로운 소식",newsNote:"더 많은 소식이 곧 공개됩니다.",newsEmpty:"새로운 소식이 여기에 업데이트됩니다.",searchLabel:"무엇을 찾고 있나요?",
     descriptionHeading:"게임 소개",howToPlayHeading:"플레이 방법",developmentNote:"이 게임은 현재 개발 중입니다. 정식 출시 후 플레이할 수 있습니다.",
     lyrieDescription:"UNIVERSE LEAGUE, Starship Plus, 1TheS가 개발하고 Starship Universe League가 퍼블리싱하는 라이프 시뮬레이션 게임 시리즈입니다.",
     lyrieGameplay:"캐릭터를 만들고 꾸며 삶과 직업, 목적을 부여하세요. 그리고 아스트랄 차원에 발을 들이지 않도록 조심하세요.",
