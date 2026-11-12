@@ -132,6 +132,11 @@ languageSelect.addEventListener("change", event => {
 const themeOptions = document.getElementById("themeOptions");
 const themeToggle = document.getElementById("themeToggle");
 const themeNames = translations.es.themeNames;
+Object.assign(translations.es.themeNames, {"jupiter":"Jupiter","sum":"Sum","ruby":"Ruby","astroblue":"Astroblue","neonblue":"Neonblue","green-blue":"Green Blue","orbit-green":"Orbit Green","neon-moon":"Neon Moon","neon-blue-aura":"Neon Blue Aura","neon-reimbow":"Neon Reimbow","green-light":"Green Light","blue-light":"Blue Light","grey-sky":"Grey Sky","blue-sky":"Blue Sky"});
+Object.assign(translations.en.themeNames, {"jupiter":"Jupiter","sum":"Sum","ruby":"Ruby","astroblue":"Astroblue","neonblue":"Neonblue","green-blue":"Green Blue","orbit-green":"Orbit Green","neon-moon":"Neon Moon","neon-blue-aura":"Neon Blue Aura","neon-reimbow":"Neon Reimbow","green-light":"Green Light","blue-light":"Blue Light","grey-sky":"Grey Sky","blue-sky":"Blue Sky"});
+Object.assign(translations.ko.themeNames, {"jupiter":"목성","sum":"Sum","ruby":"루비","astroblue":"아스트로 블루","neonblue":"네온 블루","green-blue":"그린 블루","orbit-green":"오빗 그린","neon-moon":"네온 문","neon-blue-aura":"네온 블루 오라","neon-reimbow":"네온 레인보우","green-light":"그린 라이트","blue-light":"블루 라이트","grey-sky":"그레이 스카이","blue-sky":"블루 스카이"});
+Object.assign(translations.ja.themeNames, {"jupiter":"木星","sum":"Sum","ruby":"ルビー","astroblue":"アストロブルー","neonblue":"ネオンブルー","green-blue":"グリーンブルー","orbit-green":"オービットグリーン","neon-moon":"ネオンムーン","neon-blue-aura":"ネオンブルーオーラ","neon-reimbow":"ネオンレインボー","green-light":"グリーンライト","blue-light":"ブルーライト","grey-sky":"グレースカイ","blue-sky":"ブルースカイ"});
+applyLanguage(languageSelect.value);
 function setTheme(theme){
   if (!Object.hasOwn(themeNames,theme)) return;
   root.dataset.theme = theme;
