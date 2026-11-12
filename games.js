@@ -6,7 +6,7 @@
  function stopClock(){if(interval){clearInterval(interval);interval=null;}}
  function showClock(){timer.textContent=seconds===null?"∞":String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");}
  function startClock(value){stopClock();seconds=value;ended=false;showClock();if(value!==null)interval=setInterval(()=>{seconds--;showClock();if(seconds<=0){stopClock();ended=true;status.textContent="¡Se acabó el tiempo!";help.textContent="Inicia una nueva partida para volver a jugar.";renderBoard();}},1000);}
- function chooseMode(which){mode=which;document.querySelectorAll("[data-mini-mode]").forEach(b=>b.classList.toggle("active",b.dataset.miniMode===which));$("miniGameCustomTime").hidden=which!=="custom";if(which==="easy")startClock(null);if(which==="scary")startClock(300);}
+ function chooseMode(which){mode=which;if(which==="custom")stopClock();document.querySelectorAll("[data-mini-mode]").forEach(b=>b.classList.toggle("active",b.dataset.miniMode===which));$("miniGameCustomTime").hidden=which!=="custom";if(which==="easy")startClock(null);if(which==="scary")startClock(300);}
  function startGame(){
   ended=false;selected=null;legal=[];tilePick=null;score=0;
   if(game==="chess"){status.textContent="Tu turno · Blancas";help.textContent="Selecciona una pieza y después la casilla de destino.";board.innerHTML="<p class='mini-game-help'>Preparando tablero…</p>";loadChess();}
