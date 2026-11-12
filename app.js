@@ -22,6 +22,19 @@ const translations = {
     gamesKicker:"나만의 세계 찾기",gamesTitle:"우리의 게임",gamesNote:"두 개의 세계 개발 중",lifeCategory:"라이프 시뮬레이션",fightCategory:"격투",inDevelopment:"개발 중",
     joinKicker:"함께 만들어요",joinTitle:'멋진 아이디어에는<br><em>팀이 필요해요.</em>',joinText:"게임, 디자인, 기술 또는 스토리텔링을 좋아하시나요? 당신의 재능을 펼칠 자리가 있습니다.",joinButton:"함께하기",
     updatesKicker:"새로운 소식",newsTitle:"새로운 소식",newsNote:"더 많은 소식이 곧 공개됩니다.",newsEmpty:"새로운 소식이 여기에 업데이트됩니다.",searchLabel:"무엇을 찾고 있나요?"
+  },
+  ja: {
+    navAbout:"私たちについて",navGames:"ゲーム",navCareers:"採用情報",navNews:"ニュース",login:"ログイン",
+    heroEyebrow:"ひとつの宇宙。無限の遊び方。",heroTitle:'次の世界は<br><em>ここから始まる。</em>',heroText:"STARSHIP UNIVERSE LEAGUEで、新しい体験や物語、次の冒険を見つけよう。",exploreGames:"ゲームを見る",discoverMore:"詳しく見る",heroFoot:"もっと遊びたいあなたのために。",scroll:"スクロールして発見",
+    aboutKicker:"ユニバース",aboutTitle:'ゲームだけじゃない。<br><em>発見する世界。</em>',aboutText:"UNIVERSE LEAGUEは、インタラクティブな体験を想像し、開発し、共有するクリエイティブな場所です。ゲームのひとつひとつが、新しい世界への扉を開きます。",
+    gamesKicker:"自分の世界を見つけよう",gamesTitle:"ゲーム",gamesNote:"2つの世界を開発中",lifeCategory:"ライフシミュレーション",fightCategory:"バトルアリーナ",inDevelopment:"開発中",viewDetails:"詳細を見る ↗",
+    joinKicker:"一緒につくろう",joinTitle:'素晴らしいアイデアには<br><em>仲間が必要。</em>',joinText:"ゲーム、デザイン、テクノロジー、ストーリーテリングが好きですか？あなたの才能を活かせる場所があります。",joinButton:"一緒に働く",
+    updatesKicker:"最新情報",newsTitle:"新着情報",newsNote:"ユニバースの最新ニュースを近日公開。",newsEmpty:"最新情報はここに掲載されます。",searchLabel:"何をお探しですか？",
+    descriptionHeading:"ゲーム紹介",howToPlayHeading:"ゲームの遊び方",developmentNote:"このゲームは現在開発中です。正式公開後にプレイできるようになります。",
+    lyrieDescription:"『The LyrieLife』は、UNIVERSE LEAGUE、Starship Plus、1TheSが開発し、Starship Universe Leagueが発売するライフシミュレーションゲームシリーズです。自分だけのLyrieを作り、その人生を描こう。",
+    lyrieGameplay:"キャラクターを作成・カスタマイズし、人生や仕事、目的を与えて世界で暮らそう。そして、アストラル界に足を踏み入れないように気をつけよう。",
+    legacyDescription:"『League Of Legacy』（通称 Lea）は、UNIVERSE LEAGUEが開発・発売するオンラインマルチプレイヤー・バトルアリーナです。自由視点カメラに対応し、オプションで一人称視点も選べます。",
+    legacyGameplay:"05対05のチーム戦で、攻撃してくる3つの「位置探知塔」を破壊しよう。フルーツやオーブを集めてパワーを補給し、森のモンスター「Shadowmonters」を倒して味方に加え、敵チームの攻略を助けてもらおう。"
   }
 };
 const root = document.documentElement;
@@ -92,3 +105,49 @@ function searchSite(){
 document.getElementById("searchGo").addEventListener("click",searchSite);
 searchInput.addEventListener("keydown",event=>{if(event.key==="Enter")searchSite();});
 document.getElementById("year").textContent=new Date().getFullYear();
+
+// Expandable game information
+const gameContent = {
+  lyrie: {
+    category: translations.es.lifeCategory,
+    title: "The LyrieLife",
+    description: "Es una serie de videojuegos de simulación de vida desarrollada por UNIVERSE LEAGUE, Starship Plus y 1TheS y publicada por Starship Universe League.",
+    gameplay: "Crea y personaliza a tu personaje, dale vida, trabajo y propósito, y procura que no pise el plano astral.",
+    i18n: {
+      en: ["LIFE SIMULATION", "A life simulation video game series developed by UNIVERSE LEAGUE, Starship Plus and 1TheS, and published by Starship Universe League.", "Create and customize your character, give them a life, a job and a purpose, and make sure they do not step into the astral plane."],
+      ko: ["라이프 시뮬레이션", "UNIVERSE LEAGUE, Starship Plus, 1TheS가 개발하고 Starship Universe League가 퍼블리싱하는 라이프 시뮬레이션 게임 시리즈입니다.", "캐릭터를 만들고 꾸며 삶과 직업, 목적을 부여하세요. 그리고 아스트랄 차원에 발을 들이지 않도록 조심하세요."],
+      ja: ["ライフシミュレーション", translations.ja.lyrieDescription, translations.ja.lyrieGameplay]
+    }
+  },
+  legacy: {
+    category: translations.es.fightCategory,
+    title: "League Of Legacy",
+    description: "Conocido comúnmente como Lea, es un videojuego multijugador en línea de arena de batalla desarrollado y publicado por UNIVERSE LEAGUE. Cuenta con cámara libre y opción de primera persona.",
+    gameplay: "En el modo 05 VS 05, los equipos deben destruir tres Torres Localizadoras que atacan. Recolecta frutas y esferas para recargar tu poder. Derrota a los monstruos del bosque llamados Shadowmonters para convertirlos en aliados y ayudarte a destruir al equipo rival.",
+    i18n: {
+      en: ["BATTLE ARENA", "Commonly known as Lea, this is an online multiplayer battle arena developed and published by UNIVERSE LEAGUE. It features a free camera with an optional first-person view.", "In 05 VS 05 mode, teams must destroy three attacking Locator Towers. Collect fruits and spheres to fuel your power. Defeat forest monsters called Shadowmonters to turn them into allies and help take down the opposing team."],
+      ko: ["배틀 아레나", "Lea라는 이름으로도 알려진 온라인 멀티플레이어 배틀 아레나 게임으로, UNIVERSE LEAGUE가 개발하고 퍼블리싱합니다. 자유 시점 카메라와 선택 가능한 1인칭 시점을 지원합니다.", "05 대 05 모드에서 각 팀은 공격하는 세 개의 위치 탐지탑을 파괴해야 합니다. 과일과 구슬을 모아 힘을 충전하고, Shadowmonters라는 숲의 몬스터를 물리쳐 아군으로 만들어 상대 팀을 무너뜨리세요."],
+      ja: translations.ja ? [translations.ja.fightCategory, translations.ja.legacyDescription, translations.ja.legacyGameplay] : []
+    }
+  }
+};
+const gameDialog = document.getElementById("gameDialog");
+const gameDialogCategory = document.getElementById("gameDialogCategory");
+const gameDialogTitle = document.getElementById("gameDialogTitle");
+const gameDialogDescription = document.getElementById("gameDialogDescription");
+const gameDialogGameplay = document.getElementById("gameDialogGameplay");
+document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
+  const game = gameContent[button.dataset.openGame];
+  if (!game) return;
+  const language = languageSelect.value;
+  const localized = game.i18n[language];
+  gameDialogCategory.textContent = localized?.[0] || game.category;
+  gameDialogTitle.textContent = game.title;
+  gameDialogDescription.textContent = localized?.[1] || game.description;
+  gameDialogGameplay.textContent = localized?.[2] || game.gameplay;
+  gameDialog.showModal();
+}));
+document.getElementById("gameDialogClose").addEventListener("click", () => gameDialog.close());
+gameDialog.addEventListener("click", event => {
+  if (event.target === gameDialog) gameDialog.close();
+});
