@@ -215,3 +215,7 @@
 .settings-facts small{color:var(--muted);font-size:9px}.settings-facts strong{font-size:11px;overflow-wrap:anywhere}
 .settings-id{font-family:monospace;font-size:9px!important}
 @media(max-width:480px){.settings-two-col{grid-template-columns:1fr}.settings-avatar-row{align-items:flex-start}.settings-avatar-preview{width:64px;height:64px;flex-basis:64px}}
+
+.settings-id-row{display:flex;gap:8px;align-items:center}
+.settings-id-row input{flex:1;font-family:monospace;letter-spacing:.04em}
+.settings-copy-id{border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink);padding:10px 12px;font:700 10px "DM Sans",sans-serif;cursor:pointer}
