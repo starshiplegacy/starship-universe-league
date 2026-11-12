@@ -64,6 +64,10 @@ const translations = {
     themeNames:{light:"ライト",dark:"ダーク",green:"グリーン",nature:"自然",neon:"ネオン",galaxy:"銀河",autumn:"秋",winter:"冬",spring:"春",summer:"夏"}
   }
 };
+Object.assign(translations.es,{"accessTitle":"Accede a tu cuenta","accessIntro":"Estamos preparando el acceso seguro a STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continuar con Google","accessApple":"Continuar con Apple","accessSoon":"Próximamente","accessOr":"O","accessPending":"El inicio de sesión con correo y contraseña también estará disponible cuando conectemos el sistema de cuentas.","accessSecurity":"Tus cuentas y contraseñas no se solicitarán ni almacenarán hasta que el acceso seguro esté configurado.","accessClose":"Cerrar"});
+Object.assign(translations.en,{"accessTitle":"Sign in to your account","accessIntro":"We are preparing secure access to STARSHIP UNIVERSE LEAGUE.","accessGoogle":"Continue with Google","accessApple":"Continue with Apple","accessSoon":"Coming soon","accessOr":"OR","accessPending":"Email and password sign-in will also be available once the account system is connected.","accessSecurity":"We will not request or store your account credentials until secure sign-in is configured.","accessClose":"Close"});
+Object.assign(translations.ko,{"accessTitle":"계정에 로그인","accessIntro":"STARSHIP UNIVERSE LEAGUE의 안전한 로그인을 준비하고 있습니다.","accessGoogle":"Google로 계속하기","accessApple":"Apple로 계속하기","accessSoon":"준비 중","accessOr":"또는","accessPending":"계정 시스템이 연결되면 이메일과 비밀번호 로그인도 이용할 수 있습니다.","accessSecurity":"안전한 로그인이 설정되기 전까지 계정 정보나 비밀번호를 요청하거나 저장하지 않습니다.","accessClose":"닫기"});
+Object.assign(translations.ja,{"accessTitle":"アカウントにログイン","accessIntro":"STARSHIP UNIVERSE LEAGUEの安全なログインを準備しています。","accessGoogle":"Googleで続行","accessApple":"Appleで続行","accessSoon":"近日公開","accessOr":"または","accessPending":"アカウントシステムの接続後、メールアドレスとパスワードでもログインできるようになります。","accessSecurity":"安全なログイン設定が完了するまで、アカウント情報やパスワードを要求・保存することはありません。","accessClose":"閉じる"});
 const root = document.documentElement;
 const themeSelect = document.getElementById("themeSelect");
 const languageSelect = document.getElementById("languageSelect");
@@ -149,6 +153,11 @@ function searchSite(){
 document.getElementById("searchGo").addEventListener("click",searchSite);
 searchInput.addEventListener("keydown",event=>{if(event.key==="Enter")searchSite();});
 document.getElementById("year").textContent=new Date().getFullYear();
+const accessDialog=document.getElementById("accessDialog");
+document.getElementById("accessOpen").addEventListener("click",()=>accessDialog.showModal());
+document.getElementById("accessClose").addEventListener("click",()=>accessDialog.close());
+accessDialog.addEventListener("click",event=>{if(event.target===accessDialog)accessDialog.close();});
+
 
 // Expandable game information
 const gameContent = {
