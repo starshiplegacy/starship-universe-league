@@ -495,3 +495,15 @@
 .mini-game-actions{display:flex;gap:8px;justify-content:center;margin:13px 0}.mini-game-actions button+button{background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
 .mini-game-help{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.6;text-align:center}
 @media(max-width:650px){.astronaut-games-section{padding:18px 13px}.astronaut-games-heading{align-items:flex-start;flex-direction:column}.astronaut-game-grid{grid-template-columns:1fr}.astronaut-game-art{height:215px}.mini-game-dialog{padding:24px 15px}.mini-game-mode-row{gap:5px}.mini-mode{font-size:9px;padding:10px 4px}.pixxy-board{gap:4px}.pixxy-tile{border-radius:7px}}
+
+/* Game board stability and Pixxy power controls */
+.mini-game-board{width:100%;min-width:0;overflow:hidden;contain:layout paint}
+.chess-board{width:200px!important;height:200px!important;min-width:200px;min-height:200px;max-width:200px;max-height:200px;aspect-ratio:1;flex:none;grid-template-columns:repeat(8,25px);grid-template-rows:repeat(8,25px);box-sizing:border-box}
+.chess-square{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;max-width:25px!important;max-height:25px!important;box-sizing:border-box;line-height:1;font-size:19px!important;overflow:hidden;transform:none!important;transition:none!important;flex:none}
+.chess-square:focus{z-index:1}
+.pixxy-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.pixxy-controls button{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:11px 5px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--ink);font:800 10px "DM Sans",sans-serif;cursor:pointer}
+.pixxy-controls button>span{font-size:10px}.pixxy-controls button>b{padding:3px 7px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:9px;font-variant-numeric:tabular-nums}
+.pixxy-controls button:disabled{opacity:.42;cursor:not-allowed}
+.pixxy-tile.hinted{outline:3px solid #f5c84c;box-shadow:0 0 0 4px #f5c84c44;transform:translateY(-3px)}
+@media(max-width:480px){.chess-board{width:200px!important;height:200px!important}.pixxy-controls{gap:5px}.pixxy-controls button{font-size:9px}}
