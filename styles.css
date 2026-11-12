@@ -126,3 +126,21 @@
 .carousel-arrow:disabled{opacity:.28;cursor:default;box-shadow:none}
 @media(max-width:720px){.carousel-shell{gap:7px}.carousel-arrow{flex-basis:32px;width:32px;height:32px;font-size:22px}.carousel-track>.media-card{flex-basis:min(78vw,390px)}.carousel-track>.release-card{flex-basis:min(76vw,330px)}}
 @media(prefers-reduced-motion:reduce){.carousel-track{scroll-behavior:auto}}
+
+
+/* Official social media links — additive, existing About content and links remain intact */
+.about-socials{margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+.about-socials h3{margin:0 0 15px;font:700 11px "Space Grotesk",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.social-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.social-links a{display:flex;align-items:center;gap:11px;min-width:0;padding:13px 14px;border:1px solid var(--line);border-radius:15px;background:var(--surface);color:var(--ink);font-size:11px;font-weight:800;transition:transform .2s,border-color .2s,background .2s}
+.social-links a:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--surface-2)}
+.social-symbol{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:10px;background:var(--surface-2);color:var(--accent);font-size:16px}
+.social-links a>span:nth-child(2){display:flex;flex-direction:column;gap:3px;min-width:0}
+.social-links small{font-size:8px;font-weight:500;color:var(--muted);overflow-wrap:anywhere}
+.social-external{margin-left:auto;color:var(--accent);font-size:14px}
+.footer-socials{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
+.footer-socials a{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.08em;transition:color .2s}
+.footer-socials a:hover{color:var(--accent)}
+@media(max-width:900px){.social-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.footer-socials{order:3;width:100%;justify-content:flex-start}.site-footer{align-items:flex-start}}
+@media(max-width:420px){.social-links{grid-template-columns:1fr}}
