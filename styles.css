@@ -285,3 +285,5 @@
 .gallery-empty p{margin:0;font-size:10px;line-height:1.6}
 .gallery-community-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:8px}
 @media(max-width:700px){.gallery-feed{grid-template-columns:1fr}.gallery-dialog{width:calc(100% - 16px);padding:24px 16px}.gallery-heading-row{display:block}.gallery-refresh{margin:0 0 12px}.gallery-submit-form{grid-template-columns:1fr}.gallery-submit-form label,.gallery-submit-form label:nth-child(3),.gallery-submit-form label:nth-child(4),.gallery-submit-form button{grid-column:1}}
+
+.gallery-starlight.is-active .starlight-heart{background:linear-gradient(90deg,#ff5b75,#f4a340,#f4d84c,#55c978,#4a9cff,#ad70e8);-webkit-background-clip:text;background-clip:text;color:transparent;filter:none}
