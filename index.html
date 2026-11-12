@@ -161,6 +161,11 @@
       <button type="button" data-account-section="activity"><span>◷</span><span><b>Mis Actividades</b><small>Tu historial personal</small></span><i>›</i></button>
     </div>
     <p class="account-section-note" id="accountSectionNote" aria-live="polite">Selecciona una sección para continuar con su configuración.</p>
+    <section class="account-panel" id="accountPanel" hidden aria-live="polite">
+      <div class="account-panel-heading"><button type="button" id="accountBack" class="settings-back">← Volver</button><h3 id="accountPanelTitle">Configuración</h3></div>
+      <div id="settingsMessage" class="settings-message" role="status" aria-live="polite"></div>
+      <div id="accountPanelContent"></div>
+    </section>
     <button class="account-signout" id="accountSignOut" type="button">Cerrar Sesión</button>
   </dialog>
   <dialog class="access-dialog" id="accessDialog" aria-labelledby="accessTitle">
@@ -203,5 +208,6 @@
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
   <script>window.UNIVERSE_SUPABASE_URL="https://wvyveduslbsuvyekeccf.supabase.co";window.UNIVERSE_SUPABASE_KEY="sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz";</script>
   <script src="./app.js"></script>
+  <script src="./account-settings.js"></script>
 </body>
 </html>
