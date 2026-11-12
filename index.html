@@ -123,16 +123,41 @@
     <button class="dialog-close" id="accessClose" type="button" aria-label="Cerrar">×</button>
     <div class="dialog-kicker">UNIVERSE LEAGUE ACCOUNT</div>
     <h2 id="accessTitle" data-i18n="accessTitle">Accede a tu cuenta</h2>
-    <p class="access-intro" data-i18n="accessIntro">Estamos preparando el acceso seguro a STARSHIP UNIVERSE LEAGUE.</p>
-    <div class="access-provider" aria-label="Métodos de acceso">
-      <button type="button" disabled><span class="provider-mark">G</span><span data-i18n="accessGoogle">Continuar con Google</span><small data-i18n="accessSoon">Próximamente</small></button>
-      <button type="button" disabled><span class="provider-mark">●</span><span data-i18n="accessApple">Continuar con Apple</span><small data-i18n="accessSoon">Próximamente</small></button>
+    <p class="access-intro" id="authIntro" data-i18n="accessIntro">Accede a tu cuenta de STARSHIP UNIVERSE LEAGUE.</p>
+    <div class="auth-tabs">
+      <button type="button" id="showRegister" class="auth-tab" aria-pressed="false" data-i18n="authRegisterTab">Registrarse</button>
+      <button type="button" id="showLogin" class="auth-tab active" aria-pressed="true" data-i18n="authLoginTab">Iniciar sesión</button>
     </div>
+    <form id="authForm" class="auth-form">
+      <div id="registerFields" hidden>
+        <label for="firstName" data-i18n="authFirstName">Nombre(s)</label>
+        <input id="firstName" name="firstName" type="text" autocomplete="given-name" maxlength="80" />
+        <label for="lastName" data-i18n="authLastName">Apellido(s)</label>
+        <input id="lastName" name="lastName" type="text" autocomplete="family-name" maxlength="80" />
+      </div>
+      <label for="authEmail" data-i18n="authEmail">Correo</label>
+      <input id="authEmail" name="email" type="email" autocomplete="email" required />
+      <div id="passwordFields">
+        <label for="authPassword" data-i18n="authPassword">Contraseña</label>
+        <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="8" required />
+        <div id="confirmPasswordField" hidden>
+          <label for="confirmPassword" data-i18n="authConfirmPassword">Confirmar contraseña</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" />
+        </div>
+      </div>
+      <button class="primary-button auth-submit" id="authSubmit" type="submit" data-i18n="authLoginButton">Iniciar sesión</button>
+      <button class="auth-reset" id="authReset" type="button" data-i18n="authForgot">¿Olvidaste tu contraseña?</button>
+      <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+    </form>
     <div class="access-divider"><span data-i18n="accessOr">O</span></div>
-    <p class="access-pending" data-i18n="accessPending">El inicio de sesión con correo y contraseña también estará disponible cuando conectemos el sistema de cuentas.</p>
-    <p class="access-footnote" data-i18n="accessSecurity">Tus cuentas y contraseñas no se solicitarán ni almacenarán hasta que el acceso seguro esté configurado.</p>
+    <div class="access-provider">
+      <button type="button" id="googleAuth"><span class="provider-mark">G</span><span data-i18n="accessGoogle">Continuar con Google</span></button>
+      <button type="button" id="appleAuth"><span class="provider-mark">●</span><span data-i18n="accessApple">Continuar con Apple</span></button>
+    </div>
+    <p class="access-footnote" data-i18n="accessSecurity">Tu contraseña se gestiona de forma segura mediante Supabase Auth.</p>
   </dialog>
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
+  <script>window.UNIVERSE_SUPABASE_URL="https://wvyveduslbsuvyekeccf.supabase.co";window.UNIVERSE_SUPABASE_KEY="sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz";</script>
   <script src="./app.js"></script>
 </body>
 </html>
