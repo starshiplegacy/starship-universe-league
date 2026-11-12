@@ -11,7 +11,7 @@ const translations = {
     lyrieGameplay:"Crea y personaliza a tu personaje, dale vida, trabajo y propósito, y procura que no pise el plano astral.",
     legacyDescription:"Conocido comúnmente como Lea, es un videojuego multijugador en línea de arena de batalla desarrollado y publicado por UNIVERSE LEAGUE. Cuenta con cámara libre y opción de primera persona.",
     legacyGameplay:"En el modo 05 VS 05, los equipos deben destruir tres Torres Localizadoras que atacan. Recolecta frutas y esferas para recargar tu poder. Derrota a los monstruos del bosque llamados Shadowmonters para convertirlos en aliados y ayudarte a destruir al equipo rival.",
-    searchEmpty:"Escribe algo para buscar.",searchNoResults:"No encontramos resultados. Intenta con otro término.",
+    searchEmpty:"Escribe algo para buscar.",searchNoResults:"No encontramos resultados. Intenta con otro término.",searchPlaceholder:"Buscar juegos, noticias...",closeSearch:"Cerrar búsqueda",closeDialog:"Cerrar",
     themeNames:{light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neón",galaxy:"Galaxia",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"}
   },
   en: {
@@ -26,7 +26,7 @@ const translations = {
     lyrieGameplay:"Create and customize your character, give them a life, a job and a purpose, and make sure they do not step into the astral plane.",
     legacyDescription:"Commonly known as Lea, this is an online multiplayer battle arena developed and published by UNIVERSE LEAGUE. It features a free camera with an optional first-person view.",
     legacyGameplay:"In 05 VS 05 mode, teams must destroy three attacking Locator Towers. Collect fruits and spheres to fuel your power. Defeat forest monsters called Shadowmonters to turn them into allies and help take down the opposing team.",
-    searchEmpty:"Type something to search.",searchNoResults:"No results found. Try another search term.",
+    searchEmpty:"Type something to search.",searchNoResults:"No results found. Try another search term.",searchPlaceholder:"Search games, news...",closeSearch:"Close search",closeDialog:"Close",
     themeNames:{light:"Light",dark:"Dark",green:"Green",nature:"Nature",neon:"Neon",galaxy:"Galaxy",autumn:"Autumn",winter:"Winter",spring:"Spring",summer:"Summer"}
   },
   ko: {
@@ -41,7 +41,7 @@ const translations = {
     lyrieGameplay:"캐릭터를 만들고 꾸며 삶과 직업, 목적을 부여하세요. 그리고 아스트랄 차원에 발을 들이지 않도록 조심하세요.",
     legacyDescription:"Lea라는 이름으로도 알려진 온라인 멀티플레이어 배틀 아레나 게임으로, UNIVERSE LEAGUE가 개발하고 퍼블리싱합니다. 자유 시점 카메라와 선택 가능한 1인칭 시점을 지원합니다.",
     legacyGameplay:"05 대 05 모드에서 각 팀은 공격하는 세 개의 위치 탐지탑을 파괴해야 합니다. 과일과 구슬을 모아 힘을 충전하고, Shadowmonters라는 숲의 몬스터를 물리쳐 아군으로 만들어 상대 팀을 무너뜨리세요.",
-    searchEmpty:"검색어를 입력하세요.",searchNoResults:"검색 결과가 없습니다. 다른 검색어를 입력해 보세요.",
+    searchEmpty:"검색어를 입력하세요.",searchNoResults:"검색 결과가 없습니다. 다른 검색어를 입력해 보세요.",searchPlaceholder:"게임, 뉴스 검색...",closeSearch:"검색 닫기",closeDialog:"닫기",
     themeNames:{light:"밝게",dark:"어둡게",green:"초록",nature:"자연",neon:"네온",galaxy:"은하",autumn:"가을",winter:"겨울",spring:"봄",summer:"여름"}
   },
   ja: {
@@ -56,7 +56,7 @@ const translations = {
     lyrieGameplay:"キャラクターを作成・カスタマイズし、人生や仕事、目的を与えて世界で暮らそう。そして、アストラル界に足を踏み入れないように気をつけよう。",
     legacyDescription:"『League Of Legacy』（通称 Lea）は、UNIVERSE LEAGUEが開発・発売するオンラインマルチプレイヤー・バトルアリーナです。自由視点カメラに対応し、オプションで一人称視点も選べます。",
     legacyGameplay:"05対05のチーム戦で、攻撃してくる3つの「位置探知塔」を破壊しよう。フルーツやオーブを集めてパワーを補給し、森のモンスター「Shadowmonters」を倒して味方に加え、敵チームの攻略を助けてもらおう。",
-    searchEmpty:"検索する言葉を入力してください。",searchNoResults:"結果が見つかりません。別の言葉でお試しください。",
+    searchEmpty:"検索する言葉を入力してください。",searchNoResults:"結果が見つかりません。別の言葉でお試しください。",searchPlaceholder:"ゲームやニュースを検索...",closeSearch:"検索を閉じる",closeDialog:"閉じる",
     themeNames:{light:"ライト",dark:"ダーク",green:"グリーン",nature:"自然",neon:"ネオン",galaxy:"銀河",autumn:"秋",winter:"冬",spring:"春",summer:"夏"}
   }
 };
@@ -87,13 +87,14 @@ function applyLanguage(language){
     const label = node.querySelector("[data-theme-label]");
     if (label) label.textContent = names[node.dataset.themeChoice] || node.dataset.themeChoice;
   });
-  const current = themeToggle?.querySelector(".current-theme");
-  if (current) current.textContent = (dictionary.themeNames || translations.es.themeNames)[root.dataset.theme] || root.dataset.theme;
-  if (gameDialog?.open && activeGameKey) renderGameDialog(activeGameKey);
-  localStorage.setItem("universe-language", language);
+   localStorage.setItem("universe-language", language);
 }
 applyLanguage(languageSelect.value);
-languageSelect.addEventListener("change", event => applyLanguage(event.target.value));
+languageSelect.addEventListener("change", event => {
+  applyLanguage(event.target.value);
+  setTheme(root.dataset.theme || "light");
+  if (gameDialog.open && activeGameKey) renderGameDialog(activeGameKey);
+});
 const themeOptions = document.getElementById("themeOptions");
 const themeToggle = document.getElementById("themeToggle");
 const themeNames = translations.es.themeNames;
