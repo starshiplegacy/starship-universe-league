@@ -29,7 +29,7 @@ const themeSelect = document.getElementById("themeSelect");
 const languageSelect = document.getElementById("languageSelect");
 const savedTheme = localStorage.getItem("universe-theme");
 const savedLanguage = localStorage.getItem("universe-language");
-if (savedTheme && ["light","dark","green","nature","neon","galaxy"].includes(savedTheme)) root.dataset.theme = savedTheme;
+if (savedTheme && ["light","dark","green","nature","neon","galaxy","autumn","winter","spring","summer"].includes(savedTheme)) root.dataset.theme = savedTheme;
 if (savedLanguage && translations[savedLanguage]) languageSelect.value = savedLanguage;
 function applyLanguage(language){
   const dictionary = translations[language] || translations.es;
@@ -44,7 +44,7 @@ applyLanguage(languageSelect.value);
 languageSelect.addEventListener("change", event => applyLanguage(event.target.value));
 const themeOptions = document.getElementById("themeOptions");
 const themeToggle = document.getElementById("themeToggle");
-const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neon",galaxy:"Galaxy"};
+const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neon",galaxy:"Galaxy",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"};
 function setTheme(theme){
   if (!Object.hasOwn(themeNames,theme)) return;
   root.dataset.theme = theme;
