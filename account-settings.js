@@ -33,6 +33,7 @@
     say("");
     back.focus();
     if (name === "profile") renderProfile();
+    if (name === "personal-profile") renderPersonalProfile();
     if (name === "preferences") renderPreferences();
     if (name === "security") renderSecurity();
     if (name === "privacy") renderPrivacy();
@@ -71,6 +72,29 @@
     if (error?.code === "23514") throw new Error("El ID debe tener entre 3 y 24 caracteres y usar solo letras, números, punto, guion o guion bajo.");
     if (error) throw error;
     profile = {...profile,...updates};
+  }
+  async function renderPersonalProfile() {
+    const content = $("accountPanelContent");
+    const personalUserId = "a22969c5-4660-487b-9b26-010a6fdada9c";
+    if (!session?.user || session.user.id !== personalUserId) {
+      content.innerHTML = '<p class="settings-muted">Esta sección no está disponible para esta cuenta.</p>';
+      return;
+    }
+    let badges = [];
+    try {
+      const {data,error} = await client.from("user_badges").select("badge_key,status,expires_at,assigned_at").eq("user_id",personalUserId).eq("status","active");
+      if (error) throw error;
+      badges = (data || []).filter(item => !item.expires_at || new Date(item.expires_at) > new Date());
+    } catch(error) {
+      console.warn("No se pudieron consultar los beneficios personales:",error);
+    }
+    const hasExoplanet = badges.some(item=>item.badge_key==="exoplanet");
+    const hasCreator = badges.some(item=>item.badge_key==="creator_verified");
+    content.innerHTML =
+      '<section class="personal-benefits-panel"><span class="personal-benefits-kicker">PRIVATE ACCOUNT · INTERNAL WHITELIST</span><h3>Perfil personal</h3><p>Este perfil personal está separado de la identidad de trabajo y tiene beneficios especiales asignados por la administración.</p>' +
+      '<dl><div><dt>Correo personal</dt><dd>'+escapeHtml(session.user.email || "kimheewonoff@gmail.com")+'</dd></div><div><dt>ID público</dt><dd>JENNIE</dd></div></dl>' +
+      '<h4>Beneficios habilitados</h4><div class="personal-benefit-tags"><span class="'+(hasExoplanet?"active":"")+'">♃ Exoplanet '+(hasExoplanet?"· Activo":"· Pendiente")+'</span><span class="'+(hasCreator?"active":"")+'">✓ Creator Verified '+(hasCreator?"· Activo":"· Pendiente")+'</span></div>' +
+      '<p class="settings-muted">Los beneficios están asociados a tu cuenta y no dependen de una compra. La lista blanca es interna y no se muestra en tu perfil público.</p></section>';
   }
   function renderProfile() {
     const p = profile || {};
@@ -269,12 +293,18 @@
       finally{button.disabled=false;}
     });
   }
-  const sectionTitles = {profile:"Perfil de Usuario",plans:"Stellar-Llaves (Plans)",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+  const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",plans:"Stellar-Llaves (Plans)",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
+  const personalProfileSection = $("personalProfileSection");
+  function syncPersonalProfileVisibility() {
+    if (personalProfileSection) personalProfileSection.hidden = session?.user?.id !== "a22969c5-4660-487b-9b26-010a6fdada9c";
+  }
+  syncPersonalProfileVisibility();
   window.addEventListener("universe-auth-change",async event=>{
     session=event.detail?.session || null;
+    syncPersonalProfileVisibility();
     client=window.universeSupabase || client;
     if (!session?.user) {profile=null;renderAvatar(null);showMenu();return;}
     try {await loadProfile();} catch(error){console.warn("No se pudo cargar el perfil:",error);}
