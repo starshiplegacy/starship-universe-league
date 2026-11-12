@@ -30,3 +30,6 @@
 .swatch-winter{background:linear-gradient(135deg,#b9d9ef,#577eaa)}
 .swatch-spring{background:linear-gradient(135deg,#e8a6c1,#9fc987)}
 .swatch-summer{background:linear-gradient(135deg,#ffd15c,#65c8d1)}
+
+/* Square artwork frames for the official game covers */
+.game-visual{height:auto;aspect-ratio:1/1;}
