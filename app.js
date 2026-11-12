@@ -287,6 +287,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     if(accountOpen)accountOpen.hidden=!signedIn;
     if(accessOpen)accessOpen.hidden=signedIn;
     if(!signedIn){galleryDialog?.close();accountDialog?.close();}
+    window.dispatchEvent(new CustomEvent("universe-auth-change",{detail:{session:currentSession}}));
   }
   galleryOpen?.addEventListener("click",()=>{if(currentSession?.user)galleryDialog.showModal();else dialog.showModal();});
   $("galleryClose")?.addEventListener("click",()=>galleryDialog.close());
@@ -294,10 +295,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   accountOpen?.addEventListener("click",()=>{if(currentSession?.user)accountDialog.showModal();else dialog.showModal();});
   $("accountClose")?.addEventListener("click",()=>accountDialog.close());
   accountDialog?.addEventListener("click",event=>{if(event.target===accountDialog)accountDialog.close();});
-  document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>{
-    const labels={profile:"Perfil de Usuario",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
-    $("accountSectionNote").textContent=labels[button.dataset.accountSection]+" — esta sección se habilitará en la siguiente fase de configuración.";
-  }));
+  // Account sections are handled by account-settings.js.
 
   const message=(text,type="")=>{const el=$("authMessage");el.textContent=text;el.className="auth-message "+type;};
   function setMode(next){
@@ -322,6 +320,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   try{
     const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
     supabase=createClient(window.UNIVERSE_SUPABASE_URL,window.UNIVERSE_SUPABASE_KEY);
+    window.universeSupabase=supabase;
   }catch(e){message(dict().generic,"error");}
   form.addEventListener("submit",async event=>{
     event.preventDefault();
