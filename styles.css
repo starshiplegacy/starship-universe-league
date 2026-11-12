@@ -98,3 +98,18 @@
 .release-arrow{font-size:20px;color:var(--accent);transition:transform .2s}
 .release-card:hover .release-arrow{transform:translate(3px,-3px)}
 @media(max-width:720px){.media-grid,.release-grid{grid-template-columns:1fr}.multimedia-section,.release-section{padding-top:54px;padding-bottom:30px}.media-grid{gap:15px}.release-card{min-height:86px;padding:16px}}
+
+/* Secure account access */
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:20px 0 16px;padding:5px;border-radius:14px;background:var(--surface-2)}
+.auth-tab{border:0;border-radius:10px;padding:11px 8px;background:transparent;color:var(--muted);font-weight:700}
+.auth-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 3px 12px rgba(30,20,60,.08)}
+.auth-form{display:grid;gap:9px}
+.auth-form label{font-size:.82rem;font-weight:700;color:var(--ink);margin-top:5px}
+.auth-form input{width:100%;min-height:46px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:12px 14px;outline:none}
+.auth-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.auth-submit{width:100%;justify-content:center;border:0;margin-top:8px}
+.auth-reset{border:0;background:none;color:var(--muted);font-size:.82rem;text-decoration:underline;padding:8px}
+.auth-message{min-height:1.2em;margin:3px 0;color:var(--muted);font-size:.86rem;line-height:1.45}
+.auth-message.error{color:#d04b64}.auth-message.success{color:#31946a}
+.access-provider button{cursor:pointer}
+@media(max-width:520px){.access-dialog{width:min(94vw,460px);padding:25px 20px}.auth-tabs{margin-top:16px}}
