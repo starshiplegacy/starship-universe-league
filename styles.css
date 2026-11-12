@@ -507,3 +507,5 @@
 .pixxy-controls button:disabled{opacity:.42;cursor:not-allowed}
 .pixxy-tile.hinted{outline:3px solid #f5c84c;box-shadow:0 0 0 4px #f5c84c44;transform:translateY(-3px)}
 @media(max-width:480px){.chess-board{width:200px!important;height:200px!important}.pixxy-controls{gap:5px}.pixxy-controls button{font-size:9px}}
+
+.pixxy-controls[hidden]{display:none!important}
