@@ -39,6 +39,7 @@
     if (name === "activity") renderActivity();
     if (name === "feedback") renderFeedback();
     if (name === "verification") renderVerification();
+    if (name === "plans") renderPlans();
   }
   function renderAvatar(url) {
     if (!avatarButton) return;
@@ -171,16 +172,30 @@
   function renderActivity() {
     $("accountPanelContent").innerHTML = '<div class="settings-facts"><div><small>Cuenta creada</small><strong>'+escapeHtml(dateLabel(session.user.created_at))+'</strong></div><div><small>Último inicio de sesión</small><strong>'+escapeHtml(dateLabel(session.user.last_sign_in_at))+'</strong></div><div><small>Método de acceso</small><strong>'+escapeHtml((session.user.app_metadata?.provider || "email").toUpperCase())+'</strong></div><div><small>ID de usuario</small><strong class="settings-id">'+escapeHtml(profile?.public_id || "—")+'</strong></div></div><p class="settings-muted">Este panel muestra la información de actividad disponible actualmente para tu cuenta.</p>';
   }
+
+  function renderPlans() {
+    const plans = [
+      {key:"baby",name:"Baby-Star",level:"BASIC",monthly:"US$3",annual:"US$36",symbol:"★",themes:["Stellar Sum"],benefits:["Insignia Baby-Star junto al nombre y al ID público.","Personalización del perfil con detalles de estrellas.","Emojis y elementos decorativos exclusivos.","Eventos exclusivos y novedades especiales de la comunidad.","Descuentos en productos digitales oficiales."]},
+      {key:"moon",name:"Young-Moon",level:"PRO",monthly:"US$6",annual:"US$72",symbol:"☾",themes:["Neptuno","Moon","Orbit"],benefits:["Incluye todos los beneficios Basic.","Insignia Young-Moon.","Temas y elementos Stars & Moons.","Eventos privados y actividades especiales.","Descargas de recursos digitales PRO.","Descuentos superiores en productos digitales oficiales."]},
+      {key:"planet",name:"Exoplanet",level:"PREMIUM VIP",monthly:"US$14",annual:"US$168",symbol:"♃",themes:["Jupiter","Sum","Ruby","Astroblue","Neonblue","Green Blue","Orbit Green"],benefits:["Incluye todos los beneficios Basic y PRO.","Insignia Exoplanet.","Acceso a juegos Premium.","Ver vídeos musicales antes de su estreno.","MULTIMEDIA VIP: libros, series y películas de STARSHIP PLUS antes de Wattpad y YouTube."]}
+    ];
+    $("accountPanelContent").innerHTML =
+      '<p class="geffenland-intro">Hola, astronauta. ¿Quieres vivir en Starship Planet? Viaja a Geffenland con nuestras Stellar-Llaves y disfruta de los beneficios que estas llaves estelares tienen para ti.</p>' +
+      '<div class="geffenland-grid">' + plans.map(plan =>
+        '<article class="geffenland-card '+plan.key+'"><div class="geffenland-symbol">'+plan.symbol+'</div><span class="geffenland-level">'+plan.level+'</span><h4>'+plan.name+'</h4><div class="geffenland-prices"><strong>'+plan.monthly+' <small>/ mes</small></strong><span>'+plan.annual+' / año</span></div><div class="geffenland-themes"><b>Temas incluidos</b><div>'+plan.themes.map(theme=>'<span>'+escapeHtml(theme)+'</span>').join("")+'</div></div><ul>'+plan.benefits.map(item=>'<li>'+escapeHtml(item)+'</li>').join("")+'</ul><button type="button" class="settings-primary" disabled>Próximamente</button></article>'
+      ).join("") + '</div><p class="settings-muted">Precios en dólares estadounidenses (USD). El plan anual equivale a 12 mensualidades, sin descuento adicional. La compra, renovación, devolución de llaves y reembolsos todavía no están habilitados; no se realizará ningún cobro desde esta página.</p>';
+  }
+
   async function renderVerification() {
     const content = $("accountPanelContent");
     content.innerHTML = '<div class="verification-tier-grid">' +
       '<article class="verification-tier baby"><span class="verification-symbol">★</span><h4>Baby-Star</h4><p>Estrella amarilla</p><small>Insignia de apoyo · Próximamente</small></article>' +
       '<article class="verification-tier moon"><span class="verification-symbol">☾</span><h4>Young-Moon</h4><p>Media luna</p><small>Insignia de apoyo · Próximamente</small></article>' +
       '<article class="verification-tier planet"><span class="verification-symbol">♃</span><h4>Exoplanet</h4><p>Júpiter</p><small>Insignia de apoyo · Próximamente</small></article>' +
-      '</div><p class="settings-muted">Estas insignias serán de pago y servirán para apoyar a STARSHIP UNIVERSE LEAGUE. Los precios, pagos y beneficios todavía no están definidos. No se realizará ningún cobro desde aquí.</p>' +
+      '</div><p class="settings-muted">Puedes combinar la insignia de tu Stellar-Llave con Creator Verified. Las dos verificaciones pueden aparecer juntas en tu nombre y perfil cuando ambas hayan sido concedidas.</p>' +
       '<div class="creator-verified-panel"><span class="creator-verified-mark">✓</span><div><h4>Creator Verified</h4><p>Verificación para creadores de contenido. No se compra: requiere cumplir los criterios y pasar una revisión.</p></div></div>' +
       '<ul class="creator-requirements"><li>25,000 seguidores como mínimo.</li><li>Icono y banner públicos en el perfil.</li><li>Al menos seis meses creando contenido sobre juegos oficiales y de terceros.</li></ul>' +
-      '<p class="settings-muted"><strong>Beneficio confirmado:</strong> acceso a una plataforma para crear CC y mods para juegos de simulación de vida.</p>' +
+      '<p class="settings-muted"><strong>Beneficio confirmado:</strong> acceso a una plataforma para crear CC y mods para juegos de simulación de vida.</p><div class="creator-theme-list"><strong>Temas exclusivos Creator</strong><div><span>Neon Moon</span><span>Neon Blue Aura</span><span>Neon Reimbow</span><span>Green Light</span><span>Blue Light</span><span>Grey Sky</span><span>Blue Sky</span></div></div>' +
       '<div id="creatorApplicationStatus" class="verification-status">Consultando tus solicitudes…</div>' +
       '<form id="creatorApplicationForm" class="settings-form creator-application-form">' +
       '<h4>Solicitar Creator Verified</h4>' +
@@ -254,7 +269,7 @@
       finally{button.disabled=false;}
     });
   }
-  const sectionTitles = {profile:"Perfil de Usuario",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+  const sectionTitles = {profile:"Perfil de Usuario",plans:"Stellar-Llaves (Plans)",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
