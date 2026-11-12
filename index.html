@@ -104,6 +104,13 @@
           <div class="game-info"><div><span class="game-category" data-i18n="fightCategory">PELEA</span><h3>League Of Legacy</h3></div><span class="coming-tag" data-i18n="inDevelopment">En desarrollo</span><button class="game-details-button" type="button" data-open-game="legacy" data-i18n="viewDetails">Ver detalles ↗</button></div>
         </article>
       </div>
+      <section class="astronaut-games-section" aria-labelledby="astronautGamesTitle">
+        <div class="astronaut-games-heading"><div><span class="game-category">✦ JUEGOS PARA ASTRONAUTAS</span><h3>Gratis para todos. Listos para jugar.</h3><p>No necesitas una Stellar-Llave ni un plan de Geffenland.</p></div><span class="astronaut-free-tag">GRATIS · ASTRONAUTAS</span></div>
+        <div class="game-grid astronaut-game-grid">
+          <article class="game-card astronaut-game-card"><div class="astronaut-game-art chess-art" aria-hidden="true"><svg class="game-app-icon" viewBox="0 0 96 96"><rect x="3" y="3" width="90" height="90" rx="24" fill="#19162f"/><path d="M18 18h30v30H18zM48 48h30v30H48z" fill="#a68be9"/><path d="M63 19c-7 0-11 6-11 12 0 4 2 7 5 9l-7 29h27l-7-29c3-2 5-5 5-9 0-6-5-12-12-12Z" fill="#fff" stroke="#bba6ff" stroke-width="2"/><path d="M46 69h32v8H46z" fill="#d7c9ff"/></svg><span class="astronaut-game-symbol">♟</span><span class="astronaut-art-caption">THINK · PLAN · WIN</span></div><div class="game-info"><div><span class="game-category">ESTRATEGIA · AJEDREZ</span><h3>Jaque Matte</h3><p class="astronaut-game-copy">Un tablero, un rival y cada movimiento cuenta. Tú contra el Bot.</p></div><span class="coming-tag free-coming">Gratis</span><button class="game-details-button" type="button" data-launch-mini-game="chess">Jugar ahora ↗</button></div></article>
+          <article class="game-card astronaut-game-card"><div class="astronaut-game-art pixxy-art" aria-hidden="true"><svg class="game-app-icon" viewBox="0 0 96 96"><rect x="3" y="3" width="90" height="90" rx="24" fill="#10253a"/><g stroke="#e9ffff" stroke-width="2"><rect x="17" y="18" width="26" height="26" rx="7" fill="#ef8acb"/><rect x="51" y="18" width="26" height="26" rx="7" fill="#f6d66c"/><rect x="17" y="52" width="26" height="26" rx="7" fill="#72d9ce"/><rect x="51" y="52" width="26" height="26" rx="7" fill="#a78bfa"/></g><path d="m30 25 5 6-5 6-5-6 5-6Zm34 0 5 6-5 6-5-6 5-6ZM30 59l5 6-5 6-5-6 5-6Zm34 0 5 6-5 6-5-6 5-6Z" fill="#fff"/></svg><span class="astronaut-game-symbol">✦</span><span class="astronaut-art-caption">MATCH · CLEAR · REPEAT</span></div><div class="game-info"><div><span class="game-category">PUZZLE · TILE MATCHING</span><h3>Pixxy Up</h3><p class="astronaut-game-copy">Encuentra pares iguales y retira las fichas que tengan al menos un lateral libre.</p></div><span class="coming-tag free-coming">Gratis</span><button class="game-details-button" type="button" data-launch-mini-game="pixxy">Jugar ahora ↗</button></div></article>
+        </div>
+      </section>
     </section>
 
 
@@ -151,6 +158,13 @@
     <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
     <section id="gameDialogExtra" hidden></section>
     <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
+  </dialog>
+  <dialog class="mini-game-dialog" id="miniGameDialog" aria-labelledby="miniGameTitle">
+    <button class="dialog-close" id="miniGameClose" type="button" aria-label="Cerrar">×</button><div class="dialog-kicker">UNIVERSE LEAGUE · FREE TO PLAY</div><h2 id="miniGameTitle">Jaque Matte</h2><p class="mini-game-subtitle" id="miniGameSubtitle">Gratis para Astronautas</p>
+    <div class="mini-game-mode-row"><button type="button" class="mini-mode active" data-mini-mode="easy">Easy <small>Sin límite</small></button><button type="button" class="mini-mode" data-mini-mode="scary">Scary Mode <small>05:00</small></button><button type="button" class="mini-mode" data-mini-mode="custom">Personalizate <small>Tu tiempo</small></button></div>
+    <div class="mini-game-custom-time" id="miniGameCustomTime" hidden><label for="miniGameMinutes">Tiempo en minutos</label><input id="miniGameMinutes" type="number" min="1" max="180" value="10"><button type="button" id="miniGameStartCustom">Comenzar</button></div>
+    <div class="mini-game-status"><span id="miniGameStatus">Elige un modo para comenzar.</span><strong id="miniGameTimer">∞</strong></div><div id="miniGameBoard" class="mini-game-board"></div>
+    <div class="mini-game-actions"><button type="button" id="miniGameRestart">Nueva partida</button><button type="button" id="miniGameHint">Ayuda</button></div><p class="mini-game-help" id="miniGameHelp">Selecciona un modo para iniciar.</p>
   </dialog>
   <dialog class="gallery-dialog" id="galleryDialog" aria-labelledby="galleryTitle">
     <button class="dialog-close" id="galleryClose" type="button" aria-label="Cerrar">×</button>
@@ -244,5 +258,6 @@
   <script src="./app.js"></script>
   <script src="./account-settings.js"></script>
   <script src="./gallery.js"></script>
+  <script src="./games.js"></script>
 </body>
 </html>
