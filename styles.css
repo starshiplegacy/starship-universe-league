@@ -387,3 +387,76 @@
   .account-panel-heading{align-items:flex-start;flex-wrap:wrap}
   .account-panel-heading h3{min-width:0;overflow-wrap:anywhere}
 }
+
+
+/* Official game poster cards and PLAY action */
+.game-poster-wrap{
+  height:clamp(260px,30vw,360px);
+  min-height:260px;
+  isolation:isolate;
+  background:#15162f;
+  border:1px solid var(--line);
+}
+.game-poster{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s ease;
+}
+.game-poster-wrap::after{
+  content:"";
+  position:absolute;
+  inset:35% 0 0;
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(8,10,28,.72));
+}
+.game-card:hover .game-poster{transform:scale(1.045)}
+.poster-status{
+  position:absolute;
+  z-index:2;
+  top:15px;
+  left:15px;
+  padding:8px 12px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  color:#fff;
+  background:rgba(12,15,38,.62);
+  backdrop-filter:blur(12px);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+.poster-play{
+  position:absolute;
+  z-index:3;
+  right:18px;
+  bottom:17px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-width:116px;
+  padding:12px 20px;
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:999px;
+  color:#fff;
+  background:linear-gradient(110deg,#8654f6,#3568f5);
+  box-shadow:0 8px 28px rgba(89,79,245,.42);
+  font:800 12px "Space Grotesk",sans-serif;
+  letter-spacing:.1em;
+  cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.poster-play:hover{transform:translateY(-3px);box-shadow:0 12px 34px rgba(89,79,245,.58)}
+.poster-play span{font-size:11px}
+.poster-play:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+@media(max-width:620px){
+  .game-poster-wrap{height:245px;min-height:245px}
+  .poster-play{right:12px;bottom:12px;padding:10px 16px;min-width:102px}
+  .poster-status{top:12px;left:12px}
+}
