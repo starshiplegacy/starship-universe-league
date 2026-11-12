@@ -277,7 +277,28 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     ja:{register:"新規登録",login:"ログイン",first:"名",last:"姓",email:"メールアドレス",password:"パスワード",confirm:"パスワード確認",forgot:"パスワードをお忘れですか？",create:"アカウントを作成",signIn:"ログイン",needNames:"名と姓を入力してください。",passwordMismatch:"パスワードが一致しません。",passwordLength:"パスワードは8文字以上にしてください。",checkEmail:"メールを確認してアカウントを認証してください。",signedIn:"ログインしました。",resetSent:"登録済みの場合、再設定の案内をメールで送信します。",resetPrompt:"先にメールアドレスを入力してください。",signOut:"ログアウト",oauthError:"このプロバイダーでログインできません。Supabaseの設定を確認してください。",generic:"処理を完了できませんでした。もう一度お試しください。"}
   };
   const dict=()=>copy[languageSelect?.value||"es"]||copy.es;
-  let mode="login",supabase=null;
+  let mode="login",supabase=null,currentSession=null;
+  const galleryDialog=$("galleryDialog"),accountDialog=$("accountDialog");
+  const galleryOpen=$("galleryOpen"),accountOpen=$("accountOpen"),accessOpen=$("accessOpen");
+  function renderSession(session){
+    currentSession=session||null;
+    const signedIn=Boolean(currentSession?.user);
+    if(galleryOpen)galleryOpen.hidden=!signedIn;
+    if(accountOpen)accountOpen.hidden=!signedIn;
+    if(accessOpen)accessOpen.hidden=signedIn;
+    if(!signedIn){galleryDialog?.close();accountDialog?.close();}
+  }
+  galleryOpen?.addEventListener("click",()=>{if(currentSession?.user)galleryDialog.showModal();else dialog.showModal();});
+  $("galleryClose")?.addEventListener("click",()=>galleryDialog.close());
+  galleryDialog?.addEventListener("click",event=>{if(event.target===galleryDialog)galleryDialog.close();});
+  accountOpen?.addEventListener("click",()=>{if(currentSession?.user)accountDialog.showModal();else dialog.showModal();});
+  $("accountClose")?.addEventListener("click",()=>accountDialog.close());
+  accountDialog?.addEventListener("click",event=>{if(event.target===accountDialog)accountDialog.close();});
+  document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>{
+    const labels={profile:"Perfil de Usuario",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+    $("accountSectionNote").textContent=labels[button.dataset.accountSection]+" — esta sección se habilitará en la siguiente fase de configuración.";
+  }));
+
   const message=(text,type="")=>{const el=$("authMessage");el.textContent=text;el.className="auth-message "+type;};
   function setMode(next){
     mode=next;
@@ -340,8 +361,23 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   }
   $("googleAuth").addEventListener("click",()=>oauth("google"));
   $("appleAuth").addEventListener("click",()=>oauth("apple"));
-  supabase?.auth.onAuthStateChange((event,session)=>{
-    if(event==="SIGNED_IN"&&session) message(dict().signedIn,"success");
+  if(supabase){
+    supabase.auth.onAuthStateChange((event,session)=>{
+      renderSession(session);
+      if(event==="SIGNED_IN"&&session) message(dict().signedIn,"success");
+    });
+    const {data:initialSession}=await supabase.auth.getSession();
+    renderSession(initialSession?.session||null);
+  }else renderSession(null);
+  $("accountSignOut")?.addEventListener("click",async()=>{
+    if(!supabase)return;
+    const button=$("accountSignOut");button.disabled=true;
+    try{
+      const {error}=await supabase.auth.signOut();
+      if(error)throw error;
+      accountDialog.close();renderSession(null);setMode("login");
+    }catch(error){$("accountSectionNote").textContent=error.message||dict().generic;}
+    finally{button.disabled=false;}
   });
   setMode("login");
   const previousApplyLanguage=window.applyUniverseAuthLanguage;
