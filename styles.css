@@ -63,3 +63,19 @@
 #gameDialogExtra kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;padding:0 6px;border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;background:var(--surface);color:var(--ink);font:700 11px "Space Grotesk",sans-serif}
 #gameDialogExtra .control-callout{padding:11px 13px;margin-top:12px;border-radius:12px;background:var(--surface-2);color:var(--muted);font-size:11px;line-height:1.75}
 @media(max-width:480px){#gameDialogExtra .key-list{grid-template-columns:1fr}}
+
+
+/* Account access dialog */
+.login-button{font:inherit;cursor:pointer}
+.access-dialog{width:min(460px,calc(100% - 30px));max-height:85vh;overflow:auto;position:relative;border:1px solid var(--line);border-radius:25px;padding:36px clamp(22px,5vw,34px);background:var(--surface);color:var(--ink);box-shadow:0 30px 100px rgba(0,0,0,.32)}
+.access-dialog::backdrop{background:rgba(9,8,20,.74);backdrop-filter:blur(8px)}
+.access-dialog h2{font:700 clamp(27px,5vw,35px)/1.08 "Space Grotesk",sans-serif;letter-spacing:-.045em;margin:0 35px 10px 0}
+.access-intro{font-size:13px;line-height:1.75;color:var(--muted);margin:0 0 23px}
+.access-provider{display:grid;gap:10px}
+.access-provider button{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--ink);text-align:left;font:700 12px "DM Sans",sans-serif;opacity:.72;cursor:not-allowed}
+.access-provider small{font-size:9px;color:var(--muted);font-weight:600}
+.provider-mark{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--surface);font-weight:800;font-size:16px}
+.access-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:10px}
+.access-divider:before,.access-divider:after{content:"";height:1px;flex:1;background:var(--line)}
+.access-pending{font-size:12px;line-height:1.8;color:var(--muted);text-align:center}
+.access-footnote{margin:20px 0 0;padding:12px;border-radius:11px;background:var(--surface-2);font-size:10px;line-height:1.7;color:var(--muted)}
