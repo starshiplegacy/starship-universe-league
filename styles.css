@@ -509,3 +509,5 @@
 @media(max-width:480px){.chess-board{width:200px!important;height:200px!important}.pixxy-controls{gap:5px}.pixxy-controls button{font-size:9px}}
 
 .pixxy-controls[hidden]{display:none!important}
+
+.save-system-status{margin:8px 0 0;text-align:center;font-size:.76rem;color:var(--muted,#7d8497);letter-spacing:.02em}.save-system-status[data-state="synced"]{color:#238b65}.save-system-status[data-state="offline"]{color:#b7791f}.save-system-status[data-state="saving"]{color:#5879c9}
