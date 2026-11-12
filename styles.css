@@ -532,3 +532,22 @@
 [data-theme="blue-light"]{--bg:#eef6fc;--surface:#fff;--surface-2:#dcebf7;--ink:#1c3349;--muted:#70889b;--line:rgba(45,100,150,.14);--accent:#6ba8dc;--accent-2:#a8d8f0;--accent-ink:#102b42;--glow:rgba(107,168,220,.22);--hero-wash:#dceefa;--card-shadow:0 24px 70px rgba(38,75,105,.12)}
 [data-theme="grey-sky"]{--bg:#e9edf2;--surface:#fff;--surface-2:#dce2e9;--ink:#303b4a;--muted:#778392;--line:rgba(58,72,91,.14);--accent:#8b9db4;--accent-2:#c3ceda;--accent-ink:#263243;--glow:rgba(139,157,180,.22);--hero-wash:#e0e7ef;--card-shadow:0 24px 70px rgba(54,66,82,.12)}
 [data-theme="blue-sky"]{--bg:#eaf5ff;--surface:#fff;--surface-2:#d9ecfc;--ink:#1d3855;--muted:#718ba5;--line:rgba(45,110,170,.14);--accent:#68aee8;--accent-2:#a8d8ff;--accent-ink:#102c47;--glow:rgba(104,174,232,.22);--hero-wash:#dceeff;--card-shadow:0 24px 70px rgba(38,91,130,.12)}
+
+.theme-options .swatch-jupiter{background:linear-gradient(135deg,#e5ad57,#a98bd5)}
+.theme-options .swatch-sum{background:linear-gradient(135deg,#e8b85d,#f2d68d)}
+.theme-options .swatch-ruby{background:linear-gradient(135deg,#df557c,#ffb2c5)}
+.theme-options .swatch-astroblue{background:linear-gradient(135deg,#68aeea,#9be4f5)}
+.theme-options .swatch-neonblue{background:linear-gradient(135deg,#28d9f5,#477dff)}
+.theme-options .swatch-green-blue{background:linear-gradient(135deg,#3ac9a7,#59a9d9)}
+.theme-options .swatch-orbit-green{background:linear-gradient(135deg,#83d36f,#c2e58a)}
+.theme-options .swatch-neon-moon{background:linear-gradient(135deg,#c17aff,#56e6ff)}
+.theme-options .swatch-neon-blue-aura{background:linear-gradient(135deg,#39caff,#7d7cff)}
+.theme-options .swatch-neon-reimbow{background:linear-gradient(135deg,#ef72d1,#79dfff)}
+.theme-options .swatch-green-light{background:linear-gradient(135deg,#68b878,#c5e6a5)}
+.theme-options .swatch-blue-light{background:linear-gradient(135deg,#6ba8dc,#a8d8f0)}
+.theme-options .swatch-grey-sky{background:linear-gradient(135deg,#8b9db4,#c3ceda)}
+.theme-options .swatch-blue-sky{background:linear-gradient(135deg,#68aee8,#a8d8ff)}
+.personal-entitlement-list{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.personal-entitlement-list h4{margin:0 0 8px}
+.personal-entitlement-list p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+.personal-entitlement-list p+p{margin-top:8px}
