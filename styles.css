@@ -498,8 +498,8 @@
 
 /* Game board stability and Pixxy power controls */
 .mini-game-board{width:100%;min-width:0;overflow:hidden;contain:layout paint}
-.chess-board{width:200px!important;height:200px!important;min-width:200px;min-height:200px;max-width:200px;max-height:200px;aspect-ratio:1;flex:none;grid-template-columns:repeat(8,25px);grid-template-rows:repeat(8,25px);box-sizing:border-box}
-.chess-square{width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;max-width:25px!important;max-height:25px!important;box-sizing:border-box;line-height:1;font-size:19px!important;overflow:hidden;transform:none!important;transition:none!important;flex:none}
+.chess-board{width:200px!important;height:200px!important;min-width:200px;min-height:200px;max-width:200px;max-height:200px;aspect-ratio:1;flex:none;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));box-sizing:border-box}
+.chess-square{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;box-sizing:border-box;line-height:1;font-size:19px!important;overflow:hidden;transform:none!important;transition:none!important;flex:none}
 .chess-square:focus{z-index:1}
 .pixxy-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
 .pixxy-controls button{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:11px 5px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--ink);font:800 10px "DM Sans",sans-serif;cursor:pointer}
