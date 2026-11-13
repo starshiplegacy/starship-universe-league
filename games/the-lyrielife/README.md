@@ -25,3 +25,7 @@ Serve this folder over HTTP. ES modules and GLTF loading do not work reliably fr
 
 ## Not implemented yet
 Detailed body/face/hair/clothing customization, NPCs, relationships, careers, furniture navigation, build mode, cloud saves, full localization and multiplayer. This is a first playable prototype, not a complete life simulator.
+
+
+## Required opening asset
+Place the original video at `assets/Loading 01.mp4`. The game attempts to play it before showing the main menu; if the file is absent or autoplay fails, it displays the built-in branded fallback.
