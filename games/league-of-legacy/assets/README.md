@@ -1,0 +1,1 @@
+Required original loading video: place `Loading 01.mp4` in this folder. The game already attempts to play `./assets/Loading%2001.mp4` before the main menu. If the file is not present, the built-in title animation is used. Add approved hero GLB files here only after the exact roster assets are confirmed.
