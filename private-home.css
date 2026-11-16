@@ -95,3 +95,12 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .ulx-art-cover{display:block;aspect-ratio:1/1;padding:0;overflow:hidden}
 .ulx-art-cover .ulol-cover{width:100%;height:100%}
 @media(max-width:600px){.ulol-title{font-size:clamp(24px,9vw,44px)}.ulol-signature{font-size:7px}}
+
+/* Official game cover presentation and launcher entry controls */
+.ulh-entry-open{display:block;width:100%;padding:0;border:0;background:transparent;cursor:pointer;overflow:hidden}
+.ulh-entry-cover{display:block;width:100%;height:170px;object-fit:cover;aspect-ratio:1/1;background:#111827}
+.ulh-library-card .ulh-entry-cover{height:150px}
+.ulh-entry-cta{margin-top:9px;padding:8px 12px;border:1px solid #526b9c;border-radius:7px;background:#263a65;color:#fff;font:700 12px "Trebuchet MS",Verdana,sans-serif;cursor:pointer}
+.ulx-art-cover img{display:block;width:100%;height:100%;object-fit:cover}
+.ulx-game[data-open-game]{cursor:pointer}
+.ulx-game[data-open-game]:focus-visible,.ulh-entry-open:focus-visible,.ulh-entry-cta:focus-visible{outline:3px solid #79a6ff;outline-offset:3px}
