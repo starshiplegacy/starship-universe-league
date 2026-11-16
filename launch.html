@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d18">
+<title>UNIVERSE LEAGUE · Inicio</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050811;color:#fff;font-family:Arial,Helvetica,sans-serif}.launch{position:relative;width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 42%,#1c3150 0,#0a1426 48%,#03060d 100%)}.logo{display:flex;flex-direction:column;align-items:center;text-align:center;animation:appear 1s ease both}.logo .mark{font-size:clamp(12px,2vw,20px);letter-spacing:.62em;margin-left:.62em;color:#a9c8f1}.logo strong{font-size:clamp(34px,8vw,88px);letter-spacing:.1em;text-shadow:0 0 38px #6eaaff66}.logo small{margin-top:14px;letter-spacing:.36em;color:#b8c5d8}.video-wrap{position:absolute;inset:0;display:grid;place-items:center;background:#000}.video-wrap video{width:100%;height:100%;object-fit:contain}.topline{position:absolute;top:24px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center;z-index:4;letter-spacing:.16em;font-size:11px;color:#d9e5f7;text-shadow:0 1px 8px #000}.controls{position:absolute;right:24px;bottom:24px;display:flex;gap:9px;z-index:5}.controls button{border:1px solid #ffffff55;background:#07101dcc;color:#fff;border-radius:999px;padding:11px 16px;cursor:pointer;backdrop-filter:blur(8px)}.controls button:hover{background:#203c60}.status{position:absolute;left:26px;bottom:30px;z-index:5;color:#d7e2f2;font-size:12px;text-shadow:0 1px 8px #000}.fallback{max-width:600px;padding:30px;text-align:center}.fallback h1{letter-spacing:.12em}.fallback p{color:#b9c8dd;line-height:1.6}.fallback button{margin:8px;padding:12px 20px;border-radius:9px;border:1px solid #55769c;background:#19365a;color:white;cursor:pointer}@keyframes appear{from{opacity:0;transform:scale(.97);filter:blur(8px)}to{opacity:1;transform:scale(1);filter:blur(0)}}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="launch" id="launch">
+  <section class="logo" id="logoStage">
+    <span class="mark" id="gameMark">STARSHIP LEGACY ENTERTAINMENT</span>
+    <strong id="gameLogo">THE LYRIELIFE</strong>
+    <small> A UNIVERSE LEAGUE EXPERIENCE </small>
+  </section>
+  <section class="video-wrap" id="videoStage" hidden>
+    <video id="launchVideo" playsinline preload="auto"></video>
+  </section>
+  <div class="topline"><span>UNIVERSE LEAGUE</span><span id="stageName">PRESENTS</span></div>
+  <div class="status" id="status">Preparando experiencia…</div>
+  <div class="controls" id="controls" hidden>
+    <button type="button" id="soundBtn">Activar sonido</button>
+    <button type="button" id="skipBtn">Saltar</button>
+  </div>
+</main>
+<script>
+(()=>{
+"use strict";
+const params=new URLSearchParams(location.search);
+const game=params.get("game")==="legacy"?"legacy":"lyrie";
+const config={
+  lyrie:{name:"THE LYRIELIFE",loading:"Lyrie Loanding.mp4",returnUrl:"./index.html?showLyrieMenu=1",loadingLabel:"THE LYRIELIFE · LOADING"},
+  legacy:{name:"LEAGUE OF LEGACY",loading:"Loading 01.mp4",returnUrl:"./index.html?showLegacyMenu=1",loadingLabel:"LEAGUE OF LEGACY · LOADING"}
+}[game];
+const base="./assets/videos/";
+const logo=document.getElementById("logoStage");
+const videoStage=document.getElementById("videoStage");
+const video=document.getElementById("launchVideo");
+const controls=document.getElementById("controls");
+const status=document.getElementById("status");
+const stageName=document.getElementById("stageName");
+const soundBtn=document.getElementById("soundBtn");
+let queue=[],index=0,finished=false;
+document.getElementById("gameLogo").textContent=config.name;
+document.getElementById("gameMark").textContent="STARSHIP LEGACY ENTERTAINMENT";
+function finish(){if(finished)return;finished=true;location.replace(config.returnUrl)}
+function showVideo(){if(index>=queue.length){finish();return}
+ const item=queue[index];stageName.textContent=item.label;status.textContent=item.label;
+ logo.hidden=true;videoStage.hidden=false;controls.hidden=false;
+ video.pause();video.removeAttribute("src");video.load();
+ video.src=base+item.file;video.muted=true;video.currentTime=0;
+ const failTimer=setTimeout(()=>{if(video.readyState===0){clearTimeout(failTimer);next()}},4500);
+ video.onloadeddata=()=>clearTimeout(failTimer);
+ video.onerror=()=>{clearTimeout(failTimer);next()};
+ video.onended=()=>next();
+ const attempt=video.play();
+ if(attempt&&attempt.catch)attempt.catch(()=>{status.textContent="Pulsa reproducir o saltar si tu navegador bloquea el video.";});
+}
+function next(){if(finished)return;index++;showVideo()}
+document.getElementById("skipBtn").addEventListener("click",next);
+soundBtn.addEventListener("click",()=>{video.muted=!video.muted;soundBtn.textContent=video.muted?"Activar sonido":"Silenciar";if(video.paused)video.play().catch(()=>{})});
+setTimeout(()=>{
+ queue=[
+  {file:"UNIVERSE LEAGUE (Opening).mp4",label:"UNIVERSE LEAGUE · OPENING"},
+  {file:config.loading,label:config.loadingLabel}
+ ];
+ index=0;showVideo();
+},1800);
+})();
+</script>
+</body>
+</html>
