@@ -1,10 +1,12 @@
 # The LyrieLife — recursos del juego
 
-Esta carpeta reúne los recursos visuales exclusivos de **The LyrieLife**.
+Esta carpeta reúne los recursos visuales exclusivos de **The LyrieLife**. Todos los iconos, imágenes e ilustraciones nuevos deben ir directamente en `images/`, sin carpetas `icons/` ni `illustrations/`.
 
 ## Archivos en esta carpeta
 
-- `the-lyrielife-poster.svg` — arte/portada del juego.
+- `images/The LyrieLife (ICON).jpg` — icono oficial cuadrado para tarjetas, catálogo y vistas compactas.
+- `images/The LyrieLife (Poster).jpg` — póster oficial para el diálogo PLAY.
+- `the-lyrielife-poster.svg` — arte SVG anterior, conservado como recurso heredado.
 
 ## Recursos relacionados que permanecen en sus ubicaciones compartidas o de código
 
