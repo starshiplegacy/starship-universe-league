@@ -227,11 +227,14 @@ const gameDialogTitle = document.getElementById("gameDialogTitle");
 const gameDialogDescription = document.getElementById("gameDialogDescription");
 const gameDialogGameplay = document.getElementById("gameDialogGameplay");
 const gameDialogExtra = document.getElementById("gameDialogExtra");
+const gameDialogPoster = document.getElementById("gameDialogPoster");
 let activeGameKey = null;
 function renderGameDialog(key){
   const game = gameContent[key];
   if (!game) return;
   const dictionary = translations[languageSelect.value] || translations.es;
+  const visualAssets = {lyrie:{icon:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",poster:"./assets/The-LyrieLife/images/The%20LyrieLife%20(Postel).jpg"},legacy:{icon:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",poster:"./assets/league-of-legacy/images/League%20Of%20Legends%20(Postel).jpg"}};
+  if(gameDialogPoster){gameDialogPoster.src=visualAssets[key].poster;gameDialogPoster.alt=game.title+" — póster oficial";}
   gameDialogCategory.textContent = dictionary[key === "lyrie" ? "lifeCategory" : "fightCategory"];
   gameDialogTitle.textContent = game.title;
   gameDialogDescription.textContent = dictionary[key === "lyrie" ? "lyrieDescription" : "legacyDescription"];
@@ -563,7 +566,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
 (function(){
  const home=document.getElementById("privateHome");if(!home)return;
  const grid=document.getElementById("ulhInstalledGrid"),count=document.getElementById("ulhInstalledCount");
- const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/the-lyrielife-cover.webp",fallback:"./assets/the-lyrielife-poster.svg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy-cover.webp",fallback:"./assets/league-of-legacy-poster.svg"}};
+ const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",fallback:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",fallback:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg"}};
  let userId=null,installed=new Set(),downloading=null,downloadTimer=null,downloadOwner=null,downloadRemaining=60,downloadLastTick=0;
  const toast=document.createElement("div");toast.className="ulh-toast";toast.setAttribute("role","status");toast.setAttribute("aria-live","polite");document.body.appendChild(toast);
  let toastTimer;function notify(m){toast.textContent=m;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),3500);}
