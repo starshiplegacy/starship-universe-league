@@ -20,7 +20,7 @@ REQUIRED_TABLES = {
     "game_saves", "gallery_posts", "gallery_starlights", "gallery_comments",
     "gallery_mentions", "creator_verification_applications", "user_feedback",
 }
-REQUIRED_BUCKETS = {"universe-gallery", "universe-avatars"}
+MODEL_NAMES = ["Charlotte", "Arthur", "Bella", "Emma", "Aquamarine", "Opal (Opalo)", "Optopool", "Stella"]\nWORLD_NAMES = ["Kataleya.world", "Kariskio.world", "Solnang.world", "abandoned-island.world"]
 
 
 def tracked_text_files():
@@ -97,7 +97,7 @@ def remote_audit():
         return 1
     errors = []
     try:
-        schema = request_json(f"{url}/rest/v1/", key)
+        request_json(f"{url}/auth/v1/health", key)\n        schema = request_json(f"{url}/rest/v1/", key)
         paths = schema.get("paths", {}) if isinstance(schema, dict) else {}
         exposed = {path.strip("/").split("/")[0] for path in paths}
         missing_tables = REQUIRED_TABLES - exposed
