@@ -1,34 +1,43 @@
 # Map and Game Mode Matrix
 
-This document records the confirmed relationship between game modes and map assets. It does not imply that map loading, collision, spawning, or gameplay rules are already implemented.
+This is the canonical assignment of League Of Legacy modes to their map assets. Map selection and rulesets are separate: two modes may share one map without sharing gameplay rules.
 
-## Confirmed map assignment
+## Confirmed assignments
 
-| Game mode | Map assignment | Relationship |
-|---|---|---|
-| Battle Royale | Summoner's Rift | Shares the map asset with Ranked; uses its own mode rules |
-| De Clasificatoria (Ranked) | Summoner's Rift | Shares the map asset with Battle Royale; uses its own mode rules |
-| Versus | Dedicated Versus map | Separate map; must not be replaced by Summoner's Rift |
-| Training | Dedicated Training map | Separate training environment |
+| Mode | Map | Asset / format | Status |
+|---|---|---|---|
+| Battle Royale | Summoner's Rift | `For BAttle Royale & De Clasificatoria/SummonersRift/SummonersRift.obj` + MTL/DDS | Source-only; renderer pipeline pending |
+| De Clasificatoria | Summoner's Rift | Same map assets as Battle Royale | Source-only; independent ruleset |
+| Versus 1 to 3 | Versus 1 to 3 | `Versus/Versus 1 to 3/files/BeginningLobby.fbx` | License review required; CC BY-NC |
+| Versus 4 to 5 | Versus 4 to 5 | `Versus/Versus 4 to 5/battle_guys_map_500th_model.glb` | GLB preview candidate; validation pending |
+| Entrenamiento | Training | `For Training/For_Training.glb` | GLB preview candidate; validation pending |
 
-## Implementation requirements
+## Ruleset separation
 
-- Keep map selection separate from game-mode rules.
-- Battle Royale and Ranked may reference the same Summoner's Rift map asset, while maintaining independent mode configurations.
-- Versus must load its own map assets.
-- Training must load its own map assets.
-- Do not infer or invent team sizes, objectives, timers, elimination rules, spawn coordinates, or victory conditions. These require explicit game-design decisions.
-- Keep source map files and textures intact; do not convert or discard proprietary source formats without an approved pipeline.
+The registry assigns a distinct ruleset ID to every mode:
+- `battle-royale` and `ranked` share `summoners-rift`, but have independent ruleset IDs.
+- `versus-1-to-3` and `versus-4-to-5` use their own map and ruleset.
+- `training` uses its own map and ruleset.
 
-## Asset locations currently recorded
+Team sizes, player caps, objectives, timers, respawns, spawn coordinates, scoring, and victory conditions remain **undefined** until the game owner specifies them. No defaults are silently applied.
 
-- Summoner's Rift: `assets/league-of-legacy/Map/For BAttle Royale & De Clasificatoria/SummonersRift/`
-- Training: `assets/league-of-legacy/Map/For Training/`
+## Important licensing finding
 
-The Versus map is confirmed as a distinct map by the project owner; its exact repository path should be linked here after it is identified in the asset tree.
+The `Versus 1 to 3/LICENSE.txt` file identifies the included Thingiverse asset by Omeleto and states **Creative Commons — Attribution — Non-Commercial**. The accompanying README describes it as a low-detail waiting lobby. Therefore:
+- Keep the files preserved as source assets.
+- Do not use this asset in a commercial release or production build until commercial rights are obtained or the asset is replaced with a suitably licensed model.
+- Attribution and non-commercial restrictions must be reviewed before enabling this map in production.
 
-## Status
+## Runtime integration contract
 
-**Design assignment confirmed. Runtime integration pending.**
+The canonical registry is `map-registry.js` at the repository root. Import it from the match/preview layer:
+- `getGameMode(modeId)` resolves a mode.
+- `getMapForMode(modeId)` resolves its assigned map.
+- `getModeLaunchInfo(modeId)` returns map + independent ruleset metadata and preview eligibility.
+- `assertMapAllowedForProduction(modeId)` blocks maps with unresolved licensing or non-ready formats.
 
-The next implementation stage should identify the exact Versus map path, then build a map registry that resolves each mode to its map and independent ruleset. Runtime loading, materials, collision, spawn points, and gameplay behavior must be validated separately.
+The registry does **not** claim that a map is playable. Summoner's Rift still needs OBJ/MTL/DDS material handling; the two GLBs need scale, materials, collision and spawn validation. The FBX map remains blocked for production pending license clearance.
+
+## Asset integrity
+
+Original source files and folder names are preserved. No conversion, deletion, renaming, collision generation, or spawn-point invention is performed by the registry.
