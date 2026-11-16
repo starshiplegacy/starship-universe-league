@@ -95,7 +95,6 @@ Object.assign(translations.ja, {
 });
 
 const root = document.documentElement;
-const themeSelect = document.getElementById("themeSelect");
 const languageSelect = document.getElementById("languageSelect");
 const savedTheme = localStorage.getItem("universe-theme");
 const savedLanguage = localStorage.getItem("universe-language");
