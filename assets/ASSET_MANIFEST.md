@@ -1,40 +1,70 @@
-# Inventario de binarios de UNIVERSE LEAGUE
+# Inventario de assets de STARSHIP UNIVERSE LEAGUE
 
-Los siguientes hashes SHA-256 identifican los archivos originales recibidos. Verifícalos después de copiarlos a `assets/`.
+**Última revisión:** 16 de noviembre de 2026  
+**Regla:** los nombres y mayúsculas/minúsculas son parte de la ruta. No renombrar sin actualizar el código y volver a ejecutar la auditoría.
 
-## League Of Legacy — modelos
+## 1. League Of Legacy — modelos GLB
 
-| Archivo de origen | Destino en GitHub | Tamaño | SHA-256 |
-|---|---|---:|---|
-| Charlotte.glb | `assets/league-of-legacy/characters/charlotte.glb` | 9,622,436 bytes | `956f154184f11edc8e44e76b4789d017a73cebb671d2de17a350ea690309b34a` |
-| Arthur.glb | `assets/league-of-legacy/characters/arthur.glb` | 5,492,840 bytes | `d8735e6016da4ef9e9a8e79554bfef611dd94a40445a7373d134db3b31a21450` |
-| Bella.glb | `assets/league-of-legacy/characters/bella.glb` | 27,412,140 bytes | `4bf5ddf26c1623206035517d26d97e66aec1b99f381d0161648bc91dbd11fda5` |
+Los ocho archivos existen en GitHub bajo assets/league-of-legacy/characters/. El selector de league-of-legacy.html usa exactamente estos nombres:
 
-## Vídeos
+| Archivo | GitHub blob SHA | SHA-256 de origen |
+|---|---|---|
+| Charlotte.glb | 6601f8a5be94163daee2fd8f5d9a8d71a2e69e6a | No recalculado desde GitHub |
+| Arthur.glb | fade06893b056e7121445a4d52c08d30efa74326 | No recalculado desde GitHub |
+| Bella.glb | cb782c11c8b4c5571c09d152c876d56dfec4f4c9 | No recalculado desde GitHub |
+| Emma.glb | 11fc54d8c51a5c7516f00eee19208c3e56ab7276 | Pendiente |
+| Aquamarine.glb | e5a60be889c4240a1c2f9a3163a67b0c9ba213f8 | Pendiente |
+| Opal (Opalo).glb | e2352202cab34b3551ea0049a6d12578e963ea59 | Pendiente |
+| Optopool.glb | 20b3324b6ee90cf33c1b30d031fdf8dbbf66ec60 | Pendiente |
+| Stella.glb | 914b5d607360669d264bf5e57155d2a58a97c964 | Pendiente |
 
-| Archivo de origen | Destino en GitHub | Tamaño | SHA-256 |
-|---|---|---:|---|
-| UNIVERSE LEAGUE (Opening).mp4 | `assets/videos/UNIVERSE LEAGUE (Opening).mp4` | 18,943,484 bytes | `3aa4f9ae5d6e919fbf26ecc211357eb8d75aa93b944dbf1dd70e7dd269f03279` |
-| Lyrie Loanding.mp4 | `assets/videos/Lyrie Loanding.mp4` | 14,254,188 bytes | `247cfe15cd1c496474ca47af7836542841abc0c64cb3909e32028256ef3c2897` |
-| Loading LOL.mp4 | `assets/videos/Loading LOL.mp4` | 62,677,256 bytes | `ad3981c500dbcf3fd3d16ddc411ed9d95a53c094da27e57fe300d77d6efe1b85` |
+Los SHA indicados son Git blob IDs devueltos por GitHub, no SHA-256 de los archivos. El conector confirmó la existencia de los ocho archivos, pero no expuso los bytes de los binarios para recalcular sus hashes. Los datos de compresión, rig y animación de cada modelo deben verificarse individualmente antes de asumir compatibilidad.
 
-## Fuente de The LyrieLife
+## 2. Vídeos de inicio
 
-`The LyreLife (Para HTML).tar.gz` se conserva como archivo fuente independiente (364,272,826 bytes comprimidos; 339 entradas). Contiene contenido de CUL_CAS, mascotas, mundos, UI, pantallas, documentos y recursos propietarios. No se reempaqueta ni se convierte a GLB: los formatos `.package`, `.world`, `.layer`, `.blueprint`, `.bpi` y `.ts4script` deben conservar su formato.
+Los tres archivos existen en assets/videos/ y sus rutas coinciden con launch.html.
 
-## Estado
+| Archivo | GitHub blob SHA | Uso |
+|---|---|---|
+| UNIVERSE LEAGUE (Opening).mp4 | f90c6494af0d8e8ede90f5a4119bf277bbec9d06 | Opening universal compartido |
+| Lyrie Loanding.mp4 | e54746fd888f5816e9ae48c40a54a31ae89539a9 | Carga de The LyrieLife |
+| Loading LOL.mp4 | f279d0e80d782fd72c0e150ff712c8f3d866849b | Carga de League Of Legacy |
 
-Los cambios de código y documentación están publicados en el repositorio. Los seis binarios originales de arriba están localizados individualmente en Library y sus SHA-256 coinciden con el inventario, y ahora están presentes en el árbol de GitHub. No se localizó un ZIP único de esos seis archivos en el inventario de Library revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en Library durante esta revisión.
+## 3. The LyrieLife — mundos fuente
 
+Los cuatro archivos existen en assets/The-LyrieLife/Worlds/.
 
-## Portadas y fondos visuales localizados en Library
+| Archivo | GitHub blob SHA | Estado de integración |
+|---|---|---|
+| Kataleya.world | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
+| Kariskio.world | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
+| Solnang.world | f972b0bdf641d057f196449123351bdc0c0b081a | Almacenado; importador pendiente |
+| abandoned-island.world | c8e92d0f36960d4010715179c3db4397af33e35e | Almacenado; importador pendiente |
 
-| Archivo original | Dimensiones | SHA-256 | Uso | Estado |
-|---|---:|---|---|---|
-| TheLyrie.starship.jpg | 2048×2048 | `f65748aca4de10aee38bbe11dec18be15d6953db6a387f6a4194eaa5ba9ea8fa` | Portada The LyrieLife | Original en Library; derivado actual WebP del repo es 160×160 y debe sustituirse |
-| LOL.starship.png | 1024×1024 | `cd149bf9e0c9d547a834e12efc93ebafd104f7aa305583717aa2d748c7712803` | Portada League Of Legacy | Original en Library; derivado actual WebP del repo es 160×160 y debe sustituirse |
-| 1000002882_cc7409ec46d7047400b448b92f04ed81-16_11_2026, 0_40_39.jpg | 2048×2048 | `b5ca170f5c626f26ec107f005fe5612cdc3b2f36142e9fcc79e997f89cbc4f1b` | Variante de portada The LyrieLife | Alternativa sin asignación definitiva |
-| LyrieHomeMainMenu.jpg | 1920×1080 | `5038b33830d211112f29a8ca7faa6018360f07d4ff6fdcb369e36c91fd633c21` | Fondo menú The LyrieLife | Localizado en Library; no integrado |
-| LOL_MainMenu.jpg | 1920×1080 | `301acd2f17a975054ecc6ff7bba4bfdc270b503a2f9c76904b6e66487a173769` | Fondo menú League Of Legacy | Localizado en Library; no integrado |
+**Anomalía:** Kataleya.world y Kariskio.world tienen el mismo Git blob SHA. Se conservan intactos hasta comparar los originales; no asumir que son distintos ni sustituir uno por el otro.
 
-`chart-1(1).png` es una hoja de contacto de 1250×270 con miniaturas de referencias y no debe utilizarse como portada. Los originales anteriores no están todavía en el árbol de GitHub.
+Los archivos .world no están siendo interpretados por el navegador. El prototipo actual cambia fondos y elementos CSS según el mundo seleccionado. No confundir presencia del archivo con integración funcional.
+
+## 4. Portadas y fondos visuales
+
+| Archivo original | Dimensiones | SHA-256 de Library | Estado |
+|---|---:|---|---|
+| TheLyrie.starship.jpg | 2048×2048 | f65748aca4de10aee38bbe11dec18be15d6953db6a387f6a4194eaa5ba9ea8fa | Original en Library; derivado web actual 160×160 necesita reemplazo |
+| LOL.starship.png | 1024×1024 | cd149bf9e0c9d547a834e12efc93ebafd104f7aa305583717aa2d748c7712803 | Original en Library; derivado web actual 160×160 necesita reemplazo |
+| LyrieHomeMainMenu.jpg | 1920×1080 | 5038b33830d211112f29a8ca7faa6018360f07d4ff6fdcb369e36c91fd633c21 | En Library; pendiente de integrar |
+| LOL_MainMenu.jpg | 1920×1080 | 301acd2f17a975054ecc6ff7bba4bfdc270b503a2f9c76904b6e66487a173769 | En Library; pendiente de integrar |
+| chart-1(1).png | 1250×270 | — | Hoja de contacto; no usar como portada |
+
+Los SHA-256 de esta sección identifican los originales de Library. No se recalcularon desde el contenido binario publicado en GitHub.
+
+## 5. Archivos propietarios y fuente
+
+Los formatos .package, .world, .layer, .blueprint, .bpi y .ts4script deben conservarse en su formato original. No convertirlos a GLB ni mezclarlos con los personajes de League Of Legacy.
+
+El archivo fuente comprimido de The LyrieLife se menciona en documentación anterior, pero su ubicación y disponibilidad deben volver a confirmarse antes de considerarlo archivado o respaldado.
+
+## 6. Verificación y mantenimiento
+
+- Ejecutar python scripts/repo_audit.py para comprobar referencias locales, los ocho modelos, cuatro mundos y tres vídeos.
+- GitHub blob SHA identifica la versión de cada archivo en Git; SHA-256 debe calcularse sobre los bytes originales para validar integridad entre Library, GitHub y cualquier almacenamiento externo.
+- Registrar en este manifiesto toda alta, sustitución, conversión o movimiento de assets.
