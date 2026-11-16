@@ -91,7 +91,7 @@ async function load(){
  let saved=null;
  try{saved=window.starshipSave?await window.starshipSave.load(GAME_KEY):null}catch(e){}
  if(!saved){try{saved=JSON.parse(localStorage.getItem(SAVE_KEY)||"null")}catch(e){}}
- if(saved&&saved.version===1){state=saved;state.paused=true;state.speed=2;render();$("saveLabel").textContent="Recuperada";toast("Partida recuperada");return true}
+ if(saved&&saved.version===1){state=saved;state.autonomy=state.autonomy||"partial";state.paused=true;state.speed=2;render();$("saveLabel").textContent="Recuperada";toast("Partida recuperada");return true}
  return false;
 }
 function mark(){dirty=true}
@@ -207,7 +207,7 @@ $("continueBtn").addEventListener("click",async()=>{const ok=await load();if(!ok
 $("loadBtn").addEventListener("click",async()=>{const ok=await load();if(ok)$("startMenu").hidden=true;else toast("No se encontró una partida válida")});
 $("howBtn").addEventListener("click",()=>$("settingsModal").classList.add("open"));
 window.addEventListener("beforeunload",()=>{if(dirty)save(false)});
-(async()=>{render();const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
+(async()=>{render();const forceNew=new URLSearchParams(location.search).get("mode")==="new";if(forceNew){state=initial();render();$("startMenu").hidden=true;save(false);toast("Nueva partida creada");return;}const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
 })();
 </script>
 </body>
