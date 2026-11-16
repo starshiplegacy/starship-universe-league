@@ -31,7 +31,7 @@ The registry requires `licenseStatus: "cleared"` before enabling map preview. Do
 ## Runtime and performance
 
 - The Summoner's Rift OBJ is about 60 MiB. 112 unique DDS textures referenced by the MTL total about 215.5 MiB. A browser preview would therefore be expensive in download, memory and decode time.
-- The original Summoner's Rift MTL uses absolute Windows paths. It is unsuitable for direct deployment without a rights-cleared runtime conversion and texture-path audit. A temporary runtime MTL was created during this task and removed after the licensing review; original assets were left intact.
+- The original Summoner's Rift MTL uses absolute Windows paths. The OBJ/MTL preview code is prepared to rewrite those texture paths in memory only if rights are cleared; no modified runtime MTL is retained and original assets remain intact.
 - Versus 4 to 5's GLB is about 29.2 MiB. Training's GLB is small, but size alone does not validate scale, geometry, materials or collisions.
 - The current preview page includes GLTFLoader and OBJLoader/MTLLoader/DDSLoader paths. These are prepared code paths; map rendering has not been browser-tested in this task.
 
