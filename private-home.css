@@ -104,3 +104,24 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .ulx-art-cover img{display:block;width:100%;height:100%;object-fit:cover}
 .ulx-game[data-open-game]{cursor:pointer}
 .ulx-game[data-open-game]:focus-visible,.ulh-entry-open:focus-visible,.ulh-entry-cta:focus-visible{outline:3px solid #79a6ff;outline-offset:3px}
+
+/* Controles de descarga e instalación */
+.ulx-game,.ulh-catalog-card{position:relative}
+.ul-game-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 12px 12px}
+.ul-download-button,.ul-installed-check{width:38px;height:38px;min-width:38px;border-radius:50%;display:grid;place-items:center;border:1px solid #687184;background:#687184;color:#fff;font-size:20px;cursor:pointer;transition:.18s}
+.ul-download-button:hover{background:#8c96a8;border-color:#aab3c2;transform:translateY(-2px)}
+.ul-download-button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.ul-installed-check{background:#2b6cf6;border-color:#2b6cf6;color:#fff}
+.ul-game-play{min-height:34px;padding:7px 16px;border:1px solid rgba(119,169,255,.65);border-radius:8px;background:linear-gradient(135deg,rgba(64,139,255,.55),rgba(30,89,220,.3));backdrop-filter:blur(12px);color:#fff;font-size:11px;font-weight:900;letter-spacing:1.2px;cursor:pointer}
+.ul-game-menu-wrap{position:absolute;top:9px;right:9px;z-index:8}
+.ul-game-more{width:34px;height:34px;border:1px solid #ffffff55;border-radius:50%;background:#101827bb;color:#fff;font-size:20px;cursor:pointer}
+.ul-game-menu{display:none;position:absolute;right:0;top:39px;min-width:150px;padding:5px;background:#222b3e;border:1px solid #46536b;border-radius:9px;box-shadow:0 12px 28px #0006}
+.ul-game-menu-wrap.open .ul-game-menu{display:block}
+.ul-game-menu button{display:block;width:100%;padding:10px;text-align:left;background:none;border:0;border-radius:6px;color:#f2f4f8;font:13px "Trebuchet MS",sans-serif;cursor:pointer}
+.ul-game-menu button:hover{background:#34415b}
+.ul-game-menu-wrap[hidden]{display:none}
+.ul-download-progress{font-size:11px;color:#a9b8cc}
+.ulh-installed-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.ulh-installed-empty{grid-column:1/-1;margin:0;padding:30px 20px;border:1px dashed #46536b;border-radius:10px;color:#a9b8cc;text-align:center}
+.ulh-toast{position:fixed;right:22px;bottom:22px;z-index:9999;padding:14px 20px;border:1px solid #2b6cf6;border-radius:10px;background:#182743;color:#fff;box-shadow:0 12px 32px #0006;opacity:0;transform:translateY(12px);pointer-events:none;transition:.22s}
+.ulh-toast.show{opacity:1;transform:translateY(0)}
