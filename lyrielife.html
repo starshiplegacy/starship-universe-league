@@ -68,7 +68,7 @@ function render(){
  $("activeName").textContent=actor().name;
  $("needs").innerHTML=names.map((n,i)=>{const v=actor().needs[i];return '<div class="need '+(v<25?'low':'')+'"><span>'+n+'</span><div class="bar"><i style="width:'+v+'%"></i></div><b>'+Math.round(v)+'%</b></div>'}).join("");
  $("friendshipValue").textContent=state.relationship.friendship;$("romanceValue").textContent=state.relationship.romance;
- $("friendshipBar").style.width=state.relationship.friendship+"%";$("romanceBar").style.width=state.relationship.romance+"%";
+ $("friendshipBar").style.width=Math.max(0,Math.min(100,state.relationship.friendship))+"%";$("romanceBar").style.width=state.relationship.romance+"%";
  $("relationStatus").textContent=!state.relationship.known?"Desconocidos":state.relationship.romance>0?"Interés romántico":"Conocidos";
  $("pauseBtn").textContent=state.paused?"▶ Reanudar":"Ⅱ Pausar";
 }
@@ -117,7 +117,7 @@ document.querySelectorAll("[data-object]").forEach(b=>b.addEventListener("click"
 }));
 document.querySelectorAll(".actor").forEach((b,i)=>b.addEventListener("click",e=>{
  e.stopPropagation();if(i===state.active){$("socialModal").classList.add("open");return}
- openChoices(state.actors[i].name,[["Controlar este Lyrie",()=>{state.active=i;mark();render()}],["Hablar",()=>{moveTo(state.actors[i].x-5,state.actors[i].y,"Hablando con "+state.actors[i].name);action("social");state.relationship.friendship=clamp(state.relationship.friendship+3);render()}],["Desplazarse juntos",()=>{state.actors[state.active].x=state.actors[i].x-5;state.actors[state.active].y=state.actors[i].y+5;mark();render()}]]);
+ openChoices(state.actors[i].name,[["Controlar este Lyrie",()=>{state.active=i;mark();render()}],["Hablar",()=>{moveTo(state.actors[i].x-5,state.actors[i].y,"Hablando con "+state.actors[i].name);action("social");state.relationship.friendship=Math.max(-100,Math.min(100,state.relationship.friendship+3));render()}],["Pelear",()=>{state.relationship.friendship=Math.max(-100,state.relationship.friendship-12);actor().mood="Enojado";mark();render();toast("La relación se ha deteriorado")}],["Cotillear",()=>{state.relationship.friendship=Math.max(-100,Math.min(100,state.relationship.friendship+2));action("social");toast("Has compartido un cotilleo")}],["Desplazarse juntos",()=>{state.actors[state.active].x=state.actors[i].x-5;state.actors[state.active].y=state.actors[i].y+5;mark();render()}]]);
 }));
 $("scene").addEventListener("click",e=>{if(e.target.closest("button"))return;const r=$("scene").getBoundingClientRect();moveTo((e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100)});
 function socialItems(category){
@@ -153,8 +153,10 @@ function runAutonomy(){
  if(state.autonomy==="none"||state.mode!=="life")return;
  const a=actor(),lowest=Math.min(...a.needs),index=a.needs.indexOf(lowest);
  const needsToAction=["eat","sleep","wash","toilet","social","fun","clean","comfort"];
- let chosen=lowest<40?needsToAction[index]:"fun";
- if(lowest>=40&&Math.random()<0.25)chosen="social";
+ const threshold=state.autonomy==="total"?40:25;
+ if(lowest>=threshold&&state.autonomy==="partial")return;
+ let chosen=lowest<threshold?needsToAction[index]:"fun";
+ if(lowest>=threshold&&Math.random()<0.25)chosen="social";
  action(chosen,true);
 }
 function tick(){
