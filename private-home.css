@@ -77,3 +77,21 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .ulx-empty{grid-column:1/-1;text-align:center;color:#a9b8cc;font-size:14px;padding:40px 0}
 @media(max-width:900px){.ulh-explore h2{font-size:25px}.ulx-filter-wrap:last-child{margin-left:0}}
 @media(max-width:600px){.ulx-grid{grid-template-columns:1fr}.ulx-tabs{gap:4px}.ulx-tabs button{padding:9px 10px;font-size:12px}.ulx-filter{width:100%}.ulx-filter-wrap{width:100%}.ulx-menu{width:100%}}
+
+
+/* League Of Legacy — portada cuadrada oficial */
+.ulol-cover{position:relative;isolation:isolate;display:block;width:100%;aspect-ratio:1/1;overflow:hidden;background:#080d20;color:#e8edf7}
+.ulol-nebula{position:absolute;inset:-12%;z-index:-2;background:radial-gradient(ellipse at 72% 32%,rgba(67,76,181,.58),transparent 34%),radial-gradient(ellipse at 30% 70%,rgba(38,77,160,.4),transparent 38%),radial-gradient(ellipse at 58% 58%,rgba(108,49,153,.28),transparent 42%),linear-gradient(145deg,#050916,#101a39 55%,#080b1b)}
+.ulol-nebula:before,.ulol-nebula:after{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 18% 23%,#fff 60%,transparent),radial-gradient(1px 1px at 78% 17%,#dce5ff 60%,transparent),radial-gradient(1px 1px at 62% 76%,#fff 60%,transparent),radial-gradient(2px 2px at 39% 48%,#dce5ff 60%,transparent),radial-gradient(1px 1px at 88% 64%,#fff 60%,transparent);opacity:.65}
+.ulol-nebula:after{transform:translate(18px,12px);opacity:.3}
+.ulol-paper{position:absolute;inset:5.5%;border:1px solid rgba(220,226,239,.72);clip-path:polygon(3% 0,97% 1%,100% 5%,98% 95%,94% 100%,4% 98%,0 94%,1% 5%);background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.015));box-shadow:inset 0 0 24px rgba(220,230,255,.1),0 0 20px rgba(0,0,0,.25)}
+.ulol-paper:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(173deg,transparent 0 21px,rgba(222,229,243,.09) 22px,transparent 23px 47px);mask-image:linear-gradient(90deg,#000,transparent 20%,transparent 80%,#000)}
+.ulol-title{position:absolute;top:23%;left:7%;right:7%;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:clamp(25px,5vw,55px);font-weight:700;line-height:.92;letter-spacing:-1.5px;color:#f0f2f7;background:linear-gradient(180deg,#fff 4%,#cbd1dc 42%,#858e9f 55%,#f4f5f8 73%,#9ca5b4 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 3px rgba(0,0,0,.85))}
+.ulol-title span{font-size:1.14em;letter-spacing:1px}
+.ulol-signature{position:absolute;top:57%;left:10%;right:10%;text-align:center;font:700 clamp(6px,1.15vw,10px)/1.2 "Trebuchet MS",sans-serif;letter-spacing:2.4px;color:#aebbd5;text-shadow:0 1px 5px #000}
+.ulol-emblem{position:absolute;left:7%;bottom:5%;width:29%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#328eff 0%,#4b58e9 52%,#7e3bd1 100%);border:2px solid rgba(221,231,255,.8);box-shadow:0 0 0 4px rgba(7,12,31,.75),0 0 22px rgba(73,107,255,.45)}
+.ulol-emblem svg{width:83%;height:83%;overflow:visible}
+.ulh-library-card .ulol-cover,.ulh-catalog-card .ulol-cover{height:auto;aspect-ratio:1/1}
+.ulx-art-cover{display:block;aspect-ratio:1/1;padding:0;overflow:hidden}
+.ulx-art-cover .ulol-cover{width:100%;height:100%}
+@media(max-width:600px){.ulol-title{font-size:clamp(24px,9vw,44px)}.ulol-signature{font-size:7px}}
