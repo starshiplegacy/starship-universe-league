@@ -1,0 +1,23 @@
+Archivos del juego (Documento Privado) — The LyrieLife
+
+Esta es la estructura interna del proyecto, organizada por carpetas y archivos:
+
+UI & Complements Toda la interfaz para que el juego arranque y funcione bien: menús,
+botones, paneles, notificaciones y los elementos visuales que sostienen la experiencia.
+
+Intros Las intros oficiales del juego — las secuencias de apertura que se reproducen antes
+de llegar al menú.
+
+Main Menú La pantalla principal: el punto de entrada desde donde se accede a todo lo
+demás.
+
+CUL_CAS (CreateALyrie_CrearUnLyrie) Todo lo necesario para diseñar tu personaje: el
+creador de Lyries, con sus opciones de apariencia, rasgos y personalización.
+
+Mapa Construcción, casas, herramientas, despliegues y complementos extras — el mundo
+jugable y todo lo que se puede colocar o usar en él.
+
+Pantalla de Carga Las pantallas de carga que acompañan las transiciones entre secciones.
+
+Controles Carpeta con archivo PDF para que el juego lea cómo debe funcionar sin errores —
+el documento de referencia técnica del sistema de control.
