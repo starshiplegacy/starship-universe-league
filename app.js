@@ -440,3 +440,31 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     root.querySelectorAll(".ulh-side-item").forEach(item=>item.classList.toggle("active",item===link));
   }));
 })();
+
+
+// Universe League — Biblioteca y catálogo
+(function(){
+  const root=document.getElementById("privateHome");
+  if(!root)return;
+  const views={home:document.getElementById("ulhHomeView"),library:document.getElementById("ulhLibraryView"),catalog:document.getElementById("ulhCatalogView")};
+  const nav=root.querySelectorAll("[data-ulh-view]");
+  function showView(name){
+    Object.entries(views).forEach(([key,view])=>{if(view)view.hidden=key!==name;});
+    nav.forEach(link=>link.classList.toggle("active",link.dataset.ulhView===name));
+    if(name!=="home")root.querySelector(".ulh-content")?.scrollTo({top:0,behavior:"smooth"});
+  }
+  nav.forEach(link=>link.addEventListener("click",event=>{
+    event.preventDefault();
+    showView(link.dataset.ulhView||"home");
+  }));
+  document.getElementById("ulhViewAll")?.addEventListener("click",()=>showView("catalog"));
+  document.getElementById("ulhBackLibrary")?.addEventListener("click",()=>showView("library"));
+  const tabs=root.querySelectorAll("[data-ulh-category]");
+  const free=document.getElementById("ulhFreePanel"),buy=document.getElementById("ulhBuyPanel");
+  tabs.forEach(tab=>tab.addEventListener("click",()=>{
+    const isFree=tab.dataset.ulhCategory==="free";
+    tabs.forEach(item=>{const active=item===tab;item.classList.toggle("active",active);item.setAttribute("aria-selected",String(active));});
+    if(free)free.hidden=!isFree;
+    if(buy)buy.hidden=isFree;
+  }));
+})();
