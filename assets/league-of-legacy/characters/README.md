@@ -1,10 +1,13 @@
-# Charlotte — League Of Legacy
+# League Of Legacy — personajes 3D
 
-The source character is supplied as `charlotte.glb` and must be placed beside this README.
+Copia los modelos originales en esta carpeta con estos nombres exactos:
 
-Expected path:
-`assets/league-of-legacy/characters/charlotte.glb`
+- `charlotte.glb` — personaje riggeado, 56 animaciones, compresión Meshopt.
+- `arthur.glb` — personaje riggeado, animación `Default`, compresión Draco.
+- `bella.glb` — modelo estático, sin rig ni animaciones.
 
-The GLB already contains its WebP textures, skeleton/skin data, and 56 animations. It requires the `EXT_meshopt_compression` decoder, configured in `league-of-legacy.html` through Three.js `MeshoptDecoder`.
+El menú `league-of-legacy.html` los carga desde estas rutas y ofrece un selector de personaje. La lista de animaciones se adapta al modelo seleccionado.
 
-Charlotte is a League Of Legacy character asset. Do not place this model in the CAL-CUL character folders or use it as a LyrieLife avatar.
+Los tres archivos ya están en GLB 2.0 y contienen sus imágenes/texturas. No se necesita conversión FBX ni extracción manual de texturas. El visor utiliza Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`.
+
+**Separación de proyectos:** estos modelos son recursos de League Of Legacy. No deben copiarse a `CUL_CAS` ni tratarse como avatares de The LyrieLife.
