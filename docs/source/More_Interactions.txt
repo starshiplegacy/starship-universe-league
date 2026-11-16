@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LyrieLife — Menú de interacción (desconocidos)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2b2b2b;
+    font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    padding: 16px;
+}
+
+
+.stage {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    aspect-ratio: 16 / 10;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 14px 40px rgba(0,0,0,.55);
+    background:
+     linear-gradient(115deg, #c98a4b 0 34%, #b8763c 34% 100%);
+    user-select: none;
+}
+
+/* ---------- suelo de la casa ---------- */
+.floor {
+    position: absolute;
+    inset: 0;
+    background-image:
+     linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px),
+     linear-gradient(0deg, rgba(0,0,0,.06) 1px, transparent 1px);
+    background-size: 46px 46px;
+    opacity: .9;
+}
+.wall {
+    position: absolute;
+    background: linear-gradient(#e8d9c4, #d8c3a6);
+    border-bottom: 3px solid #b89b78;
+}
+.wall.top { left: 0; right: 0; top: 0; height: 12%; }
+.wall.left { left: 0; top: 0; bottom: 0; width: 7%; }
+.counter {
+    position: absolute;
+    background: linear-gradient(#8a5a34, #6d4526);
+    border-radius: 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,.25);
+}
+.counter.a { left: 60%; top: 22%; width: 26%; height: 12%; }
+.counter.b { left: 60%; top: 40%; width: 26%; height: 10%; }
+
+
+/* ---------- personajes ---------- */
+.sim {
+    position: absolute;
+    width: 26px;
+
+    height: 54px;
+    border-radius: 13px 13px 6px 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,.3);
+}
+.sim.you { left: 44%; top: 38%; background: linear-gradient(#e05a8a, #a83a63); }
+.sim.other { left: 36%; top: 34%; background: linear-gradient(#4a5f7a, #2f3f55); }
+.sim::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -13px;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e8c4a0;
+    border: 1px solid rgba(0,0,0,.15);
+}
+.sim.other::after { background: #c99b74; }
+
+
+/* ---------- burbujas de interacción ---------- */
+.bubble {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px 7px 8px;
+    background: #ffffff;
+    border: 1px solid #b9c2cc;
+    border-radius: 999px;
+    color: #1a5fb4;
+
+    font-size: 13.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 3px 7px rgba(0,0,0,.28);
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .15s ease, background .15s ease;
+    z-index: 10;
+}
+.bubble:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 14px rgba(0,0,0,.32);
+    background: #f4f8ff;
+}
+.bubble:active { transform: translateY(0) scale(.99); }
+.bubble .ico {
+    flex: 0 0 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: #eef2f6;
+}
+
+
+/* posiciones */
+.b-friend { left: 30%; top: 20%; }
+.b-funny { right: 12%; top: 34%; }
+.b-pill { left: 12%; top: 34%; }
+.b-mean { left: 8%; top: 56%; }
+.b-more { left: 38%; top: 50%; }
+
+.b-clubs { left: 34%; top: 68%; }
+.b-actions { right: 12%; top: 56%; }
+
+
+/* burbuja seleccionada / desplegada */
+.bubble.open {
+    background: #eaf2ff;
+    border-color: #1a5fb4;
+    box-shadow: 0 0 0 2px rgba(26,95,180,.35), 0 6px 14px rgba(0,0,0,.3);
+}
+
+
+/* ---------- submenú ---------- */
+.submenu {
+    position: absolute;
+    min-width: 190px;
+    background: #ffffff;
+    border: 1px solid #b9c2cc;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    z-index: 30;
+    display: none;
+    flex-direction: column;
+    gap: 3px;
+}
+.submenu.show { display: flex; }
+.submenu .item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 7px;
+
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1a5fb4;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    text-align: left;
+    width: 100%;
+}
+.submenu .item:hover { background: #eaf2ff; }
+.submenu .item.locked {
+    color: #9aa7b6;
+    cursor: not-allowed;
+    font-weight: 600;
+}
+.submenu .item.locked:hover { background: transparent; }
+.submenu .item .lock { font-size: 11px; margin-left: auto; }
+.submenu .sep {
+    height: 1px;
+    background: #e3e9f0;
+    margin: 3px 4px;
+}
+.submenu .hint {
+    font-size: 10.5px;
+    color: #8a97a6;
+    font-style: italic;
+    padding: 4px 10px 2px;
+}
+
+
+/* ---------- panel de resultado ---------- */
+
+.result {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%) translateY(14px);
+    background: rgba(26,95,180,.96);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+    z-index: 50;
+    max-width: 92%;
+    text-align: center;
+}
+.result.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+
+/* ---------- etiqueta de estado ---------- */
+.status {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    background: rgba(255,255,255,.94);
+    border: 1px solid #b9c2cc;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #1a5fb4;
+    z-index: 40;
+    line-height: 1.5;
+}
+.status span { color: #6b7a8d; font-weight: 600; }
+
+
+/* ---------- marca ---------- */
+.brand {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: rgba(255,255,255,.85);
+    z-index: 40;
+}
+
+
+@media (max-width: 640px) {
+    .bubble { font-size: 11px; padding: 5px 12px 5px 6px; }
+    .bubble .ico { flex: 0 0 20px; height: 20px; font-size: 11px; }
+    .submenu { min-width: 160px; }
+    .submenu .item { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="stage" id="stage">
+
+
+<div class="floor"></div>
+
+<div class="wall top"></div>
+<div class="wall left"></div>
+<div class="counter a"></div>
+<div class="counter b"></div>
+
+
+<div class="sim you"></div>
+<div class="sim other"></div>
+
+
+<div class="status">
+Relación: <span>Desconocidos</span><br>
+Amistad: <span>0</span> · Romance: <span>0</span>
+</div>
+
+
+<!-- ============ BURBUJAS ============ -->
+<div class="bubble b-friend" data-menu="friend">
+<span class="ico">▸</span> Amistoso…
+</div>
+
+
+<div class="bubble b-funny" data-menu="funny">
+<span class="ico">▸</span> Gracioso…
+</div>
+
+
+<div class="bubble b-pill" data-menu="pill">
+<span class="ico">▸</span> Pillería…
+</div>
+
+
+<div class="bubble b-mean" data-menu="mean">
+<span class="ico">▸</span> Mezquino…
+</div>
+
+
+<div class="bubble b-more" data-menu="more">
+
+     <span class="ico">▸</span> Más opciones…
+</div>
+
+
+<div class="bubble b-clubs" data-menu="clubs">
+     <span class="ico">▸</span> Clubes…
+</div>
+
+
+<div class="bubble b-actions" data-menu="actions">
+     <span class="ico">…</span> Acciones…
+</div>
+
+
+<!-- ============ SUBMENÚS ============ -->
+<div class="submenu" id="submenu"></div>
+
+
+<div class="result" id="result"></div>
+
+
+<div class="brand">THE LYRIELIFE</div>
+
+
+</div>
+
+
+<script>
+/* ============================================================
+ ESTADO DE LA RELACIÓN
+ ============================================================ */
+const relacion = {
+amistad: 0,
+romance: 0,
+conocidos: false, // false = desconocidos
+nombre: 'Desconocido'
+};
+
+/* ============================================================
+DEFINICIÓN DE MENÚS
+locked: true → no disponible entre desconocidos
+============================================================ */
+const menus = {
+
+
+friend: {
+ titulo: 'Amistoso',
+ items: [
+     { label: 'Preséntate',    icon: '▸', efecto: { amistad: 8, conocidos: true } },
+     { label: 'Charla trivial', icon: '▸', efecto: { amistad: 4 } },
+     { label: 'Preguntar por su día', icon: '▸▸', efecto: { amistad: 5 } },
+     { label: 'Halagar su ropa', icon: '▸', efecto: { amistad: 6 } },
+     { label: 'Hablar de intereses', icon: '▸', efecto: { amistad: 7 }, requiere: 'conocidos' }
+ ]
+},
+
+
+funny: {
+ titulo: 'Gracioso',
+ items: [
+     { label: 'Contar un chiste', icon: '▸', efecto: { amistad: 5 } },
+     { label: 'Hacer el tonto', icon: '▸', efecto: { amistad: 3 } },
+     { label: 'Bromear sobre el clima', icon: '▸▸', efecto: { amistad: 4 } },
+     { label: 'Imitar a alguien', icon: '▸', efecto: { amistad: 6 }, requiere: 'conocidos' }
+ ]
+},
+
+
+pill: {
+ titulo: 'Pillería',
+ items: [
+     { label: 'Presumir',      icon: '▸', efecto: { amistad: 2 } },
+
+         { label: 'Fanfarronear',     icon: '▸', efecto: { amistad: 1 } },
+         { label: 'Gastar una broma pesada', icon: '▸', efecto: { amistad: -6 }, requiere: 'conocidos'
+},
+         { label: 'Robar un beso',     icon: '▸', efecto: { romance: 10 }, requiere: 'romance' }
+     ]
+},
+
+
+mean: {
+     titulo: 'Mezquino',
+     items: [
+         { label: 'Ignorar',       icon: '▸', efecto: { amistad: -3 } },
+         { label: 'Ser grosero',     icon: '▸', efecto: { amistad: -8 } },
+         { label: 'Insultar',      icon: '▸▸', efecto: { amistad: -15 }, requiere: 'conocidos' },
+         { label: 'Burlarse de su ropa', icon: '▸', efecto: { amistad: -10 }, requiere: 'conocidos' }
+     ]
+},
+
+
+more: {
+     titulo: 'Más opciones',
+     items: [
+         { label: 'Preguntar por su carrera', icon: '▸', efecto: { amistad: 5 }, requiere: 'conocidos' },
+         { label: 'Preguntar por su familia', icon: '▸▸▸', efecto: { amistad: 6 }, requiere:
+'conocidos' },
+         { label: 'Pedir su número', icon: '▸', efecto: { amistad: 4 }, requiere: 'conocidos' },
+         { label: 'Invitar a salir', icon: '▸', efecto: { amistad: 8 }, requiere: 'amistad' },
+         { label: 'Confesar sentimientos', icon: '▸', efecto: { romance: 15 }, requiere: 'romance' }
+     ]
+},
+
+
+clubs: {
+     titulo: 'Clubes',
+
+     items: [
+         { label: 'Invitar a un club', icon: '▸', efecto: { amistad: 5 }, requiere: 'conocidos' },
+         { label: 'Ver clubes',    icon: '▸', efecto: {} }
+     ]
+},
+
+
+actions: {
+     titulo: 'Acciones',
+     items: [
+         { label: 'Ver perfil',   icon: '▸', efecto: {} },
+         { label: 'Desplazarse con…', icon: '▸', efecto: {} },
+         { label: 'Despedirse',     icon: '▸', efecto: {} }
+     ]
+}
+};
+
+
+/* ============================================================
+ UTILIDADES
+ ============================================================ */
+const stage           = document.getElementById('stage');
+const submenuEl = document.getElementById('submenu');
+const resultEl = document.getElementById('result');
+const statusEl = document.querySelector('.status');
+
+
+let abierto = null;
+
+
+function mostrarResultado(texto) {
+resultEl.textContent = texto;
+resultEl.classList.add('show');
+clearTimeout(mostrarResultado._t);
+mostrarResultado._t = setTimeout(() => resultEl.classList.remove('show'), 2000);
+
+}
+
+
+function actualizarEstado() {
+const rel = relacion.conocidos
+    ? (relacion.romance > 0 ? 'Interés romántico' : 'Conocidos')
+    : 'Desconocidos';
+statusEl.innerHTML =
+    'Relación: <span>' + rel + '</span><br>' +
+    'Amistad: <span>' + relacion.amistad + '</span> · ' +
+    'Romance: <span>' + relacion.romance + '</span>';
+}
+
+
+// ¿Está disponible este ítem según la relación?
+function disponible(item) {
+if (!item.requiere) return true;
+if (item.requiere === 'conocidos') return relacion.conocidos;
+if (item.requiere === 'amistad') return relacion.amistad >= 20;
+if (item.requiere === 'romance') return relacion.romance >= 20;
+return true;
+}
+
+
+/* ============================================================
+    ABRIR / CERRAR SUBMENÚ
+    ============================================================ */
+function cerrarSubmenu() {
+submenuEl.classList.remove('show');
+if (abierto) abierto.classList.remove('open');
+abierto = null;
+}
+
+
+function abrirSubmenu(bubble) {
+
+const key = bubble.dataset.menu;
+const menu = menus[key];
+if (!menu) return;
+
+
+// si ya estaba abierto este, cerrar
+if (abierto === bubble) { cerrarSubmenu(); return; }
+
+
+cerrarSubmenu();
+abierto = bubble;
+bubble.classList.add('open');
+
+
+submenuEl.innerHTML = '';
+
+
+const head = document.createElement('div');
+head.className = 'hint';
+head.textContent = menu.titulo;
+submenuEl.appendChild(head);
+
+
+menu.items.forEach(item => {
+ const btn = document.createElement('button');
+ btn.className = 'item' + (disponible(item) ? '' : ' locked');
+ btn.innerHTML =
+     '<span>' + item.icon + '</span><span>' + item.label + '</span>' +
+     (disponible(item) ? '' : '<span class="lock">▸</span>');
+
+
+ if (disponible(item)) {
+     btn.addEventListener('click', e => {
+      e.stopPropagation();
+      aplicarEfecto(item);
+     });
+ }
+
+    submenuEl.appendChild(btn);
+});
+
+
+// posicionar el submenú junto a la burbuja
+const b = bubble.getBoundingClientRect();
+const s = stage.getBoundingClientRect();
+
+
+let left = b.right - s.left + 10;
+let top = b.top - s.top;
+
+
+submenuEl.classList.add('show');
+
+
+// evitar que se salga del marco
+const w = submenuEl.offsetWidth;
+const h = submenuEl.offsetHeight;
+if (left + w > s.width - 8) left = b.left - s.left - w - 10;
+if (left < 8) left = 8;
+if (top + h > s.height - 8) top = s.height - h - 8;
+if (top < 8) top = 8;
+
+
+submenuEl.style.left = left + 'px';
+submenuEl.style.top = top + 'px';
+}
+
+
+/* ============================================================
+    APLICAR EFECTO
+    ============================================================ */
+function aplicarEfecto(item) {
+const e = item.efecto || {};
+
+
+if (e.amistad) relacion.amistad += e.amistad;
+
+if (e.romance) relacion.romance += e.romance;
+if (e.conocidos) relacion.conocidos = true;
+
+
+// límites
+relacion.amistad = Math.max(-100, Math.min(100, relacion.amistad));
+relacion.romance = Math.max(0, Math.min(100, relacion.romance));
+
+
+actualizarEstado();
+
+
+// mensaje
+let msg = item.label;
+if (e.conocidos && !relacion.conocidos) msg += ' — ahora se conocen';
+if (e.amistad) msg += ' (' + (e.amistad > 0 ? '+' : '') + e.amistad + ' amistad)';
+if (e.romance) msg += ' (' + (e.romance > 0 ? '+' : '') + e.romance + ' romance)';
+
+
+mostrarResultado(msg);
+cerrarSubmenu();
+}
+
+
+/* ============================================================
+    EVENTOS
+    ============================================================ */
+document.querySelectorAll('.bubble').forEach(b => {
+b.addEventListener('click', e => {
+    e.stopPropagation();
+    abrirSubmenu(b);
+});
+});
+
+
+// clic fuera → cerrar
+stage.addEventListener('click', e => {
+
+if (e.target.closest('.submenu') || e.target.closest('.bubble')) return;
+cerrarSubmenu();
+});
+
+
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') cerrarSubmenu();
+});
+
+
+actualizarEstado();
+</script>
+
+
+</body>
+</html>
