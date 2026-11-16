@@ -467,3 +467,49 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     Object.entries(panels).forEach(([key,panel])=>{if(panel)panel.hidden=key!==selected;});
   }));
 })();
+
+
+// Universe League — filtros funcionales de Explorar
+(function(){
+  const root=document.getElementById("ulhExplore");
+  if(!root)return;
+  const games=[
+    {nombre:"The LyrieLife",genero:"Simulación",incluye:"Universe Play",jugadores:"Un jugador",idioma:"Español",fecha:20261115,destacado:true,clasico:false,arte:"linear-gradient(150deg,#7b1fd1,#2a0660)",texto:"💎"},
+    {nombre:"League Of Legacy",genero:"Batalla",incluye:"Pase de temporada",jugadores:"Multijugador",idioma:"Español",fecha:20251024,destacado:true,clasico:false,arte:"linear-gradient(150deg,#2f7d4f,#123a24)",texto:"⚔️"},
+    {nombre:"Kataleya World Pack",genero:"Aventura",incluye:"Edición Deluxe",jugadores:"Un jugador",idioma:"Español",fecha:20260901,destacado:true,clasico:false,arte:"linear-gradient(150deg,#1a5fb4,#0b2a55)",texto:"KATALEYA"},
+    {nombre:"Kariskio Coastal",genero:"Aventura",incluye:"Universe Play",jugadores:"Un jugador",idioma:"Inglés",fecha:20260710,destacado:false,clasico:false,arte:"linear-gradient(150deg,#1f6f8b,#0b2f3d)",texto:"KARISKIO"},
+    {nombre:"Solnang Highlands",genero:"Estrategia",incluye:"Edición Deluxe",jugadores:"Un jugador",idioma:"Coreano",fecha:20260522,destacado:false,clasico:false,arte:"linear-gradient(150deg,#3a1f7a,#150a33)",texto:"SOLNANG"},
+    {nombre:"LyrieLife: Clásico",genero:"Simulación",incluye:"Universe Play",jugadores:"Un jugador",idioma:"Español",fecha:20040312,destacado:false,clasico:true,arte:"linear-gradient(150deg,#5a6478,#232a3d)",texto:"CLÁSICO"}
+  ];
+  const state={tab:"todos",genero:"",incluye:"",jugadores:"",idioma:"",orden:"reciente"};
+  const grid=root.querySelector("#ulxGrid");
+  function render(){
+    let list=games.filter(g=>(state.tab!=="destacados"||g.destacado)&&(state.tab!=="clasicos"||g.clasico)&&(!state.genero||g.genero===state.genero)&&(!state.incluye||g.incluye===state.incluye)&&(!state.jugadores||g.jugadores===state.jugadores)&&(!state.idioma||g.idioma===state.idioma));
+    if(state.orden==="reciente")list.sort((a,b)=>b.fecha-a.fecha);
+    if(state.orden==="antiguo")list.sort((a,b)=>a.fecha-b.fecha);
+    if(state.orden==="az")list.sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+    grid.innerHTML=list.length?list.map(g=>`<article class="ulx-game"><div class="ulx-art" style="background:${g.arte}">${g.texto}</div><div class="ulx-info"><strong>${g.nombre}</strong><span>${g.genero} · ${g.jugadores}</span></div></article>`).join(""):'<p class="ulx-empty">No hay juegos que coincidan con estos filtros.</p>';
+  }
+  root.querySelectorAll("[data-ulx-tab]").forEach(button=>button.addEventListener("click",()=>{
+    state.tab=button.dataset.ulxTab;
+    root.querySelectorAll("[data-ulx-tab]").forEach(item=>item.classList.toggle("active",item===button));
+    render();
+  }));
+  root.querySelectorAll(".ulx-filter-wrap").forEach(wrap=>{
+    const button=wrap.querySelector(".ulx-filter"),label=wrap.querySelector(".ulx-label"),key=wrap.dataset.ulxFilter;
+    const defaults={genero:"Géneros",incluye:"Se incluye en…",jugadores:"Jugadores",idioma:"Idiomas",orden:"Fecha de lanzamiento"};
+    button.addEventListener("click",event=>{
+      event.stopPropagation();const wasOpen=wrap.classList.contains("open");
+      root.querySelectorAll(".ulx-filter-wrap").forEach(item=>item.classList.remove("open"));
+      if(!wasOpen)wrap.classList.add("open");
+    });
+    wrap.querySelectorAll(".ulx-menu button").forEach(option=>option.addEventListener("click",event=>{
+      event.stopPropagation();state[key]=option.dataset.value;label.textContent=option.dataset.value?option.textContent:defaults[key];
+      button.classList.toggle("has-value",option.dataset.value!=="");
+      wrap.querySelectorAll(".ulx-menu button").forEach(item=>item.classList.toggle("chosen",item===option));
+      wrap.classList.remove("open");render();
+    }));
+  });
+  document.addEventListener("click",()=>root.querySelectorAll(".ulx-filter-wrap").forEach(w=>w.classList.remove("open")));
+  render();
+})();
