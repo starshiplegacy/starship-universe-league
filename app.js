@@ -520,12 +520,18 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  const home=document.getElementById("privateHome");if(!home)return;
  const grid=document.getElementById("ulhInstalledGrid"),count=document.getElementById("ulhInstalledCount");
  const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/the-lyrielife-cover.jpg",fallback:"./assets/the-lyrielife-poster.svg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy-cover.png",fallback:"./assets/league-of-legacy-poster.svg"}};
- let userId=null,installed=new Set(),downloading=null,downloadTimer=null;
+ let userId=null,installed=new Set(),downloading=null,downloadTimer=null,downloadTimeout=null,downloadOwner=null;
  const toast=document.createElement("div");toast.className="ulh-toast";toast.setAttribute("role","status");toast.setAttribute("aria-live","polite");document.body.appendChild(toast);
  let toastTimer;function notify(m){toast.textContent=m;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),3500);}
  function save(){if(userId)localStorage.setItem("universe-installed-games:"+userId,JSON.stringify([...installed]));}
+ function renderSidebar(list){
+  const side=document.getElementById("ulhSidebarInstalledList"),status=document.getElementById("ulhSidebarStatus");
+  if(side)side.innerHTML=list.length?list.map(k=>'<a class="ulh-installed" href="#ulh-library" data-sidebar-game="'+k+'"><span class="ulh-mini">'+(k==="lyrie"?"💎":"⚔")+'</span> '+games[k].name+'</a>').join(""):'<p class="ulh-sidebar-empty">Aún no tienes juegos instalados.</p>';
+  if(status)status.innerHTML=list.length?'<span>✓</span><div>'+list.length+' juego(s) instalado(s)<br><small>Listos para jugar</small></div>':'<span>✓</span><div>Biblioteca vacía<br><small>Tus descargas aparecerán aquí</small></div>';
+  side?.querySelectorAll("[data-sidebar-game]").forEach(link=>link.addEventListener("click",e=>{e.preventDefault();document.querySelector('.ulh-side-item[data-ulh-view="library"]')?.click();}));
+ }
  function renderLibrary(){
-  if(!grid)return;const list=[...installed].filter(k=>games[k]);if(count)count.textContent=list.length+" "+(list.length===1?"juego":"juegos");
+  if(!grid)return;const list=[...installed].filter(k=>games[k]);if(count)count.textContent=list.length+" "+(list.length===1?"juego":"juegos");renderSidebar(list);
   if(!list.length){grid.innerHTML='<p class="ulh-installed-empty">Todavía no tienes juegos instalados. Explora el catálogo y descarga tu primer juego.</p>';return;}
   grid.innerHTML=list.map(k=>{const g=games[k];return '<article class="ulh-library-card"><div class="ulh-entry-open"><img class="ulh-entry-cover" src="'+g.image+'" onerror="this.onerror=null;this.src=\''+g.fallback+'\'" alt="'+g.name+'"></div><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>'+g.name+'</h3><p>'+g.genre+'</p></div><div class="ul-game-actions"><button class="ul-game-play" type="button" data-play="'+k+'">PLAY</button><span class="ul-installed-check">✓</span></div><div class="ul-game-menu-wrap"><button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-uninstall="'+k+'">Desinstalar</button><button type="button" data-report="'+k+'">Reportar error</button></div></div></article>';}).join("");
   grid.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>{activeGameKey=b.dataset.play;renderGameDialog(activeGameKey);gameDialog.showModal();}));
@@ -559,11 +565,24 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  }
  function start(k){
   if(!userId){notify("Inicia sesión para descargar juegos.");return;}if(downloading||installed.has(k))return;
-  downloading=k;refresh();const started=Date.now();
+  downloading=k;downloadOwner=userId;refresh();const started=Date.now();
   downloadTimer=setInterval(()=>{document.querySelectorAll(".ul-download-progress").forEach(el=>{if(downloading===k)el.textContent="Descargando · "+Math.max(0,60-Math.floor((Date.now()-started)/1000))+" s";});},1000);
-  setTimeout(()=>{clearInterval(downloadTimer);downloading=null;installed.add(k);save();renderLibrary();refresh();notify("Tu juego ha sido descargado");},60000);
+  downloadTimeout=setTimeout(()=>{clearInterval(downloadTimer);downloadTimer=null;downloadTimeout=null;
+   if(!userId||userId!==downloadOwner){downloading=null;downloadOwner=null;refresh();return;}
+   installed.add(k);downloading=null;downloadOwner=null;save();renderLibrary();refresh();notify("Tu juego ha sido descargado");
+  },60000);
  }
- window.addEventListener("universe-auth-change",e=>{userId=e.detail?.session?.user?.id||null;installed.clear();if(userId){try{JSON.parse(localStorage.getItem("universe-installed-games:"+userId)||"[]").forEach(k=>{if(games[k])installed.add(k);});}catch{}}renderLibrary();refresh();});
+ window.addEventListener("universe-auth-change",e=>{
+  const nextUserId=e.detail?.session?.user?.id||null;
+  if(nextUserId!==userId){
+   if(downloadTimer)clearInterval(downloadTimer);
+   if(downloadTimeout)clearTimeout(downloadTimeout);
+   downloadTimer=null;downloadTimeout=null;downloading=null;downloadOwner=null;
+  }
+  userId=nextUserId;installed.clear();
+  if(userId){try{JSON.parse(localStorage.getItem("universe-installed-games:"+userId)||"[]").forEach(k=>{if(games[k])installed.add(k);});}catch{}}
+  renderLibrary();refresh();
+ });
  const observer=new MutationObserver(refresh);observer.observe(document.getElementById("ulhExplore")||home,{childList:true,subtree:true});
  renderLibrary();refresh();
 })();
