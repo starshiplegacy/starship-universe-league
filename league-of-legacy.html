@@ -12,7 +12,7 @@
 <div class="scene" id="scene"></div><div class="veil"></div>
 <header><div class="brand">STARSHIP LEGACY ENTERTAINMENT<small>UNIVERSE LEAGUE · INTERACTIVE WORLDS</small></div><div class="top-actions"><button id="backButton" type="button">← VOLVER</button><button id="soundButton" type="button">SONIDO: OFF</button></div></header>
 <main class="content"><div class="eyebrow">05 VS 05 · MULTIPLAYER BATTLE ARENA</div><h1>LEAGUE <span>OF LEGACY</span></h1><div class="subtitle">THE BATTLE BEGINS HERE</div><p class="description">Reúne a tu equipo, domina el campo de batalla y convierte a los Shadowmonters en aliados. Elige tu siguiente paso.</p><div class="menu"><button class="action primary" id="playButton" type="button" disabled>JUGAR <span>→</span></button><button class="action" id="characterButton" type="button">PERSONAJE <span>✦</span></button><button class="action" id="optionsButton" type="button">OPCIONES <span>⚙</span></button></div></main>
-<aside class="character-tools" id="characterTools"><strong>PERSONAJE DESTACADO</strong><div style="font-size:13px">CHARLOTTE</div><label for="animationSelect">Animación de muestra</label><select id="animationSelect"><option value="">Cargando animaciones…</option></select></aside>
+<aside class="character-tools" id="characterTools"><strong>PERSONAJE DESTACADO</strong><label for="characterSelect">Personaje</label><select id="characterSelect"><option value="Charlotte">Charlotte</option><option value="Arthur">Arthur</option><option value="Bella">Bella</option></select><label for="animationSelect">Animación de muestra</label><select id="animationSelect"><option value="">Cargando animaciones…</option></select></aside>
 <div class="footer"><span>LEAGUE OF LEGACY</span><span>CHARLOTTE · CHARACTER PREVIEW</span></div>
 <div class="loading" id="loading">PREPARANDO LEAGUE OF LEGACY<small id="loadDetail">Cargando a Charlotte…</small></div><div class="notice" id="notice" role="status"></div>
 <script type="module">
@@ -20,7 +20,8 @@ import * as THREE from "three";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import {MeshoptDecoder} from "three/addons/libs/meshopt_decoder.module.js";
-const sceneRoot=document.getElementById("scene"),loading=document.getElementById("loading"),loadDetail=document.getElementById("loadDetail"),notice=document.getElementById("notice"),select=document.getElementById("animationSelect");
+import {DRACOLoader} from "three/addons/loaders/DRACOLoader.js";
+const sceneRoot=document.getElementById("scene"),loading=document.getElementById("loading"),loadDetail=document.getElementById("loadDetail"),notice=document.getElementById("notice"),select=document.getElementById("animationSelect"),characterSelect=document.getElementById("characterSelect");
 const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x101b2b,14,42);
 const camera=new THREE.PerspectiveCamera(32,innerWidth/innerHeight,.1,100);camera.position.set(0,2.2,8.5);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;sceneRoot.appendChild(renderer.domElement);
@@ -30,26 +31,34 @@ const key=new THREE.DirectionalLight(0xffe3b5,3.2);key.position.set(4,7,5);scene
 const rim=new THREE.DirectionalLight(0x75a9ff,2.4);rim.position.set(-5,3,-4);scene.add(rim);
 const floor=new THREE.Mesh(new THREE.CircleGeometry(5,80),new THREE.MeshStandardMaterial({color:0x111d2b,metalness:.45,roughness:.7}));floor.rotation.x=-Math.PI/2;floor.position.y=-.03;scene.add(floor);
 const ring=new THREE.Mesh(new THREE.RingGeometry(2.2,2.23,96),new THREE.MeshBasicMaterial({color:0xc9a96b,transparent:true,opacity:.65,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.005;scene.add(ring);
-let mixer=null,activeAction=null,model=null,clock=new THREE.Clock();
+let mixer=null,activeAction=null,model=null,modelObject=null,clock=new THREE.Clock(),loadToken=0;
 function showNotice(message){notice.textContent=message;notice.classList.add("show");setTimeout(()=>notice.classList.remove("show"),4500)}
 function playAnimation(name){if(!mixer||!model)return;const clip=THREE.AnimationClip.findByName(model.animations,name)||model.animations.find(c=>c.name===name);if(!clip)return;if(activeAction)activeAction.fadeOut(.2);activeAction=mixer.clipAction(clip);activeAction.reset().fadeIn(.2).play()}
-try{
- const loader=new GLTFLoader();loader.setMeshoptDecoder(MeshoptDecoder);
- const gltf=await loader.loadAsync("./assets/league-of-legacy/characters/charlotte.glb",event=>{if(event.total)loadDetail.textContent="Cargando modelo · "+Math.round(event.loaded/event.total*100)+"%";});
- model=gltf;const object=gltf.scene;scene.add(object);
- const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
- object.position.x-=center.x;object.position.z-=center.z;object.position.y-=box.min.y;
- const maxDim=Math.max(size.x,size.y,size.z);const scale=3.15/Math.max(maxDim,.001);object.scale.setScalar(scale);
- const scaledBox=new THREE.Box3().setFromObject(object);controls.target.set(0,scaledBox.getSize(new THREE.Vector3()).y*.48,0);camera.position.set(0,scaledBox.getSize(new THREE.Vector3()).y*.5,Math.max(5,scaledBox.getSize(new THREE.Vector3()).y*2.7));controls.update();
- mixer=new THREE.AnimationMixer(object);
- const clips=gltf.animations||[];select.innerHTML="";
- clips.forEach((clip,index)=>{const option=document.createElement("option");option.value=clip.name;option.textContent=clip.name;select.appendChild(option)});
- const preferred=["Idle1_Base1","Idle_In","Idle_Var2","Idle_Var2","run"];
- const initial=preferred.find(name=>clips.some(clip=>clip.name===name))||clips[0]?.name;
- if(initial){select.value=initial;playAnimation(initial)}
- select.addEventListener("change",()=>playAnimation(select.value));
- loadDetail.textContent=clips.length+" animaciones disponibles";loading.hidden=true;
-}catch(error){console.error(error);loadDetail.textContent="No se pudo cargar Charlotte. Comprueba que el archivo GLB esté en assets/league-of-legacy/characters/.";showNotice("El menú abrió, pero falta el modelo Charlotte o no se pudo decodificar.");setTimeout(()=>loading.hidden=true,1800)}
+const loader=new GLTFLoader();
+const dracoLoader=new DRACOLoader();dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");
+loader.setDRACOLoader(dracoLoader);loader.setMeshoptDecoder(MeshoptDecoder);
+async function loadCharacter(name){
+ const token=++loadToken;loading.hidden=false;loadDetail.textContent="Cargando "+name+"…";
+ if(activeAction){activeAction.stop();activeAction=null;}if(mixer){mixer.stopAllAction();mixer=null;}
+ if(modelObject){scene.remove(modelObject);modelObject=null;}
+ select.innerHTML="";select.disabled=true;
+ try{
+  const gltf=await loader.loadAsync("./assets/league-of-legacy/characters/"+name.toLowerCase()+".glb",event=>{if(token===loadToken&&event.total)loadDetail.textContent="Cargando "+name+" · "+Math.round(event.loaded/event.total*100)+"%";});
+  if(token!==loadToken)return;
+  model=gltf;modelObject=gltf.scene;scene.add(modelObject);
+  const box=new THREE.Box3().setFromObject(modelObject),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+  modelObject.position.x-=center.x;modelObject.position.z-=center.z;modelObject.position.y-=box.min.y;
+  const maxDim=Math.max(size.x,size.y,size.z);modelObject.scale.setScalar(3.15/Math.max(maxDim,.001));
+  const scaledBox=new THREE.Box3().setFromObject(modelObject);controls.target.set(0,scaledBox.getSize(new THREE.Vector3()).y*.48,0);camera.position.set(0,scaledBox.getSize(new THREE.Vector3()).y*.5,Math.max(5,scaledBox.getSize(new THREE.Vector3()).y*2.7));controls.update();
+  const clips=gltf.animations||[];select.innerHTML="";
+  if(clips.length){clips.forEach(clip=>{const option=document.createElement("option");option.value=clip.name;option.textContent=clip.name;select.appendChild(option)});mixer=new THREE.AnimationMixer(modelObject);const preferred=["Idle1_Base1","Idle_In","Idle_Var2","Default","run"];const initial=preferred.find(n=>clips.some(clip=>clip.name===n))||clips[0].name;select.value=initial;playAnimation(initial);select.disabled=false;loadDetail.textContent=clips.length+" animación(es) disponibles";}
+  else{const option=document.createElement("option");option.value="";option.textContent="Modelo estático · sin animaciones";select.appendChild(option);loadDetail.textContent="Modelo cargado · sin animaciones incluidas";}
+  loading.hidden=true;
+ }catch(error){if(token!==loadToken)return;console.error(error);loadDetail.textContent="No se pudo cargar "+name+". Comprueba que el GLB esté en assets/league-of-legacy/characters/.";showNotice("Falta el modelo "+name+" o no se pudo decodificar.");setTimeout(()=>{if(token===loadToken)loading.hidden=true;},1800);}
+}
+characterSelect.addEventListener("change",()=>loadCharacter(characterSelect.value));
+select.addEventListener("change",()=>playAnimation(select.value));
+loadCharacter(characterSelect.value);
 document.getElementById("backButton").addEventListener("click",()=>location.href="./index.html");
 document.getElementById("playButton").addEventListener("click",()=>showNotice("El modo de partida todavía no está conectado."));
 document.getElementById("characterButton").addEventListener("click",()=>{document.getElementById("characterTools").hidden=!document.getElementById("characterTools").hidden});
