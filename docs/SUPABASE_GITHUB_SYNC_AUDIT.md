@@ -52,3 +52,10 @@ Identify and connect the Supabase project whose ref is `wvyveduslbsuvyekeccf`, o
 - A migration in GitHub is not considered applied until its version is confirmed in Supabase migration history.
 - A Supabase change is not considered reproducible until its migration is committed to GitHub.
 - Never use the music/catalog Supabase project for this game.
+
+
+## Configuration cleanup
+
+The current public URL and publishable key were centralized in `supabase-config.js`; `index.html` and `lyrielife.html` now read that shared configuration. The target remains `wvyveduslbsuvyekeccf` and is still unverified. No project switch was made.
+
+The scheduled GitHub audit checks local assets, model/world/video paths, project-ref consistency, Auth health, and REST table exposure when Actions settings are configured. It intentionally does not enumerate Storage buckets with a browser publishable key; Storage inventory and object policies remain a manual Supabase dashboard check until a safe, narrowly scoped monitoring mechanism is designed.
