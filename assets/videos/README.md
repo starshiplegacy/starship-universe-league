@@ -1,11 +1,11 @@
-# Video assets for the universal launcher
+# Video assets
 
-Upload the original MP4 files here, preserving these exact filenames:
+Place the original MP4 files in this directory, preserving the exact filenames:
 
 - `UNIVERSE LEAGUE (Opening).mp4`
 - `Lyrie Loanding.mp4`
 - `Loading 01.mp4`
 
-The shared launch order and playback requirements are documented in [UNIVERSE_LAUNCH_SEQUENCE.md](../../docs/UNIVERSE_LAUNCH_SEQUENCE.md).
+The first file is shared by all games. Each launch flow plays it once, then plays the selected game's loading video. The final destination is The LyrieLife menu or `league-of-legacy.html` for League Of Legacy.
 
-Do not replace the shared Opening with a game-specific clip. The common launcher must play it before the selected game's own loading video.
+The original video files are included in the prepared binary-assets package; publish them here without renaming or re-encoding.
