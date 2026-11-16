@@ -1,13 +1,20 @@
 # League Of Legacy — personajes 3D
 
-Copia los modelos originales en esta carpeta con estos nombres exactos:
+Los ocho modelos GLB se encuentran publicados en esta carpeta. Los nombres son sensibles a mayúsculas/minúsculas y deben coincidir exactamente con las opciones del selector:
 
-- `charlotte.glb` — personaje riggeado, 56 animaciones, compresión Meshopt.
-- `arthur.glb` — personaje riggeado, animación `Default`, compresión Draco.
-- `bella.glb` — modelo estático, sin rig ni animaciones.
+| Archivo | Selector |
+|---|---|
+| `Charlotte.glb` | Charlotte |
+| `Arthur.glb` | Arthur |
+| `Bella.glb` | Bella |
+| `Emma.glb` | Emma |
+| `Aquamarine.glb` | Aquamarine |
+| `Opal (Opalo).glb` | Opal (Opalo) |
+| `Optopool.glb` | Optopool |
+| `Stella.glb` | Stella |
 
-El menú `league-of-legacy.html` los carga desde estas rutas y ofrece un selector de personaje. La lista de animaciones se adapta al modelo seleccionado.
+El menú `league-of-legacy.html` construye la ruta `./assets/league-of-legacy/characters/<nombre>.glb` a partir del selector. Por eso se conserva la capitalización exacta de cada archivo.
 
-Los tres archivos ya están en GLB 2.0 y contienen sus imágenes/texturas. No se necesita conversión FBX ni extracción manual de texturas. El visor utiliza Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`.
+El visor usa Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`. Los tres modelos originales Charlotte, Arthur y Bella tienen detalles de compresión/animación documentados en el inventario; no asumir que todos los demás modelos tienen el mismo rig, compresión o animaciones hasta inspeccionarlos individualmente.
 
-**Separación de proyectos:** estos modelos son recursos de League Of Legacy. No deben copiarse a `CUL_CAS` ni tratarse como avatares de The LyrieLife.
+**Separación de proyectos:** estos modelos pertenecen a League Of Legacy. No copiarlos a CAL/CUL ni tratarlos como avatares de The LyrieLife.
