@@ -16,7 +16,7 @@ Los siguientes hashes SHA-256 identifican los archivos originales recibidos. Ver
 |---|---|---:|---|
 | UNIVERSE LEAGUE (Opening).mp4 | `assets/videos/UNIVERSE LEAGUE (Opening).mp4` | 18,943,484 bytes | `3aa4f9ae5d6e919fbf26ecc211357eb8d75aa93b944dbf1dd70e7dd269f03279` |
 | Lyrie Loanding.mp4 | `assets/videos/Lyrie Loanding.mp4` | 14,254,188 bytes | `247cfe15cd1c496474ca47af7836542841abc0c64cb3909e32028256ef3c2897` |
-| Loading 01.mp4 | `assets/videos/Loading 01.mp4` | 62,677,256 bytes | `ad3981c500dbcf3fd3d16ddc411ed9d95a53c094da27e57fe300d77d6efe1b85` |
+| Loading LOL.mp4 | `assets/videos/Loading LOL.mp4` | 62,677,256 bytes | `ad3981c500dbcf3fd3d16ddc411ed9d95a53c094da27e57fe300d77d6efe1b85` |
 
 ## Fuente de The LyrieLife
 
@@ -24,7 +24,7 @@ Los siguientes hashes SHA-256 identifican los archivos originales recibidos. Ver
 
 ## Estado
 
-Los cambios de código y documentación están publicados en el repositorio. Los seis binarios originales de arriba están localizados individualmente en Library y sus SHA-256 coinciden con el inventario, pero todavía no están dentro del historial de GitHub. No se localizó un ZIP único de esos seis archivos en el inventario de Library revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en Library durante esta revisión.
+Los cambios de código y documentación están publicados en el repositorio. Los seis binarios originales de arriba están localizados individualmente en Library y sus SHA-256 coinciden con el inventario, y ahora están presentes en el árbol de GitHub. No se localizó un ZIP único de esos seis archivos en el inventario de Library revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en Library durante esta revisión.
 
 
 ## Portadas y fondos visuales localizados en Library
