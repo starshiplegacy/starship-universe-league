@@ -103,8 +103,8 @@ async function loadMap(modeId){
     "FtC_POI_Diff_A.SR_Worlds_MapsMountainConversion.dds",
     "Worlds_Trophy_TX_CM.SR_Worlds_MapsMountainConversion.dds"
    ]);
-   mtlText=mtlText.replace(/^map_Kd\\s+(.+)$/gm,(line,raw)=>{
-    const basename=raw.trim().split(/[\\\\/]/).pop();
+   mtlText=mtlText.replace(/^map_Kd\s+(.+)$/gm,(line,raw)=>{
+    const basename=raw.trim().replace(/\\/g,"/").split("/").pop();
     return unavailableTextures.has(basename)?"# Missing source texture: "+basename:"map_Kd Textures/"+basename;
    });
    const mtlLoader=new MTLLoader(manager);
