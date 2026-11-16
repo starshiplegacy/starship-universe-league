@@ -121,3 +121,14 @@ Se incorporó `map-registry.js` como fuente única de asignación de modos a map
 **Hallazgo de licencia:** `Versus 1 to 3/LICENSE.txt` identifica el asset de Omeleto/Thingiverse como Creative Commons Attribution–Non-Commercial. No debe publicarse ni utilizarse comercialmente hasta obtener autorización comercial o sustituirlo por un modelo con licencia compatible.
 
 El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni objetivos. La presencia de GLB no equivale a mapa listo para partidas.
+
+
+## 12. Integración inicial del selector y visor de mapas — 16 noviembre 2026
+
+- `game-modes.html` implementa selector de modos y vista previa 3D con Three.js.
+- `league-of-legacy.html` conecta JUGAR con el selector.
+- `map-registry.js` identifica mapa y ruleset por separado.
+- GLB: Versus 4 to 5 y Entrenamiento conectados al cargador de vista previa.
+- Summoner's Rift: cargador OBJ/MTL/DDS; se añade `runtime/SummonersRift.runtime.mtl` con rutas locales, sin modificar el MTL original. Dos referencias DDS no están en el árbol y se comentan en el MTL de runtime.
+- Versus 1 to 3 sigue bloqueado por licencia CC BY-NC.
+- La integración no añade física, colisiones, spawn points ni lógica de partidas.
