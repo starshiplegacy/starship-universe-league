@@ -83,7 +83,7 @@ async function loadMap(modeId){
  if(activeMap){disposeObject(activeMap);activeMap=null}
  if(!info.canLoadPreview){
    status.textContent=map.runtimeStatus==="blocked-license-review"
-    ?"BLOQUEADO: la licencia incluida es CC BY-NC (no comercial). Se necesita autorización compatible antes de habilitar este escenario."
+    ?"BLOQUEADO POR LICENCIA: "+(map.license||map.notes)+" Se requiere autorización escrita antes de habilitar este escenario."
     :"Este formato aún no está habilitado para vista previa.";
    return;
  }
