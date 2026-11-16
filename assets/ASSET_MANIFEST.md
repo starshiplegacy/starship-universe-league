@@ -72,3 +72,17 @@ El archivo fuente comprimido de The LyrieLife se menciona en documentación ante
 - Ejecutar python scripts/repo_audit.py para comprobar referencias locales, los ocho modelos, cuatro mundos y tres vídeos.
 - GitHub blob SHA identifica la versión de cada archivo en Git; SHA-256 debe calcularse sobre los bytes originales para validar integridad entre Library, GitHub y cualquier almacenamiento externo.
 - Registrar en este manifiesto toda alta, sustitución, conversión o movimiento de assets.
+
+
+## 8. Nuevos recursos visuales — revisión 16 de noviembre de 2026
+
+Los cuatro JPG siguientes se encontraron en sus carpetas finales y están registrados en GitHub. Los ICON se usan en tarjetas, catálogo y vistas compactas; los Poster se muestran en el diálogo PLAY, antes del botón INICIAR y de la información.
+
+| Recurso | Ruta publicada | Tamaño | Git blob SHA |
+|---|---|---:|---|
+| The LyrieLife ICON | `assets/The-LyrieLife/images/The LyrieLife (ICON).jpg` | 444000 bytes | `13244858bcffd5785238fa6a4cf246aaac753f6b` |
+| The LyrieLife Poster | `assets/The-LyrieLife/images/The LyrieLife (Postel).jpg` | 101076 bytes | `4e15439728a1e71dc19c9ab11d831cdf452e35e5` |
+| League Of Legacy ICON | `assets/league-of-legacy/images/League Of Legacy (ICON).jpg` | 121194 bytes | `8a5e746d6c8ed2c560493a799b8e1951d53a8058` |
+| League Of Legacy Poster | `assets/league-of-legacy/images/League Of Legends (Postel).jpg` | 125419 bytes | `11309539dd8ba6059760476850b91c74dde1ffea` |
+
+**Pendiente de normalización:** los dos nombres de Poster conservan el error tipográfico original `Postel`; el de League Of Legacy también dice `Legends`. Se referencian con sus nombres reales para no romper las rutas ni recrear binarios. Se recomienda renombrarlos cuando se disponga de una operación binaria segura.
