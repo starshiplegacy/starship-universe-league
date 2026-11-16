@@ -259,16 +259,14 @@ document.getElementById("lyrieMenuExit")?.addEventListener("click",()=>lyrieMain
 lyrieMainMenu?.addEventListener("click",event=>{if(event.target===lyrieMainMenu)lyrieMainMenu.close();});
 lyrieMainMenu?.querySelectorAll("[data-lyrie-action]").forEach(button=>button.addEventListener("click",()=>{
   const action=button.dataset.lyrieAction;
-  let hasSave=false;
-  try{hasSave=Boolean(localStorage.getItem("ul_partida"));}catch{}
-  const messages={
-    resume:hasSave?"Cargando partida…":"No hay partida guardada.",
-    scenario:"Play Scenario — próximamente",
-    load:hasSave?"Cargando partida…":"No hay partidas guardadas.",
-    new:"New Game — próximamente",
-    gallery:"Gallery — próximamente",
-    options:"Options — próximamente"
-  };
+  const playableActions=["resume","load","new","scenario"];
+  if(playableActions.includes(action)){
+    const mode=action==="new"?"new":"resume";
+    if(lyrieMenuFeedback)lyrieMenuFeedback.textContent=mode==="new"?"Creando una nueva partida…":"Abriendo tu mundo guardado…";
+    window.location.href="./lyrielife.html?mode="+mode;
+    return;
+  }
+  const messages={gallery:"Gallery — próximamente",options:"Options — próximamente"};
   if(lyrieMenuFeedback)lyrieMenuFeedback.textContent=messages[action]||"Próximamente";
 }));
 gameDialog.addEventListener("click", event => {
