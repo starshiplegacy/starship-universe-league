@@ -1,7 +1,7 @@
 (() => {
   const DB_NAME = "starship-universe-save-system";
   const STORE = "game-saves";
-  const ALLOWED = new Set(["jaque-matte", "pixxy-up"]);
+  const ALLOWED = new Set(["jaque-matte", "pixxy-up", "the-lyrielife"]);
   let client = null;
   let userId = null;
   const pending = new Map();
