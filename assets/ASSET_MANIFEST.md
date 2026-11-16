@@ -24,7 +24,7 @@ Los siguientes hashes SHA-256 identifican los archivos originales recibidos. Ver
 
 ## Estado
 
-Los cambios de código y documentación están publicados en el repositorio. Los seis binarios de arriba están preparados en un paquete ZIP, pero aún no están dentro del historial de GitHub. El archivo fuente de The LyrieLife se entrega aparte.
+Los cambios de código y documentación están publicados en el repositorio. Los seis binarios originales de arriba están localizados individualmente en Library y sus SHA-256 coinciden con el inventario, pero todavía no están dentro del historial de GitHub. No se localizó un ZIP único de esos seis archivos en el inventario de Library revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en Library durante esta revisión.
 
 
 ## Portadas y fondos visuales localizados en Library
