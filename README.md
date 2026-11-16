@@ -49,6 +49,8 @@ Los originales propietarios y formatos como `.package`, `.world`, `.layer`, `.bl
 
 ## Backend y sincronización
 
+- La configuración pública compartida está centralizada en `supabase-config.js`; `index.html` y `lyrielife.html` la consumen para evitar URLs/keys duplicadas.
+
 - GitHub es la fuente de verdad del código, migraciones, documentación y assets estáticos.
 - Supabase es la fuente de verdad de Auth, datos dinámicos, partidas en la nube y contenido de comunidad.
 - La identidad del proyecto Supabase canónico aún debe confirmarse: el frontend apunta a `wvyveduslbsuvyekeccf`, mientras que los dos proyectos disponibles en las conexiones no coinciden.
