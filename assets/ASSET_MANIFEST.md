@@ -135,3 +135,6 @@ El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni
 
 
 **Revisión de propiedad intelectual:** la política oficial de Riot Games incluye los mapas entre sus recursos protegidos y restringe su uso en juegos/aplicaciones sin autorización aplicable. Summoner's Rift queda bloqueado en el registro. Fuente: https://www.riotgames.com/es-419/informacion-legal
+
+
+**Control de licencias:** el registro ahora exige `licenseStatus: "cleared"` para habilitar cualquier vista previa. Los mapas sin licencia verificada quedan bloqueados aunque exista un cargador compatible.
