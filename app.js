@@ -548,10 +548,41 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  const home=document.getElementById("privateHome");if(!home)return;
  const grid=document.getElementById("ulhInstalledGrid"),count=document.getElementById("ulhInstalledCount");
  const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/the-lyrielife-cover.jpg",fallback:"./assets/the-lyrielife-poster.svg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy-cover.png",fallback:"./assets/league-of-legacy-poster.svg"}};
- let userId=null,installed=new Set(),downloading=null,downloadTimer=null,downloadTimeout=null,downloadOwner=null;
+ let userId=null,installed=new Set(),downloading=null,downloadTimer=null,downloadOwner=null,downloadRemaining=60,downloadLastTick=0;
  const toast=document.createElement("div");toast.className="ulh-toast";toast.setAttribute("role","status");toast.setAttribute("aria-live","polite");document.body.appendChild(toast);
  let toastTimer;function notify(m){toast.textContent=m;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),3500);}
  function save(){if(userId)localStorage.setItem("universe-installed-games:"+userId,JSON.stringify([...installed]));}
+ function stopDownloadClock(){if(downloadTimer)clearInterval(downloadTimer);downloadTimer=null;downloadLastTick=0;}
+ function updateDownloadProgress(){
+  if(!downloading)return;
+  document.querySelectorAll(".ul-download-progress").forEach(el=>{
+   const card=el.closest(".ulx-game,.ulh-catalog-card");
+   const cardKey=card?.dataset.openGame||card?.querySelector("[data-open-game]")?.dataset.openGame;
+   if(cardKey===downloading)el.textContent=navigator.onLine?"Descargando · "+downloadRemaining+" s":"En pausa · Sin conexión";
+  });
+ }
+ function finishDownload(){
+  const key=downloading,owner=downloadOwner;
+  stopDownloadClock();
+  if(!key)return;
+  if(!userId||userId!==owner){downloading=null;downloadOwner=null;refresh();return;}
+  installed.add(key);downloading=null;downloadOwner=null;downloadRemaining=60;
+  save();renderLibrary();refresh();notify("Tu juego ha sido descargado");
+ }
+ function startDownloadClock(){
+  stopDownloadClock();
+  if(!downloading||!navigator.onLine){updateDownloadProgress();return;}
+  downloadLastTick=Date.now();
+  downloadTimer=setInterval(()=>{
+   if(!downloading||!navigator.onLine)return;
+   const now=Date.now(),elapsed=Math.floor((now-downloadLastTick)/1000);
+   if(elapsed<1)return;
+   downloadLastTick+=elapsed*1000;
+   downloadRemaining=Math.max(0,downloadRemaining-elapsed);
+   updateDownloadProgress();
+   if(downloadRemaining===0)finishDownload();
+  },250);
+ }
  function renderSidebar(list){
   const side=document.getElementById("ulhSidebarInstalledList"),status=document.getElementById("ulhSidebarStatus");
   if(side)side.innerHTML=list.length?list.map(k=>'<a class="ulh-installed" href="#ulh-library" data-sidebar-game="'+k+'"><span class="ulh-mini">'+(k==="lyrie"?"💎":"⚔")+'</span> '+games[k].name+'</a>').join(""):'<p class="ulh-sidebar-empty">Aún no tienes juegos instalados.</p>';
@@ -592,20 +623,38 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   document.querySelectorAll(".ulx-game[data-open-game],.ulh-catalog-card [data-open-game]").forEach(n=>updateCard(n.matches(".ulx-game")?n:n.closest(".ulh-catalog-card"),n.dataset.openGame));
  }
  function start(k){
-  if(!userId){notify("Inicia sesión para descargar juegos.");return;}if(downloading||installed.has(k))return;
-  downloading=k;downloadOwner=userId;refresh();const started=Date.now();
-  downloadTimer=setInterval(()=>{document.querySelectorAll(".ul-download-progress").forEach(el=>{const card=el.closest(".ulx-game,.ulh-catalog-card");const cardKey=card?.dataset.openGame||card?.querySelector("[data-open-game]")?.dataset.openGame;if(cardKey===k&&downloading===k)el.textContent="Descargando · "+Math.max(0,60-Math.floor((Date.now()-started)/1000))+" s";});},1000);
-  downloadTimeout=setTimeout(()=>{clearInterval(downloadTimer);downloadTimer=null;downloadTimeout=null;
-   if(!userId||userId!==downloadOwner){downloading=null;downloadOwner=null;refresh();return;}
-   installed.add(k);downloading=null;downloadOwner=null;save();renderLibrary();refresh();notify("Tu juego ha sido descargado");
-  },60000);
+  if(!navigator.onLine){notify("Necesitas conexión a internet para descargar un juego.");return;}
+  if(!userId){notify("Inicia sesión para descargar juegos.");return;}
+  if(downloading||installed.has(k))return;
+  downloading=k;downloadOwner=userId;downloadRemaining=60;refresh();startDownloadClock();updateDownloadProgress();
  }
+ window.addEventListener("beforeunload",event=>{
+  if(!downloading)return;
+  event.preventDefault();event.returnValue="";
+ });
+ document.addEventListener("click",event=>{
+  if(!downloading)return;
+  const link=event.target.closest("a[href]");
+  if(!link)return;
+  const destination=new URL(link.href,window.location.href);
+  const leavesPage=destination.origin!==window.location.origin||destination.pathname!==window.location.pathname;
+  if(leavesPage){
+   event.preventDefault();event.stopImmediatePropagation();
+   notify("Descarga en curso. No puedes salir de Universe League hasta que termine.");
+  }
+ },true);
+ window.addEventListener("offline",()=>{
+  if(!downloading)return;
+  stopDownloadClock();updateDownloadProgress();notify("Conexión perdida. La descarga está pausada y continuará al volver internet.");
+ });
+ window.addEventListener("online",()=>{
+  if(!downloading)return;
+  startDownloadClock();updateDownloadProgress();notify("Conexión recuperada. La descarga continúa.");
+ });
  window.addEventListener("universe-auth-change",e=>{
   const nextUserId=e.detail?.session?.user?.id||null;
   if(nextUserId!==userId){
-   if(downloadTimer)clearInterval(downloadTimer);
-   if(downloadTimeout)clearTimeout(downloadTimeout);
-   downloadTimer=null;downloadTimeout=null;downloading=null;downloadOwner=null;
+   stopDownloadClock();downloading=null;downloadOwner=null;downloadRemaining=60;
   }
   userId=nextUserId;installed.clear();
   if(userId){try{JSON.parse(localStorage.getItem("universe-installed-games:"+userId)||"[]").forEach(k=>{if(games[k])installed.add(k);});}catch{}}
