@@ -81,8 +81,8 @@ Los cuatro JPG siguientes se encontraron en sus carpetas finales y están regist
 | Recurso | Ruta publicada | Tamaño | Git blob SHA |
 |---|---|---:|---|
 | The LyrieLife ICON | `assets/The-LyrieLife/images/The LyrieLife (ICON).jpg` | 444000 bytes | `13244858bcffd5785238fa6a4cf246aaac753f6b` |
-| The LyrieLife Poster | `assets/The-LyrieLife/images/The LyrieLife (Postel).jpg` | 101076 bytes | `4e15439728a1e71dc19c9ab11d831cdf452e35e5` |
+| The LyrieLife Poster | `assets/The-LyrieLife/images/The LyrieLife (Poster).jpg` | 101076 bytes | `4e15439728a1e71dc19c9ab11d831cdf452e35e5` |
 | League Of Legacy ICON | `assets/league-of-legacy/images/League Of Legacy (ICON).jpg` | 121194 bytes | `8a5e746d6c8ed2c560493a799b8e1951d53a8058` |
-| League Of Legacy Poster | `assets/league-of-legacy/images/League Of Legends (Postel).jpg` | 125419 bytes | `11309539dd8ba6059760476850b91c74dde1ffea` |
+| League Of Legacy Poster | `assets/league-of-legacy/images/League Of Legacy (Poster).jpg` | 125419 bytes | `11309539dd8ba6059760476850b91c74dde1ffea` |
 
-**Pendiente de normalización:** los dos nombres de Poster conservan el error tipográfico original `Postel`; el de League Of Legacy también dice `Legends`. Se referencian con sus nombres reales para no romper las rutas ni recrear binarios. Se recomienda renombrarlos cuando se disponga de una operación binaria segura.
+Los nombres se normalizaron en Git conservando exactamente los mismos blobs binarios: `The LyrieLife (Poster).jpg` y `League Of Legacy (Poster).jpg`.
