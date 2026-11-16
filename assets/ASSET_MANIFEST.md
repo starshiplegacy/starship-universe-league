@@ -105,3 +105,19 @@ La estructura incluye `For BAttle Royale & De Clasificatoria/SummonersRift/` con
 ## 10. Limpieza de carpetas visuales vacías
 
 Se retiraron los placeholders `.gitkeep` de las antiguas carpetas `icons/` e `illustrations/` de The LyrieLife, y de las carpetas visuales compartidas vacías. Los recursos visuales de cada juego quedan centralizados en su carpeta `images/`, sin subcarpetas.
+
+## 11. Registro de modos y mapas — revisión 16 de noviembre de 2026
+
+Se incorporó `map-registry.js` como fuente única de asignación de modos a mapas. La matriz completa está en `docs/MAP_MODE_MATRIX.md`.
+
+| Modo | Mapa asignado | Archivo de entrada | Estado |
+|---|---|---|---|
+| Battle Royale | Summoner's Rift | `SummonersRift.obj` + MTL/DDS | Fuente; importador pendiente |
+| De Clasificatoria | Summoner's Rift | Mismo recurso | Fuente; reglas independientes |
+| Versus 1 to 3 | Mapa Versus 1 to 3 | `BeginningLobby.fbx` | Bloqueado para producción: licencia CC BY-NC |
+| Versus 4 to 5 | Mapa Versus 4 to 5 | `battle_guys_map_500th_model.glb` | Candidato a preview; validación pendiente |
+| Entrenamiento | Mapa de entrenamiento | `For_Training.glb` | Candidato a preview; validación pendiente |
+
+**Hallazgo de licencia:** `Versus 1 to 3/LICENSE.txt` identifica el asset de Omeleto/Thingiverse como Creative Commons Attribution–Non-Commercial. No debe publicarse ni utilizarse comercialmente hasta obtener autorización comercial o sustituirlo por un modelo con licencia compatible.
+
+El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni objetivos. La presencia de GLB no equivale a mapa listo para partidas.
