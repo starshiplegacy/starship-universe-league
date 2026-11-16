@@ -335,6 +335,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   $("showLogin").addEventListener("click",()=>setMode("login"));
   $("welcomeLogin")?.addEventListener("click",()=>{setMode("login");dialog.showModal();});
   $("welcomeRegister")?.addEventListener("click",()=>{setMode("register");dialog.showModal();});
+  $("publicProfile")?.addEventListener("click",()=>{setMode("login");dialog.showModal();});
   document.querySelectorAll("[data-welcome-theme]").forEach(button=>button.addEventListener("click",()=>{
     if(!document.body.classList.contains("is-authenticated") && typeof window.applyUniverseTheme==="function"){
       window.applyUniverseTheme(button.dataset.welcomeTheme);
@@ -406,4 +407,15 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   setMode("login");
   const previousApplyLanguage=window.applyUniverseAuthLanguage;
   window.applyUniverseAuthLanguage=()=>setMode(mode);
+})();
+
+// Public landing page interactions
+(function(){
+  const track=document.getElementById("pl-carousel");
+  if(track){
+    const step=()=>{const card=track.querySelector("article");return card?card.getBoundingClientRect().width+20:320;};
+    document.getElementById("pl-next")?.addEventListener("click",()=>track.scrollBy({left:step(),behavior:"smooth"}));
+    document.getElementById("pl-prev")?.addEventListener("click",()=>track.scrollBy({left:-step(),behavior:"smooth"}));
+  }
+  document.getElementById("pl-top")?.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 })();
