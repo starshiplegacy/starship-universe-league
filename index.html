@@ -237,12 +237,23 @@
         <section class="ulh-view ulh-catalog-view" id="ulhCatalogView" hidden aria-labelledby="ulhCatalogTitle">
           <div class="ulh-page-heading"><div><span class="ulh-kicker">UNIVERSE LEAGUE STORE</span><h1 id="ulhCatalogTitle">Todos los juegos</h1><p>Explora el catálogo y encuentra tu próxima aventura.</p></div><button class="ulh-back-library" id="ulhBackLibrary" type="button">← Biblioteca</button></div>
           <div class="ulh-catalog-tabs" role="tablist" aria-label="Secciones del catálogo"><button class="active" type="button" role="tab" aria-selected="true" data-ulh-category="explore">Explorar</button><button type="button" role="tab" aria-selected="false" data-ulh-category="free">Gratis</button><button type="button" role="tab" aria-selected="false" data-ulh-category="buy">Cómpralo</button></div>
-          <div class="ulh-catalog-panel" id="ulhExplorePanel" role="tabpanel"><div class="ulh-catalog-grid">
-            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-rec-kataleya">🌿</div><div class="ulh-catalog-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kataleya World Pack</h3><p>Un mundo por descubrir.</p></div></article>
-            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-rec-kariskio">🌊</div><div class="ulh-catalog-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kariskio Coastal</h3><p>Escápate a la costa.</p></div></article>
-            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-rec-solnang">🏔️</div><div class="ulh-catalog-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Solnang Highlands</h3><p>Explora las montañas.</p></div></article>
+          <div class="ulh-catalog-panel" id="ulhExplorePanel" role="tabpanel"><div class="ulh-explore" id="ulhExplore">
+            <h2>Explorar</h2>
+            <div class="ulx-tabs" id="ulxTabs">
+              <button class="active" type="button" data-ulx-tab="todos">Todos los juegos</button>
+              <button type="button" data-ulx-tab="destacados">Juegos destacados</button>
+              <button type="button" data-ulx-tab="clasicos">Clásicos restaurados ya disponibles</button>
+            </div>
+            <div class="ulx-filters">
+              <div class="ulx-filter-wrap" data-ulx-filter="genero"><button class="ulx-filter" type="button"><span class="ulx-label">Géneros</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Todos</button><button type="button" data-value="Simulación">Simulación</button><button type="button" data-value="Batalla">Batalla</button><button type="button" data-value="Aventura">Aventura</button><button type="button" data-value="Estrategia">Estrategia</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="incluye"><button class="ulx-filter" type="button"><span class="ulx-label">Se incluye en…</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Universe Play">Universe Play</button><button type="button" data-value="Edición Deluxe">Edición Deluxe</button><button type="button" data-value="Pase de temporada">Pase de temporada</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="jugadores"><button class="ulx-filter" type="button"><span class="ulx-label">Jugadores</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Un jugador">Un jugador</button><button type="button" data-value="Multijugador">Multijugador</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="idioma"><button class="ulx-filter" type="button"><span class="ulx-label">Idiomas</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Español">Español</button><button type="button" data-value="Inglés">Inglés</button><button type="button" data-value="Coreano">Coreano</button></div></div>
+              <div class="ulx-filter-wrap ulx-sort" data-ulx-filter="orden"><button class="ulx-filter" type="button"><span class="ulx-label">Fecha de lanzamiento</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="reciente">Más recientes primero</button><button type="button" data-value="antiguo">Más antiguos primero</button><button type="button" data-value="az">Nombre (A–Z)</button></div></div>
+            </div>
+            <div class="ulx-grid" id="ulxGrid" aria-live="polite"></div>
           </div></div>
-          <div class="ulh-catalog-panel" id="ulhFreePanel" role="tabpanel"><div class="ulh-catalog-grid">
+          <div class="ulh-catalog-panel" id="ulhFreePanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
             <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-free-art">♟️</div><div class="ulh-catalog-copy"><span class="ulh-tag">FREE TO PLAY</span><h3>Jaque Matte</h3><p>Un juego gratuito para disfrutar en Universe League.</p><span class="ulh-price-free">Gratis</span></div></article>
           </div></div>
           <div class="ulh-catalog-panel" id="ulhBuyPanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
