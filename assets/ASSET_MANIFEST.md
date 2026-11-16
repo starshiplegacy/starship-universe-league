@@ -86,3 +86,22 @@ Los cuatro JPG siguientes se encontraron en sus carpetas finales y están regist
 | League Of Legacy Poster | `assets/league-of-legacy/images/League Of Legacy (Poster).jpg` | 125419 bytes | `11309539dd8ba6059760476850b91c74dde1ffea` |
 
 Los nombres se normalizaron en Git conservando exactamente los mismos blobs binarios: `The LyrieLife (Poster).jpg` y `League Of Legacy (Poster).jpg`.
+
+
+## 9. League Of Legacy — archivos de mapa incorporados
+
+La revisión del árbol de GitHub detectó **411 archivos** en `assets/league-of-legacy/Map/`, con un tamaño publicado agregado de aproximadamente **524.4 MB**:
+
+| Formato | Cantidad | Uso identificado |
+|---|---:|---|
+| DDS | 405 | Texturas del mapa |
+| OBJ | 2 | Geometría exportada |
+| MTL | 2 | Materiales asociados a OBJ |
+| C4D | 1 | Proyecto de Cinema 4D |
+| GLB | 1 | Escenario de entrenamiento |
+
+La estructura incluye `For BAttle Royale & De Clasificatoria/SummonersRift/` con `Source/` y `Textures/`, además de `For Training/For_Training.glb`. Los archivos se mantienen en sus formatos originales. Su presencia en el repositorio no significa que el mapa esté integrado en el motor ni listo para gameplay; todavía requiere validación de materiales, escalas, dependencias y rendimiento.
+
+## 10. Limpieza de carpetas visuales vacías
+
+Se retiraron los placeholders `.gitkeep` de las antiguas carpetas `icons/` e `illustrations/` de The LyrieLife, y de las carpetas visuales compartidas vacías. Los recursos visuales de cada juego quedan centralizados en su carpeta `images/`, sin subcarpetas.
