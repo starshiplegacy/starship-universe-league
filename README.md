@@ -8,7 +8,7 @@ Repositorio privado principal del universo de juegos de STARSHIP LEGACY ENTERTAI
 - Simulación de vida y prototipo de navegador en `lyrielife.html`.
 - Selector de mundos: `world-selection.html`.
 - Mundos fuente: `assets/The-LyrieLife/Worlds/` — Kataleya, Kariskio, Solnang y Abandoned Island.
-- CAL/CUL: `cal-cul.html` y `assets/cal-cul/`.
+- CAL/CUL: `cal-cul.html` y `assets/The-LyrieLife/CAL-CUL/`.
 - **Importante:** el prototipo actual representa los ambientes con CSS; todavía no importa ni interpreta el formato interno de los archivos `.world`.
 
 ### League Of Legacy
@@ -33,11 +33,11 @@ No renombrar estos archivos sin actualizar el lanzador y el manifiesto.
 assets/
   The-LyrieLife/
     Worlds/
+    images/  # ICON, Poster e imágenes del juego, sin subcarpetas
+    CAL-CUL/
     README.md
   league-of-legacy/
     characters/
-  cal-cul/
-    models/
   videos/
   ASSET_MANIFEST.md
 docs/
