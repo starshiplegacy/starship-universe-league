@@ -13,7 +13,7 @@ Repositorio privado principal del universo de juegos de STARSHIP LEGACY ENTERTAI
 
 ### League Of Legacy
 - Menú y visor 3D: `league-of-legacy.html`.
-- Ocho modelos GLB: `assets/league-of-legacy/characters/`.\n- Todos los recursos visuales (iconos, imágenes e ilustraciones) van directamente en `assets/league-of-legacy/images/`, sin subcarpetas. No crear `icons/` ni `illustrations/`.
+- Ocho modelos GLB: `assets/league-of-legacy/characters/`.\n- Mapa fuente: `assets/league-of-legacy/Map/` (Summoners Rift y escenario de entrenamiento; recursos fuente, aún no integrados al motor).\n- Todos los recursos visuales (iconos, imágenes e ilustraciones) van directamente en `assets/league-of-legacy/images/`, sin subcarpetas. No crear `icons/` ni `illustrations/`.
 - El selector usa los nombres exactos de archivo, incluida la capitalización.
 - El botón JUGAR permanece desactivado hasta que exista el sistema real de gameplay/multiplayer.
 
