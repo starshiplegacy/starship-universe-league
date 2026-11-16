@@ -96,6 +96,7 @@ export function getModeLaunchInfo(modeId) {
   return Object.freeze({
     mode, map,
     canLoadPreview: map.runtimeStatus === "preview-candidate" &&
+      map.licenseStatus === "cleared" &&
       (map.format === "glb" || map.format === "obj-mtl-dds")
   });
 }
