@@ -299,6 +299,8 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     document.body.classList.remove("auth-checking");
     const welcomeGate=$("welcomeGate");
     if(welcomeGate)welcomeGate.hidden=signedIn;
+    const privateHome=$("privateHome");
+    if(privateHome)privateHome.hidden=!signedIn;
     if(galleryOpen)galleryOpen.hidden=!signedIn;
     if(accountOpen)accountOpen.hidden=!signedIn;
     if(accessOpen)accessOpen.hidden=signedIn;
@@ -418,4 +420,23 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     document.getElementById("pl-prev")?.addEventListener("click",()=>track.scrollBy({left:-step(),behavior:"smooth"}));
   }
   document.getElementById("pl-top")?.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+})();
+
+// Authenticated Universe League Home interactions
+(function(){
+  const root=document.getElementById("privateHome");
+  if(!root)return;
+  const search=document.getElementById("ulhSearch"),empty=document.getElementById("ulhSearchEmpty");
+  search?.addEventListener("input",()=>{
+    const query=search.value.trim().toLocaleLowerCase();let visible=0;
+    root.querySelectorAll(".ulh-pack-card").forEach(card=>{const match=!query||(card.dataset.search+" "+card.textContent).toLocaleLowerCase().includes(query);card.hidden=!match;if(match)visible++;});
+    if(empty)empty.hidden=visible!==0;
+  });
+  document.getElementById("ulhNoticeClose")?.addEventListener("click",()=>{const notice=document.getElementById("ulhNotice");if(notice)notice.hidden=true;});
+  document.getElementById("ulhBack")?.addEventListener("click",()=>history.back());
+  document.getElementById("ulhForward")?.addEventListener("click",()=>history.forward());
+  document.getElementById("ulhAvatar")?.addEventListener("click",()=>document.getElementById("accountOpen")?.click());
+  root.querySelectorAll(".ulh-side-item").forEach(link=>link.addEventListener("click",()=>{
+    root.querySelectorAll(".ulh-side-item").forEach(item=>item.classList.toggle("active",item===link));
+  }));
 })();
