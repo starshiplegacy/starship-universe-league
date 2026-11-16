@@ -17,7 +17,7 @@ Map assignment and rulesets are independent. The registry is `map-registry.js`; 
 - The League Of Legacy menu's JUGAR button opens `game-modes.html`.
 - The mode selector reads `map-registry.js` and resolves the map assigned to each mode.
 - GLB loaders are implemented for Versus 4 to 5 and Entrenamiento, but preview is gated until their licenses are confirmed.
-- Summoner's Rift remains assigned to Battle Royale and Clasificatoria in the registry, but its loader is blocked pending written authorization. No modified runtime MTL is retained.
+- Summoner's Rift remains assigned to Battle Royale and Clasificatoria in the registry, but its loader is blocked pending written authorization. If rights are cleared later, the loader repairs the original MTL texture paths in memory; no modified runtime MTL is retained.
 - Battle Royale and Clasificatoria share one map but have different ruleset IDs.
 - Versus 1 to 3 and Summoner's Rift remain blocked and are not loaded by the preview page.
 
@@ -32,7 +32,7 @@ Other map asset license status has not yet been verified. Their presence in the 
 ## Technical findings and limits
 
 - Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. The source MTL contains absolute Windows paths; a temporary runtime MTL was created during analysis, then removed after the licensing review. The original MTL and all original map assets remain unchanged.
-- The map preview page has format-specific loaders prepared, but does not create physics, navigation meshes, collision shapes, spawn points, player teams, networking, matchmaking, scoring, respawns, timers or victory conditions.
+- The map preview page has format-specific loaders prepared (including an in-memory MTL path rewrite for Summoner's Rift), but does not create physics, navigation meshes, collision shapes, spawn points, player teams, networking, matchmaking, scoring, respawns, timers or victory conditions.
 - GLB presence does not prove the model is optimized or correctly scaled. Preview loading is a first visual integration step only.
 - The repository currently lists one GLB under `For Training`; if additional training maps exist outside this path, they are not currently discoverable in the tracked tree.
 - Versus 1 to 3 has several source formats (BLEND, FBX, STL, TIF and PNG references). The FBX is the chosen runtime candidate but remains license-blocked.
