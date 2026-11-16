@@ -59,3 +59,39 @@ Identify and connect the Supabase project whose ref is `wvyveduslbsuvyekeccf`, o
 The current public URL and publishable key were centralized in `supabase-config.js`; `index.html` and `lyrielife.html` now read that shared configuration. The target remains `wvyveduslbsuvyekeccf` and is still unverified. No project switch was made.
 
 The scheduled GitHub audit checks local assets, model/world/video paths, project-ref consistency, Auth health, and REST table exposure when Actions settings are configured. It intentionally does not enumerate Storage buckets with a browser publishable key; Storage inventory and object policies remain a manual Supabase dashboard check until a safe, narrowly scoped monitoring mechanism is designed.
+
+
+## Supabase advisor review (2026-11-16)
+
+Both connected projects were checked with Supabase security, performance, health, and migration advisors.
+
+### Candidate game/community project: uyhcocdknweqvcqgbnez
+
+- Status: ACTIVE_HEALTHY; 20 recorded migrations.
+- Health advisor: no findings.
+- Security advisor:
+  - 2 tables have RLS enabled but no policies: private.geffen_whitelist and public.digital_codes. These may be intentionally closed; do not add permissive policies without reviewing ownership and intended access.
+  - 9 SECURITY DEFINER RPC functions are executable by authenticated users. Review each function's SQL body, search_path, grants, and intended caller before changing permissions. Examples include create_chat_group, create_message_request, delete_chat_group, get_public_follow_counts, invite_to_existing_group, is_geffen_whitelisted, leave_chat_group, respond_group_invite, and respond_message_request.
+  - Leaked-password protection is disabled in Supabase Auth. Enable after reviewing the Auth configuration and rollout impact.
+- Performance advisor:
+  - 17 foreign keys without covering indexes.
+  - 12 RLS policies trigger repeated auth/current_setting evaluation; consider wrapping auth calls in scalar SELECTs after reviewing each policy.
+  - 3 tables have multiple permissive policies for the same role/action.
+  - Additional unused-index findings exist; do not remove indexes solely from a short usage window.
+
+Remediation references:
+- [RLS policy linter](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy)
+- [SECURITY DEFINER function linter](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable)
+- [Leaked password protection](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection)
+- [Unindexed foreign keys](https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys)
+- [RLS init plan optimization](https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select)
+- [Multiple permissive policies](https://supabase.com/docs/guides/database/database-linter?lint=0006_multiple_permissive_policies)
+
+### Separate catalog/Django project: fixwovymcfpfididtmud
+
+- Status: ACTIVE_HEALTHY; 4 recorded migrations.
+- Health advisor: no findings.
+- Security advisor reports 7 Django/auth/content tables with RLS enabled but no policies. Do not connect the game frontend to this project or change its Django table policies as part of game work.
+- Performance advisor reports 40 unused-index findings. Treat these as review candidates only, not automatic deletions.
+
+No advisor remediation was applied during this audit. The findings are recorded for a deliberate security review; broad policy or function changes without source review could expose user data or break messaging and moderation.
