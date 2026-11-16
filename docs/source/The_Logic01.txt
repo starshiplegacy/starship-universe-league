@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LyrieLife — Logística del juego</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+body {
+    min-height: 100vh;
+    background: #2b2b2b;
+    font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.wrap { width: 100%; max-width: 940px; }
+
+
+/* ---------- cabecera ---------- */
+.head {
+    background: #ffffff;
+    border-radius: 6px 6px 0 0;
+    padding: 16px 20px 12px;
+    text-align: center;
+    border-bottom: 3px solid #a9b8cc;
+}
+.head h1 {
+    font-size: 23px;
+    letter-spacing: 1px;
+
+    color: #1a5fb4;
+    text-transform: uppercase;
+}
+.head p {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7a8d;
+    font-weight: 700;
+}
+
+
+/* ---------- pestañas ---------- */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: #b8bfcb;
+    padding: 8px;
+}
+.tab {
+    flex: 1 1 118px;
+    padding: 8px 6px;
+    border: 1px solid #dfe4ea;
+    border-radius: 3px;
+    background: linear-gradient(#ffffff, #eef2f6);
+    color: #1a5fb4;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.tab:hover { background: linear-gradient(#ffffff, #dde6f2); }
+
+.tab.active {
+    background: linear-gradient(#ffffff, #dbe7f7);
+    border-color: #1a5fb4;
+    box-shadow: inset 0 0 0 1px #1a5fb4;
+}
+
+
+/* ---------- panel ---------- */
+.panel {
+    background: #ffffff;
+    border-radius: 0 0 6px 6px;
+    padding: 16px;
+    min-height: 460px;
+}
+
+
+.page { display: none; flex-direction: column; gap: 10px; }
+.page.active { display: flex; }
+
+
+.section-title {
+    background: #a9b8cc;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+
+.card {
+    border: 1px solid #cfd8e3;
+    border-radius: 3px;
+
+    background: #fbfcfe;
+    padding: 12px 14px;
+}
+.card h3 {
+    font-size: 13px;
+    color: #1a5fb4;
+    margin-bottom: 6px;
+}
+.card p, .card li {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #33404f;
+}
+.card ul, .card ol { padding-left: 18px; margin-top: 4px; }
+.card li { margin-bottom: 3px; }
+
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+
+/* ---------- flujo ---------- */
+.flow { display: flex; flex-direction: column; gap: 0; }
+
+
+.step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+.step .num {
+
+    flex: 0 0 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #1a5fb4;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
+.step .body {
+    flex: 1;
+    padding-bottom: 14px;
+}
+.step .body h4 {
+    font-size: 12.5px;
+    color: #1a5fb4;
+    margin-bottom: 3px;
+}
+.step .body p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #33404f;
+}
+.step .line {
+    width: 2px;
+    height: 18px;
+    background: #cfd8e3;
+    margin-left: 14px;
+
+}
+
+
+/* ---------- ramas ---------- */
+.branch {
+    border-left: 3px solid #a9b8cc;
+    padding-left: 12px;
+    margin: 6px 0 6px 4px;
+}
+.branch .yes, .branch .no {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #33404f;
+    margin-bottom: 4px;
+}
+.pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    margin-right: 6px;
+}
+.pill.yes { background: #dff0d8; color: #2f6b1f; border: 1px solid #b6dca8; }
+.pill.no { background: #f7e0e0; color: #8a2b2b; border: 1px solid #e6b8b8; }
+
+
+/* ---------- tabla ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+
+}
+th {
+    background: #e6ebf3;
+    color: #1a5fb4;
+    font-size: 11px;
+    text-align: left;
+    padding: 7px 8px;
+    border: 1px solid #cfd8e3;
+}
+td {
+    padding: 7px 8px;
+    border: 1px solid #e3e9f0;
+    color: #33404f;
+    vertical-align: top;
+}
+tr:nth-child(even) td { background: #fbfcfe; }
+
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px 4px 2px 0;
+    background: #e6ebf3;
+    border: 1px solid #cfd8e3;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a5fb4;
+}
+
+
+.note {
+    font-size: 11.5px;
+
+    color: #6b7a8d;
+    font-style: italic;
+    margin-top: 6px;
+}
+
+
+code {
+    background: #eef2f6;
+    border: 1px solid #dfe4ea;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: Consolas, monospace;
+    font-size: 11.5px;
+    color: #1a5fb4;
+}
+
+
+@media (max-width: 620px) {
+    .grid2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+
+<div class="head">
+    <h1>Logística del juego</h1>
+    <p>Del arranque a la salida — The LyrieLife</p>
+</div>
+
+
+<div class="tabs">
+    <button class="tab active" data-tab="arranque">Arranque</button>
+
+ <button class="tab" data-tab="partida">Partida guardada</button>
+ <button class="tab" data-tab="guardado">Guardado</button>
+ <button class="tab" data-tab="mundos">Mundos</button>
+ <button class="tab" data-tab="salida">Salida</button>
+ <button class="tab" data-tab="datos">Datos</button>
+ <button class="tab" data-tab="reglas">Reglas de oro</button>
+</div>
+
+
+<div class="panel">
+
+
+ <!-- ============ ARRANQUE ============ -->
+ <div class="page active" id="page-arranque">
+
+
+  <div class="section-title">Secuencia de arranque</div>
+
+
+  <div class="card">
+   <p>Todo lo que sigue pasa <b>en orden</b>. Si un paso falla, el juego no avanza al
+siguiente: muestra el error y ofrece reintentar o salir. Nunca arranca a medias.</p>
+  </div>
+
+
+  <div class="card">
+   <div class="flow">
+
+
+    <div class="step">
+     <div class="num">1</div>
+     <div class="body">
+      <h4>Logo y carga del motor</h4>
+      <p>Pantalla de estudio (Starship Universe League). Se cargan los recursos base:
+fuentes, UI, sonidos del sistema. Barra de progreso real, no decorativa.</p>
+     </div>
+    </div>
+
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">2</div>
+     <div class="body">
+      <h4>Comprobación de archivos</h4>
+      <p>El juego verifica que los <code>.package</code> estén presentes y con la versión
+correcta: mundos, casas, decoraciones, objetos. Si falta uno, avisa <b>antes</b> de
+entrar.</p>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">3</div>
+     <div class="body">
+      <h4>Lectura del perfil local</h4>
+      <p>Se busca la carpeta de usuario: ajustes, logros, contenido desbloqueado y la lista
+de partidas. Es lo primero que se lee porque decide todo lo demás.</p>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">4</div>
+     <div class="body">
+      <h4>¿Hay partida guardada?</h4>
+      <div class="branch">
+       <div class="yes"><span class="pill yes">SÍ</span> Se salta la pantalla de título y
+entra directo a la <b>última partida jugada</b>. Es el comportamiento por defecto.</div>
+       <div class="no"><span class="pill no">NO</span> Va a la pantalla de título y ofrece
+
+<b>Nueva partida</b> o <b>Cargar</b> (vacío).</div>
+      </div>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">5</div>
+     <div class="body">
+      <h4>Carga del mundo y los Lyries</h4>
+      <p>Se carga el mundo guardado, la casa, la posición de cada Lyrie, sus necesidades,
+emociones, relaciones y el reloj del juego. Todo vuelve exactamente como se dejó.</p>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">6</div>
+     <div class="body">
+      <h4>Reanudación</h4>
+      <p>El tiempo del juego arranca <b>pausado</b> unos segundos para que la
+jugadora se oriente, y luego corre a la velocidad que tenía guardada.</p>
+     </div>
+    </div>
+
+
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Si hay partida guardada, el juego <b>nunca</b> obliga a pasar por el menú
+
+principal. Entrar y estar jugando debe ser un solo paso.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ PARTIDA GUARDADA ============ -->
+ <div class="page" id="page-partida">
+
+
+  <div class="section-title">Qué es una partida guardada</div>
+
+
+  <div class="card">
+   <p>Una partida no es solo "dónde estaba el Lyrie". Es un paquete con <b>todo el estado
+del mundo</b> en un instante concreto. Si falta una pieza, la partida se considera
+incompleta y no se carga.</p>
+  </div>
+
+
+  <div class="card">
+   <h3>Contenido de una partida</h3>
+   <table>
+    <thead><tr><th>Bloque</th><th>Qué guarda</th></tr></thead>
+    <tbody>
+     <tr><td>Identidad</td><td>Nombre de la partida, fecha de creación, última vez
+jugada, versión del juego</td></tr>
+     <tr><td>Mundo</td><td>Cuál de los seis mundos, hora y día del calendario,
+clima</td></tr>
+     <tr><td>Lyries</td><td>Nombre, rasgos, edad, etapa de vida, posición
+exacta</td></tr>
+     <tr><td>Necesidades</td><td>Las 8 barras de cada Lyrie</td></tr>
+     <tr><td>Emociones</td><td>Emoción activa, intensidad y tiempo restante</td></tr>
+     <tr><td>Relaciones</td><td>Amistad y romance de cada pareja</td></tr>
+     <tr><td>Unidad doméstica</td><td>Quién vive con quién, casa asignada, dinero del
+
+hogar</td></tr>
+     <tr><td>Inventario</td><td>Objetos en la nevera, en el inventario personal, en la
+casa</td></tr>
+     <tr><td>Progreso</td><td>Logros, lecciones completadas, objetos
+desbloqueados</td></tr>
+     <tr><td>Cola de acciones</td><td>Lo que cada Lyrie estaba haciendo o tenía
+pendiente</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Partida principal</h3>
+    <p>La que se carga automáticamente al arrancar. Se actualiza cada vez que se guarda.
+Solo hay <b>una</b>.</p>
+   </div>
+   <div class="card">
+    <h3>Partidas guardadas manualmente</h3>
+    <p>Las que crea la jugadora con <b>Guardar como…</b>. Pueden ser muchas y no
+afectan al arranque automático.</p>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Si la partida principal está <b>corrupta o incompleta</b>, el juego no la carga en
+silencio: avisa, la marca como dañada y ofrece la siguiente partida más reciente. Nunca
+borra nada sin permiso.</p>
+  </div>
+
+ </div>
+
+
+ <!-- ============ GUARDADO ============ -->
+ <div class="page" id="page-guardado">
+
+
+  <div class="section-title">Cuándo y cómo se guarda</div>
+
+
+  <div class="card">
+   <h3>Guardado automático</h3>
+   <ul>
+    <li>Al <b>cambiar de mundo</b> (Kataleya → Kariskio, etc.)</li>
+    <li>Al <b>terminar un día</b> de juego (a las 06:00)</li>
+    <li>Antes de un <b>evento importante</b> (muerte, boda, mudanza)</li>
+    <li>Cada <b>30 minutos</b> de juego real, si hubo cambios</li>
+   </ul>
+   <p class="note">El autoguardado nunca interrumpe: se hace en segundo plano y
+muestra un icono discreto.</p>
+  </div>
+
+
+  <div class="card">
+   <h3>Guardado manual</h3>
+   <table>
+    <thead><tr><th>Acción</th><th>Qué hace</th></tr></thead>
+    <tbody>
+     <tr><td><b>Guardar</b></td><td>Sobrescribe la partida principal. Es el botón del
+menú.</td></tr>
+     <tr><td><b>Guardar como…</b></td><td>Crea una copia con nombre propio. No
+toca la principal.</td></tr>
+     <tr><td><b>Salir y guardar</b></td><td>Guarda y cierra en un solo paso, sin
+preguntar dos veces.</td></tr>
+    </tbody>
+
+   </table>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Nunca se pierde más de <b>30 minutos</b> de juego. Si el juego se cierra de golpe,
+al volver ofrece la última partida válida y avisa de cuánto tiempo se perdió.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ MUNDOS ============ -->
+ <div class="page" id="page-mundos">
+
+
+  <div class="section-title">Los mundos y la partida</div>
+
+
+  <div class="card">
+   <p>Los tres mundos confirmados —<b>Kataleya</b>, <b>Kariskio</b> y
+<b>Solnang</b>— viven dentro de la <b>misma partida</b>. No son partidas separadas: la
+jugadora se desplaza entre ellos y todo se guarda junto.</p>
+  </div>
+
+
+  <div class="card">
+   <h3>Qué pasa al cambiar de mundo</h3>
+   <ol>
+    <li>Se <b>guarda automáticamente</b> el mundo actual</li>
+    <li>Se descarga su contenido (casas, decoraciones) para liberar memoria</li>
+    <li>Se carga el mundo destino</li>
+    <li>Los Lyries que viajaron aparecen en el nuevo mundo</li>
+    <li>El reloj del juego <b>sigue corriendo</b>: no se reinicia</li>
+   </ol>
+
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Si un mundo no está instalado</h3>
+    <p>El mapa lo muestra bloqueado con un candado. La partida no se rompe:
+simplemente ese destino no está disponible hasta que llegue su
+<code>.package</code>.</p>
+   </div>
+   <div class="card">
+    <h3>Si se desinstala un mundo</h3>
+    <p>La partida avisa al cargar: los Lyries que vivían allí se trasladan a un mundo
+disponible, conservando todo lo demás.</p>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Un mundo es <b>contenido</b>, no una partida. Añadir o quitar mundos nunca
+debe obligar a empezar de cero.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ SALIDA ============ -->
+ <div class="page" id="page-salida">
+
+
+  <div class="section-title">Salir del juego</div>
+
+
+  <div class="card">
+   <p>Hay tres formas de salir y cada una tiene un comportamiento distinto. La regla
+
+general: <b>nunca cerrar sin preguntar si hay cambios sin guardar</b>.</p>
+  </div>
+
+
+  <div class="card">
+   <div class="flow">
+
+
+    <div class="step">
+     <div class="num">A</div>
+     <div class="body">
+      <h4>Salir al menú principal</h4>
+      <p>Se guarda automáticamente y se vuelve al menú. La partida sigue viva y se puede
+cargar otra. Útil para cambiar de partida sin cerrar el juego.</p>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">B</div>
+     <div class="body">
+      <h4>Salir del juego</h4>
+      <p>Se guarda y se cierra la aplicación por completo. Si hay cambios sin guardar,
+pregunta: <b>Guardar y salir</b> / <b>Salir sin guardar</b> / <b>Cancelar</b>.</p>
+     </div>
+    </div>
+    <div class="line"></div>
+
+
+    <div class="step">
+     <div class="num">C</div>
+     <div class="body">
+      <h4>Cierre inesperado</h4>
+      <p>Si el juego se cierra solo (batería, error, sistema), al volver detecta que hubo un
+
+cierre sucio y ofrece la última partida válida con la hora exacta a la que se guardó.</p>
+     </div>
+    </div>
+
+
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Antes de cerrar, siempre</h3>
+   <ul>
+    <li>Se completa el guardado en curso (no se corta a medias)</li>
+    <li>Se libera la memoria del mundo cargado</li>
+    <li>Se marca la partida como "última jugada" para el próximo arranque</li>
+   </ul>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Salir del juego y volver a entrar debe dejar a la jugadora <b>exactamente donde
+estaba</b>. Si algo cambió sin que ella lo pidiera, es un error, no una decisión de
+diseño.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ DATOS ============ -->
+ <div class="page" id="page-datos">
+
+
+  <div class="section-title">Dónde vive cada cosa</div>
+
+
+  <div class="card">
+
+   <p>Separar los datos es lo que permite actualizar el juego sin borrar partidas. Cada tipo
+de archivo tiene su carpeta y su función.</p>
+  </div>
+
+
+  <div class="card">
+   <table>
+    <thead><tr><th>Carpeta</th><th>Contiene</th><th>Se borra al
+actualizar</th></tr></thead>
+    <tbody>
+     <tr><td><code>/juego</code></td><td>Motor, UI, código</td><td>Sí, se
+reemplaza</td></tr>
+     <tr><td><code>/juego/mundos</code></td><td>Los <code>.package</code> de
+Kataleya, Kariskio, Solnang…</td><td>Sí, se reemplaza</td></tr>
+     <tr><td><code>/juego/objetos</code></td><td>Casas, decoraciones,
+muebles</td><td>Sí, se reemplaza</td></tr>
+     <tr><td><code>/usuario/partidas</code></td><td>Las partidas
+guardadas</td><td><b>No</b>, se conserva</td></tr>
+     <tr><td><code>/usuario/ajustes</code></td><td>Gráficos, sonido,
+controles</td><td><b>No</b>, se conserva</td></tr>
+     <tr><td><code>/usuario/progreso</code></td><td>Logros, lecciones,
+desbloqueos</td><td><b>No</b>, se conserva</td></tr>
+     <tr><td><code>/usuario/capturas</code></td><td>Fotos y vídeos del
+juego</td><td><b>No</b>, se conserva</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>El juego y los datos de la jugadora viven <b>separados</b>. Una actualización
+puede reemplazar todo <code>/juego</code> sin tocar nunca <code>/usuario</code>.</p>
+
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ REGLAS DE ORO ============ -->
+ <div class="page" id="page-reglas">
+
+
+  <div class="section-title">Las reglas que conectan todo</div>
+
+
+  <div class="card">
+   <p>Estas cinco reglas resuelven la mayoría de las decisiones de logística. Si una función
+nueva choca con una de ellas, la función se cambia, no la regla.</p>
+  </div>
+
+
+  <div class="card">
+   <ol>
+    <li><b>Una partida, un estado.</b> Todo lo que la jugadora ve viene de un único
+paquete de estado. Nada se guarda por partes sueltas.</li>
+    <li><b>Si hay partida, se entra directo.</b> El menú principal es una opción, no un
+peaje.</li>
+    <li><b>Nunca se pierde más de 30 minutos.</b> Autoguardado frecuente y cierre sucio
+detectado.</li>
+    <li><b>Mundos ≠ partidas.</b> Añadir o quitar contenido nunca obliga a empezar de
+cero.</li>
+    <li><b>Nada se borra sin permiso.</b> Ni partidas dañadas, ni mundos desinstalados,
+ni ajustes.</li>
+   </ol>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+
+    <h3>Lo que esto evita</h3>
+    <ul>
+     <li>Partidas que se rompen al actualizar</li>
+     <li>Perder horas de juego por un cierre</li>
+     <li>Mundos que desaparecen sin avisar</li>
+     <li>Menús que estorban al que solo quiere jugar</li>
+    </ul>
+   </div>
+   <div class="card">
+    <h3>Lo que esto permite</h3>
+    <ul>
+     <li>Añadir los tres mundos que faltan sin tocar partidas</li>
+     <li>Actualizar el juego sin miedo</li>
+     <li>Que la jugadora confíe en el guardado</li>
+     <li>Depurar errores sabiendo de dónde vienen</li>
+    </ul>
+   </div>
+  </div>
+
+
+ </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+ tab.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+
+  document.getElementById('page-' + tab.dataset.tab).classList.add('active');
+ });
+});
+</script>
+
+
+</body>
+</html>
