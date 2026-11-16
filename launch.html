@@ -33,7 +33,7 @@ const params=new URLSearchParams(location.search);
 const game=params.get("game")==="legacy"?"legacy":"lyrie";
 const config={
   lyrie:{name:"THE LYRIELIFE",loading:"Lyrie Loanding.mp4",returnUrl:"./index.html?showLyrieMenu=1",loadingLabel:"THE LYRIELIFE · LOADING"},
-  legacy:{name:"LEAGUE OF LEGACY",loading:"Loading 01.mp4",returnUrl:"./index.html?showLegacyMenu=1",loadingLabel:"LEAGUE OF LEGACY · LOADING"}
+  legacy:{name:"LEAGUE OF LEGACY",loading:"Loading 01.mp4",returnUrl:"./league-of-legacy.html",loadingLabel:"LEAGUE OF LEGACY · LOADING"}
 }[game];
 const base="./assets/videos/";
 const logo=document.getElementById("logoStage");
