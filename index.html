@@ -125,7 +125,7 @@
       <div class="game-grid">
         <article class="game-card life-card">
           <div class="game-visual game-poster-wrap">
-            <img class="game-poster" src="./assets/the-lyrielife-poster.svg" alt="Portada ilustrada de The LyrieLife: un mundo de simulación de vida en tonos pastel" loading="lazy">
+            <img class="game-poster" src="./assets/the-lyrielife-cover.jpg" onerror="this.onerror=null;this.src='./assets/the-lyrielife-poster.svg'" alt="Ilustración oficial de The LyrieLife" loading="lazy">
             <span class="poster-status" data-i18n="inDevelopment">En desarrollo</span>
             <button class="poster-play" type="button" data-open-game="lyrie" aria-label="PLAY — ver detalles de The LyrieLife"><span>▶</span> PLAY</button>
           </div>
@@ -133,7 +133,7 @@
         </article>
         <article class="game-card fight-card">
           <div class="game-visual game-poster-wrap">
-            <img class="game-poster" src="./assets/league-of-legacy-poster.svg" alt="Portada ilustrada de League Of Legacy: una arena fantástica con torres y héroes" loading="lazy">
+            <img class="game-poster" src="./assets/league-of-legacy-cover.png" onerror="this.onerror=null;this.src='./assets/league-of-legacy-poster.svg'" alt="Ilustración oficial de League Of Legacy" loading="lazy">
             <span class="poster-status" data-i18n="inDevelopment">En desarrollo</span>
             <button class="poster-play" type="button" data-open-game="legacy" aria-label="PLAY — ver detalles de League Of Legacy"><span>▶</span> PLAY</button>
           </div>
@@ -222,42 +222,11 @@
           <div class="ulh-page-heading"><div><span class="ulh-kicker">TU COLECCIÓN</span><h1 id="ulhLibraryTitle">Biblioteca</h1><p>Todos tus juegos, en un solo lugar.</p></div><button class="ulh-primary-button" id="ulhViewAll" type="button">Ver todos <span>→</span></button></div>
           <section class="ulh-library-section" aria-labelledby="ulhInstalledTitle"><div class="ulh-section-heading"><div><h2 id="ulhInstalledTitle">Juegos instalados</h2><p>Listos para abrir desde tu dispositivo.</p></div><span class="ulh-count">2 juegos</span></div>
             <div class="ulh-library-grid">
-              <article class="ulh-library-card"><div class="ulh-library-art ulh-library-life">💎</div><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>The LyrieLife</h3><p>Simulación de vida</p></div></article>
-              <article class="ulh-library-card"><div class="ulol-cover" role="img" aria-label="League Of Legacy — portada oficial"><div class="ulol-nebula"></div><div class="ulol-paper"><div class="ulol-title">League Of<br><span>Legacy</span></div><div class="ulol-signature">STARSHIP UNIVERSE LEAGUE</div><div class="ulol-emblem"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 54c-8-8-7-21 0-27 8-7 20-3 25 5 5-8 17-12 25-5 7 6 8 19 0 27L49 78 18 54Z" fill="#080b18"/><path d="M29 44c-2-8 1-15 7-16 6-1 9 5 8 12-1 5-4 9-8 9-3 0-6-2-7-5Zm29-4c0-7 3-13 9-12 6 1 8 8 5 15-2 5-5 8-9 7-4-1-6-5-5-10Z" fill="#080b18"/><path d="M36 60c7 5 19 6 27-1-2 11-9 17-16 17-7 0-12-6-11-16Z" fill="#080b18"/><text x="50" y="94" text-anchor="middle" fill="#090d1c" font-size="11" font-weight="900" letter-spacing="2">U.L</text></svg></div></div></div><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>League Of Legacy</h3><p>Batalla multijugador</p></div></article>
-            </div>
-          </section>
-          <section class="ulh-library-section" aria-labelledby="ulhRecommendationsTitle"><div class="ulh-section-heading"><div><h2 id="ulhRecommendationsTitle">Recomendaciones</h2><p>Descubre nuevos mundos y complementos.</p></div></div>
-            <div class="ulh-library-grid ulh-recommend-grid">
-              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-kataleya">🌿</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kataleya World Pack</h3><p>Un mundo por descubrir</p></div></article>
-              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-kariskio">🌊</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kariskio Coastal</h3><p>Escápate a la costa</p></div></article>
-              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-solnang">🏔️</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Solnang Highlands</h3><p>Explora las montañas</p></div></article>
-            </div>
-          </section>
-        </section>
-        <section class="ulh-view ulh-catalog-view" id="ulhCatalogView" hidden aria-labelledby="ulhCatalogTitle">
-          <div class="ulh-page-heading"><div><span class="ulh-kicker">UNIVERSE LEAGUE STORE</span><h1 id="ulhCatalogTitle">Todos los juegos</h1><p>Explora el catálogo y encuentra tu próxima aventura.</p></div><button class="ulh-back-library" id="ulhBackLibrary" type="button">← Biblioteca</button></div>
-          <div class="ulh-catalog-tabs" role="tablist" aria-label="Secciones del catálogo"><button class="active" type="button" role="tab" aria-selected="true" data-ulh-category="explore">Explorar</button><button type="button" role="tab" aria-selected="false" data-ulh-category="free">Gratis</button><button type="button" role="tab" aria-selected="false" data-ulh-category="buy">Cómpralo</button></div>
-          <div class="ulh-catalog-panel" id="ulhExplorePanel" role="tabpanel"><div class="ulh-explore" id="ulhExplore">
-            <h2>Explorar</h2>
-            <div class="ulx-tabs" id="ulxTabs">
-              <button class="active" type="button" data-ulx-tab="todos">Todos los juegos</button>
-              <button type="button" data-ulx-tab="destacados">Juegos destacados</button>
-              <button type="button" data-ulx-tab="clasicos">Clásicos restaurados ya disponibles</button>
-            </div>
-            <div class="ulx-filters">
-              <div class="ulx-filter-wrap" data-ulx-filter="genero"><button class="ulx-filter" type="button"><span class="ulx-label">Géneros</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Todos</button><button type="button" data-value="Simulación">Simulación</button><button type="button" data-value="Batalla">Batalla</button><button type="button" data-value="Aventura">Aventura</button><button type="button" data-value="Estrategia">Estrategia</button></div></div>
-              <div class="ulx-filter-wrap" data-ulx-filter="incluye"><button class="ulx-filter" type="button"><span class="ulx-label">Se incluye en…</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Universe Play">Universe Play</button><button type="button" data-value="Edición Deluxe">Edición Deluxe</button><button type="button" data-value="Pase de temporada">Pase de temporada</button></div></div>
-              <div class="ulx-filter-wrap" data-ulx-filter="jugadores"><button class="ulx-filter" type="button"><span class="ulx-label">Jugadores</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Un jugador">Un jugador</button><button type="button" data-value="Multijugador">Multijugador</button></div></div>
-              <div class="ulx-filter-wrap" data-ulx-filter="idioma"><button class="ulx-filter" type="button"><span class="ulx-label">Idiomas</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Español">Español</button><button type="button" data-value="Inglés">Inglés</button><button type="button" data-value="Coreano">Coreano</button></div></div>
-              <div class="ulx-filter-wrap ulx-sort" data-ulx-filter="orden"><button class="ulx-filter" type="button"><span class="ulx-label">Fecha de lanzamiento</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="reciente">Más recientes primero</button><button type="button" data-value="antiguo">Más antiguos primero</button><button type="button" data-value="az">Nombre (A–Z)</button></div></div>
-            </div>
-            <div class="ulx-grid" id="ulxGrid" aria-live="polite"></div>
-          </div></div>
-          <div class="ulh-catalog-panel" id="ulhFreePanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
-            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-free-art">♟️</div><div class="ulh-catalog-copy"><span class="ulh-tag">FREE TO PLAY</span><h3>Jaque Matte</h3><p>Un juego gratuito para disfrutar en Universe League.</p><span class="ulh-price-free">Gratis</span></div></article>
+              <article class="ulh-library-card"><button class="ulh-entry-open" type="button" data-open-game="lyrie" aria-label="Abrir The LyrieLife"><img class="ulh-entry-cover" src="./assets/the-lyrielife-cover.jpg" onerror="this.onerror=null;this.src='./assets/the-lyrielife-poster.svg'" alt="The LyrieLife"></button><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>The LyrieLife</h3><p>Simulación de vida</p><button class="ulh-entry-cta" type="button" data-open-game="lyrie">Entrar al juego ↗</button></div></article>
+              <article class="ulh-library-card"><button class="ulh-entry-open" type="button" data-open-game="legacy" aria-label="Ver League Of Legacy"><img class="ulh-entry-cover" src="./assets/league-of-legacy-cover.png" onerror="this.onerror=null;this.src='./assets/league-of-legacy-poster.svg'" alt="League Of Legacy"></button><div class="ulh-catalog-copy"><span class="ulh-tag">FREE TO PLAY</span><h3>Jaque Matte</h3><p>Un juego gratuito para disfrutar en Universe League.</p><span class="ulh-price-free">Gratis</span></div></article>
           </div></div>
           <div class="ulh-catalog-panel" id="ulhBuyPanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
-            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-buy-life">💎</div><div class="ulh-catalog-copy"><span class="ulh-tag">SIMULACIÓN DE VIDA</span><h3>The LyrieLife</h3><p>Juego en desarrollo. La compra estará disponible cuando se publique.</p><span class="ulh-coming">Próximamente</span></div></article>
+            <article class="ulh-catalog-card"><button class="ulh-entry-open" type="button" data-open-game="lyrie" aria-label="Ver The LyrieLife"><img class="ulh-entry-cover" src="./assets/the-lyrielife-cover.jpg" onerror="this.onerror=null;this.src='./assets/the-lyrielife-poster.svg'" alt="The LyrieLife"></button><div class="ulh-catalog-copy"><span class="ulh-tag">SIMULACIÓN DE VIDA</span><h3>The LyrieLife</h3><p>Juego en desarrollo. La compra estará disponible cuando se publique.</p><span class="ulh-coming">Próximamente</span></div></article>
             <article class="ulh-catalog-card"><div class="ulol-cover" role="img" aria-label="League Of Legacy — portada oficial"><div class="ulol-nebula"></div><div class="ulol-paper"><div class="ulol-title">League Of<br><span>Legacy</span></div><div class="ulol-signature">STARSHIP UNIVERSE LEAGUE</div><div class="ulol-emblem"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M18 54c-8-8-7-21 0-27 8-7 20-3 25 5 5-8 17-12 25-5 7 6 8 19 0 27L49 78 18 54Z" fill="#080b18"/><path d="M29 44c-2-8 1-15 7-16 6-1 9 5 8 12-1 5-4 9-8 9-3 0-6-2-7-5Zm29-4c0-7 3-13 9-12 6 1 8 8 5 15-2 5-5 8-9 7-4-1-6-5-5-10Z" fill="#080b18"/><path d="M36 60c7 5 19 6 27-1-2 11-9 17-16 17-7 0-12-6-11-16Z" fill="#080b18"/><text x="50" y="94" text-anchor="middle" fill="#090d1c" font-size="11" font-weight="900" letter-spacing="2">U.L</text></svg></div></div></div><div class="ulh-catalog-copy"><span class="ulh-tag">BATALLA MULTIJUGADOR</span><h3>League Of Legacy</h3><p>Juego en desarrollo. La compra estará disponible cuando se publique.</p><span class="ulh-coming">Próximamente</span></div></article>
           </div></div>
         </section>
