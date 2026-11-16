@@ -20,7 +20,7 @@
 </header>
 <div class="layout">
  <main class="scene-card">
-  <div class="scene-head"><div><h1 id="sceneTitle">Kataleya · Hogar</h1><small id="clockLabel">Día 1 · 08:00 · Normal</small></div><select class="world-select" id="worldSelect" aria-label="Cambiar mundo"><option>Kataleya</option><option>Kariskio</option><option>Solnang</option><option value="abandoned-island">Abandoned Island</option></select></div>
+  <div class="scene-head"><div><h1 id="sceneTitle">Kataleya · Hogar</h1><small id="clockLabel">Día 1 · 08:00 · Normal</small></div><select class="world-select" id="worldSelect" aria-label="Cambiar mundo"><option>Kataleya</option><option>Kariskio</option><option>Solnang</option><option value="Abandoned Island">Abandoned Island</option></select></div>
   <div class="scene" id="scene"><div class="sun"></div><div class="house"></div><div class="pool"></div>
    <button class="object obj-bed" data-object="bed">🛏 Cama</button><button class="object obj-fridge" data-object="fridge">🧊 Nevera</button><button class="object obj-sink" data-object="sink">🚰 Fregadero</button><button class="object obj-computer" data-object="computer">💻 Ordenador</button><button class="object obj-park" data-object="park">🌳 Parque</button><button class="object" style="right:13%;bottom:17%" data-object="pool">🏊 Piscina</button>
    <button class="actor you active" id="actor0" data-name="Lyrie" aria-label="Seleccionar Lyrie"></button><button class="actor other" id="actor1" data-name="Nayeon" aria-label="Seleccionar Nayeon"></button>
@@ -48,7 +48,7 @@
 "use strict";
 const $=id=>document.getElementById(id), SAVE_KEY="ul_partida", GAME_KEY="the-lyrielife";
 const names=["Hambre","Energía","Higiene","Vejiga","Social","Diversión","Entorno","Comodidad"];
-const initial=()=>({version:1,world:new URLSearchParams(location.search).get("world")||(()=>{try{return localStorage.getItem("ul_mundo_elegido")||"Kataleya"}catch(e){return "Kataleya"}})(),day:1,hour:8,minute:0,speed:2,paused:false,mode:"life",autonomy:"partial",active:0,actors:[
+const initial=()=>({version:1,world:(()=>{const selected=new URLSearchParams(location.search).get("world");if(selected==="abandoned-island")return "Abandoned Island";if(selected)return selected;try{const saved=localStorage.getItem("ul_mundo_elegido");return saved==="abandoned-island"?"Abandoned Island":saved||"Kataleya"}catch(e){return "Kataleya"}})(),day:1,hour:8,minute:0,speed:2,paused:false,mode:"life",autonomy:"partial",active:0,actors:[
  {name:"Lyrie",x:48,y:62,needs:[72,70,88,70,58,65,80,75],mood:"Contento",traits:["Creativo","Sociable"]},
  {name:"Nayeon",x:58,y:64,needs:[65,76,82,62,60,72,80,70],mood:"Contento",traits:["Activo","Romántico"]}
 ],relationship:{friendship:0,romance:0,known:false},inventory:["Manzana","Libro"],lastSaved:null,actions:[]});
