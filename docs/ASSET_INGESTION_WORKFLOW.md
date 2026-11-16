@@ -49,12 +49,12 @@ Los originales anteriores están en Library, no en el árbol actual de GitHub. L
 
 Los seis binarios siguientes se localizaron en Library y sus SHA-256 se comprobaron contra `assets/ASSET_MANIFEST.md`:
 
-- `Charlotte.glb`, `Arthur.glb`, `Bella.glb`: modelos de League Of Legacy.
+- `Charlotte.glb`, `Arthur.glb`, `Bella.glb` y otros modelos GLB: están presentes en `assets/league-of-legacy/characters/`.
 - `UNIVERSE LEAGUE (Opening).mp4`: opening compartido.
 - `Lyrie Loanding.mp4`: carga de The LyrieLife.
-- `Loading 01.mp4`: carga de League Of Legacy.
+- `Loading LOL.mp4`: carga de League Of Legacy.
 
-**Estado:** originales localizados y verificados; todavía no están publicados en las rutas de GitHub indicadas en el manifiesto. No cambiar sus nombres ni recodificarlos.
+**Estado:** los tres vídeos y los modelos principales de League Of Legacy están publicados en sus carpetas de GitHub. No cambiar los nombres de los archivos sin actualizar las referencias del código.
 
 ### Recursos CAL/CUL y paquete fuente
 
