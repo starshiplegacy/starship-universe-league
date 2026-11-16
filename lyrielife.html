@@ -16,13 +16,13 @@
 <div class="shell">
 <header class="top">
  <div class="brand">UNIVERSE LEAGUE <b>THE LYRIELIFE</b></div>
- <div class="top-actions"><button class="btn" id="pauseBtn">Ⅱ Pausar</button><button class="btn" id="saveBtn">Guardar</button><button class="btn" id="mainMenuBtn">Menú</button><a class="btn" href="./index.html">← Universe League</a></div>
+ <div class="top-actions"><button class="btn" id="pauseBtn">Ⅱ Pausar</button><button class="btn" id="saveBtn">Guardar</button><button class="btn" id="saveAsBtn">Guardar como…</button><button class="btn" id="mainMenuBtn">Menú</button><a class="btn" href="./index.html">← Universe League</a></div>
 </header>
 <div class="layout">
  <main class="scene-card">
   <div class="scene-head"><div><h1 id="sceneTitle">Kataleya · Hogar</h1><small id="clockLabel">Día 1 · 08:00 · Normal</small></div><select class="world-select" id="worldSelect" aria-label="Cambiar mundo"><option>Kataleya</option><option>Kariskio</option><option>Solnang</option></select></div>
   <div class="scene" id="scene"><div class="sun"></div><div class="house"></div><div class="pool"></div>
-   <button class="object obj-bed" data-object="bed">🛏 Cama</button><button class="object obj-fridge" data-object="fridge">🧊 Nevera</button><button class="object obj-sink" data-object="sink">🚰 Fregadero</button><button class="object obj-computer" data-object="computer">💻 Ordenador</button><button class="object obj-park" data-object="park">🌳 Parque</button>
+   <button class="object obj-bed" data-object="bed">🛏 Cama</button><button class="object obj-fridge" data-object="fridge">🧊 Nevera</button><button class="object obj-sink" data-object="sink">🚰 Fregadero</button><button class="object obj-computer" data-object="computer">💻 Ordenador</button><button class="object obj-park" data-object="park">🌳 Parque</button><button class="object" style="right:13%;bottom:17%" data-object="pool">🏊 Piscina</button>
    <button class="actor you active" id="actor0" data-name="Lyrie" aria-label="Seleccionar Lyrie"></button><button class="actor other" id="actor1" data-name="Nayeon" aria-label="Seleccionar Nayeon"></button>
    <div class="scene-hint" id="sceneHint">Selecciona un objeto o personaje para interactuar. Haz clic en el suelo para caminar.</div>
   </div>
@@ -30,7 +30,7 @@
  </main>
  <aside class="side">
   <section class="side-card"><h2>Necesidades del Lyrie</h2><div class="needs" id="needs"></div></section>
-  <section class="side-card"><h2>Estado de la partida</h2><div class="status-row"><span>Personaje activo</span><b id="activeName">Lyrie</b></div><div class="status-row"><span>Emoción</span><b id="mood">Contento</b></div><div class="status-row"><span>Velocidad</span><b id="speedLabel">Normal</b></div><div class="status-row"><span>Modo</span><b id="modeLabel">Vida diaria</b></div><div class="status-row"><span>Guardado</span><b id="saveLabel">Local</b></div></section>
+  <section class="side-card"><h2>Estado de la partida</h2><div class="status-row"><span>Personaje activo</span><b id="activeName">Lyrie</b></div><div class="status-row"><span>Emoción</span><b id="mood">Contento</b></div><div class="status-row"><span>Velocidad</span><b id="speedLabel">Normal</b></div><div class="status-row"><span>Modo</span><b id="modeLabel">Vida diaria</b></div><label class="status-row" for="autonomySelect"><span>Autonomía</span><select id="autonomySelect" class="world-select"><option value="partial">Parcial</option><option value="total">Total</option><option value="none">Ninguna</option></select></label><div class="status-row"><span>Guardado</span><b id="saveLabel">Local</b></div></section>
   <section class="side-card"><h2>Acciones rápidas</h2><div class="actions"><button class="action" data-quick="eat">🍎 Comer</button><button class="action" data-quick="sleep">😴 Dormir</button><button class="action" data-quick="wash">🚿 Asearse</button><button class="action" data-quick="toilet">🚻 Baño</button><button class="action" data-quick="fun">🎮 Divertirse</button><button class="action" data-quick="social">💬 Socializar</button></div></section>
   <section class="side-card"><h2>Relación con Nayeon</h2><div class="relationship"><span>♡</span><div class="relation-meter"><div class="status-row"><span>Amistad</span><b id="friendshipValue">0</b></div><div class="bar"><i id="friendshipBar" style="width:0%"></i></div><div class="status-row"><span>Romance</span><b id="romanceValue">0</b></div><div class="bar"><i id="romanceBar" style="width:0%"></i></div></div></div><button class="action" id="socialMenuBtn" style="width:100%;margin-top:10px">Abrir interacciones…</button></section>
  </aside>
@@ -57,7 +57,7 @@ try {
 "use strict";
 const $=id=>document.getElementById(id), SAVE_KEY="ul_partida", GAME_KEY="the-lyrielife";
 const names=["Hambre","Energía","Higiene","Vejiga","Social","Diversión","Entorno","Comodidad"];
-const initial=()=>({version:1,world:"Kataleya",day:1,hour:8,minute:0,speed:2,paused:false,mode:"life",active:0,actors:[
+const initial=()=>({version:1,world:"Kataleya",day:1,hour:8,minute:0,speed:2,paused:false,mode:"life",autonomy:"partial",active:0,actors:[
  {name:"Lyrie",x:48,y:62,needs:[72,70,88,70,58,65,80,75],mood:"Contento",traits:["Creativo","Sociable"]},
  {name:"Nayeon",x:58,y:64,needs:[65,76,82,62,60,72,80,70],mood:"Contento",traits:["Activo","Romántico"]}
 ],relationship:{friendship:0,romance:0,known:false},inventory:["Manzana","Libro"],lastSaved:null,actions:[]});
@@ -68,7 +68,7 @@ function actor(){return state.actors[state.active]}function other(){return state
 function render(){
  $("sceneTitle").textContent=state.world+" · "+(state.mode==="build"?"Modo Construcción":"Hogar");
  $("clockLabel").textContent="Día "+state.day+" · "+String(state.hour).padStart(2,"0")+":"+String(state.minute).padStart(2,"0")+" · "+(["Pausa","Pausa","Normal","Rápido","Ultra"][state.speed]||"Normal");
- $("worldSelect").value=state.world;$("activeName").textContent=actor().name;$("mood").textContent=actor().mood;
+ $("worldSelect").value=state.world;$("autonomySelect").value=state.autonomy||"partial";$("activeName").textContent=actor().name;$("mood").textContent=actor().mood;
  $("speedLabel").textContent=state.paused?"Pausado":(["Pausa","Pausa","Normal","Rápido","Ultra"][state.speed]||"Normal");
  $("modeLabel").textContent=state.mode==="build"?"Construcción":state.mode==="buy"?"Compra":"Vida diaria";
  $("actor0").style.left=state.actors[0].x+"%";$("actor0").style.top=state.actors[0].y+"%";
@@ -96,18 +96,19 @@ async function load(){
 }
 function mark(){dirty=true}
 function moveTo(x,y,label){actor().x=Math.max(4,Math.min(94,x));actor().y=Math.max(10,Math.min(84,y));$("sceneHint").textContent=label||actor().name+" se ha desplazado";mark();render()}
-function action(type){
+function action(type,autonomous=false){
  const a=actor(),n=a.needs;
  const effects={
- eat:{0:32,5:4},sleep:{1:42,3:8},wash:{2:45},toilet:{3:55},fun:{5:28,4:3},social:{4:25,5:8},clean:{6:22},comfort:{7:24},swim:{1:8,5:16,2:-3}
+ eat:{0:32,5:4},sleep:{1:42,3:8},wash:{2:45},toilet:{3:55},fun:{5:28,4:3},social:{4:25,5:8},clean:{6:22},comfort:{7:24},swim:{1:a.traits.includes("Activo")?18:8,5:16,2:-3}
  };
  const e=effects[type]||{};
  Object.entries(e).forEach(([i,v])=>n[Number(i)]=clamp(n[Number(i)]+v));
  const labels={eat:"ha comido",sleep:"ha descansado",wash:"se ha aseado",toilet:"ha usado el baño",fun:"se ha divertido",social:"ha socializado",clean:"ha mejorado el entorno",comfort:"está más cómodo",swim:"ha nadado"};
  a.mood=n[1]<20?"Cansado":n[4]<20?"Solo":n[0]<20?"Hambriento":n[5]>75?"Muy contento":"Contento";
- $("sceneHint").textContent=a.name+" "+labels[type];mark();render();save(false);
+ $("sceneHint").textContent=a.name+" "+labels[type]+(autonomous?" · autonomía":"");mark();render();save(false);
 }
 const objectActions={
+ pool:[["Nadar","swim"],["Relajarse","comfort"]],
  bed:[["Dormir","sleep"],["Relajarse","comfort"]],
  fridge:[["Preparar comida","eat"],["Tomar una manzana","eat"]],
  sink:[["Lavarse las manos","wash"],["Limpiar","clean"]],
@@ -151,19 +152,41 @@ document.querySelectorAll("[data-quick]").forEach(b=>b.addEventListener("click",
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$ (b.dataset.close).classList.remove("open")));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
 $("worldSelect").addEventListener("change",e=>{save(false);state.world=e.target.value;mark();render();save(false);toast("Mundo cambiado. La partida se ha guardado.")});
+$("autonomySelect").addEventListener("change",e=>{state.autonomy=e.target.value;mark();save(false);toast("Autonomía: "+e.target.options[e.target.selectedIndex].text)});
 $("pauseBtn").addEventListener("click",()=>{state.paused=!state.paused;render();save(false)});
 $("saveBtn").addEventListener("click",()=>save());
+$("saveAsBtn").addEventListener("click",()=>{const name=prompt("Nombre de la partida:");if(!name||!name.trim())return;let slots=[];try{slots=JSON.parse(localStorage.getItem("ul_partidas")||"[]")}catch{}slots.push({name:name.trim(),savedAt:new Date().toISOString(),state:JSON.parse(JSON.stringify(state))});localStorage.setItem("ul_partidas",JSON.stringify(slots));save(false);toast("Copia guardada: "+name.trim())});
 $("mainMenuBtn").addEventListener("click",()=>{$("startMenu").hidden=false;save(false)});
 function setSpeed(v){state.speed=v;state.paused=v===1;render()}
+function runAutonomy(){
+ if(state.autonomy==="none"||state.mode!=="life")return;
+ const a=actor(),lowest=Math.min(...a.needs),index=a.needs.indexOf(lowest);
+ const needsToAction=["eat","sleep","wash","toilet","social","fun","clean","comfort"];
+ let chosen=lowest<40?needsToAction[index]:"fun";
+ if(lowest>=40&&Math.random()<0.25)chosen="social";
+ action(chosen,true);
+}
 function tick(){
  if(state.paused||state.speed===1)return;
  const minutes=state.speed===2?1:state.speed===3?3:6;
+ const previousHour=state.hour;
  state.minute+=minutes;
  if(state.minute>=60){state.hour+=Math.floor(state.minute/60);state.minute%=60}
  if(state.hour>=24){state.hour%=24;state.day++}
  const drain=state.speed===2?0.08:state.speed===3?0.18:0.32;
- state.actors.forEach(a=>{a.needs=a.needs.map((v,i)=>clamp(v-drain*(i===1?1.25:1)));if(Math.min(...a.needs)<20)a.mood="Incómodo";});
+ state.actors.forEach(a=>{
+  a.needs=a.needs.map((v,i)=>{
+   let factor=i===1?1.25:1;
+   if(i===4&&a.traits.includes("Sociable"))factor*=2;
+   if(i===4&&a.traits.includes("Solitario"))factor*=0.5;
+   if(i===1&&a.traits.includes("Perezoso"))factor*=1.35;
+   return clamp(v-drain*factor);
+  });
+  if(Math.min(...a.needs)<20)a.mood="Incómodo";
+ });
  if(state.minute%10===0){render();mark()}
+ if(state.minute%30===0)runAutonomy();
+ if(previousHour!==state.hour&&state.hour===6){save(false);toast("Guardado automático · nuevo día");}
  if(dirty&&state.minute%30===0)save(false);
 }
 timer=setInterval(tick,1000);
