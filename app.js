@@ -515,3 +515,52 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   document.addEventListener("click",()=>root.querySelectorAll(".ulx-filter-wrap").forEach(w=>w.classList.remove("open")));
   render();
 })();
+/* Instalación de juegos por cuenta: una descarga a la vez, 60 segundos. */
+(function(){
+ const home=document.getElementById("privateHome");if(!home)return;
+ const grid=document.getElementById("ulhInstalledGrid"),count=document.getElementById("ulhInstalledCount");
+ const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/the-lyrielife-cover.jpg",fallback:"./assets/the-lyrielife-poster.svg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy-cover.png",fallback:"./assets/league-of-legacy-poster.svg"}};
+ let userId=null,installed=new Set(),downloading=null,downloadTimer=null;
+ const toast=document.createElement("div");toast.className="ulh-toast";toast.setAttribute("role","status");toast.setAttribute("aria-live","polite");document.body.appendChild(toast);
+ let toastTimer;function notify(m){toast.textContent=m;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),3500);}
+ function save(){if(userId)localStorage.setItem("universe-installed-games:"+userId,JSON.stringify([...installed]));}
+ function renderLibrary(){
+  if(!grid)return;const list=[...installed].filter(k=>games[k]);if(count)count.textContent=list.length+" "+(list.length===1?"juego":"juegos");
+  if(!list.length){grid.innerHTML='<p class="ulh-installed-empty">Todavía no tienes juegos instalados. Explora el catálogo y descarga tu primer juego.</p>';return;}
+  grid.innerHTML=list.map(k=>{const g=games[k];return '<article class="ulh-library-card"><div class="ulh-entry-open"><img class="ulh-entry-cover" src="'+g.image+'" onerror="this.onerror=null;this.src=\''+g.fallback+'\'" alt="'+g.name+'"></div><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>'+g.name+'</h3><p>'+g.genre+'</p></div><div class="ul-game-actions"><button class="ul-game-play" type="button" data-play="'+k+'">PLAY</button><span class="ul-installed-check">✓</span></div><div class="ul-game-menu-wrap"><button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-uninstall="'+k+'">Desinstalar</button><button type="button" data-report="'+k+'">Reportar error</button></div></div></article>';}).join("");
+  grid.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>{activeGameKey=b.dataset.play;renderGameDialog(activeGameKey);gameDialog.showModal();}));
+  grid.querySelectorAll(".ul-game-more").forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")));
+  grid.querySelectorAll("[data-uninstall]").forEach(b=>b.addEventListener("click",()=>{installed.delete(b.dataset.uninstall);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");}));
+  grid.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>notify("Puedes reportar errores desde el centro de ayuda.")));
+ }
+ function updateCard(card,k){
+  if(!card||!games[k])return;
+  let actions=card.querySelector(".ul-game-actions");if(!actions){actions=document.createElement("div");actions.className="ul-game-actions";card.append(actions);}
+  let menu=card.querySelector(".ul-game-menu-wrap");
+  if(installed.has(k)){
+   if(!menu){menu=document.createElement("div");menu.className="ul-game-menu-wrap";menu.innerHTML='<button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-action="uninstall">Desinstalar</button><button type="button" data-action="report">Reportar error</button></div>';const art=card.querySelector(".ulx-art,.ulh-entry-open");(art||card).append(menu);
+    menu.querySelector(".ul-game-more").addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("open");});
+    menu.querySelector('[data-action="uninstall"]').addEventListener("click",e=>{e.stopPropagation();installed.delete(k);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");});
+    menu.querySelector('[data-action="report"]').addEventListener("click",e=>{e.stopPropagation();notify("Puedes reportar errores desde el centro de ayuda.");});
+   }menu.hidden=false;
+   actions.innerHTML='<button class="ul-game-play" type="button">PLAY</button><span class="ul-installed-check" title="Juego instalado">✓</span>';
+   actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();activeGameKey=k;renderGameDialog(k);gameDialog.showModal();});
+  }else{
+   if(menu)menu.hidden=true;
+   actions.innerHTML='<span class="ul-download-progress">'+(downloading?(downloading===k?"Descargando…":"Otra descarga está en curso"):"")+'</span><button class="ul-download-button" type="button" title="Descargar este juego" aria-label="Descargar este juego" '+(downloading?"disabled":"")+'>↓</button>';
+   actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();start(k);});
+  }
+ }
+ function refresh(){
+  document.querySelectorAll(".ulx-game[data-open-game],.ulh-catalog-card [data-open-game]").forEach(n=>updateCard(n.matches(".ulx-game")?n:n.closest(".ulh-catalog-card"),n.dataset.openGame));
+ }
+ function start(k){
+  if(!userId){notify("Inicia sesión para descargar juegos.");return;}if(downloading||installed.has(k))return;
+  downloading=k;refresh();const started=Date.now();
+  downloadTimer=setInterval(()=>{document.querySelectorAll(".ul-download-progress").forEach(el=>{if(downloading===k)el.textContent="Descargando · "+Math.max(0,60-Math.floor((Date.now()-started)/1000))+" s";});},1000);
+  setTimeout(()=>{clearInterval(downloadTimer);downloading=null;installed.add(k);save();renderLibrary();refresh();notify("Tu juego ha sido descargado");},60000);
+ }
+ window.addEventListener("universe-auth-change",e=>{userId=e.detail?.session?.user?.id||null;installed.clear();if(userId){try{JSON.parse(localStorage.getItem("universe-installed-games:"+userId)||"[]").forEach(k=>{if(games[k])installed.add(k);});}catch{}}renderLibrary();refresh();});
+ const observer=new MutationObserver(refresh);observer.observe(document.getElementById("ulhExplore")||home,{childList:true,subtree:true});
+ renderLibrary();refresh();
+})();
