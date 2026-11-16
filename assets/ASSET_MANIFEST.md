@@ -25,3 +25,16 @@ Los siguientes hashes SHA-256 identifican los archivos originales recibidos. Ver
 ## Estado
 
 Los cambios de código y documentación están publicados en el repositorio. Los seis binarios de arriba están preparados en un paquete ZIP, pero aún no están dentro del historial de GitHub. El archivo fuente de The LyrieLife se entrega aparte.
+
+
+## Portadas y fondos visuales localizados en Library
+
+| Archivo original | Dimensiones | SHA-256 | Uso | Estado |
+|---|---:|---|---|---|
+| TheLyrie.starship.jpg | 2048×2048 | `f65748aca4de10aee38bbe11dec18be15d6953db6a387f6a4194eaa5ba9ea8fa` | Portada The LyrieLife | Original en Library; derivado actual WebP del repo es 160×160 y debe sustituirse |
+| LOL.starship.png | 1024×1024 | `cd149bf9e0c9d547a834e12efc93ebafd104f7aa305583717aa2d748c7712803` | Portada League Of Legacy | Original en Library; derivado actual WebP del repo es 160×160 y debe sustituirse |
+| 1000002882_cc7409ec46d7047400b448b92f04ed81-16_11_2026, 0_40_39.jpg | 2048×2048 | `b5ca170f5c626f26ec107f005fe5612cdc3b2f36142e9fcc79e997f89cbc4f1b` | Variante de portada The LyrieLife | Alternativa sin asignación definitiva |
+| LyrieHomeMainMenu.jpg | 1920×1080 | `5038b33830d211112f29a8ca7faa6018360f07d4ff6fdcb369e36c91fd633c21` | Fondo menú The LyrieLife | Localizado en Library; no integrado |
+| LOL_MainMenu.jpg | 1920×1080 | `301acd2f17a975054ecc6ff7bba4bfdc270b503a2f9c76904b6e66487a173769` | Fondo menú League Of Legacy | Localizado en Library; no integrado |
+
+`chart-1(1).png` es una hoja de contacto de 1250×270 con miniaturas de referencias y no debe utilizarse como portada. Los originales anteriores no están todavía en el árbol de GitHub.
