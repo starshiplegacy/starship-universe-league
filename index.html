@@ -187,15 +187,15 @@
     <div class="ulh-layout">
       <aside class="ulh-sidebar">
         <nav class="ulh-side-nav" aria-label="Navegación de cuenta">
-          <a class="ulh-side-item active" href="#ulh-home-top"><span>▮</span> Inicio</a>
-          <a class="ulh-side-item" href="#ulh-packs"><span>▦</span> Explorar</a>
-          <a class="ulh-side-item" href="#ulh-packs"><span>▤</span> Biblioteca</a>
-          <a class="ulh-side-item ulh-sale-link" href="#ulh-packs"><span>💎</span><span>Compra en las rebajas<small>Las rebajas terminan el 3 de diciembre</small></span></a>
-          <a class="ulh-side-item" href="#ulh-play"><span>◎</span> Universe Play</a>
+          <a class="ulh-side-item active" href="#ulh-home-top" data-ulh-view="home"><span>▮</span> Inicio</a>
+          <a class="ulh-side-item" href="#ulh-packs" data-ulh-view="home"><span>▦</span> Explorar</a>
+          <a class="ulh-side-item" href="#ulh-library" data-ulh-view="library"><span>▤</span> Biblioteca</a>
+          <a class="ulh-side-item ulh-sale-link" href="#ulh-catalog" data-ulh-view="catalog"><span>💎</span><span>Compra en las rebajas<small>Las rebajas terminan el 3 de diciembre</small></span></a>
+          <a class="ulh-side-item" href="#ulh-play" data-ulh-view="home"><span>◎</span> Universe Play</a>
         </nav>
         <div class="ulh-side-divider"></div><div class="ulh-side-title">Juegos instalados</div>
-        <a class="ulh-installed" href="#ulh-packs"><span class="ulh-mini">💎</span> The LyrieLife</a>
-        <a class="ulh-installed" href="#ulh-packs"><span class="ulh-mini ulh-mini-green">⚔</span> League Of Legacy</a>
+        <a class="ulh-installed" href="#ulh-library" data-ulh-view="library"><span class="ulh-mini">💎</span> The LyrieLife</a>
+        <a class="ulh-installed" href="#ulh-library" data-ulh-view="library"><span class="ulh-mini ulh-mini-green">⚔</span> League Of Legacy</a>
         <div class="ulh-sidebar-foot"><span>✓</span><div>The LyrieLife<br><small>Actualización completada</small></div></div>
       </aside>
       <div class="ulh-content" id="ulh-home-top">
@@ -209,7 +209,7 @@
             <button class="ulh-avatar" id="ulhAvatar" type="button" title="Mi cuenta" aria-label="Abrir mi cuenta">R</button>
           </div>
         </div>
-        <section class="ulh-hero">
+        <div class="ulh-view" id="ulhHomeView">\n        <section class="ulh-hero">
           <div class="ulh-hero-copy"><h1>Compra en las rebajas del Black Friday</h1><div class="ulh-deadline">Las rebajas terminan el 3 de diciembre</div><p>Ahorra hasta un 60% en una selección de packs de The LyrieLife. Descubre más formas de jugar a la vida.</p><a class="ulh-hero-button" href="#ulh-packs">Ahorra ya</a></div><div class="ulh-hero-gem" aria-hidden="true">💎</div>
         </section>
         <section class="ulh-packs" id="ulh-packs" aria-label="Packs destacados"><div class="ulh-pack-grid">
