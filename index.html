@@ -125,7 +125,7 @@
       <div class="game-grid">
         <article class="game-card life-card">
           <div class="game-visual game-poster-wrap">
-            <img class="game-poster" src="./assets/the-lyrielife-cover.jpg" onerror="this.onerror=null;this.src='./assets/the-lyrielife-poster.svg'" alt="Ilustración oficial de The LyrieLife" loading="lazy">
+            <img class="game-poster" src="./assets/the-lyrielife-poster.svg" alt="Portada ilustrada de The LyrieLife: un mundo de simulación de vida en tonos pastel" loading="lazy">
             <span class="poster-status" data-i18n="inDevelopment">En desarrollo</span>
             <button class="poster-play" type="button" data-open-game="lyrie" aria-label="PLAY — ver detalles de The LyrieLife"><span>▶</span> PLAY</button>
           </div>
@@ -133,7 +133,7 @@
         </article>
         <article class="game-card fight-card">
           <div class="game-visual game-poster-wrap">
-            <img class="game-poster" src="./assets/league-of-legacy-cover.png" onerror="this.onerror=null;this.src='./assets/league-of-legacy-poster.svg'" alt="Ilustración oficial de League Of Legacy" loading="lazy">
+            <img class="game-poster" src="./assets/league-of-legacy-poster.svg" alt="Portada ilustrada de League Of Legacy: una arena fantástica con torres y héroes" loading="lazy">
             <span class="poster-status" data-i18n="inDevelopment">En desarrollo</span>
             <button class="poster-play" type="button" data-open-game="legacy" aria-label="PLAY — ver detalles de League Of Legacy"><span>▶</span> PLAY</button>
           </div>
@@ -221,6 +221,160 @@
         <section class="ulh-view ulh-library-view" id="ulhLibraryView" hidden aria-labelledby="ulhLibraryTitle">
           <div class="ulh-page-heading"><div><span class="ulh-kicker">TU COLECCIÓN</span><h1 id="ulhLibraryTitle">Biblioteca</h1><p>Todos tus juegos, en un solo lugar.</p></div><button class="ulh-primary-button" id="ulhViewAll" type="button">Ver todos <span>→</span></button></div>
           <section class="ulh-library-section" aria-labelledby="ulhInstalledTitle"><div class="ulh-section-heading"><div><h2 id="ulhInstalledTitle">Juegos instalados</h2><p>Los juegos que descargues aparecerán aquí.</p></div><span class="ulh-count" id="ulhInstalledCount">0 juegos</span></div><div class="ulh-library-grid ulh-installed-grid" id="ulhInstalledGrid"><p class="ulh-installed-empty">Todavía no tienes juegos instalados. Explora el catálogo y descarga tu primer juego.</p></div></section>
+          <section class="ulh-library-section" aria-labelledby="ulhRecommendationsTitle"><div class="ulh-section-heading"><div><h2 id="ulhRecommendationsTitle">Recomendaciones</h2><p>Descubre nuevos mundos y complementos.</p></div></div>
+            <div class="ulh-library-grid ulh-recommend-grid">
+              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-kataleya">🌿</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kataleya World Pack</h3><p>Un mundo por descubrir</p></div></article>
+              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-kariskio">🌊</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Kariskio Coastal</h3><p>Escápate a la costa</p></div></article>
+              <article class="ulh-library-card"><div class="ulh-library-art ulh-rec-solnang">🏔️</div><div class="ulh-library-copy"><span class="ulh-tag">PACK · THE LYRIELIFE</span><h3>Solnang Highlands</h3><p>Explora las montañas</p></div></article>
+            </div>
+          </section>
+        </section>
+        <section class="ulh-view ulh-catalog-view" id="ulhCatalogView" hidden aria-labelledby="ulhCatalogTitle">
+          <div class="ulh-page-heading"><div><span class="ulh-kicker">UNIVERSE LEAGUE STORE</span><h1 id="ulhCatalogTitle">Todos los juegos</h1><p>Explora el catálogo y encuentra tu próxima aventura.</p></div><button class="ulh-back-library" id="ulhBackLibrary" type="button">← Biblioteca</button></div>
+          <div class="ulh-catalog-tabs" role="tablist" aria-label="Secciones del catálogo"><button class="active" type="button" role="tab" aria-selected="true" data-ulh-category="explore">Explorar</button><button type="button" role="tab" aria-selected="false" data-ulh-category="free">Gratis</button><button type="button" role="tab" aria-selected="false" data-ulh-category="buy">Cómpralo</button></div>
+          <div class="ulh-catalog-panel" id="ulhExplorePanel" role="tabpanel"><div class="ulh-explore" id="ulhExplore">
+            <h2>Explorar</h2>
+            <div class="ulx-tabs" id="ulxTabs">
+              <button class="active" type="button" data-ulx-tab="todos">Todos los juegos</button>
+              <button type="button" data-ulx-tab="destacados">Juegos destacados</button>
+              <button type="button" data-ulx-tab="clasicos">Clásicos restaurados ya disponibles</button>
+            </div>
+            <div class="ulx-filters">
+              <div class="ulx-filter-wrap" data-ulx-filter="genero"><button class="ulx-filter" type="button"><span class="ulx-label">Géneros</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Todos</button><button type="button" data-value="Simulación">Simulación</button><button type="button" data-value="Batalla">Batalla</button><button type="button" data-value="Aventura">Aventura</button><button type="button" data-value="Estrategia">Estrategia</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="incluye"><button class="ulx-filter" type="button"><span class="ulx-label">Se incluye en…</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Universe Play">Universe Play</button><button type="button" data-value="Edición Deluxe">Edición Deluxe</button><button type="button" data-value="Pase de temporada">Pase de temporada</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="jugadores"><button class="ulx-filter" type="button"><span class="ulx-label">Jugadores</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Un jugador">Un jugador</button><button type="button" data-value="Multijugador">Multijugador</button></div></div>
+              <div class="ulx-filter-wrap" data-ulx-filter="idioma"><button class="ulx-filter" type="button"><span class="ulx-label">Idiomas</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="">Cualquiera</button><button type="button" data-value="Español">Español</button><button type="button" data-value="Inglés">Inglés</button><button type="button" data-value="Coreano">Coreano</button></div></div>
+              <div class="ulx-filter-wrap ulx-sort" data-ulx-filter="orden"><button class="ulx-filter" type="button"><span class="ulx-label">Fecha de lanzamiento</span><span>▾</span></button><div class="ulx-menu"><button type="button" data-value="reciente">Más recientes primero</button><button type="button" data-value="antiguo">Más antiguos primero</button><button type="button" data-value="az">Nombre (A–Z)</button></div></div>
+            </div>
+            <div class="ulx-grid" id="ulxGrid" aria-live="polite"></div>
+          </div></div>
+          <div class="ulh-catalog-panel" id="ulhFreePanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
+            <article class="ulh-catalog-card"><div class="ulh-catalog-art ulh-free-art">♟️</div><div class="ulh-catalog-copy"><span class="ulh-tag">FREE TO PLAY</span><h3>Jaque Matte</h3><p>Un juego gratuito para disfrutar en Universe League.</p><span class="ulh-price-free">Gratis</span></div></article>
+          </div></div>
           <div class="ulh-catalog-panel" id="ulhBuyPanel" role="tabpanel" hidden><div class="ulh-catalog-grid">
             <article class="ulh-catalog-card"><button class="ulh-entry-open" type="button" data-open-game="lyrie" aria-label="Ver The LyrieLife"><img class="ulh-entry-cover" src="./assets/the-lyrielife-cover.jpg" onerror="this.onerror=null;this.src='./assets/the-lyrielife-poster.svg'" alt="The LyrieLife"></button><div class="ulh-catalog-copy"><span class="ulh-tag">SIMULACIÓN DE VIDA</span><h3>The LyrieLife</h3><p>Juego en desarrollo. La compra estará disponible cuando se publique.</p><span class="ulh-coming">Próximamente</span><button class="ulh-entry-cta" type="button" data-open-game="lyrie">Ver juego ↗</button></div></article>
-            <article class="ulh-catalog-card"><button class="ulh-entry-open" type="button" data-open-game="legacy" aria-label="Abrir League Of Legacy"><img class="ulh-entry-cover" src="./assets/league-of-legacy-cover.png" onerror="this.onerror=null;this.src='./assets/league-of-legacy-poster.svg'" alt="League Of Legacy"></button>>
+            <article class="ulh-catalog-card"><button class="ulh-entry-open" type="button" data-open-game="legacy" aria-label="Abrir League Of Legacy"><img class="ulh-entry-cover" src="./assets/league-of-legacy-cover.png" onerror="this.onerror=null;this.src='./assets/league-of-legacy-poster.svg'" alt="League Of Legacy"></button><div class="ulh-catalog-copy"><span class="ulh-tag">BATALLA MULTIJUGADOR</span><h3>League Of Legacy</h3><p>Juego en desarrollo. La compra estará disponible cuando se publique.</p><span class="ulh-coming">Próximamente</span><button class="ulh-entry-cta" type="button" data-open-game="legacy">Ver juego ↗</button></div></article>
+          </div></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="site-footer"><a class="footer-brand" href="#home">STARSHIP UNIVERSE LEAGUE</a><nav class="footer-socials" aria-label="Official social media"><a href="https://www.youtube.com/@StarshipUniverseLeague" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.youtube.com/@1TheSOriginals" target="_blank" rel="noopener noreferrer">1TheS</a><a href="https://www.instagram.com/starshipuniverseleague/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://x.com/UniverseWeStar" target="_blank" rel="noopener noreferrer">X</a></nav><span>© <span id="year"></span> UNIVERSE LEAGUE</span><span class="footer-credit">A STARSHIP LEGACY ENTERTAINMENT, LLC COMPANY</span></footer>
+
+  <dialog class="game-dialog" id="gameDialog" aria-labelledby="gameDialogTitle">
+    <button class="dialog-close" id="gameDialogClose" type="button" aria-label="Cerrar" data-i18n-aria="closeDialog">×</button>
+    <div class="dialog-kicker" id="gameDialogCategory"></div>
+    <h2 id="gameDialogTitle"></h2>
+    <span class="dialog-status" data-i18n="inDevelopment">En desarrollo</span>
+    <section><h3 data-i18n="descriptionHeading">Descripción</h3><p id="gameDialogDescription"></p></section>
+    <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
+    <section id="gameDialogExtra" hidden></section>
+    <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
+  </dialog>
+  <dialog class="mini-game-dialog" id="miniGameDialog" aria-labelledby="miniGameTitle">
+    <button class="dialog-close" id="miniGameClose" type="button" aria-label="Cerrar">×</button><div class="dialog-kicker">UNIVERSE LEAGUE · FREE TO PLAY</div><h2 id="miniGameTitle">Jaque Matte</h2><p class="mini-game-subtitle" id="miniGameSubtitle">Gratis para Astronautas</p>
+    <div class="mini-game-mode-row"><button type="button" class="mini-mode active" data-mini-mode="easy">Easy <small>Sin límite</small></button><button type="button" class="mini-mode" data-mini-mode="scary">Scary Mode <small>05:00</small></button><button type="button" class="mini-mode" data-mini-mode="custom">Personalizate <small>Tu tiempo</small></button></div>
+    <div class="mini-game-custom-time" id="miniGameCustomTime" hidden><label for="miniGameMinutes">Tiempo en minutos</label><input id="miniGameMinutes" type="number" min="1" max="180" value="10"><button type="button" id="miniGameStartCustom">Comenzar</button></div>
+    <div class="mini-game-status"><span id="miniGameStatus">Elige un modo para comenzar.</span><strong id="miniGameTimer">∞</strong></div><p id="saveSystemStatus" class="save-system-status" role="status" aria-live="polite">STARSHIP SAVE SYSTEM · Preparado</p><div id="miniGameBoard" class="mini-game-board"></div><div class="pixxy-controls" id="pixxyControls" hidden><button type="button" data-pixxy-action="shuffle" aria-label="Barajar">🔁 <span>Barajar</span><b id="pixxyShuffleCount">3/3</b></button><button type="button" data-pixxy-action="hint" aria-label="Buscar pares iguales">🔦 <span>Buscar pares</span><b id="pixxyHintCount">3/3</b></button><button type="button" data-pixxy-action="undo" aria-label="Devolver movimiento">↩️ <span>Devolver</span><b id="pixxyUndoCount">3/3</b></button></div>
+    <div class="mini-game-actions"><button type="button" id="miniGameRestart">Nueva partida</button><button type="button" id="miniGameHint">Ayuda</button></div><p class="mini-game-help" id="miniGameHelp">Selecciona un modo para iniciar.</p>
+  </dialog>
+  <dialog class="gallery-dialog" id="galleryDialog" aria-labelledby="galleryTitle">
+    <button class="dialog-close" id="galleryClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE · COMMUNITY</div>
+    <div class="gallery-heading-row"><div><h2 id="galleryTitle">GALLERY</h2><p class="gallery-intro">Un espacio para compartir recursos, descubrir creaciones y conectar con otros jugadores.</p></div><button class="gallery-refresh" id="galleryRefresh" type="button">↻ Actualizar</button></div>
+    <div class="gallery-community-tools">
+      <div class="gallery-filter-row" id="galleryCategoryFilters">
+        <button type="button" class="active" data-gallery-filter="all">Todo</button>
+        <button type="button" data-gallery-filter="the_lyrielife">The LyrieLife</button>
+        <button type="button" data-gallery-filter="league_of_legacy">League Of Legacy</button>
+        <button type="button" data-gallery-filter="other">Otros juegos</button>
+      </div>
+      <button class="gallery-upload-toggle" id="galleryUploadToggle" type="button">＋ Compartir recurso</button>
+    </div>
+    <section class="gallery-upload-panel" id="galleryUploadPanel" hidden>
+      <h3>Publicar en la comunidad</h3>
+      <p>Los recursos enviados pasan por revisión antes de aparecer públicamente en Gallery.</p>
+      <form id="gallerySubmitForm" class="gallery-submit-form">
+        <label>Título<input name="title" maxlength="140" minlength="3" required placeholder="Nombre de tu creación"></label>
+        <label>Juego o categoría<select name="category"><option value="the_lyrielife">The LyrieLife</option><option value="league_of_legacy">League Of Legacy</option><option value="other">Otros juegos</option></select></label>
+        <label>Descripción<textarea name="description" maxlength="3000" rows="3" placeholder="Cuéntanos sobre este recurso…"></textarea></label>
+        <label>Archivo (máximo 50 MB)<input name="asset" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,.zip,.rar,.7z,.package,.ts4script"></label>
+        <button class="gallery-upload-submit" id="gallerySubmitButton" type="submit">Enviar a revisión</button>
+      </form>
+    </section>
+    <p class="gallery-notice" id="galleryNotice" role="status" aria-live="polite"></p>
+    <div class="gallery-feed" id="galleryFeed"><p class="gallery-loading">Abriendo Gallery…</p></div>
+    <div class="gallery-community-legend"><span>♡ Corazón gris: todavía no has esparcido Starlight</span><span>💖 Corazón arcoíris: ya has esparcido Starlight</span></div>
+  </dialog>
+  <dialog class="account-dialog" id="accountDialog" aria-labelledby="accountTitle">
+    <button class="dialog-close" id="accountClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE · ACCOUNT</div><h2 id="accountTitle">Configuración de Usuario</h2>
+    <p class="account-intro">Administra tu cuenta y tus preferencias. Esta información solo está disponible para ti.</p>
+    <div class="account-sections" id="accountSections">
+      <button type="button" data-account-section="profile"><span>◉</span><span><b>Perfil de Usuario</b><small>Avatar, ID, biografía y redes sociales</small></span><i>›</i></button>
+      <button type="button" data-account-section="personal-profile" id="personalProfileSection" hidden><span>✧</span><span><b>Perfil personal</b><small>Acceso privado · Creator + Exoplanet</small></span><i>›</i></button>
+      <button type="button" data-account-section="plans"><span>✧</span><span><b>Stellar-Llaves (Plans)</b><small>Geffenland · Planes y beneficios</small></span><i>›</i></button>
+      <button type="button" data-account-section="verification"><span>✦</span><span><b>Verificaciones</b><small>Insignias de apoyo y Creator Verified</small></span><i>›</i></button>
+      <button type="button" data-account-section="feedback"><span>✉</span><span><b>Quejas y Sugerencias</b><small>Comparte una consulta o una propuesta</small></span><i>›</i></button>
+      <button type="button" data-account-section="security"><span>⌑</span><span><b>Seguridad</b><small>Contraseña y acceso a tu cuenta</small></span><i>›</i></button>
+      <button type="button" data-account-section="privacy"><span>◇</span><span><b>Privacidad</b><small>Control de tu información personal</small></span><i>›</i></button>
+      <button type="button" data-account-section="preferences"><span>⚙</span><span><b>Preferencias</b><small>Idioma y apariencia</small></span><i>›</i></button>
+      <button type="button" data-account-section="activity"><span>◷</span><span><b>Mis Actividades</b><small>Tu historial personal</small></span><i>›</i></button>
+    </div>
+    <p class="account-section-note" id="accountSectionNote" aria-live="polite">Selecciona una sección para continuar con su configuración.</p>
+    <section class="account-panel" id="accountPanel" hidden aria-live="polite">
+      <div class="account-panel-heading"><button type="button" id="accountBack" class="settings-back">← Volver</button><h3 id="accountPanelTitle">Configuración</h3></div>
+      <div id="settingsMessage" class="settings-message" role="status" aria-live="polite"></div>
+      <div id="accountPanelContent"></div>
+    </section>
+    <button class="account-signout" id="accountSignOut" type="button">Cerrar Sesión</button>
+  </dialog>
+  <dialog class="access-dialog" id="accessDialog" aria-labelledby="accessTitle">
+    <button class="dialog-close" id="accessClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dialog-kicker">UNIVERSE LEAGUE ACCOUNT</div>
+    <h2 id="accessTitle" data-i18n="accessTitle">Accede a tu cuenta</h2>
+    <p class="access-intro" id="authIntro" data-i18n="accessIntro">Accede a tu cuenta de STARSHIP UNIVERSE LEAGUE.</p>
+    <div class="auth-tabs">
+      <button type="button" id="showRegister" class="auth-tab" aria-pressed="false" data-i18n="authRegisterTab">Registrarse</button>
+      <button type="button" id="showLogin" class="auth-tab active" aria-pressed="true" data-i18n="authLoginTab">Iniciar sesión</button>
+    </div>
+    <form id="authForm" class="auth-form">
+      <div id="registerFields" hidden>
+        <label for="firstName" data-i18n="authFirstName">Nombre(s)</label>
+        <input id="firstName" name="firstName" type="text" autocomplete="given-name" maxlength="80" />
+        <label for="lastName" data-i18n="authLastName">Apellido(s)</label>
+        <input id="lastName" name="lastName" type="text" autocomplete="family-name" maxlength="80" />
+      </div>
+      <label for="authEmail" data-i18n="authEmail">Correo</label>
+      <input id="authEmail" name="email" type="email" autocomplete="email" required />
+      <div id="passwordFields">
+        <label for="authPassword" data-i18n="authPassword">Contraseña</label>
+        <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="8" required />
+        <div id="confirmPasswordField" hidden>
+          <label for="confirmPassword" data-i18n="authConfirmPassword">Confirmar contraseña</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" />
+        </div>
+      </div>
+      <button class="primary-button auth-submit" id="authSubmit" type="submit" data-i18n="authLoginButton">Iniciar sesión</button>
+      <button class="auth-reset" id="authReset" type="button" data-i18n="authForgot">¿Olvidaste tu contraseña?</button>
+      <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+    </form>
+    <div class="access-divider"><span data-i18n="accessOr">O</span></div>
+    <div class="access-provider">
+      <button type="button" id="googleAuth"><span class="provider-mark">G</span><span data-i18n="accessGoogle">Continuar con Google</span></button>
+      <button type="button" id="appleAuth"><span class="provider-mark">●</span><span data-i18n="accessApple">Continuar con Apple</span></button>
+    </div>
+    <p class="access-footnote" data-i18n="accessSecurity">Tu contraseña se gestiona de forma segura mediante Supabase Auth.</p>
+  </dialog>
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
+  <script>window.UNIVERSE_SUPABASE_URL="https://wvyveduslbsuvyekeccf.supabase.co";window.UNIVERSE_SUPABASE_KEY="sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz";</script>
+  <script src="./app.js"></script>
+  <script src="./entitlements.js"></script>
+  <script src="./account-settings.js"></script>
+  <script src="./gallery.js"></script>
+  <script src="./save-system.js"></script>
+  <script src="./games.js"></script>
+</body>
+</html>
