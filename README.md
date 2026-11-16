@@ -65,6 +65,7 @@ Documentos operativos:
 - [Plan técnico y fases de entrega](docs/TECHNICAL_OPERATING_PLAN.md)
 - [Matriz de modos y mapas](docs/MAP_MODE_MATRIX.md)
 - [Auditoría técnica y logística](docs/ENGINEERING_AUDIT.md)
+- [Logística y plan de entregas de League Of Legacy](docs/LEAGUE_OF_LEGACY_LOGISTICS.md)
 - [Auditoría de sincronización Supabase ↔ GitHub](docs/SUPABASE_GITHUB_SYNC_AUDIT.md)
 - [Flujo de incorporación de assets](docs/ASSET_INGESTION_WORKFLOW.md)
 - [Secuencia de inicio](docs/UNIVERSE_LAUNCH_SEQUENCE.md)
