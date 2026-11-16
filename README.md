@@ -12,10 +12,14 @@ Repositorio privado principal del universo de juegos de STARSHIP LEGACY ENTERTAI
 - **Importante:** el prototipo actual representa los ambientes con CSS; todavía no importa ni interpreta el formato interno de los archivos `.world`.
 
 ### League Of Legacy
-- Menú y visor 3D: `league-of-legacy.html`.
-- Ocho modelos GLB: `assets/league-of-legacy/characters/`.\n- Mapa fuente: `assets/league-of-legacy/Map/` (Summoners Rift y escenario de entrenamiento; recursos fuente, aún no integrados al motor).\n- Todos los recursos visuales (iconos, imágenes e ilustraciones) van directamente en `assets/league-of-legacy/images/`, sin subcarpetas. No crear `icons/` ni `illustrations/`.
-- El selector usa los nombres exactos de archivo, incluida la capitalización.
-- El botón JUGAR permanece desactivado hasta que exista el sistema real de gameplay/multiplayer.
+- Menú y visor de personajes: `league-of-legacy.html`.
+- Selector de modos y preparación de vista previa: `game-modes.html`.
+- Registro central de modos/mapas: `map-registry.js`.
+- Ocho modelos GLB: `assets/league-of-legacy/characters/`.
+- Mapas fuente: `assets/league-of-legacy/Map/`; consulta `docs/MAP_MODE_MATRIX.md` para asignaciones y estados de licencia.
+- El botón JUGAR abre el selector de modos. Esto no significa que matchmaking o partidas jugables estén implementados.
+- Las vistas previas de mapas permanecen bloqueadas hasta que la licencia de cada recurso esté documentada como autorizada.
+- Todos los recursos visuales (iconos, imágenes e ilustraciones) van directamente en `assets/league-of-legacy/images/`, sin subcarpetas. No crear `icons/` ni `illustrations/`.
 
 ## Lanzador universal
 
@@ -59,6 +63,8 @@ Los originales propietarios y formatos como `.package`, `.world`, `.layer`, `.bl
 
 Documentos operativos:
 - [Plan técnico y fases de entrega](docs/TECHNICAL_OPERATING_PLAN.md)
+- [Matriz de modos y mapas](docs/MAP_MODE_MATRIX.md)
+- [Auditoría técnica y logística](docs/ENGINEERING_AUDIT.md)
 - [Auditoría de sincronización Supabase ↔ GitHub](docs/SUPABASE_GITHUB_SYNC_AUDIT.md)
 - [Flujo de incorporación de assets](docs/ASSET_INGESTION_WORKFLOW.md)
 - [Secuencia de inicio](docs/UNIVERSE_LAUNCH_SEQUENCE.md)
