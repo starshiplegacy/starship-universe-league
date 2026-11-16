@@ -238,6 +238,8 @@ function renderGameDialog(key){
   gameDialogGameplay.textContent = dictionary[key === "lyrie" ? "lyrieGameplay" : "legacyGameplay"];
   gameDialogExtra.hidden = key !== "legacy";
   gameDialogExtra.innerHTML = key === "legacy" ? dictionary.legacyControls : "";
+  const launchActions=document.getElementById("lyriePanelActions");
+  if(launchActions)launchActions.hidden=key!=="lyrie";
 }
 document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
   activeGameKey = button.dataset.openGame;
@@ -245,6 +247,28 @@ document.querySelectorAll("[data-open-game]").forEach(button => button.addEventL
   gameDialog.showModal();
 }));
 document.getElementById("gameDialogClose").addEventListener("click", () => gameDialog.close());
+const lyrieMainMenu=document.getElementById("lyrieMainMenu");
+const lyrieMenuFeedback=document.getElementById("lyrieMenuFeedback");
+document.getElementById("lyrieStartButton")?.addEventListener("click",()=>{
+  gameDialog.close();
+  if(lyrieMainMenu&&!lyrieMainMenu.open)lyrieMainMenu.showModal();
+});
+document.getElementById("lyrieMenuExit")?.addEventListener("click",()=>lyrieMainMenu?.close());
+lyrieMainMenu?.addEventListener("click",event=>{if(event.target===lyrieMainMenu)lyrieMainMenu.close();});
+lyrieMainMenu?.querySelectorAll("[data-lyrie-action]").forEach(button=>button.addEventListener("click",()=>{
+  const action=button.dataset.lyrieAction;
+  let hasSave=false;
+  try{hasSave=Boolean(localStorage.getItem("ul_partida"));}catch{}
+  const messages={
+    resume:hasSave?"Cargando partida…":"No hay partida guardada.",
+    scenario:"Play Scenario — próximamente",
+    load:hasSave?"Cargando partida…":"No hay partidas guardadas.",
+    new:"New Game — próximamente",
+    gallery:"Gallery — próximamente",
+    options:"Options — próximamente"
+  };
+  if(lyrieMenuFeedback)lyrieMenuFeedback.textContent=messages[action]||"Próximamente";
+}));
 gameDialog.addEventListener("click", event => {
   if (event.target === gameDialog) gameDialog.close();
 });
