@@ -241,7 +241,7 @@ function renderGameDialog(key){
   const launchActions=document.getElementById("lyriePanelActions");
   if(launchActions)launchActions.hidden=key!=="lyrie"&&key!=="legacy";
   const launchNote=document.getElementById("gameDialogNote");
-  if(launchNote)launchNote.textContent=key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":"Charlotte te da la bienvenida a League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
+  if(launchNote)launchNote.textContent=key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":"Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
 }
 document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
   activeGameKey = button.dataset.openGame;
@@ -285,7 +285,7 @@ if(launchReturn.get("showLegacyMenu")==="1"){
   renderGameDialog("legacy");
   if(!gameDialog.open)gameDialog.showModal();
   const legacyNote=document.getElementById("gameDialogNote");
-  if(legacyNote)legacyNote.textContent="Charlotte te da la bienvenida a League Of Legacy. Pulsa Iniciar para entrar.";
+  if(legacyNote)legacyNote.textContent="Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para entrar.";
   launchReturn.delete("showLegacyMenu");
   const cleanUrl=window.location.pathname+(launchReturn.toString()?"?"+launchReturn.toString():"")+window.location.hash;
   window.history.replaceState({},document.title,cleanUrl);
