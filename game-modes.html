@@ -84,7 +84,9 @@ async function loadMap(modeId){
  if(!info.canLoadPreview){
    status.textContent=map.runtimeStatus==="blocked-license-review"
     ?"BLOQUEADO POR LICENCIA: "+(map.license||map.notes)+" Se requiere autorización escrita antes de habilitar este escenario."
-    :"Este formato aún no está habilitado para vista previa.";
+    :map.licenseStatus!=="cleared"
+      ?"VISTA PREVIA BLOQUEADA: no hay autorización/licencia documentada para este recurso. Confirma titularidad y permisos antes de cargarlo."
+      :"Este formato aún no está habilitado para vista previa.";
    return;
  }
  setBusy(true,"Cargando "+map.name+"…");
@@ -109,7 +111,7 @@ async function loadMap(modeId){
 }
 function updateMode(){const info=getModeLaunchInfo(modeSelect.value);const map=info.map;
  if(map.runtimeStatus==="blocked-license-review")status.textContent="Bloqueado por licencia: CC BY-NC. El modelo no se cargará.";
- else status.textContent="Mapa asignado: "+map.name+" · "+(info.canLoadPreview?"Vista previa disponible":"Vista previa pendiente")+". Reglas independientes: "+info.mode.rulesetId+"."+(map.id==="summoners-rift"?" ADVERTENCIA: escenario pesado; OBJ de 63 MB y aproximadamente 215.5 MiB de texturas DDS. Se recomienda escritorio y conexión estable.":"");
+ else status.textContent="Mapa asignado: "+map.name+" · "+(info.canLoadPreview?"Vista previa autorizada":"Licencia pendiente; vista previa bloqueada")+". Reglas independientes: "+info.mode.rulesetId+"."+(map.id==="summoners-rift"?" ADVERTENCIA: escenario pesado; OBJ de 63 MB y aproximadamente 215.5 MiB de texturas DDS. Se recomienda escritorio y conexión estable.":"");
 }
 modeSelect.addEventListener("change",updateMode);
 document.getElementById("preview").addEventListener("click",()=>loadMap(modeSelect.value));
