@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LyrieLife — Cómo funcionan los Sims</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+body {
+    min-height: 100vh;
+    background: #2b2b2b;
+    font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.wrap { width: 100%; max-width: 900px; }
+
+
+/* ---------- cabecera ---------- */
+.head {
+    background: #ffffff;
+    border-radius: 6px 6px 0 0;
+    padding: 16px 20px 12px;
+    text-align: center;
+    border-bottom: 3px solid #a9b8cc;
+}
+.head h1 {
+    font-size: 24px;
+    letter-spacing: 1px;
+
+    color: #1a5fb4;
+    text-transform: uppercase;
+}
+.head p {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7a8d;
+    font-weight: 700;
+}
+
+
+/* ---------- pestañas ---------- */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: #b8bfcb;
+    padding: 8px;
+}
+.tab {
+    flex: 1 1 110px;
+    padding: 8px 6px;
+    border: 1px solid #dfe4ea;
+    border-radius: 3px;
+    background: linear-gradient(#ffffff, #eef2f6);
+    color: #1a5fb4;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.tab:hover { background: linear-gradient(#ffffff, #dde6f2); }
+
+.tab.active {
+    background: linear-gradient(#ffffff, #dbe7f7);
+    border-color: #1a5fb4;
+    box-shadow: inset 0 0 0 1px #1a5fb4;
+}
+
+
+/* ---------- panel ---------- */
+.panel {
+    background: #ffffff;
+    border-radius: 0 0 6px 6px;
+    padding: 16px;
+    min-height: 420px;
+}
+
+
+.page { display: none; flex-direction: column; gap: 10px; }
+.page.active { display: flex; }
+
+
+.section-title {
+    background: #a9b8cc;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 2px;
+}
+
+
+.card {
+    border: 1px solid #cfd8e3;
+    border-radius: 3px;
+
+    background: #fbfcfe;
+    padding: 12px 14px;
+}
+.card h3 {
+    font-size: 13px;
+    color: #1a5fb4;
+    margin-bottom: 6px;
+}
+.card p, .card li {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #33404f;
+}
+.card ul { padding-left: 18px; margin-top: 4px; }
+.card li { margin-bottom: 3px; }
+
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px 4px 2px 0;
+    background: #e6ebf3;
+    border: 1px solid #cfd8e3;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #1a5fb4;
+}
+
+
+.bar {
+    height: 12px;
+    border-radius: 999px;
+    background: #e3e9f0;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.bar > span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    transition: width .4s ease;
+}
+
+
+.meter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.meter-row label {
+    flex: 0 0 110px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a5fb4;
+}
+.meter-row .bar { flex: 1; }
+.meter-row .val {
+
+    flex: 0 0 42px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7a8d;
+}
+
+
+.btn {
+    padding: 8px 18px;
+    border: 1px solid #c6ced8;
+    border-radius: 999px;
+    background: linear-gradient(#ffffff 0%, #f7f9fb 45%, #e3e9f0 100%);
+    color: #1a5fb4;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 3px rgba(0,0,0,.18), inset 0 1px 0 #ffffff;
+}
+.btn:hover { background: linear-gradient(#ffffff 0%, #eef4fb 45%, #d6e2f2 100%); }
+.btn:active { transform: translateY(1px); }
+
+
+.row-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+
+.note {
+    font-size: 11.5px;
+    color: #6b7a8d;
+    font-style: italic;
+    margin-top: 6px;
+}
+
+/* ---------- tabla ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+th {
+    background: #e6ebf3;
+    color: #1a5fb4;
+    font-size: 11px;
+    text-align: left;
+    padding: 7px 8px;
+    border: 1px solid #cfd8e3;
+}
+td {
+    padding: 7px 8px;
+    border: 1px solid #e3e9f0;
+    color: #33404f;
+    vertical-align: top;
+}
+tr:nth-child(even) td { background: #fbfcfe; }
+
+
+@media (max-width: 620px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .meter-row label { flex: 0 0 88px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+<div class="head">
+ <h1>Cómo funcionan los Lyries</h1>
+ <p>Guía de sistemas — The LyrieLife</p>
+</div>
+
+
+<div class="tabs">
+ <button class="tab active" data-tab="necesidades">Necesidades</button>
+ <button class="tab" data-tab="emociones">Emociones</button>
+ <button class="tab" data-tab="rutina">Rutina diaria</button>
+ <button class="tab" data-tab="relaciones">Relaciones</button>
+ <button class="tab" data-tab="autonomia">Autonomía</button>
+ <button class="tab" data-tab="rasgos">Rasgos</button>
+ <button class="tab" data-tab="muerte">Ciclo de vida</button>
+</div>
+
+
+<div class="panel">
+
+
+ <!-- ============ NECESIDADES ============ -->
+ <div class="page active" id="page-necesidades">
+
+
+  <div class="section-title">Las 8 necesidades del Lyrie</div>
+
+
+  <div class="card">
+   <p>Cada Lyrie tiene ocho barras que bajan con el tiempo. Cuando una llega a cero, el
+Lyrie empieza a comportarse de forma extraña por su cuenta y su estado de ánimo se
+desploma.</p>
+  </div>
+
+
+  <div class="card">
+   <div class="meter-row">
+
+<label>Hambre</label>
+<div class="bar"><span style="width:72%; background:#4aa8d8;"></span></div>
+<span class="val">72%</span>
+</div>
+<div class="meter-row">
+<label>Energía</label>
+<div class="bar"><span style="width:45%; background:#7a4fb4;"></span></div>
+<span class="val">45%</span>
+</div>
+<div class="meter-row">
+<label>Higiene</label>
+<div class="bar"><span style="width:88%; background:#3fae2a;"></span></div>
+<span class="val">88%</span>
+</div>
+<div class="meter-row">
+<label>Vejiga</label>
+<div class="bar"><span style="width:60%; background:#e8a33d;"></span></div>
+<span class="val">60%</span>
+</div>
+<div class="meter-row">
+<label>Social</label>
+<div class="bar"><span style="width:30%; background:#d9534f;"></span></div>
+<span class="val">30%</span>
+</div>
+<div class="meter-row">
+<label>Diversión</label>
+<div class="bar"><span style="width:55%; background:#e05c9a;"></span></div>
+<span class="val">55%</span>
+</div>
+<div class="meter-row">
+<label>Ánimo</label>
+
+ <div class="bar"><span style="width:80%; background:#f2c744;"></span></div>
+ <span class="val">80%</span>
+</div>
+<div class="meter-row">
+ <label>Entorno</label>
+ <div class="bar"><span style="width:66%; background:#5bb8e8;"></span></div>
+ <span class="val">66%</span>
+</div>
+</div>
+
+
+<div class="grid2">
+<div class="card">
+ <h3>Qué la sube</h3>
+ <ul>
+  <li><b>Hambre</b> — nevera, cocinar, barra de comida</li>
+  <li><b>Energía</b> — cama, sofá, siesta</li>
+  <li><b>Higiene</b> — ducha, bañera, lavamanos</li>
+  <li><b>Vejiga</b> — inodoro</li>
+  <li><b>Social</b> — hablar, cotillear, abrazar</li>
+  <li><b>Diversión</b> — TV, libros, piscina, mar</li>
+  <li><b>Ánimo</b> — decoración bonita, logros</li>
+  <li><b>Entorno</b> — muebles de calidad, limpieza</li>
+ </ul>
+</div>
+<div class="card">
+ <h3>Cuánto bajan</h3>
+ <ul>
+  <li>Hambre: ~4% por hora de juego</li>
+  <li>Energía: ~3% por hora (más de noche)</li>
+  <li>Higiene: ~2% por hora</li>
+  <li>Vejiga: ~5% por hora</li>
+
+     <li>Social: ~2% por hora sin nadie cerca</li>
+     <li>Diversión: ~3% por hora</li>
+    </ul>
+    <p class="note">Los valores son de diseño, ajustables por dificultad.</p>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Si una necesidad baja de <b>20%</b>, el Lyrie recibe una <b>señal de aviso</b>
+(burbuja de pensamiento + sonido). Si llega a <b>0%</b>, entra en <b>modo urgente</b>:
+ignora lo que le mandes y va solo a resolverla. Es lo que hace que se sienta vivo y no un
+títere.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ EMOCIONES ============ -->
+ <div class="page" id="page-emociones">
+
+
+  <div class="section-title">Sistema de emociones</div>
+
+
+  <div class="card">
+   <p>Las emociones son el <b>estado temporal</b> del Lyrie. No son permanentes:
+entran, duran un rato y se van. Cambian lo que el Lyrie puede hacer y cómo reacciona.</p>
+  </div>
+
+
+  <div class="card">
+   <h3>Las 6 emociones base</h3>
+   <p>
+    <span class="tag">Feliz</span>
+
+    <span class="tag">Triste</span>
+    <span class="tag">Enojado</span>
+    <span class="tag">Asustado</span>
+    <span class="tag">Aburrido</span>
+    <span class="tag">Enamorado</span>
+   </p>
+  </div>
+
+
+  <div class="card">
+   <h3>Cómo se dispara una emoción</h3>
+   <ul>
+    <li><b>Evento</b> — algo pasa (una pelea, un regalo, una mala noticia)</li>
+    <li><b>Intensidad</b> — leve, media o fuerte</li>
+    <li><b>Duración</b> — minutos de juego, no para siempre</li>
+    <li><b>Acumulación</b> — varias cosas buenas seguidas pueden subir a <b>Muy
+feliz</b></li>
+   </ul>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Efecto en el juego</h3>
+    <ul>
+     <li>Cambia las opciones disponibles al clickear</li>
+     <li>Modifica la velocidad de las necesidades</li>
+     <li>Afecta el éxito de las interacciones sociales</li>
+    </ul>
+   </div>
+   <div class="card">
+    <h3>Ejemplo práctico</h3>
+    <p>Un Lyrie <b>enojado</b> puede <i>Gritar</i> o <i>Romper algo</i>, pero no puede
+
+<i>Bailar</i> ni <i>Coquetear</i> con éxito. Si le das un regalo, la emoción cambia a
+<b>Feliz</b> y esas opciones vuelven.</p>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>La emoción <b>no reemplaza</b> a las necesidades. Un Lyrie puede estar feliz y con
+hambre a la vez. Lo que manda siempre es la necesidad urgente; la emoción es el color con
+el que hace las cosas.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ RUTINA ============ -->
+ <div class="page" id="page-rutina">
+
+
+  <div class="section-title">Rutina diaria</div>
+
+
+  <div class="card">
+   <p>El día del Lyrie tiene <b>24 horas de juego</b> y se divide en bloques. No es
+obligatorio seguirlos, pero el mundo reacciona a ellos: la ciudad se vacía de noche y las
+tiendas abren a cierta hora.</p>
+  </div>
+
+
+  <div class="card">
+   <table>
+    <thead>
+     <tr><th>Hora</th><th>Qué pasa</th><th>Necesidades que pesan</th></tr>
+    </thead>
+    <tbody>
+
+     <tr><td>06:00 – 09:00</td><td>El Lyrie despierta. Ducha, desayuno,
+prepararse.</td><td>Energía, Higiene, Hambre</td></tr>
+     <tr><td>09:00 – 13:00</td><td>Trabajo o escuela si tiene. Si no, tiempo
+libre.</td><td>Diversión, Social</td></tr>
+     <tr><td>13:00 – 15:00</td><td>Comida. Los Lyries se reúnen si están en
+casa.</td><td>Hambre, Social</td></tr>
+     <tr><td>15:00 – 19:00</td><td>Tarde libre: visitas, piscina, mar,
+recados.</td><td>Diversión, Social</td></tr>
+     <tr><td>19:00 – 22:00</td><td>Cena y tiempo en familia o con
+amigos.</td><td>Hambre, Social, Ánimo</td></tr>
+     <tr><td>22:00 – 06:00</td><td>Descanso. Si no duerme, la Energía cae en
+picado.</td><td>Energía</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Si el jugador no hace nada</h3>
+    <ul>
+     <li>El Lyrie actúa por <b>autonomía</b></li>
+     <li>Prioriza la necesidad más baja</li>
+     <li>Si todo está bien, hace algo de Diversión</li>
+    </ul>
+   </div>
+   <div class="card">
+    <h3>Si el jugador manda</h3>
+    <ul>
+     <li>La orden tiene <b>prioridad</b> sobre la autonomía</li>
+     <li>Pero si una necesidad llega a 0, la orden se cancela</li>
+     <li>El Lyrie puede <b>quejarse</b> si le mandas algo que no quiere</li>
+
+    </ul>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>La rutina no es una jaula. Es lo que hace que el mundo se sienta con vida cuando no
+lo estás mirando. El jugador puede romperla, pero el Lyrie lo va a notar.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ RELACIONES ============ -->
+ <div class="page" id="page-relaciones">
+
+
+  <div class="section-title">Relaciones entre Lyries</div>
+
+
+  <div class="card">
+   <p>Cada pareja de Lyries tiene <b>dos valores</b> que se mueven por separado. No es
+una sola barra: puedes caerle bien a alguien que no te quiere cerca, o al revés.</p>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Amistad</h3>
+    <p>Va de <b>−100 a +100</b>. Sube hablando, ayudando, cotilleando bien de alguien.
+Baja con peleas, insultos o hablar mal.</p>
+    <div class="bar"><span style="width:65%; background:#3fae2a;"></span></div>
+    <p class="note">Actual: 65 — Amigos</p>
+   </div>
+   <div class="card">
+
+    <h3>Romance</h3>
+    <p>Va de <b>−100 a +100</b>. Solo sube con interacciones románticas y si ambos
+están receptivos. Si hay mucha amistad pero poco romance, son solo amigos.</p>
+    <div class="bar"><span style="width:20%; background:#e05c9a;"></span></div>
+    <p class="note">Actual: 20 — Interés leve</p>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Niveles de amistad</h3>
+   <table>
+    <thead><tr><th>Rango</th><th>Etiqueta</th><th>Qué se
+desbloquea</th></tr></thead>
+    <tbody>
+     <tr><td>−100 a −50</td><td>Enemigos</td><td>Pelear, insultar, evitarse</td></tr>
+     <tr><td>−49 a −1</td><td>Desconocidos hostiles</td><td>Interacciones
+frías</td></tr>
+     <tr><td>0 a 24</td><td>Conocidos</td><td>Hablar, cotillear</td></tr>
+     <tr><td>25 a 59</td><td>Amigos</td><td>Hablar bien de, abrazar</td></tr>
+     <tr><td>60 a 89</td><td>Buenos amigos</td><td>Confidencias, secretos</td></tr>
+     <tr><td>90 a 100</td><td>Mejores amigos</td><td>Todo desbloqueado</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Hablar mal de alguien <b>sube</b> la amistad con quien te escucha y <b>baja</b>
+la amistad con el mencionado — si se entera. Esa es la base del cotilleo y de los conflictos
+que se generan solos.</p>
+  </div>
+
+ </div>
+
+
+ <!-- ============ AUTONOMÍA ============ -->
+ <div class="page" id="page-autonomia">
+
+
+  <div class="section-title">Autonomía — lo que hace el Lyrie solo</div>
+
+
+  <div class="card">
+   <p>La autonomía es lo que hace que el Lyrie parezca <b>una persona</b> y no un
+personaje esperando órdenes. Funciona con una lista de prioridades que se recalcula cada
+pocos segundos.</p>
+  </div>
+
+
+  <div class="card">
+   <h3>Cómo decide qué hacer</h3>
+   <ul>
+    <li><b>1.</b> Revisa las 8 necesidades y busca la más baja</li>
+    <li><b>2.</b> Busca en el entorno un objeto que la resuelva</li>
+    <li><b>3.</b> Si no hay, elige la segunda más baja</li>
+    <li><b>4.</b> Si ninguna está por debajo del 40%, hace algo de Diversión</li>
+    <li><b>5.</b> Si hay otro Lyrie cerca, puede decidir socializar</li>
+   </ul>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Niveles de autonomía</h3>
+    <ul>
+     <li><b>Total</b> — el Lyrie decide siempre, tú solo miras</li>
+     <li><b>Parcial</b> — decide si no le has mandado nada</li>
+
+     <li><b>Ninguna</b> — se queda quieto hasta que le mandes</li>
+    </ul>
+   </div>
+   <div class="card">
+    <h3>Cuándo se cancela</h3>
+    <ul>
+     <li>Si le das una orden nueva</li>
+     <li>Si una necesidad llega a 0</li>
+     <li>Si el objeto que iba a usar ya está ocupado</li>
+     <li>Si otro Lyrie le habla y él responde</li>
+    </ul>
+   </div>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>La autonomía <b>nunca</b> debe sentirse como que el juego te quita el control. Si
+el Lyrie hace algo raro, tiene que haber una razón visible: una necesidad baja, una emoción
+fuerte o un objeto que le llamó la atención.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ RASGOS ============ -->
+ <div class="page" id="page-rasgos">
+
+
+  <div class="section-title">Rasgos de personalidad</div>
+
+
+  <div class="card">
+   <p>Cada Lyrie nace con <b>3 rasgos</b> que no cambian (salvo con eventos
+especiales). Los rasgos modifican qué necesita más, qué le gusta y cómo reacciona.</p>
+
+  </div>
+
+
+  <div class="card">
+   <h3>Ejemplos de rasgos</h3>
+   <p>
+    <span class="tag">Sociable</span>
+    <span class="tag">Solitario</span>
+    <span class="tag">Activo</span>
+    <span class="tag">Perezoso</span>
+    <span class="tag">Ordenado</span>
+    <span class="tag">Desordenado</span>
+    <span class="tag">Aventurero</span>
+    <span class="tag">Casero</span>
+    <span class="tag">Creativo</span>
+    <span class="tag">Analítico</span>
+    <span class="tag">Romántico</span>
+    <span class="tag">Celoso</span>
+   </p>
+  </div>
+
+
+  <div class="card">
+   <h3>Qué cambia un rasgo</h3>
+   <table>
+    <thead><tr><th>Rasgo</th><th>Efecto</th></tr></thead>
+    <tbody>
+     <tr><td>Sociable</td><td>La necesidad Social baja el doble de rápido; hablar le da
+más Diversión</td></tr>
+     <tr><td>Solitario</td><td>Social baja la mitad; estar solo le sube Ánimo</td></tr>
+     <tr><td>Activo</td><td>Necesita ejercicio; nadar en piscina o mar le sube Energía en
+vez de bajarla</td></tr>
+     <tr><td>Perezoso</td><td>Energía baja más rápido; dormir le da más
+
+beneficio</td></tr>
+     <tr><td>Ordenado</td><td>Entorno sube con la limpieza; la suciedad le baja el
+Ánimo</td></tr>
+     <tr><td>Romántico</td><td>Romance sube más rápido; sin pareja, el Ánimo
+baja</td></tr>
+     <tr><td>Celoso</td><td>Si su pareja habla con otro, entra en estado
+Enojado</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="card">
+   <h3>Regla clave</h3>
+   <p>Los rasgos <b>no bloquean</b> acciones, las <b>inclinan</b>. Un Lyrie perezoso
+puede hacer ejercicio, pero le cuesta más y lo disfruta menos. Eso es lo que hace que cada
+Lyrie se sienta distinto sin romper el sistema.</p>
+  </div>
+
+
+ </div>
+
+
+ <!-- ============ CICLO DE VIDA ============ -->
+ <div class="page" id="page-muerte">
+
+
+  <div class="section-title">Ciclo de vida</div>
+
+
+  <div class="card">
+   <p>Los Lyries envejecen y mueren. Es lo que le da peso a las decisiones: si sabes que el
+tiempo pasa, cuidas más las relaciones.</p>
+  </div>
+
+
+  <div class="card">
+
+   <h3>Etapas</h3>
+   <table>
+    <thead><tr><th>Etapa</th><th>Duración (normal)</th><th>Qué
+cambia</th></tr></thead>
+    <tbody>
+     <tr><td>Bebé</td><td>3 días</td><td>Depende de un adulto para todo</td></tr>
+     <tr><td>Niño</td><td>7 días</td><td>Escuela, amistades infantiles</td></tr>
+     <tr><td>Adolescente</td><td>10 días</td><td>Emociones más intensas, romance
+inicial</td></tr>
+     <tr><td>Joven adulto</td><td>20 días</td><td>Trabajo, pareja,
+independencia</td></tr>
+     <tr><td>Adulto</td><td>25 días</td><td>Familia, estabilidad</td></tr>
+     <tr><td>Anciano</td><td>15 días</td><td>Energía baja más rápido</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="grid2">
+   <div class="card">
+    <h3>Cómo se muere</h3>
+    <ul>
+     <li><b>Vejez</b> — al terminar la etapa de anciano</li>
+     <li><b>Hambre</b> — 0% durante demasiado tiempo</li>
+     <li><b>Accidente</b> — eventos raros, según el mundo</li>
+     <li><b>Emoción extrema</b> — demasiada risa o demasiado enojo</li>
+    </ul>
+   </div>
+   <div class="card">
+    <h3>Qué queda</h3>
+    <ul>
+     <li>Su casa y sus objetos pasan a la familia</li>
+
+       <li>Sus relaciones se convierten en <b>recuerdos</b></li>
+       <li>Puede aparecer como fantasma en el mundo</li>
+       <li>Los hijos heredan rasgos parcialmente</li>
+       </ul>
+      </div>
+  </div>
+
+
+  <div class="card">
+      <h3>Regla clave</h3>
+      <p>La muerte no debe ser una sorpresa injusta. Si un Lyrie va a morir, el jugador tiene
+que haber tenido <b>señales claras</b> antes. La muerte es el final de una historia, no un
+castigo aleatorio.</p>
+  </div>
+
+
+ </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+ tab.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('page-' + tab.dataset.tab).classList.add('active');
+ });
+});
+</script>
+
+</body>
+</html>
