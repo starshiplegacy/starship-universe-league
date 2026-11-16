@@ -6,8 +6,8 @@ Map assignment and rulesets are independent. The registry is `map-registry.js`; 
 
 | Mode | Map | Runtime asset | Preview state |
 |---|---|---|---|
-| Battle Royale | Summoner's Rift | OBJ + runtime MTL + DDS | Preview loader implemented; large asset validation pending |
-| De Clasificatoria | Summoner's Rift | Same map assets | Same scene; separate ruleset ID |
+| Battle Royale | Summoner's Rift | OBJ + original MTL + DDS | **Blocked pending written Riot license** |
+| De Clasificatoria | Summoner's Rift | Same map assets | **Blocked pending written Riot license**; separate ruleset ID |
 | Versus 1 to 3 | Own map | BeginningLobby.fbx | Disabled pending CC BY-NC rights review |
 | Versus 4 to 5 | Own map | battle_guys_map_500th_model.glb | GLB preview loader implemented; visual validation pending |
 | Entrenamiento | Own map | For_Training.glb | GLB preview loader implemented; visual validation pending |
@@ -16,20 +16,22 @@ Map assignment and rulesets are independent. The registry is `map-registry.js`; 
 
 - The League Of Legacy menu's JUGAR button opens `game-modes.html`.
 - The mode selector reads `map-registry.js` and resolves the map assigned to each mode.
-- GLB preview loading is wired for Versus 4 to 5 and Entrenamiento.
-- Summoner's Rift uses OBJLoader + MTLLoader + DDSLoader with a runtime-only MTL whose texture paths point into the repository. The original MTL is preserved.
+- GLB preview loading is wired for Versus 4 to 5 and Entrenamiento (pending visual and license validation).
+- Summoner's Rift remains assigned to Battle Royale and Clasificatoria in the registry, but its loader is blocked pending written authorization. No modified runtime MTL is retained.
 - Battle Royale and Clasificatoria share one map but have different ruleset IDs.
-- Versus 1 to 3 remains blocked and is not loaded by the preview page.
+- Versus 1 to 3 and Summoner's Rift remain blocked and are not loaded by the preview page.
 
 ## Licensing / asset provenance
 
 `Versus 1 to 3/LICENSE.txt` states Creative Commons Attribution–Non-Commercial and identifies the source as Omeleto / Thingiverse. This is not cleared for commercial use. The map stays disabled until a compatible license or written permission is obtained. Do not treat attribution alone as permission for commercial use.
 
+The Summoner's Rift assets appear to reproduce Riot Games intellectual property. Riot's official [Legal Jibber Jabber policy](https://www.riotgames.com/es-419/informacion-legal) explicitly includes maps among protected IP and says Riot IP may not be used in games or apps without an applicable written license/API authorization. Since this repository is a game/app project and is associated with an entertainment company, this map is blocked pending written permission or replacement with an original, rights-cleared map. This is a risk flag, not legal advice.
+
 Other map asset license status has not yet been verified. Their presence in the repository is not proof of redistribution or commercial-use rights.
 
 ## Technical findings and limits
 
-- Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. The runtime MTL references 112 unique local DDS textures (~215.5 MiB combined); the source MTL contains absolute Windows paths, so the runtime copy rewrites present texture references to repository-relative paths. Two source references are absent and remain documented as missing comments.
+- Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. The source MTL contains absolute Windows paths; a temporary runtime MTL was created during analysis, then removed after the licensing review. The original MTL and all original map assets remain unchanged.
 - The map preview page does not create physics, navigation meshes, collision shapes, spawn points, player teams, networking, matchmaking, scoring, respawns, timers or victory conditions.
 - GLB presence does not prove the model is optimized or correctly scaled. Preview loading is a first visual integration step only.
 - The repository currently lists one GLB under `For Training`; if additional training maps exist outside this path, they are not currently discoverable in the tracked tree.
