@@ -12,10 +12,12 @@ export const MAPS = Object.freeze({
     sourcePath: ROOT + "For BAttle Royale & De Clasificatoria/SummonersRift/",
     format: "obj-mtl-dds",
     entry: "SummonersRift.obj",
-    material: "runtime/SummonersRift.runtime.mtl",
-    runtimeStatus: "preview-candidate",
-    licenseStatus: "review-required",
-    notes: "OBJ/MTL with 405 DDS assets. Runtime MTL uses repository-relative texture paths; preview performance and texture coverage must be validated."
+    material: "SummonersRift.mtl",
+    runtimeStatus: "blocked-license-review",
+    license: "Riot Games intellectual property — Summoner's Rift map",
+    licenseStatus: "written-license-required",
+    licenseSource: "https://www.riotgames.com/es-419/informacion-legal",
+    notes: "The asset appears to reproduce Riot Games map content. Do not load into this game/app or distribute without written authorization applicable to the project."
   }),
   versus13: Object.freeze({
     id: "versus-1-to-3",
