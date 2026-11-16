@@ -253,7 +253,7 @@ const lyrieMainMenu=document.getElementById("lyrieMainMenu");
 const lyrieMenuFeedback=document.getElementById("lyrieMenuFeedback");
 document.getElementById("lyrieStartButton")?.addEventListener("click",()=>{
   gameDialog.close();
-  if(lyrieMainMenu&&!lyrieMainMenu.open)lyrieMainMenu.showModal();
+  window.location.href="./launch.html?game=lyrie";
 });
 document.getElementById("lyrieMenuExit")?.addEventListener("click",()=>lyrieMainMenu?.close());
 lyrieMainMenu?.addEventListener("click",event=>{if(event.target===lyrieMainMenu)lyrieMainMenu.close();});
@@ -272,6 +272,24 @@ lyrieMainMenu?.querySelectorAll("[data-lyrie-action]").forEach(button=>button.ad
 gameDialog.addEventListener("click", event => {
   if (event.target === gameDialog) gameDialog.close();
 });
+const launchReturn=new URLSearchParams(window.location.search);
+if(launchReturn.get("showLyrieMenu")==="1"){
+  renderGameDialog("lyrie");
+  if(!gameDialog.open)gameDialog.showModal();
+  if(lyrieMainMenu&&!lyrieMainMenu.open)lyrieMainMenu.showModal();
+  launchReturn.delete("showLyrieMenu");
+  const cleanUrl=window.location.pathname+(launchReturn.toString()?"?"+launchReturn.toString():"")+window.location.hash;
+  window.history.replaceState({},document.title,cleanUrl);
+}
+if(launchReturn.get("showLegacyMenu")==="1"){
+  renderGameDialog("legacy");
+  if(!gameDialog.open)gameDialog.showModal();
+  const legacyNote=document.getElementById("gameDialogNote");
+  if(legacyNote)legacyNote.textContent="La secuencia de inicio ya terminó. El menú principal de League Of Legacy todavía debe integrarse.";
+  launchReturn.delete("showLegacyMenu");
+  const cleanUrl=window.location.pathname+(launchReturn.toString()?"?"+launchReturn.toString():"")+window.location.hash;
+  window.history.replaceState({},document.title,cleanUrl);
+}
 
 
 // Accessible horizontal carousels for Multimedia and New Release
