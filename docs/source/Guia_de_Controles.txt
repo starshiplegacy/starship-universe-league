@@ -1,0 +1,232 @@
+Title
+Guía de Controles — The LyrieLife: Vive, Sueña y Crea
+   Documento privado · Carpeta: Controles · UNIVERSE LEAGUE / STARSHIP Legacy
+                                 Entertainment, LLC
+
+
+
+
+1. Introducción
+Este documento define el sistema de controles de The LyrieLife: Vive, Sueña y Crea (también
+conocido simplemente como The Lyrie), un juego de simulación de vida donde el jugador crea
+su personaje —el Lyrie— y vive la vida que sueña.
+El archivo tiene dos propósitos:
+   1. Servir de referencia para el jugador, con todos los atajos y gestos disponibles.
+   2. Servir de especificación técnica para el motor del juego, de modo que lea correctamente
+      cada entrada sin errores.
+Alcance: controles de PC, controles táctiles (móvil y tableta), controles del Creador de Lyrie
+(CUL_CAS), controles del Modo Construcción y manejo de errores de entrada.
+
+
+
+
+2. Controles base (PC)
+2.1 Tabla de teclas por defecto
+Acción                                          Tecla / entrada
+
+Mover cámara                                    Flechas o mantener clic derecho y arrastrar
+
+Rotar cámara                                    Clic central y arrastrar, o Q / E
+
+Zoom                                            Rueda del ratón
+
+Seleccionar                                     Clic izquierdo
+
+Menú de acciones del Lyrie                      Clic en el personaje
+
+Pausa / Menú principal                          Esc
+
+Velocidad del tiempo                            1 pausa · 2 normal · 3 rápido · 4 ultra
+
+Cambiar de Lyrie activo                         Tab
+
+Modo Construcción                               B
+
+Acción                                         Tecla / entrada
+
+Modo Compra                                    Shift + B
+
+Captura de pantalla                            C
+
+Panel de necesidades                           N
+
+Inventario                                     I
+
+Diario del Lyrie                               J
+
+Ocultar interfaz                               H
+
+Panel de relaciones                            R
+
+Panel de trabajo y escuela                     T
+
+
+
+2.2 Cámara y navegación
+      Vista Lyrie: la cámara sigue al personaje. Es la vista recomendada para el día a día.
+      Vista Libre: la cámara se mueve sin ataduras por el vecindario, útil para explorar y
+       planear.
+      Vista Superior: planta del solar desde arriba. Es obligatoria en el Modo Construcción.
+      Centrar en Lyrie: doble clic sobre el personaje en cualquier vista.
+      Puntos de interés: clic en el icono del mapa para saltar a casas, comercios y zonas
+       comunes.
+
+
+
+
+3. Creador de Lyrie (CUL_CAS)
+CUL_CAS (CreateALyrie / CrearUnLyrie) es la sección donde se diseña el personaje.
+
+Acción                                         Entrada
+
+Rotar el modelo                                Arrastrar con clic izquierdo
+
+Zoom al detalle                                Rueda del ratón sobre cara, manos o pies
+
+Cambiar categoría                              Pestañas laterales (cuerpo, rostro, cabello,
+                                               ropa, rasgos)
+
+Generar Lyrie aleatorio                        Botón de dado
+
+Confirmar y guardar                            Enter
+
+Retroceder sin guardar                         Esc
+
+Deshacer ajuste                                Ctrl + Z
+
+Categorías disponibles: cuerpo, rostro, cabello, ropa y rasgos. Cada categoría conserva su
+
+propio historial de deshacer mientras el Creador permanezca abierto.
+
+
+
+
+4. Modo Construcción
+Acción                                          Entrada
+
+Colocar objeto                                  Seleccionar en el catálogo y clic en el solar
+
+Rotar objeto                                    , y . con el objeto seleccionado
+
+Mover objeto                                    Arrastrar
+
+Borrar objeto                                   Supr
+
+Activar cuadrícula                              G
+
+Desactivar ajuste a cuadrícula                  Alt
+
+Copiar estilo                                   Cuentagotas sobre el objeto de origen
+
+Herramientas de la barra inferior: muros, suelos, terrenos, piscinas y despliegues.
+
+
+
+
+5. Vida diaria
+       Acciones rápidas: clic derecho sobre un objeto para ver las interacciones disponibles.
+       Cola de acciones: Shift + clic añade la acción sin interrumpir la actual.
+       Cancelar acción: clic en la X de la tarjeta de acción, o Esc.
+       Redes sociales y relaciones: R abre el panel de vínculos.
+       Trabajo y escuela: T abre el panel de carrera.
+
+
+
+
+6. Controles táctiles (móvil y tableta)
+Gesto                                           Acción
+
+Un dedo                                         Mover cámara
+
+Dos dedos, pellizcar                            Zoom
+
+Dos dedos, girar                                Rotar cámara
+
+Toque largo                                     Menú de acciones del Lyrie
+
+Doble toque                                     Centrar cámara
+
+Gesto                                            Acción
+
+Barra inferior                                   Tiempo, necesidades y modos de juego
+
+
+
+
+7. Reasignación de controles
+El jugador puede reasignar cualquier tecla desde Ajustes › Controles.
+Reglas del sistema de reasignación:
+   1. Cada acción admite una tecla principal y una alternativa.
+   2. Al asignar una tecla ya ocupada, el juego muestra el conflicto y ofrece intercambiar o
+      cancelar.
+   3. Las acciones críticas (Esc, Tab) no pueden quedar sin asignación.
+   4. La configuración se guarda por perfil de jugador y se conserva entre sesiones.
+   5. El botón Restaurar por defecto devuelve la tabla de la sección 2.1.
+
+
+
+
+8. Manejo de errores de entrada
+Esta sección es la que el motor debe leer para funcionar sin errores.
+
+
+8.1 Tecla no reconocida
+       Condición: se recibe un código de tecla fuera del mapa de entrada.
+       Respuesta: ignorar la entrada, registrar el evento en el log y no alterar el estado del
+        juego.
+       Mensaje al jugador: ninguno por defecto; solo visible en modo depuración.
+
+
+8.2 Conflicto de atajos
+       Condición: dos acciones comparten la misma tecla en el mismo contexto.
+       Respuesta: prioridad al contexto más específico (Construcción sobre juego general,
+        CUL_CAS sobre menú).
+       Mensaje al jugador: aviso en el panel de Controles al momento de asignar.
+
+
+8.3 Pérdida de foco de ventana
+       Condición: la ventana del juego deja de estar activa.
+       Respuesta: pausar la simulación, liberar las teclas mantenidas y vaciar la cola de
+        entrada.
+       Al recuperar el foco: no reanudar automáticamente; esperar una entrada explícita del
+        jugador.
+
+8.4 Entrada simultánea de ratón y teclado
+         Condición: se reciben comandos de cámara por ambas vías en el mismo fotograma.
+         Respuesta: aplicar primero el desplazamiento por teclado y luego el de ratón, sin
+          acumular velocidad.
+
+
+8.5 Estado de juego no interactivo
+         Condición: el juego está en Intro, Pantalla de Carga o Main Menú.
+         Respuesta: solo aceptar las entradas declaradas para ese estado. El resto se descarta
+          silenciosamente.
+
+
+
+
+9. Notas de implementación
+         Todos los atajos deben declararse en un único mapa de entrada, nunca codificados
+          directamente en la lógica de juego.
+         Las intros y las pantallas de carga deben bloquear la entrada de juego y permitir solo el
+          salto de secuencia cuando esté configurado.
+         El Main Menú debe responder a teclado, ratón y táctil, con navegación por flechas y
+          confirmación con Enter.
+         El panel de UI & Complements debe reflejar el estado real de las teclas: mostrar la tecla
+          activa, no la tecla por defecto.
+         Documentar cada cambio de control en el registro de versiones del proyecto.
+
+
+
+
+10. Registro de versiones
+Versión                           Fecha                            Cambio
+
+1.0                               14 de noviembre de 2026          Versión inicial de la guía de
+                                                                   controles
+
+
+
+The LyrieLife: Vive, Sueña y Crea — desarrollado por UNIVERSE LEAGUE (Starship Universe
+League), subsidiaria de STARSHIP Legacy Entertainment, LLC. Música distribuida por 1TheS
+                       Entertainment bajo su subsello 1TheS Originals.
