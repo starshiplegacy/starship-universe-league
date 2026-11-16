@@ -29,7 +29,7 @@ Other map asset license status has not yet been verified. Their presence in the 
 
 ## Technical findings and limits
 
-- Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. Its source MTL contains absolute Windows paths; the runtime MTL rewrites present texture references to repository-relative paths. Two referenced DDS basenames were not found and are commented out in the runtime MTL.
+- Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. The runtime MTL references 112 unique local DDS textures (~215.5 MiB combined); the source MTL contains absolute Windows paths, so the runtime copy rewrites present texture references to repository-relative paths. Two source references are absent and remain documented as missing comments.
 - The map preview page does not create physics, navigation meshes, collision shapes, spawn points, player teams, networking, matchmaking, scoring, respawns, timers or victory conditions.
 - GLB presence does not prove the model is optimized or correctly scaled. Preview loading is a first visual integration step only.
 - The repository currently lists one GLB under `For Training`; if additional training maps exist outside this path, they are not currently discoverable in the tracked tree.
