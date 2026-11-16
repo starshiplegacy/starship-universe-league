@@ -38,7 +38,7 @@ Los nombres y rutas de los archivos binarios deben conservarse exactamente. Los 
 
 ## Estado de publicación de binarios
 
-El código, el visor de los tres personajes y la documentación ya están en este repositorio. Los archivos GLB y MP4 originales están organizados en el paquete de assets entregado aparte y aún deben copiarse a las rutas de `assets/`. El archivo fuente de The LyrieLife se conserva aparte porque contiene recursos propietarios y no debe mezclarse con los personajes de League Of Legacy.
+El código, el visor de los tres personajes y la documentación ya están en este repositorio. Los tres GLB y los tres MP4 originales están localizados individualmente en la Library y sus hashes coinciden con `assets/ASSET_MANIFEST.md`, pero aún deben publicarse en las rutas de `assets/`. No se localizó un ZIP único de esos seis binarios en el inventario revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en la Library revisada; sus recursos propietarios deben mantenerse separados de los personajes de League Of Legacy.
 
 ## Documentación
 - [Flujo de incorporación y control de assets](docs/ASSET_INGESTION_WORKFLOW.md)
