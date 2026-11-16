@@ -490,6 +490,8 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     if(state.orden==="az")list.sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
     grid.innerHTML=list.length?list.map(g=>`<article class="ulx-game" ${g.clave?`data-open-game="${g.clave}" tabindex="0" role="button" aria-label="Abrir ${g.nombre}"`: ""}>${g.imagen ? '<div class="ulx-art ulx-art-cover"><img src="' + g.imagen + '" onerror="this.onerror=null;this.src=\'' + g.fallback + '\'" alt="' + g.nombre + '"></div>' : g.portada?'<div class="ulx-art ulx-art-cover">'+g.portada+'</div>':`<div class="ulx-art" style="background:${g.arte}">${g.texto}</div>`}<div class="ulx-info"><strong>${g.nombre}</strong><span>${g.genero} · ${g.jugadores}</span></div></article>`).join(""):'<p class="ulx-empty">No hay juegos que coincidan con estos filtros.</p>';
   }
+  grid.addEventListener("click",event=>{const card=event.target.closest("[data-open-game]");if(!card)return;activeGameKey=card.dataset.openGame;renderGameDialog(activeGameKey);gameDialog.showModal();});
+  grid.addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;const card=event.target.closest("[data-open-game]");if(!card)return;event.preventDefault();activeGameKey=card.dataset.openGame;renderGameDialog(activeGameKey);gameDialog.showModal();});
   root.querySelectorAll("[data-ulx-tab]").forEach(button=>button.addEventListener("click",()=>{
     state.tab=button.dataset.ulxTab;
     root.querySelectorAll("[data-ulx-tab]").forEach(item=>item.classList.toggle("active",item===button));
