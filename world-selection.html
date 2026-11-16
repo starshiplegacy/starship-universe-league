@@ -46,7 +46,7 @@ body{font-family:"Trebuchet MS",Verdana,sans-serif;color:var(--texto);background
 const worlds=[...document.querySelectorAll(".mundo")];
 function choose(button){const world=button.dataset.mundo;try{localStorage.setItem("ul_mundo_elegido",world)}catch(e){}worlds.forEach(item=>item.setAttribute("aria-pressed",String(item===button)));location.href="./lyrielife.html?mode=new&world="+encodeURIComponent(world)}
 worlds.forEach(button=>button.addEventListener("click",()=>choose(button)));
-document.querySelectorAll("[data-accion]").forEach(button=>button.addEventListener("click",()=>{const action=button.dataset.accion;if(action==="atras")history.back();if(action==="cerrar")location.href="./index.html?showLyrieMenu=1";if(action==="ajustes")location.href="./lyrielife.html?settings=1"}));
+document.querySelectorAll("[data-accion]").forEach(button=>button.addEventListener("click",()=>{const action=button.dataset.accion;if(action==="atras"){if(document.referrer&&new URL(document.referrer).origin===location.origin){history.back()}else{location.href="./launch.html?game=lyrielife"}}if(action==="cerrar")location.href="./index.html?showLyrieMenu=1";if(action==="ajustes")location.href="./lyrielife.html?settings=1"}));
 })();
 </script>
 </body>
