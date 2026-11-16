@@ -96,8 +96,19 @@ async function loadMap(modeId){
   if(map.format==="glb"){
    const gltf=await loader.loadAsync(map.sourcePath+map.entry);root=gltf.scene;
   }else if(map.format==="obj-mtl-dds"){
-   const mtlLoader=new MTLLoader(manager);mtlLoader.setPath(map.sourcePath);mtlLoader.setResourcePath(map.sourcePath);
-   const materials=await mtlLoader.loadAsync(map.material);materials.preload();
+   const response=await fetch(map.sourcePath+map.material);
+   if(!response.ok)throw new Error("No se pudo leer el MTL: HTTP "+response.status);
+   let mtlText=await response.text();
+   const unavailableTextures=new Set([
+    "FtC_POI_Diff_A.SR_Worlds_MapsMountainConversion.dds",
+    "Worlds_Trophy_TX_CM.SR_Worlds_MapsMountainConversion.dds"
+   ]);
+   mtlText=mtlText.replace(/^map_Kd\\s+(.+)$/gm,(line,raw)=>{
+    const basename=raw.trim().split(/[\\\\/]/).pop();
+    return unavailableTextures.has(basename)?"# Missing source texture: "+basename:"map_Kd Textures/"+basename;
+   });
+   const mtlLoader=new MTLLoader(manager);
+   const materials=mtlLoader.parse(mtlText,map.sourcePath);materials.preload();
    const obj=new OBJLoader(manager);obj.setMaterials(materials);obj.setPath(map.sourcePath);
    root=await obj.loadAsync(map.entry);
   }else throw new Error("Formato de mapa no soportado: "+map.format);
