@@ -240,6 +240,8 @@ function renderGameDialog(key){
   gameDialogExtra.innerHTML = key === "legacy" ? dictionary.legacyControls : "";
   const launchActions=document.getElementById("lyriePanelActions");
   if(launchActions)launchActions.hidden=key!=="lyrie";
+  const launchNote=document.getElementById("gameDialogNote");
+  if(launchNote)launchNote.textContent=key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":dictionary.developmentNote;
 }
 document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
   activeGameKey = button.dataset.openGame;
