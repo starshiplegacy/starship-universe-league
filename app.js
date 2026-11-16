@@ -345,11 +345,14 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     }
   }));
   const welcomeYear=$("welcomeYear");if(welcomeYear)welcomeYear.textContent=new Date().getFullYear();
+  // Fail open to the public landing page while authentication initializes.
+  // This prevents auth/CDN outages from leaving the entire document hidden.
+  renderSession(null);
   try{
     const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
     supabase=createClient(window.UNIVERSE_SUPABASE_URL,window.UNIVERSE_SUPABASE_KEY);
     window.universeSupabase=supabase;
-  }catch(e){message(dict().generic,"error");}
+  }catch(e){renderSession(null);message(dict().generic,"error");}
   form.addEventListener("submit",async event=>{
     event.preventDefault();
     if(!supabase){message(dict().generic,"error");return;}
