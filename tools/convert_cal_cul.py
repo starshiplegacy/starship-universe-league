@@ -8,6 +8,10 @@ def arguments():
     p=argparse.ArgumentParser(); p.add_argument("--source",required=True); p.add_argument("--output",required=True); return p.parse_args(a)
 def clear():
     bpy.ops.object.select_all(action="SELECT"); bpy.ops.object.delete(use_global=False)
+    for collection in (bpy.data.meshes,bpy.data.curves,bpy.data.armatures,bpy.data.materials,bpy.data.images):
+        for block in list(collection):
+            try: collection.remove(block)
+            except Exception: pass
 def relink(folder):
     index={}
     for p in glob.glob(os.path.join(folder,"**","*.webp"),recursive=True):
