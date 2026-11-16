@@ -46,5 +46,13 @@ Los nombres se conservan exactamente como fueron entregados. No convertirlos ni 
 
 ## Estado de integración
 
-Esta especificación queda registrada como regla de arquitectura. Los tres MP4 fueron recibidos en la conversación, pero todavía deben publicarse en `assets/videos/` para que el sitio pueda servirlos desde GitHub Pages. Después de alojarlos, se conectarán al lanzador común y se integrarán los dos flujos. League Of Legacy todavía necesita que su panel y su Main Menu estén conectados a este flujo.
+- [x] Especificación y nombres de archivo registrados.
+- [x] Lanzador común creado en `launch.html`.
+- [x] Botón **INICIAR** del panel de The LyrieLife conectado al lanzador.
+- [x] Retorno de The LyrieLife al menú principal tras los videos.
+- [ ] Publicar los tres MP4 en `assets/videos/`; la carpeta contiene instrucciones, pero todavía no los binarios.
+- [ ] Conectar el panel real de League Of Legacy al lanzador.
+- [ ] Integrar el Main Menu real de League Of Legacy; el repositorio todavía no contiene esa pantalla.
+
+El lanzador reproduce primero el Opening universal y después el video específico del juego. Tiene controles para activar sonido y saltar; si un archivo no carga, continúa para evitar bloquear el acceso. Los videos deben estar presentes con los nombres exactos para que la secuencia se reproduzca correctamente.
 
