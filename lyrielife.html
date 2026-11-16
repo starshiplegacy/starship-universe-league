@@ -45,12 +45,14 @@
 <script src="./save-system.js"></script>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-try {
- window.universeSupabase = createClient("https://wvyveduslbsuvyekeccf.supabase.co", "sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz");
- const { data } = await window.universeSupabase.auth.getSession();
- window.dispatchEvent(new CustomEvent("universe-auth-change", { detail: { session: data?.session || null } }));
- window.dispatchEvent(new Event("universe-supabase-ready"));
-} catch (error) { console.warn("No se pudo iniciar la sincronización en la nube", error); }
+window.__lyrieSupabaseReady = (async () => {
+ try {
+  window.universeSupabase = createClient("https://wvyveduslbsuvyekeccf.supabase.co", "sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz");
+  const { data } = await window.universeSupabase.auth.getSession();
+  window.dispatchEvent(new CustomEvent("universe-auth-change", { detail: { session: data?.session || null } }));
+  window.dispatchEvent(new Event("universe-supabase-ready"));
+ } catch (error) { console.warn("No se pudo iniciar la sincronización en la nube", error); }
+})();
 </script>
 <script>
 (()=>{
@@ -207,7 +209,7 @@ $("continueBtn").addEventListener("click",async()=>{const ok=await load();if(!ok
 $("loadBtn").addEventListener("click",async()=>{const ok=await load();if(ok)$("startMenu").hidden=true;else toast("No se encontró una partida válida")});
 $("howBtn").addEventListener("click",()=>$("settingsModal").classList.add("open"));
 window.addEventListener("beforeunload",()=>{if(dirty)save(false)});
-(async()=>{render();const forceNew=new URLSearchParams(location.search).get("mode")==="new";if(forceNew){state=initial();render();$("startMenu").hidden=true;save(false);toast("Nueva partida creada");return;}const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
+(async()=>{render();await (window.__lyrieSupabaseReady||Promise.resolve());const forceNew=new URLSearchParams(location.search).get("mode")==="new";if(forceNew){state=initial();render();$("startMenu").hidden=true;save(false);toast("Nueva partida creada");return;}const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
 })();
 </script>
 </body>
