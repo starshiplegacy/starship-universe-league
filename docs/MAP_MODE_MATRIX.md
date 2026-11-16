@@ -1,43 +1,45 @@
 # Map and Game Mode Matrix
 
-This is the canonical assignment of League Of Legacy modes to their map assets. Map selection and rulesets are separate: two modes may share one map without sharing gameplay rules.
+Map assignment and rulesets are independent. The registry is `map-registry.js`; this page is the human-readable source of truth.
 
-## Confirmed assignments
+## Mode assignments
 
-| Mode | Map | Asset / format | Status |
+| Mode | Map | Runtime asset | Preview state |
 |---|---|---|---|
-| Battle Royale | Summoner's Rift | `For BAttle Royale & De Clasificatoria/SummonersRift/SummonersRift.obj` + MTL/DDS | Source-only; renderer pipeline pending |
-| De Clasificatoria | Summoner's Rift | Same map assets as Battle Royale | Source-only; independent ruleset |
-| Versus 1 to 3 | Versus 1 to 3 | `Versus/Versus 1 to 3/files/BeginningLobby.fbx` | License review required; CC BY-NC |
-| Versus 4 to 5 | Versus 4 to 5 | `Versus/Versus 4 to 5/battle_guys_map_500th_model.glb` | GLB preview candidate; validation pending |
-| Entrenamiento | Training | `For Training/For_Training.glb` | GLB preview candidate; validation pending |
+| Battle Royale | Summoner's Rift | OBJ + runtime MTL + DDS | Preview loader implemented; large asset validation pending |
+| De Clasificatoria | Summoner's Rift | Same map assets | Same scene; separate ruleset ID |
+| Versus 1 to 3 | Own map | BeginningLobby.fbx | Disabled pending CC BY-NC rights review |
+| Versus 4 to 5 | Own map | battle_guys_map_500th_model.glb | GLB preview loader implemented; visual validation pending |
+| Entrenamiento | Own map | For_Training.glb | GLB preview loader implemented; visual validation pending |
 
-## Ruleset separation
+## What is connected now
 
-The registry assigns a distinct ruleset ID to every mode:
-- `battle-royale` and `ranked` share `summoners-rift`, but have independent ruleset IDs.
-- `versus-1-to-3` and `versus-4-to-5` use their own map and ruleset.
-- `training` uses its own map and ruleset.
+- The League Of Legacy menu's JUGAR button opens `game-modes.html`.
+- The mode selector reads `map-registry.js` and resolves the map assigned to each mode.
+- GLB preview loading is wired for Versus 4 to 5 and Entrenamiento.
+- Summoner's Rift uses OBJLoader + MTLLoader + DDSLoader with a runtime-only MTL whose texture paths point into the repository. The original MTL is preserved.
+- Battle Royale and Clasificatoria share one map but have different ruleset IDs.
+- Versus 1 to 3 remains blocked and is not loaded by the preview page.
 
-Team sizes, player caps, objectives, timers, respawns, spawn coordinates, scoring, and victory conditions remain **undefined** until the game owner specifies them. No defaults are silently applied.
+## Licensing / asset provenance
 
-## Important licensing finding
+`Versus 1 to 3/LICENSE.txt` states Creative Commons Attribution–Non-Commercial and identifies the source as Omeleto / Thingiverse. This is not cleared for commercial use. The map stays disabled until a compatible license or written permission is obtained. Do not treat attribution alone as permission for commercial use.
 
-The `Versus 1 to 3/LICENSE.txt` file identifies the included Thingiverse asset by Omeleto and states **Creative Commons — Attribution — Non-Commercial**. The accompanying README describes it as a low-detail waiting lobby. Therefore:
-- Keep the files preserved as source assets.
-- Do not use this asset in a commercial release or production build until commercial rights are obtained or the asset is replaced with a suitably licensed model.
-- Attribution and non-commercial restrictions must be reviewed before enabling this map in production.
+Other map asset license status has not yet been verified. Their presence in the repository is not proof of redistribution or commercial-use rights.
 
-## Runtime integration contract
+## Technical findings and limits
 
-The canonical registry is `map-registry.js` at the repository root. Import it from the match/preview layer:
-- `getGameMode(modeId)` resolves a mode.
-- `getMapForMode(modeId)` resolves its assigned map.
-- `getModeLaunchInfo(modeId)` returns map + independent ruleset metadata and preview eligibility.
-- `assertMapAllowedForProduction(modeId)` blocks maps with unresolved licensing or non-ready formats.
+- Summoner's Rift contains a 62,969,109-byte OBJ and 405 DDS texture files in the repository. Its source MTL contains absolute Windows paths; the runtime MTL rewrites present texture references to repository-relative paths. Two referenced DDS basenames were not found and are commented out in the runtime MTL.
+- The map preview page does not create physics, navigation meshes, collision shapes, spawn points, player teams, networking, matchmaking, scoring, respawns, timers or victory conditions.
+- GLB presence does not prove the model is optimized or correctly scaled. Preview loading is a first visual integration step only.
+- The repository currently lists one GLB under `For Training`; if additional training maps exist outside this path, they are not currently discoverable in the tracked tree.
+- Versus 1 to 3 has several source formats (BLEND, FBX, STL, TIF and PNG references). The FBX is the chosen runtime candidate but remains license-blocked.
 
-The registry does **not** claim that a map is playable. Summoner's Rift still needs OBJ/MTL/DDS material handling; the two GLBs need scale, materials, collision and spawn validation. The FBX map remains blocked for production pending license clearance.
+## Next engineering stages
 
-## Asset integrity
-
-Original source files and folder names are preserved. No conversion, deletion, renaming, collision generation, or spawn-point invention is performed by the registry.
+1. Verify the preview in a real browser and inspect model orientation, scale, texture completeness and memory.
+2. Confirm licenses for every map and texture set.
+3. Define each mode's player limits, team structure, objectives, timers, respawn policy and win condition.
+4. Add collision/physics and authored spawn points per map.
+5. Connect match state and multiplayer authority; never trust client-side win/score decisions.
+6. Only then enable production launch.
