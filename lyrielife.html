@@ -43,17 +43,6 @@
 <div class="modal" id="settingsModal"><div class="modal-box"><div class="modal-head"><h2>Controles y opciones</h2><button class="close" data-close="settingsModal">×</button></div><p>PC: Flechas mover cámara/personaje · clic izquierdo seleccionar · clic derecho arrastrar cámara · rueda zoom · Q/E rotar · Esc menú · 1 pausa · 2 normal · 3 rápido · 4 ultra · Tab cambiar Lyrie · B Construcción · Shift+B Compra · C captura · N necesidades · I inventario · J diario · H ocultar interfaz · R relaciones · T trabajo/escuela.</p><p>En móvil: un dedo mueve la cámara, dos dedos hacen zoom o rotan; toque largo abre acciones y doble toque centra al Lyrie.</p><p>Los controles se pueden reasignar en Ajustes (en este prototipo se mantienen las teclas por defecto).</p></div></div>
 <div class="toast" id="toast"></div>
 <script src="./save-system.js"></script>
-<script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-window.__lyrieSupabaseReady = (async () => {
- try {
-  window.universeSupabase = createClient("https://wvyveduslbsuvyekeccf.supabase.co", "sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz");
-  const { data } = await window.universeSupabase.auth.getSession();
-  window.dispatchEvent(new CustomEvent("universe-auth-change", { detail: { session: data?.session || null } }));
-  window.dispatchEvent(new Event("universe-supabase-ready"));
- } catch (error) { console.warn("No se pudo iniciar la sincronización en la nube", error); }
-})();
-</script>
 <script>
 (()=>{
 "use strict";
@@ -209,7 +198,7 @@ $("continueBtn").addEventListener("click",async()=>{const ok=await load();if(!ok
 $("loadBtn").addEventListener("click",async()=>{const ok=await load();if(ok)$("startMenu").hidden=true;else toast("No se encontró una partida válida")});
 $("howBtn").addEventListener("click",()=>$("settingsModal").classList.add("open"));
 window.addEventListener("beforeunload",()=>{if(dirty)save(false)});
-(async()=>{render();await (window.__lyrieSupabaseReady||Promise.resolve());const forceNew=new URLSearchParams(location.search).get("mode")==="new";if(forceNew){state=initial();render();$("startMenu").hidden=true;save(false);toast("Nueva partida creada");return;}const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
+(async()=>{render();if(!window.universeSupabase){try{const supabaseModule=await import("https://esm.sh/@supabase/supabase-js@2");window.universeSupabase=supabaseModule.createClient("https://wvyveduslbsuvyekeccf.supabase.co","sb_publishable_xVqTYGUyCYT6KKJJBy_bmA_8sv4xOwz");const {data}=await window.universeSupabase.auth.getSession();window.dispatchEvent(new CustomEvent("universe-auth-change",{detail:{session:data?.session||null}}));window.dispatchEvent(new Event("universe-supabase-ready"));}catch(error){console.warn("Sin sincronización en la nube",error);}}const forceNew=new URLSearchParams(location.search).get("mode")==="new";if(forceNew){state=initial();render();$("startMenu").hidden=true;save(false);toast("Nueva partida creada");return;}const ok=await load();if(ok){$("startMenu").hidden=true;}else{$("startMenu").hidden=false;$("continueBtn").disabled=true;$("startCopy").textContent="Todavía no hay partidas guardadas. Empieza tu historia en Kataleya.";} })();
 })();
 </script>
 </body>
