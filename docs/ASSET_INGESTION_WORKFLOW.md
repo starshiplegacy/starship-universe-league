@@ -88,3 +88,10 @@ Los seis binarios siguientes se localizaron en Library y sus SHA-256 se comproba
 ## 6. Regla de continuidad para futuras sesiones
 
 Al recibir una nueva tanda de archivos, empezar por este documento y `assets/ASSET_MANIFEST.md`; después comparar Library, árbol de GitHub y referencias de código. Actualizar el inventario antes de modificar la experiencia. Informar claramente qué está solo en Library, qué ya está en GitHub, qué está integrado en el código y qué se ha desplegado.
+
+
+## 7. Auditoría cruzada Supabase ↔ GitHub (2026-11-16)
+
+La revisión ampliada está registrada en `docs/SUPABASE_GITHUB_SYNC_AUDIT.md`. Se verificaron los dos proyectos Supabase disponibles y ninguno coincide con el ref que el frontend configura (`wvyveduslbsuvyekeccf`). El proyecto `uyhcocdknweqvcqgbnez` tampoco tiene el esquema ni los buckets que espera el código actual; el proyecto `fixwovymcfpfididtmud` contiene un catálogo/Django separado y no debe conectarse al juego.
+
+**Bloqueo de seguridad:** no cambiar URL/clave del frontend, crear tablas/buckets ni copiar datos hasta identificar el proyecto Supabase canónico. La auditoría registra el plan de migraciones versionadas y comprobaciones programadas para activar después de confirmar el backend.
