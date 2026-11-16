@@ -41,6 +41,7 @@ Los nombres y rutas de los archivos binarios deben conservarse exactamente. Los 
 El código, el visor de los tres personajes y la documentación ya están en este repositorio. Los archivos GLB y MP4 originales están organizados en el paquete de assets entregado aparte y aún deben copiarse a las rutas de `assets/`. El archivo fuente de The LyrieLife se conserva aparte porque contiene recursos propietarios y no debe mezclarse con los personajes de League Of Legacy.
 
 ## Documentación
+- [Flujo de incorporación y control de assets](docs/ASSET_INGESTION_WORKFLOW.md)
 - [Secuencia de inicio e inventario de assets](docs/UNIVERSE_LAUNCH_SEQUENCE.md)
 - [Personajes de League Of Legacy](assets/league-of-legacy/characters/README.md)
 - [Vídeos de inicio](assets/videos/README.md)
