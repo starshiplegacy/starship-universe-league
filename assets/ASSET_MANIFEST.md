@@ -3,7 +3,11 @@
 **Última revisión:** 16 de noviembre de 2026  
 **Regla:** los nombres y mayúsculas/minúsculas son parte de la ruta. No renombrar sin actualizar el código y volver a ejecutar la auditoría.
 
-## 1. League Of Legacy — modelos GLB
+## 1. League Of Legacy — recursos visuales
+
+La estructura visual queda unificada en `assets/league-of-legacy/images/`. Iconos, imágenes e ilustraciones deben guardarse directamente en esa carpeta, sin subcarpetas. No crear directorios `icons/` ni `illustrations/`. Se conservarán nombres descriptivos y extensiones originales. La revisión del 16 de noviembre de 2026 encontró únicamente archivos `.gitkeep` en las tres carpetas anteriores; no había recursos visuales reales que trasladar. Los placeholders de `icons/` e `illustrations/` se retiraron y `images/` queda como único destino.
+
+## 2. League Of Legacy — modelos GLB
 
 Los ocho archivos existen en GitHub bajo assets/league-of-legacy/characters/. El selector de league-of-legacy.html usa exactamente estos nombres:
 
@@ -20,7 +24,7 @@ Los ocho archivos existen en GitHub bajo assets/league-of-legacy/characters/. El
 
 Los SHA indicados son Git blob IDs devueltos por GitHub, no SHA-256 de los archivos. El conector confirmó la existencia de los ocho archivos, pero no expuso los bytes de los binarios para recalcular sus hashes. Los datos de compresión, rig y animación de cada modelo deben verificarse individualmente antes de asumir compatibilidad.
 
-## 2. Vídeos de inicio
+## 3. Vídeos de inicio
 
 Los tres archivos existen en assets/videos/ y sus rutas coinciden con launch.html.
 
@@ -30,7 +34,7 @@ Los tres archivos existen en assets/videos/ y sus rutas coinciden con launch.htm
 | Lyrie Loanding.mp4 | e54746fd888f5816e9ae48c40a54a31ae89539a9 | Carga de The LyrieLife |
 | Loading LOL.mp4 | f279d0e80d782fd72c0e150ff712c8f3d866849b | Carga de League Of Legacy |
 
-## 3. The LyrieLife — mundos fuente
+## 4. The LyrieLife — mundos fuente
 
 Los cuatro archivos existen en assets/The-LyrieLife/Worlds/.
 
@@ -45,7 +49,7 @@ Los cuatro archivos existen en assets/The-LyrieLife/Worlds/.
 
 Los archivos .world no están siendo interpretados por el navegador. El prototipo actual cambia fondos y elementos CSS según el mundo seleccionado. No confundir presencia del archivo con integración funcional.
 
-## 4. Portadas y fondos visuales
+## 5. Portadas y fondos visuales
 
 | Archivo original | Dimensiones | SHA-256 de Library | Estado |
 |---|---:|---|---|
@@ -57,13 +61,13 @@ Los archivos .world no están siendo interpretados por el navegador. El prototip
 
 Los SHA-256 de esta sección identifican los originales de Library. No se recalcularon desde el contenido binario publicado en GitHub.
 
-## 5. Archivos propietarios y fuente
+## 6. Archivos propietarios y fuente
 
 Los formatos .package, .world, .layer, .blueprint, .bpi y .ts4script deben conservarse en su formato original. No convertirlos a GLB ni mezclarlos con los personajes de League Of Legacy.
 
 El archivo fuente comprimido de The LyrieLife se menciona en documentación anterior, pero su ubicación y disponibilidad deben volver a confirmarse antes de considerarlo archivado o respaldado.
 
-## 6. Verificación y mantenimiento
+## 7. Verificación y mantenimiento
 
 - Ejecutar python scripts/repo_audit.py para comprobar referencias locales, los ocho modelos, cuatro mundos y tres vídeos.
 - GitHub blob SHA identifica la versión de cada archivo en Git; SHA-256 debe calcularse sobre los bytes originales para validar integridad entre Library, GitHub y cualquier almacenamiento externo.
