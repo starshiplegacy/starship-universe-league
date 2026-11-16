@@ -270,7 +270,27 @@
     <section><h3 data-i18n="descriptionHeading">Descripción</h3><p id="gameDialogDescription"></p></section>
     <section><h3 data-i18n="howToPlayHeading">Forma de jugar</h3><p id="gameDialogGameplay"></p></section>
     <section id="gameDialogExtra" hidden></section>
+    <div class="lyrie-panel-actions" id="lyriePanelActions" hidden><p>Tu mundo está listo para continuar.</p><button type="button" id="lyrieStartButton">Iniciar <span>→</span></button></div>
     <p class="dialog-note" data-i18n="developmentNote">Este juego todavía está en desarrollo. La opción de jugar estará disponible cuando se publique.</p>
+  </dialog>
+  <dialog class="lyrie-main-menu" id="lyrieMainMenu" aria-labelledby="lyrieMenuTitle">
+    <div class="lyrie-scene">
+      <div class="lyrie-menu-column">
+        <div class="lyrie-menu-brand"><span>THE</span><h2 id="lyrieMenuTitle">LyrieLife</h2><small>A LIFE SIMULATION</small></div>
+        <button class="lyrie-resume-card" type="button" data-lyrie-action="resume"><span class="lyrie-resume-portrait" aria-hidden="true">✦</span><span><strong>Resume</strong><small>Continue your journey</small></span><b>→</b></button>
+        <p class="lyrie-limbo-note">Limbo is the decision between Resume and New Game.</p>
+        <div class="lyrie-menu-buttons">
+          <button type="button" data-lyrie-action="scenario">Play Scenario <span>↗</span></button>
+          <button type="button" data-lyrie-action="load">Load Game <span>↗</span></button>
+          <button type="button" data-lyrie-action="new">New Game <span>＋</span></button>
+          <button type="button" data-lyrie-action="gallery">Gallery <span>▧</span></button>
+          <button type="button" data-lyrie-action="options">Options <span>⚙</span></button>
+        </div>
+        <p class="lyrie-menu-feedback" id="lyrieMenuFeedback" role="status" aria-live="polite">Welcome back to your world.</p>
+        <button class="lyrie-menu-exit" id="lyrieMenuExit" type="button">← Volver al panel del juego</button>
+      </div>
+      <div class="lyrie-scene-caption"><span>THE LYRIELIFE</span><span>YOUR STORY, YOUR WORLD</span></div>
+    </div>
   </dialog>
   <dialog class="mini-game-dialog" id="miniGameDialog" aria-labelledby="miniGameTitle">
     <button class="dialog-close" id="miniGameClose" type="button" aria-label="Cerrar">×</button><div class="dialog-kicker">UNIVERSE LEAGUE · FREE TO PLAY</div><h2 id="miniGameTitle">Jaque Matte</h2><p class="mini-game-subtitle" id="miniGameSubtitle">Gratis para Astronautas</p>
