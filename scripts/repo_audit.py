@@ -50,7 +50,7 @@ def static_audit():
             candidates.extend(CSS_URL_RE.findall(content))
         for raw in candidates:
             value = raw.strip().split("?", 1)[0].split("#", 1)[0]
-            if not value or value.startswith(("http://", "https://", "data:", "blob:", "//", "mailto:", "tel:")):
+            if not value or value.startswith(("http://", "https://", "data:", "blob:", "//", "mailto:", "tel:", "javascript:", "var(")):
                 continue
             if value.startswith(("/", "{")) or "://" in value:
                 continue
