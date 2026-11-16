@@ -233,7 +233,7 @@ function renderGameDialog(key){
   const game = gameContent[key];
   if (!game) return;
   const dictionary = translations[languageSelect.value] || translations.es;
-  const visualAssets = {lyrie:{icon:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",poster:"./assets/The-LyrieLife/images/The%20LyrieLife%20(Postel).jpg"},legacy:{icon:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",poster:"./assets/league-of-legacy/images/League%20Of%20Legends%20(Postel).jpg"}};
+  const visualAssets = {lyrie:{icon:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",poster:"./assets/The-LyrieLife/images/The%20LyrieLife%20(Poster).jpg"},legacy:{icon:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",poster:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(Poster).jpg"}};
   if(gameDialogPoster){gameDialogPoster.src=visualAssets[key].poster;gameDialogPoster.alt=game.title+" — póster oficial";}
   gameDialogCategory.textContent = dictionary[key === "lyrie" ? "lifeCategory" : "fightCategory"];
   gameDialogTitle.textContent = game.title;
