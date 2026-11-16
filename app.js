@@ -537,7 +537,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   grid.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>{activeGameKey=b.dataset.play;renderGameDialog(activeGameKey);gameDialog.showModal();}));
   grid.querySelectorAll(".ul-game-more").forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")));
   grid.querySelectorAll("[data-uninstall]").forEach(b=>b.addEventListener("click",()=>{installed.delete(b.dataset.uninstall);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");}));
-  grid.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>notify("Puedes reportar errores desde el centro de ayuda.")));
+  grid.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>notify("El sistema de reportes todavía no está habilitado.")));
  }
  function updateCard(card,k){
   if(!card||!games[k])return;
@@ -550,7 +550,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
    if(!menu){menu=document.createElement("div");menu.className="ul-game-menu-wrap";menu.innerHTML='<button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-action="uninstall">Desinstalar</button><button type="button" data-action="report">Reportar error</button></div>';const art=card.querySelector(".ulx-art,.ulh-entry-open");(art||card).append(menu);
     menu.querySelector(".ul-game-more").addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("open");});
     menu.querySelector('[data-action="uninstall"]').addEventListener("click",e=>{e.stopPropagation();installed.delete(k);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");});
-    menu.querySelector('[data-action="report"]').addEventListener("click",e=>{e.stopPropagation();notify("Puedes reportar errores desde el centro de ayuda.");});
+    menu.querySelector('[data-action="report"]').addEventListener("click",e=>{e.stopPropagation();notify("El sistema de reportes todavía no está habilitado.");});
    }menu.hidden=false;
    actions.innerHTML='<button class="ul-game-play" type="button">PLAY</button><span class="ul-installed-check" title="Juego instalado">✓</span>';
    actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();activeGameKey=k;renderGameDialog(k);gameDialog.showModal();});
@@ -566,7 +566,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  function start(k){
   if(!userId){notify("Inicia sesión para descargar juegos.");return;}if(downloading||installed.has(k))return;
   downloading=k;downloadOwner=userId;refresh();const started=Date.now();
-  downloadTimer=setInterval(()=>{document.querySelectorAll(".ul-download-progress").forEach(el=>{if(downloading===k)el.textContent="Descargando · "+Math.max(0,60-Math.floor((Date.now()-started)/1000))+" s";});},1000);
+  downloadTimer=setInterval(()=>{document.querySelectorAll(".ul-download-progress").forEach(el=>{const card=el.closest(".ulx-game,.ulh-catalog-card");const cardKey=card?.dataset.openGame||card?.querySelector("[data-open-game]")?.dataset.openGame;if(cardKey===k&&downloading===k)el.textContent="Descargando · "+Math.max(0,60-Math.floor((Date.now()-started)/1000))+" s";});},1000);
   downloadTimeout=setTimeout(()=>{clearInterval(downloadTimer);downloadTimer=null;downloadTimeout=null;
    if(!userId||userId!==downloadOwner){downloading=null;downloadOwner=null;refresh();return;}
    installed.add(k);downloading=null;downloadOwner=null;save();renderLibrary();refresh();notify("Tu juego ha sido descargado");
