@@ -535,7 +535,10 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  }
  function updateCard(card,k){
   if(!card||!games[k])return;
-  let actions=card.querySelector(".ul-game-actions");if(!actions){actions=document.createElement("div");actions.className="ul-game-actions";card.append(actions);}
+  const nextState=installed.has(k)?"installed":(downloading?(downloading===k?"downloading":"waiting"):"idle");
+  let actions=card.querySelector(".ul-game-actions");
+  if(card.dataset.installState===nextState&&actions)return;
+  card.dataset.installState=nextState;if(!actions){actions=document.createElement("div");actions.className="ul-game-actions";card.append(actions);}
   let menu=card.querySelector(".ul-game-menu-wrap");
   if(installed.has(k)){
    if(!menu){menu=document.createElement("div");menu.className="ul-game-menu-wrap";menu.innerHTML='<button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-action="uninstall">Desinstalar</button><button type="button" data-action="report">Reportar error</button></div>';const art=card.querySelector(".ulx-art,.ulh-entry-open");(art||card).append(menu);
