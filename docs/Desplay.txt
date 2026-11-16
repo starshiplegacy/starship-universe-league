@@ -6,6 +6,8 @@
 <title>The LyrieLife — Desplazamiento</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+
 body {
     min-height: 100vh;
     display: flex;
@@ -15,6 +17,9 @@ body {
     font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
     padding: 16px;
 }
+
+
+/* ===== marco de móvil ===== */
 .phone {
     position: relative;
     width: 100%;
@@ -26,7 +31,11 @@ body {
     box-shadow: 0 14px 40px rgba(0,0,0,.55);
     display: flex;
     flex-direction: column;
+
 }
+
+
+/* ===== barra superior ===== */
 .topbar {
     display: flex;
     align-items: center;
@@ -55,6 +64,8 @@ body {
     cursor: pointer;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
+
+/* ===== mapa ===== */
 .map {
     position: relative;
     flex: 1 1 auto;
@@ -65,6 +76,8 @@ body {
      linear-gradient(160deg, #cfe6c4, #a8cf9a);
     overflow: hidden;
 }
+
+
 .road {
     position: absolute;
     background: #d9dde3;
@@ -72,6 +85,8 @@ body {
 }
 .road.h { left: 0; right: 0; height: 16px; top: 46%; }
 .road.v { top: 0; bottom: 0; width: 16px; left: 52%; }
+
+
 .place {
     position: absolute;
     display: flex;
@@ -82,6 +97,7 @@ body {
     width: 76px;
     height: 62px;
     background: linear-gradient(#ffffff, #eef2f6);
+
     border: 1px solid #b9c2cc;
     border-radius: 8px;
     color: #1a5fb4;
@@ -95,11 +111,16 @@ body {
 }
 .place:hover { border-color: #1a5fb4; transform: translateY(-1px); }
 .place .ico { font-size: 18px; line-height: 1; }
-#casa { left: 22px; top: 40px; }
+
+
+#casa        { left: 22px; top: 40px; }
 #parque { right: 22px; top: 40px; }
 #tienda { left: 22px; top: 58%; }
 #piscina { right: 22px; top: 58%; }
-#playa { left: 50%; bottom: 26px; transform: translateX(-50%); }
+#playa       { left: 50%; bottom: 26px; transform: translateX(-50%); }
+
+
+/* ===== Lyrie en el mapa ===== */
 .lyrie {
     position: absolute;
     width: 34px;
@@ -110,6 +131,7 @@ body {
     font-size: 10px;
     font-weight: 700;
     display: flex;
+
     align-items: center;
     justify-content: center;
     box-shadow: 0 3px 6px rgba(0,0,0,.3);
@@ -117,6 +139,9 @@ body {
     z-index: 20;
 }
 .lyrie.peer { background: #7a4fb4; }
+
+
+/* ===== hoja inferior ===== */
 .sheet {
     position: absolute;
     left: 0;
@@ -133,11 +158,14 @@ body {
     overflow-y: auto;
 }
 .sheet.open { transform: translateY(0); }
+
+
 .sheet-head {
     position: sticky;
     top: 0;
     background: #a9b8cc;
     color: #fff;
+
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .8px;
@@ -145,7 +173,11 @@ body {
     padding: 7px;
     text-transform: uppercase;
 }
+
+
 .sheet-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+
 .opt {
     display: flex;
     align-items: center;
@@ -166,7 +198,10 @@ body {
 .opt:hover { background: linear-gradient(#ffffff 0%, #eef4fb 45%, #d6e2f2 100%); }
 .opt:active { transform: translateY(1px); }
 .opt .ico { font-size: 16px; }
+
 .opt.solo { border-color: #9db6d8; }
+
+
 .sub {
     font-size: 11px;
     font-weight: 700;
@@ -176,12 +211,17 @@ body {
     margin-top: 4px;
     padding-left: 4px;
 }
+
+
 .empty {
     padding: 10px 14px;
     font-size: 12px;
     font-style: italic;
     color: #6b7a8d;
 }
+
+
+/* ===== aviso ===== */
 .toast {
     position: absolute;
     left: 50%;
@@ -193,6 +233,7 @@ body {
     font-size: 11.5px;
     font-weight: 700;
     border-radius: 999px;
+
     opacity: 0;
     pointer-events: none;
     transition: opacity .25s ease, transform .25s ease;
@@ -206,51 +247,82 @@ body {
 </style>
 </head>
 <body>
+
+
 <div class="phone" id="phone">
+
+
 <div class="topbar">
     <h1>Desplazamiento</h1>
     <button class="close-btn" id="closeAll" aria-label="Cerrar">&#10005;</button>
 </div>
+
+
 <div class="map" id="map">
     <div class="road h"></div>
     <div class="road v"></div>
+
+
     <div class="place" id="casa"><span class="ico">�</span>Casa</div>
     <div class="place" id="parque"><span class="ico">�</span>Parque</div>
     <div class="place" id="tienda"><span class="ico">�</span>Tienda</div>
     <div class="place" id="piscina"><span class="ico">�</span>Piscina</div>
     <div class="place" id="playa"><span class="ico">�</span>Playa</div>
-    <div class="lyrie" id="lyrie1">L1</div>
-    <div class="lyrie peer" id="lyrie2">L2</div>
+
+     <div class="lyrie" id="lyrie1">L1</div>
+     <div class="lyrie peer" id="lyrie2">L2</div>
 </div>
+
+
 <div class="sheet" id="sheet">
      <div class="sheet-head" id="sheetHead">Ir a</div>
      <div class="sheet-body" id="sheetBody"></div>
 </div>
+
+
 <div class="toast" id="toast"></div>
+
+
 </div>
+
+
 <script>
+/* ============================================================
+ ESTADO
+ ============================================================ */
 const lyries = {
 lyrie1: { name: 'Lyrie', el: document.getElementById('lyrie1') },
 lyrie2: { name: 'Nayeon', el: document.getElementById('lyrie2') }
 };
 let selected = 'lyrie1';
-let destino = null;
-const phone = document.getElementById('phone');
-const map = document.getElementById('map');
-const sheet = document.getElementById('sheet');
+let destino = null; // { id, nombre, x, y }
+
+
+const phone        = document.getElementById('phone');
+const map        = document.getElementById('map');
+const sheet      = document.getElementById('sheet');
 const sheetHead = document.getElementById('sheetHead');
 const sheetBody = document.getElementById('sheetBody');
 const toastEl = document.getElementById('toast');
+
+/* ============================================================
+    UTILIDADES
+    ============================================================ */
 function showToast(text) {
 toastEl.textContent = text;
 toastEl.classList.add('show');
 clearTimeout(showToast._t);
 showToast._t = setTimeout(() => toastEl.classList.remove('show'), 1800);
 }
+
+
 function closeSheet() {
 sheet.classList.remove('open');
 destino = null;
 }
+
+
+// Centro de un elemento relativo al mapa
 function centerOf(el) {
 const m = map.getBoundingClientRect();
 const r = el.getBoundingClientRect();
@@ -259,19 +331,32 @@ return {
     y: r.top - m.top + r.height / 2
 };
 }
+
+
+// Mueve un Lyrie a un punto (con pequeño desfase si van dos)
 function walkTo(id, x, y, offsetX = 0, offsetY = 0) {
 const l = lyries[id];
 l.el.style.left = (x + offsetX - 17) + 'px';
 l.el.style.top = (y + offsetY - 17) + 'px';
 }
+
+// Lista de acompañantes posibles
 function companions() {
 return Object.keys(lyries)
     .filter(id => id !== selected)
     .map(id => ({ id, name: lyries[id].name }));
 }
+
+
+/* ============================================================
+    HOJA: ELEGIR SOLO O CON ALGUIEN
+    ============================================================ */
 function openTravelSheet(placeName) {
 sheetHead.textContent = 'Ir a ' + placeName;
 sheetBody.innerHTML = '';
+
+
+// --- opción 1: solo ---
 const solo = document.createElement('button');
 solo.className = 'opt solo';
 solo.innerHTML = '<span class="ico">�</span> Irse solo';
@@ -282,10 +367,16 @@ solo.addEventListener('click', () => {
     showToast(lyries[selected].name + ' va a ' + placeName);
 });
 sheetBody.appendChild(solo);
+
+
+// --- opción 2: con alguien ---
 const withLabel = document.createElement('div');
 withLabel.className = 'sub';
 withLabel.textContent = 'Ir con alguien';
+
 sheetBody.appendChild(withLabel);
+
+
 const lista = companions();
 if (lista.length === 0) {
     const vacio = document.createElement('div');
@@ -300,16 +391,24 @@ if (lista.length === 0) {
      btn.addEventListener('click', () => {
       const p = centerOf(destino.el);
       walkTo(selected, p.x, p.y, -14, 0);
-      walkTo(c.id, p.x, p.y, 14, 0);
+      walkTo(c.id,    p.x, p.y, 14, 0);
       closeSheet();
       showToast(lyries[selected].name + ' y ' + c.name + ' van a ' + placeName);
      });
      sheetBody.appendChild(btn);
     });
 }
+
+
 sheet.classList.add('open');
 }
+
+
+/* ============================================================
+    CLICK EN UN LUGAR DEL MAPA
+    ============================================================ */
 ['casa', 'parque', 'tienda', 'piscina', 'playa'].forEach(id => {
+
 const el = document.getElementById(id);
 el.addEventListener('click', e => {
   e.stopPropagation();
@@ -317,27 +416,50 @@ el.addEventListener('click', e => {
   openTravelSheet(destino.nombre);
 });
 });
+
+
+/* ============================================================
+ CLICK EN EL MAPA VACÍO → también desplazarse
+ ============================================================ */
 map.addEventListener('click', e => {
 if (e.target.closest('.place') || e.target.closest('.lyrie')) return;
+
+
 const m = map.getBoundingClientRect();
 const x = e.clientX - m.left;
 const y = e.clientY - m.top;
-destino = { id: 'punto', el: null, nombre: 'ese punto', x, y };
+
+
+destino = {
+  id: 'punto',
+  el: null,
+  nombre: 'ese punto',
+  x, y
+};
+
+
 sheetHead.textContent = 'Ir a ese punto';
 sheetBody.innerHTML = '';
+
+
 const solo = document.createElement('button');
 solo.className = 'opt solo';
 solo.innerHTML = '<span class="ico">�</span> Irse solo';
+
 solo.addEventListener('click', () => {
  walkTo(selected, x, y);
  closeSheet();
  showToast(lyries[selected].name + ' se desplaza');
 });
 sheetBody.appendChild(solo);
+
+
 const withLabel = document.createElement('div');
 withLabel.className = 'sub';
 withLabel.textContent = 'Ir con alguien';
 sheetBody.appendChild(withLabel);
+
+
 const lista = companions();
 if (lista.length === 0) {
  const vacio = document.createElement('div');
@@ -351,15 +473,23 @@ if (lista.length === 0) {
   btn.innerHTML = '<span class="ico">�</span> Ir con ' + c.name;
   btn.addEventListener('click', () => {
       walkTo(selected, x, y, -14, 0);
-      walkTo(c.id, x, y, 14, 0);
+      walkTo(c.id,    x, y, 14, 0);
       closeSheet();
       showToast(lyries[selected].name + ' y ' + c.name + ' se desplazan');
   });
   sheetBody.appendChild(btn);
  });
+
 }
+
+
 sheet.classList.add('open');
 });
+
+
+/* ============================================================
+ SELECCIÓN DE LYRIE
+ ============================================================ */
 Object.keys(lyries).forEach(id => {
 lyries[id].el.addEventListener('click', e => {
     e.stopPropagation();
@@ -371,13 +501,22 @@ lyries[id].el.addEventListener('click', e => {
     showToast('Controlas a ' + lyries[id].name);
 });
 });
+
+
+/* ============================================================
+ CERRAR
+ ============================================================ */
 document.getElementById('closeAll').addEventListener('click', () => {
 closeSheet();
 showToast('Desplazamiento cerrado');
 });
+
+
 document.addEventListener('keydown', e => {
 if (e.key === 'Escape') closeSheet();
 });
+
+// selección inicial visible
 lyries.lyrie1.el.style.outline = '3px solid #ffd400';
 lyries.lyrie1.el.style.outlineOffset = '2px';
 lyries.lyrie1.el.style.left = '150px';
@@ -385,5 +524,7 @@ lyries.lyrie1.el.style.top = '300px';
 lyries.lyrie2.el.style.left = '190px';
 lyries.lyrie2.el.style.top = '330px';
 </script>
+
+
 </body>
 </html>
