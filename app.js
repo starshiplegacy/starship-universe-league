@@ -460,11 +460,10 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   document.getElementById("ulhViewAll")?.addEventListener("click",()=>showView("catalog"));
   document.getElementById("ulhBackLibrary")?.addEventListener("click",()=>showView("library"));
   const tabs=root.querySelectorAll("[data-ulh-category]");
-  const free=document.getElementById("ulhFreePanel"),buy=document.getElementById("ulhBuyPanel");
+  const panels={explore:document.getElementById("ulhExplorePanel"),free:document.getElementById("ulhFreePanel"),buy:document.getElementById("ulhBuyPanel")};
   tabs.forEach(tab=>tab.addEventListener("click",()=>{
-    const isFree=tab.dataset.ulhCategory==="free";
+    const selected=tab.dataset.ulhCategory;
     tabs.forEach(item=>{const active=item===tab;item.classList.toggle("active",active);item.setAttribute("aria-selected",String(active));});
-    if(free)free.hidden=!isFree;
-    if(buy)buy.hidden=isFree;
+    Object.entries(panels).forEach(([key,panel])=>{if(panel)panel.hidden=key!==selected;});
   }));
 })();
