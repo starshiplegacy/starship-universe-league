@@ -1,50 +1,77 @@
 # STARSHIP UNIVERSE LEAGUE
 
-Repositorio principal del universo de juegos de STARSHIP LEGACY ENTERTAINMENT.
+Repositorio privado principal del universo de juegos de STARSHIP LEGACY ENTERTAINMENT.
 
 ## Juegos
 
 ### The LyrieLife
-- Juego de simulación de vida.
-- Creador de personajes: `CUL_CAS` / `CAL-CUL`.
-- Los recursos originales del juego se mantienen separados en su archivo fuente.
-- Entrada: `launch.html?game=lyrie` → menú de The LyrieLife.
+- Simulación de vida y prototipo de navegador en `lyrielife.html`.
+- Selector de mundos: `world-selection.html`.
+- Mundos fuente: `assets/The-LyrieLife/Worlds/` — Kataleya, Kariskio, Solnang y Abandoned Island.
+- CAL/CUL: `cal-cul.html` y `assets/cal-cul/`.
+- **Importante:** el prototipo actual representa los ambientes con CSS; todavía no importa ni interpreta el formato interno de los archivos `.world`.
 
 ### League Of Legacy
-- Juego de batalla multijugador.
-- Menú 3D: `league-of-legacy.html`.
-- Personajes 3D: Charlotte, Arthur y Bella.
-- Entrada: `launch.html?game=legacy` → `league-of-legacy.html`.
+- Menú y visor 3D: `league-of-legacy.html`.
+- Ocho modelos GLB: `assets/league-of-legacy/characters/`.
+- El selector usa los nombres exactos de archivo, incluida la capitalización.
+- El botón JUGAR permanece desactivado hasta que exista el sistema real de gameplay/multiplayer.
 
 ## Lanzador universal
-`launch.html` reproduce primero el opening compartido y después el vídeo de carga específico del juego. La secuencia completa está documentada en [docs/UNIVERSE_LAUNCH_SEQUENCE.md](docs/UNIVERSE_LAUNCH_SEQUENCE.md).
+
+`launch.html` reproduce el opening compartido y después el vídeo del juego elegido:
+
+- `assets/videos/UNIVERSE LEAGUE (Opening).mp4`
+- `assets/videos/Lyrie Loanding.mp4`
+- `assets/videos/Loading LOL.mp4`
+
+No renombrar estos archivos sin actualizar el lanzador y el manifiesto.
 
 ## Estructura de recursos
 
 ```
 assets/
-  videos/
-    UNIVERSE LEAGUE (Opening).mp4
-    Lyrie Loanding.mp4
-    Loading 01.mp4
+  The-LyrieLife/
+    Worlds/
+    README.md
   league-of-legacy/
     characters/
-      charlotte.glb
-      arthur.glb
-      bella.glb
+  cal-cul/
+    models/
+  videos/
+  ASSET_MANIFEST.md
+docs/
+scripts/
+.github/workflows/
 ```
 
-Los nombres y rutas de los archivos binarios deben conservarse exactamente. Los modelos GLB ya incluyen sus imágenes y datos geométricos; el visor configura Meshopt y Draco cuando corresponde. Los MP4 se usan en su formato original.
+Los originales propietarios y formatos como `.package`, `.world`, `.layer`, `.blueprint`, `.bpi` y `.ts4script` deben conservarse sin conversiones improvisadas. Consulta el manifiesto antes de mover o sustituir binarios.
 
-## Estado de publicación de binarios
+## Backend y sincronización
 
-El código, el visor de los tres personajes y la documentación ya están en este repositorio. Los tres GLB y los tres MP4 originales están localizados individualmente en la Library y sus hashes coinciden con `assets/ASSET_MANIFEST.md`, pero aún deben publicarse en las rutas de `assets/`. No se localizó un ZIP único de esos seis binarios en el inventario revisado. El archivo fuente de The LyrieLife se menciona en la documentación, pero no se localizó por nombre en la Library revisada; sus recursos propietarios deben mantenerse separados de los personajes de League Of Legacy.
+- GitHub es la fuente de verdad del código, migraciones, documentación y assets estáticos.
+- Supabase es la fuente de verdad de Auth, datos dinámicos, partidas en la nube y contenido de comunidad.
+- La identidad del proyecto Supabase canónico aún debe confirmarse: el frontend apunta a `wvyveduslbsuvyekeccf`, mientras que los dos proyectos disponibles en las conexiones no coinciden.
+- No usar el proyecto de catálogo musical/Django como backend del juego.
+- No almacenar service-role keys en frontend ni en archivos versionados.
 
-## Documentación
-- [Flujo de incorporación y control de assets](docs/ASSET_INGESTION_WORKFLOW.md)
-- [Secuencia de inicio e inventario de assets](docs/UNIVERSE_LAUNCH_SEQUENCE.md)
-- [Personajes de League Of Legacy](assets/league-of-legacy/characters/README.md)
-- [Vídeos de inicio](assets/videos/README.md)
+Documentos operativos:
+- [Plan técnico y fases de entrega](docs/TECHNICAL_OPERATING_PLAN.md)
+- [Auditoría de sincronización Supabase ↔ GitHub](docs/SUPABASE_GITHUB_SYNC_AUDIT.md)
+- [Flujo de incorporación de assets](docs/ASSET_INGESTION_WORKFLOW.md)
+- [Secuencia de inicio](docs/UNIVERSE_LAUNCH_SEQUENCE.md)
 
-## Requisitos de ejecución
-Las páginas usan HTML, CSS y JavaScript de navegador. El visor 3D carga Three.js desde CDN y necesita conexión para descargar Three.js y sus decodificadores. El modo de partida multijugador de League Of Legacy todavía no está conectado; el botón JUGAR permanece desactivado.
+## Auditoría automatizada
+
+`scripts/repo_audit.py` comprueba referencias locales, los ocho GLB, los cuatro archivos de mundo y los tres vídeos de inicio. GitHub Actions ejecuta el chequeo al hacer push, en pull requests, manualmente y diariamente.
+
+La comprobación remota de Supabase requiere configurar en Settings → Secrets and variables → Actions:
+- Secret `SUPABASE_URL`
+- Secret `SUPABASE_ANON_KEY` (publishable/anon; nunca service-role)
+- Variable `SUPABASE_EXPECTED_PROJECT_REF`
+
+Hasta configurar esos valores, el workflow informa que el chequeo remoto está omitido; no inventa una conexión ni modifica la base de datos.
+
+## Estado de ejecución
+
+El visor de personajes y el prototipo de vida son experiencias de desarrollo. La integración real de mundos, partidas cloud, comunidad y multiplayer depende de terminar la arquitectura y validar el backend. No se considera listo para producción hasta pasar pruebas de navegador, seguridad y rendimiento.
