@@ -129,6 +129,9 @@ El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni
 - `league-of-legacy.html` conecta JUGAR con el selector.
 - `map-registry.js` identifica mapa y ruleset por separado.
 - GLB: Versus 4 to 5 y Entrenamiento conectados al cargador de vista previa.
-- Summoner's Rift: cargador OBJ/MTL/DDS; se añade `runtime/SummonersRift.runtime.mtl` con rutas locales, sin modificar el MTL original. El MTL runtime referencia 112 DDS únicas (~215.5 MiB combinados); dos referencias de textura no existen en el árbol y se comentan.
+- Summoner's Rift: se mantiene la asignación a Battle Royale y Clasificatoria, pero la carga queda bloqueada hasta obtener autorización escrita de Riot Games o sustituir el escenario. Se eliminó el MTL runtime temporal; los archivos originales se conservan.
 - Versus 1 to 3 sigue bloqueado por licencia CC BY-NC.
 - La integración no añade física, colisiones, spawn points ni lógica de partidas.
+
+
+**Revisión de propiedad intelectual:** la política oficial de Riot Games incluye los mapas entre sus recursos protegidos y restringe su uso en juegos/aplicaciones sin autorización aplicable. Summoner's Rift queda bloqueado en el registro. Fuente: https://www.riotgames.com/es-419/informacion-legal
