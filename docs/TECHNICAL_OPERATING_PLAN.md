@@ -100,3 +100,8 @@ A game area is ready for continued development only when:
 - save/load or game-specific persistence has a tested contract;
 - desktop/mobile smoke tests pass;
 - the current state and known limitations are documented.
+
+
+## Map integration status (16 November 2026)
+
+See [ENGINEERING_AUDIT.md](ENGINEERING_AUDIT.md) for the full map inventory, rights blockers, runtime limitations and recommended order. The main-menu-to-mode-selector route and format-specific preview loaders are prepared. All map previews remain gated until license status is documented as cleared. No matchmaking, physics, collisions, spawn points or authoritative match simulation is claimed as implemented.
