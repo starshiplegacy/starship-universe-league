@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#f7f8fa"/>
+<title>The LyrieLife — Elegir mundo</title>
+<style>
+:root{--fondo-arriba:#f7f8fa;--fondo-abajo:#e9edf2;--texto:#3a4450;--gris:#8b95a3;--azul:#2b6cf6}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}
+body{font-family:"Trebuchet MS",Verdana,sans-serif;color:var(--texto);background:linear-gradient(180deg,var(--fondo-arriba) 0%,var(--fondo-abajo) 100%);min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.barra{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 12px 0;flex:none;height:44px}.grupo{display:flex;gap:6px;align-items:center}
+.icono{width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:5px;background:transparent;color:#9aa4b1;cursor:pointer;transition:background .15s ease,color .15s ease}
+.icono:hover,.icono:focus-visible{background:rgba(0,0,0,.05);color:#5b6673;outline:none}.icono svg{width:15px;height:15px;display:block}
+.contenido{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 40px 30px;overflow-y:auto}
+.titulo{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--gris);margin:2px 0 34px}
+.titulo svg{width:12px;height:12px;color:var(--gris)}
+.mundos{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 22px;width:100%;max-width:640px;justify-items:center}
+.mundo{display:flex;flex-direction:column;align-items:center;gap:9px;background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
+.disco{width:104px;height:104px;border-radius:50%;overflow:hidden;position:relative;box-shadow:0 3px 9px rgba(60,80,110,.20);transition:transform .16s ease,box-shadow .16s ease}
+.disco svg{width:100%;height:100%;display:block}
+.mundo:hover .disco,.mundo:focus-visible .disco,.mundo[aria-pressed="true"] .disco{transform:translateY(-2px);box-shadow:0 6px 16px rgba(60,80,110,.28),0 0 0 3px rgba(43,108,246,.55)}
+.mundo:focus-visible{outline:none}.nombre{font-size:11px;font-weight:700;color:#5b6673;letter-spacing:.02em;text-align:center}
+@media(max-width:620px){.contenido{padding:0 20px 24px}.mundos{grid-template-columns:repeat(2,1fr);gap:22px 18px;max-width:320px}.disco{width:96px;height:96px}.titulo{margin-bottom:26px}}
+</style>
+</head>
+<body>
+<header class="barra">
+ <div class="grupo"><button class="icono" data-accion="atras" aria-label="Volver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div>
+ <div class="grupo">
+  <button class="icono" data-accion="ajustes" aria-label="Ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/></svg></button>
+  <button class="icono" data-accion="cerrar" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+ </div>
+</header>
+<main class="contenido">
+ <h1 class="titulo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>Residential Worlds</h1>
+ <div class="mundos">
+  <button class="mundo" data-mundo="Kataleya" aria-pressed="false"><span class="disco"><svg viewBox="0 0 104 104"><defs><linearGradient id="kCielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9ed6f7"/><stop offset="100%" stop-color="#dff0fb"/></linearGradient></defs><rect width="104" height="104" fill="url(#kCielo)"/><circle cx="78" cy="24" r="10" fill="#fdf6cf"/><path d="M0 66c18-12 32-4 46-10s28-12 58-2v50H0z" fill="#8fc46a"/><path d="M0 78c20-8 34 0 50-6s30-6 54 2v30H0z" fill="#6fa84f"/><path d="M22 74l8-20 8 20z" fill="#3f7a3a"/><path d="M36 78l6-16 6 16z" fill="#4d8c42"/><rect x="48" y="68" width="22" height="16" rx="1.5" fill="#f4f6f8"/><path d="M44 68l15-11 15 11z" fill="#c0504d"/><rect x="57" y="75" width="6" height="9" fill="#8a6a4a"/><path d="M0 92c24-6 42 0 62-3s26-2 42 3v12H0z" fill="#4f8a3f"/></svg></span><span class="nombre">Kataleya</span></button>
+  <button class="mundo" data-mundo="Kariskio" aria-pressed="false"><span class="disco"><svg viewBox="0 0 104 104"><defs><linearGradient id="k2Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#86cbf2"/><stop offset="100%" stop-color="#d3ecf9"/></linearGradient></defs><rect width="104" height="104" fill="url(#k2Cielo)"/><circle cx="26" cy="22" r="9" fill="#fdf6cf"/><path d="M0 62c16-8 28-3 42-8s32-6 62 3v47H0z" fill="#5fb3d9"/><path d="M0 74c20-6 32 2 50-3s28-3 54 5v28H0z" fill="#3d8fbd"/><path d="M0 88c22-5 36 3 56 0s28-2 48 5v11H0z" fill="#2b6f9c"/><rect x="14" y="56" width="18" height="11" rx="1.5" fill="#f7f3ea"/><path d="M11 56l12-8 12 8z" fill="#c0504d"/><path d="M76 58l6-17 6 17z" fill="#3f7a3a"/><path d="M86 62l5-13 5 13z" fill="#4d8c42"/></svg></span><span class="nombre">Kariskio</span></button>
+  <button class="mundo" data-mundo="Solnang" aria-pressed="false"><span class="disco"><svg viewBox="0 0 104 104"><defs><linearGradient id="sCielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a8d8f2"/><stop offset="100%" stop-color="#e4f2fa"/></linearGradient></defs><rect width="104" height="104" fill="url(#sCielo)"/><circle cx="80" cy="20" r="9" fill="#fdf6cf"/><path d="M0 74l24-38 18 24 14-20 20 32 12-14 16 14v32H0z" fill="#8fa9c4"/><path d="M24 36l11 16-22 0z" fill="#f4f8fb"/><path d="M56 40l10 15-20 0z" fill="#f4f8fb"/><path d="M0 84c20-5 34 2 52-2s30-2 52 3v19H0z" fill="#6f9a5c"/><path d="M16 90l6-16 6 16z" fill="#3f7a3a"/><path d="M76 92l6-14 6 14z" fill="#4d8c42"/><rect x="44" y="80" width="16" height="12" rx="1.5" fill="#f2f5f8"/><path d="M41 80l11-8 11 8z" fill="#8a5a3a"/></svg></span><span class="nombre">Solnang</span></button>
+  <button class="mundo" data-mundo="abandoned-island" aria-pressed="false"><span class="disco"><svg viewBox="0 0 104 104"><defs><linearGradient id="aCielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8aa9b8"/><stop offset="100%" stop-color="#d5d5c8"/></linearGradient></defs><rect width="104" height="104" fill="url(#aCielo)"/><circle cx="78" cy="22" r="8" fill="#e8e2ca"/><path d="M0 66c18-12 32-5 48-10s30-10 56-2v50H0z" fill="#718b75"/><path d="M0 80c22-9 38-1 56-7s30-4 48 3v28H0z" fill="#526b5b"/><path d="M12 68l8-24 8 24zM22 72l7-18 7 18z" fill="#354f45"/><path d="M72 68l7-23 8 23z" fill="#405a4c"/><rect x="39" y="64" width="25" height="21" rx="1" fill="#b8b4a5"/><path d="M35 65l16-13 17 13z" fill="#655d55"/><rect x="48" y="73" width="7" height="12" fill="#51483f"/><path d="M0 94c24-7 40 1 62-4s28-1 42 3v11H0z" fill="#394f45"/></svg></span><span class="nombre">Abandoned Island</span></button>
+ </div>
+</main>
+<script>
+(()=>{"use strict";
+const worlds=[...document.querySelectorAll(".mundo")];
+function choose(button){const world=button.dataset.mundo;try{localStorage.setItem("ul_mundo_elegido",world)}catch(e){}worlds.forEach(item=>item.setAttribute("aria-pressed",String(item===button)));location.href="./lyrielife.html?mode=new&world="+encodeURIComponent(world)}
+worlds.forEach(button=>button.addEventListener("click",()=>choose(button)));
+document.querySelectorAll("[data-accion]").forEach(button=>button.addEventListener("click",()=>{const action=button.dataset.accion;if(action==="atras")history.back();if(action==="cerrar")location.href="./index.html?showLyrieMenu=1";if(action==="ajustes")location.href="./lyrielife.html?settings=1"}));
+})();
+</script>
+</body>
+</html>
