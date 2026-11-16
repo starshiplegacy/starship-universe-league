@@ -16,7 +16,7 @@
 
 ## 2. Current verified blockers
 
-1. Frontend config in `index.html` and `lyrielife.html` points to project ref `wvyveduslbsuvyekeccf`.
+1. Shared browser config is centralized in `supabase-config.js`; it preserves the existing target ref `wvyveduslbsuvyekeccf`, which is not yet confirmed as canonical.
 2. Connected Supabase project `uyhcocdknweqvcqgbnez` is not schema-aligned with current client expectations.
 3. Connected project `fixwovymcfpfididtmud` is a separate catalog/Django backend and must not be reused for these games.
 4. Cloud save, gallery, avatar Storage, creator verification, and feedback resources are not yet verified on the frontend's configured project.
