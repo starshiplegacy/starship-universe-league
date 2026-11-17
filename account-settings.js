@@ -10,7 +10,7 @@
   const avatarButton = $("accountOpen");
   const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neón",galaxy:"Galaxy",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"};
   const languages = {es:"Español",en:"English",ko:"한국어",ja:"日本語"};
-  let client = null, session = null, profile = null, signedAvatarUrl = null, busy = false, openPlansAfterAuth = false;
+  let client = null, session = null, profile = null, signedAvatarUrl = null, busy = false;
   const say = (message, type) => {
     const el = $("settingsMessage");
     if (!el) return;
@@ -306,11 +306,6 @@
   const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",plans:"Universe Pay",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
   function openUniversePay() {
-    if (!session?.user) {
-      openPlansAfterAuth = true;
-      $("accessDialog")?.showModal();
-      return;
-    }
     if (!dialog?.open) dialog?.showModal();
     showPanel("plans","Universe Pay");
   }
@@ -331,11 +326,6 @@
     client=window.universeSupabase || client;
     if (!session?.user) {profile=null;renderAvatar(null);showMenu();return;}
     try {await loadProfile();} catch(error){console.warn("No se pudo cargar el perfil:",error);}
-    if (openPlansAfterAuth) {
-      openPlansAfterAuth = false;
-      if (!dialog?.open) dialog?.showModal();
-      showPanel("plans","Universe Pay");
-    }
   });
   window.addEventListener("universe-supabase-ready",async()=>{client=window.universeSupabase; if(session?.user) try{await loadProfile();}catch(error){console.warn(error);}});
   client=window.universeSupabase || null;
