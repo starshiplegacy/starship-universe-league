@@ -2,10 +2,21 @@
   "use strict";
   const state = { loaded:false, userId:null, entitlements:[], plan:"astronaut", error:null };
   const has = key => state.entitlements.includes(key);
+  const memberPlans = new Set(["baby","baby_star","moon","young_moon","planet","exoplanet"]);
+  const vipPlans = new Set(["moon","young_moon","planet","exoplanet"]);
   function applyGates() {
     const plan = String(state.plan || "").toLowerCase().replace(/-/g,"_");
+    const memberAccess = state.entitlements.some(key => ["baby","baby_star","baby-star","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase())) || memberPlans.has(plan);
     const geffeniteAccess = has("young_moon") || has("young-moon") || has("exoplanet") ||
-      ["young_moon","moon","planet","exoplanet"].includes(plan);
+      vipPlans.has(plan);
+    document.querySelectorAll("[data-requires-membership]").forEach(node => {
+      node.hidden = !memberAccess;
+      node.setAttribute("aria-hidden", String(!memberAccess));
+    });
+    document.querySelectorAll("[data-membership-fallback]").forEach(node => {
+      node.hidden = memberAccess;
+      node.setAttribute("aria-hidden", String(memberAccess));
+    });
     document.querySelectorAll("[data-requires-entitlement]").forEach(node => {
       const requirement = node.dataset.requiresEntitlement;
       const allowed = requirement === "geffenite_beta" ? geffeniteAccess : has(requirement);
@@ -49,7 +60,12 @@
     window.dispatchEvent(new CustomEvent("universe-entitlements-change",{detail:{...state}}));
     return state;
   }
-  window.starshipEntitlements = { has, refresh, get state(){ return {...state}; } };
+  window.starshipEntitlements = {
+    has, refresh,
+    get state(){ return {...state}; },
+    get isMember(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (memberPlans.has(plan) || state.entitlements.some(key=>["baby","baby_star","baby-star","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase()))); },
+    get isVip(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (vipPlans.has(plan) || has("young_moon") || has("young-moon") || has("exoplanet")); }
+  };
   window.addEventListener("universe-auth-change", event => { refresh(event.detail?.session || null); });
   window.addEventListener("universe-supabase-ready", async () => {
     const client = window.universeSupabase;
