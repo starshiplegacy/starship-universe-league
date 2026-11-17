@@ -6,7 +6,7 @@
   const vipPlans = new Set(["moon","young_moon","planet","exoplanet"]);
   function applyGates() {
     const plan = String(state.plan || "").toLowerCase().replace(/-/g,"_");
-    const memberAccess = state.entitlements.some(key => ["baby","baby_star","baby-star","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase())) || memberPlans.has(plan);
+    const memberAccess = state.entitlements.some(key => ["baby","baby_star","baby-star","moon","planet","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase())) || memberPlans.has(plan);
     const geffeniteAccess = has("young_moon") || has("young-moon") || has("exoplanet") ||
       vipPlans.has(plan);
     document.querySelectorAll("[data-requires-membership]").forEach(node => {
@@ -63,8 +63,8 @@
   window.starshipEntitlements = {
     has, refresh,
     get state(){ return {...state}; },
-    get isMember(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (memberPlans.has(plan) || state.entitlements.some(key=>["baby","baby_star","baby-star","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase()))); },
-    get isVip(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (vipPlans.has(plan) || has("young_moon") || has("young-moon") || has("exoplanet")); }
+    get isMember(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (memberPlans.has(plan) || state.entitlements.some(key=>["baby","baby_star","baby-star","moon","planet","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase()))); },
+    get isVip(){ const plan=String(state.plan||"").toLowerCase().replace(/-/g,"_"); return state.loaded && (vipPlans.has(plan) || has("moon") || has("planet") || has("young_moon") || has("young-moon") || has("exoplanet")); }
   };
   window.addEventListener("universe-auth-change", event => { refresh(event.detail?.session || null); });
   window.addEventListener("universe-supabase-ready", async () => {
