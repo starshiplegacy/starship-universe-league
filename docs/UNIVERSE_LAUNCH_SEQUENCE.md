@@ -14,45 +14,45 @@ Todos los juegos entran por el mismo lanzador. El video **UNIVERSE LEAGUE (Openi
 
 ## Flujos
 - **The LyrieLife:** Panel → INICIAR → logo → Opening universal → `Lyrie Loanding.mp4` → menú de The LyrieLife.
-- **League Of Legacy:** Panel → INICIAR → logo → Opening universal → `Loading 01.mp4` → `league-of-legacy.html`.
+- **League Of Legacy:** Panel → INICIAR → logo → Opening universal → `Loading LOL.mp4` → `league-of-legacy.html`.
 
 ## Inventario y ubicación de archivos
 
 ### League Of Legacy
-Los tres modelos GLB pertenecen al conjunto de personajes de League Of Legacy y se colocan en `assets/league-of-legacy/characters/`:
+Los ocho modelos GLB pertenecen al conjunto de personajes de League Of Legacy y están publicados en `assets/league-of-legacy/characters/`. El selector de `league-of-legacy.html` incluye los ocho nombres:
 
 | Archivo | Contenido verificado | Requiere conversión |
 |---|---|---|
-| `charlotte.glb` | GLB 2.0, 267 nodos, 7 mallas, 7 materiales, 7 skins, 56 animaciones, 2 imágenes WebP embebidas; usa Meshopt y KHR quantization | No |
-| `arthur.glb` | GLB 2.0, 105 nodos, 1 malla, 1 material, 1 skin, 1 animación `Default`, 2 imágenes; usa Draco | No |
-| `bella.glb` | GLB 2.0, 2 nodos, 1 malla, 1 material, 4 imágenes; modelo estático sin rig ni animaciones | No |
+| `Charlotte.glb` | GLB 2.0, 267 nodos, 7 mallas, 7 materiales, 7 skins, 56 animaciones, 2 imágenes WebP embebidas; usa Meshopt y KHR quantization | No |
+| `Arthur.glb` | GLB 2.0, 105 nodos, 1 malla, 1 material, 1 skin, 1 animación `Default`, 2 imágenes; usa Draco | No |
+| `Bella.glb` | GLB 2.0, 2 nodos, 1 malla, 1 material, 4 imágenes; modelo estático sin rig ni animaciones | No |
 
-El menú `league-of-legacy.html` incluye selector para Charlotte, Arthur y Bella. El selector de animación se activa cuando el modelo tiene clips. El visor configura Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`; no hay que volver a convertir ni comprimir estos modelos.
+El menú `league-of-legacy.html` incluye selector para Charlotte, Arthur, Bella, Emma, Aquamarine, Opal (Opalo), Optopool y Stella. Los metadatos detallados de la tabla anterior solo están documentados para Charlotte, Arthur y Bella; los otros cinco modelos no se convierten ni modifican por falta de necesidad. El selector de animación se activa cuando el modelo tiene clips. El visor configura Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`; no hay que volver a convertir ni comprimir estos modelos.
 
 ### The LyrieLife y CAL_CUL
-El archivo fuente `The LyreLife (Para HTML).tar.gz` contiene 339 entradas (aprox. 411 MB sin comprimir), incluyendo:
+Documentación previa describe un archivo fuente `The LyreLife (Para HTML).tar.gz` con 339 entradas (aprox. 411 MB sin comprimir), incluyendo:
 - CUL_CAS: contenido masculino, femenino, mascotas y recursos de ADN.
 - UI & Complements, Main Menu, Menu_De_Configuraciones, Intros, Pantalla de Carga y Mapa.
 - Contenido de juego `.package`, `.layer`, `.world`, `.blueprint`, `.bpi` y `.ts4script`.
 - Documentos PDF y DOCX de referencia.
 
-Este archivo se conserva como archivo fuente. No convertir los formatos propietarios del juego (`.package`, `.world`, `.layer`, etc.) a GLB o a imágenes: no son modelos 3D intercambiables y convertirlos dañaría su función. Los modelos GLB de League Of Legacy nunca se mezclan con CUL_CAS.
+La disponibilidad actual de ese paquete no está confirmada en Library ni en el árbol de GitHub; no afirmar que está respaldado ni convertirlo en requisito del repositorio. Si se localiza, se conserva como archivo fuente. No convertir los formatos propietarios del juego (`.package`, `.world`, `.layer`, etc.) a GLB o a imágenes: no son modelos 3D intercambiables y convertirlos dañaría su función. Los modelos GLB de League Of Legacy nunca se mezclan con CUL_CAS.
 
 ### Vídeos
 Los originales son MP4 y deben copiarse sin renombrar ni recodificar a `assets/videos/`:
 - `UNIVERSE LEAGUE (Opening).mp4` — compartido.
 - `Lyrie Loanding.mp4` — The LyrieLife.
-- `Loading 01.mp4` — League Of Legacy.
+- `Loading LOL.mp4` — League Of Legacy.
 
 ## Estado de implementación
 - [x] Lanzador universal y secuencia de reproducción.
 - [x] Panel INICIAR de The LyrieLife conectado.
 - [x] Panel INICIAR de League Of Legacy conectado.
-- [x] Menú 3D de League Of Legacy con selector de Charlotte, Arthur y Bella.
+- [x] Menú 3D de League Of Legacy con selector de los ocho personajes.
 - [x] Compatibilidad del visor con Meshopt y Draco.
 - [x] Inventario técnico y separación de recursos por juego.
-- [ ] Publicar los tres GLB y los tres MP4 en las rutas anteriores. Los binarios están disponibles en la biblioteca de archivos, pero aún no forman parte del repositorio GitHub.
-- [ ] Conectar el modo de partida multijugador; el botón JUGAR permanece desactivado hasta que exista esa integración.
+- [x] Publicar los ocho GLB de personajes y los tres MP4 en sus rutas definitivas de GitHub.
+- [ ] Conectar el modo de partida multijugador; la vista de personajes y el selector de mapas no constituyen todavía una partida jugable.
 
 ## Reproducción y fallos
-El lanzador inicia en silencio para respetar las restricciones de autoplay del navegador y ofrece activar sonido y saltar. Si un vídeo no está disponible o falla, continúa con la siguiente etapa para no bloquear el acceso. El menú 3D muestra un aviso si falta un GLB o no puede decodificarse.
+El lanzador inicia en silencio para respetar las restricciones de autoplay del navegador y ofrece activar sonido y saltar. Si un vídeo no está disponible o falla, continúa con la siguiente etapa para no bloquear el acceso. El menú 3D muestra un aviso si falta un GLB o no puede decodificarse. Los nombres de archivo distinguen mayúsculas y espacios; no renombrar los originales.
