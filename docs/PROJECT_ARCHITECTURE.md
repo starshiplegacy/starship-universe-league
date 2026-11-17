@@ -115,3 +115,6 @@ La auditoría remota de Supabase es opcional y requiere las variables/secrets de
 - Jaque Matte y Pinkie Star son minijuegos independientes para Astronautas. Pinkie Star es el Mahjong Solitaire antes rotulado provisionalmente como Pixxy Up. La interfaz mantiene `pixxy` como token interno de lanzamiento y los controles `pixxy-*`; las partidas nuevas usan la clave `pinkie-star` y migran la lectura de partidas anteriores `pixxy-up`. Sus imágenes permanecen en `assets/Pinkie-Star/Images/`; el icono está conectado al catálogo y el póster se conserva como recurso de referencia.
 
 Los prototipos y referencias se mantienen separados del código de producción hasta que se revisen, adapten a la identidad de cada juego y se conecten explícitamente. `docs/DOCUMENTATION_INDEX.md` es el índice de navegación documental; los documentos originales `.txt` conservan sus nombres y rutas.
+
+
+- Jaque Matte and Pinkie Star require the same account installation flow as paid games: catalog → install → installed library → play. GellyShow is listed as Gratis · Demo and launches from the installed library; Online remains server-dependent and unavailable. Geffenite remains behind its VIP entitlement gate and uses the same install/library path after access is verified.
