@@ -179,3 +179,25 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .ulh-vip-launch{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border-radius:7px;background:#7a55bc;color:#fff;text-decoration:none;font-size:12px;font-weight:800}
 .ulh-vip-launch:hover{background:#936bd6}
 @media(max-width:600px){.ulh-vip-card{grid-template-columns:1fr}.ulh-vip-art{min-height:140px}.ulh-vip-copy{padding:16px}}
+
+
+/* Universe Pay and Starship Plus member premieres */
+.universe-pay-button{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);white-space:nowrap}
+.universe-pay-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.starship-plus-premieres{margin:28px 0 30px;padding:22px 0 0;border-top:1px solid var(--line)}
+.starship-plus-premieres .ulh-vip-heading h3{color:var(--ink)}
+.starship-plus-premieres .ulh-vip-heading p{color:var(--muted)}
+.starship-plus-premieres .ulh-vip-card{grid-template-columns:minmax(180px,.65fr) minmax(0,1.35fr)}
+.starship-plus-premieres .ulh-vip-copy p{margin:0;color:#a9b8cc}
+.starship-plus-premieres .ulh-vip-copy .ulh-vip-locked{margin-top:13px}
+.universe-pay-status{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);font-size:11px}
+.universe-pay-status span{color:var(--muted)}
+.universe-pay-benefits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0 20px}
+.universe-pay-benefits article{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);min-width:0}
+.universe-pay-benefits article>span{display:block;margin-bottom:7px;color:var(--accent);font-size:20px}
+.universe-pay-benefits b{display:block;font-size:11px}
+.universe-pay-benefits p{margin:5px 0 0;color:var(--muted);font-size:9px;line-height:1.6}
+.geffenland-card ul{min-height:230px}
+@media(max-width:900px){.universe-pay-benefits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.universe-pay-button{font-size:9px;padding:9px 10px}.starship-plus-premieres .ulh-vip-card{grid-template-columns:1fr}.starship-plus-premieres .ulh-vip-art{min-height:140px}.universe-pay-benefits{grid-template-columns:1fr 1fr}.geffenland-card ul{min-height:0}}
+@media(max-width:420px){.universe-pay-benefits{grid-template-columns:1fr}}
