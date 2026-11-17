@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".html", ".js", ".css"}
 SUPABASE_RE = re.compile(r"https://([a-z0-9-]+)\.supabase\.co", re.I)
 ATTR_RE = re.compile(r"""(?<![\w.$-])\b(?:src|href)\s*=\s*["']([^"'#]+)["']""", re.I)
-CSS_URL_RE = re.compile(r"""url\(\s*["']?([^"'\)]+)""", re.I)
+CSS_URL_RE = re.compile(r"""url\(\s*["']?([^"'\)]+)""")
 MODEL_NAMES = ["Charlotte", "Arthur", "Bella", "Emma", "Aquamarine", "Opal (Opalo)", "Optopool", "Stella"]
 WORLD_PATHS = [
     "kataleya/Kataleya.world",
