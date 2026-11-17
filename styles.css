@@ -650,3 +650,49 @@ body.auth-checking>.welcome-gate{display:none!important}
 #accountDialog [hidden]{
   display:none !important;
 }
+
+
+/* Universe Pay: stack each membership with its own button directly below */
+.geffenland-grid{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.geffenland-plan-option{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:9px;
+  min-width:0;
+}
+.geffenland-plan-option .geffenland-card{
+  width:100%;
+  height:auto;
+}
+.geffenland-plan-option .geffenland-card ul{
+  flex:initial;
+  margin-bottom:10px;
+}
+.geffenland-plan-option > button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  width:100%;
+  min-height:46px;
+  padding:11px 14px;
+  border:1px solid var(--accent);
+  border-radius:12px;
+  background:var(--accent);
+  color:#fff;
+  font:600 11px "DM Sans",sans-serif;
+  cursor:pointer;
+  transition:transform .18s ease,filter .18s ease,box-shadow .18s ease;
+}
+.geffenland-plan-option > button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.geffenland-plan-option > button.is-selected{
+  outline:3px solid color-mix(in srgb,var(--accent) 25%,transparent);
+  outline-offset:2px;
+  box-shadow:0 0 0 1px var(--accent);
+}
+.geffenland-plan-option > button strong{font-weight:800}
