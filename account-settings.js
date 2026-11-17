@@ -309,19 +309,9 @@
       finally{button.disabled=false;}
     });
   }
-  const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",plans:"Universe Pay",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+  const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
-  function openUniversePay() {
-    if (!dialog?.open) dialog?.showModal();
-    dialog.dataset.view = "plans";
-    if (dialogTitle) dialogTitle.textContent = "Universe Pay";
-    if (dialogIntro) dialogIntro.textContent = "Consulta exclusivamente los planes de membresía y todos sus beneficios.";
-    if (signOutButton) signOutButton.hidden = true;
-    if (back) back.hidden = true;
-    showPanel("plans","Planes y beneficios");
-    dialog.querySelector(".dialog-close")?.focus();
-  }
-  document.querySelectorAll("#universePayOpen,[data-open-universe-pay]").forEach(button=>button.addEventListener("click",openUniversePay));
+
   avatarButton?.addEventListener("click",openConfiguration);
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
