@@ -90,7 +90,7 @@ Los nombres se normalizaron en Git conservando exactamente los mismos blobs bina
 
 ## 9. League Of Legacy — archivos de mapa incorporados
 
-La revisión del árbol de GitHub detectó **411 archivos** en `assets/league-of-legacy/Map/`, con un tamaño publicado agregado de aproximadamente **524.4 MB**:
+La revisión del árbol de GitHub detectó **421 archivos** en `assets/league-of-legacy/Map/`, con un tamaño publicado agregado de aproximadamente **664.6 MB (633.8 MiB)**:
 
 | Formato | Cantidad | Uso identificado |
 |---|---:|---|
