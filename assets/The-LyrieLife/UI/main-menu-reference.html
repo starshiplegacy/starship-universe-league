@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sims 4 – Menú principal</title>
+<style>
+:root{--w:#fff;--t:#3b4a56;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0;user-select:none}
+html,body{height:100%;overflow:hidden;background:#20262b;font-family:"Segoe UI",Arial,sans-serif}
+.st{position:absolute;width:474px;height:267px;transform-origin:0 0;overflow:hidden;display:none}
+.st.on{display:block}
+.a{position:absolute}
+button{font:inherit;border:0;background:none;cursor:pointer}
+/* screen 1 */
+#s1{background:linear-gradient(135deg,#7c8388,#a2a7ab 55%,#8b9196)}
+#panel{left:361px;top:0;width:113px;height:267px;background:rgba(215,220,224,.38);border-left:1px solid rgba(255,255,255,.55);backdrop-filter:blur(6px)}
+.mb{left:366px;width:101px;border-radius:2px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.5);color:#f4f6f7;font:600 6.4px "Segoe UI",Arial;text-align:left;padding-left:30px;display:flex;align-items:center;text-shadow:0 0 2px rgba(0,0,0,.35);transition:.12s}
+.mb:hover{background:rgba(255,255,255,.5)}
+.mb:active,.mb.sel{background:rgba(255,255,255,.62);border-color:#fff}
+.mb svg{position:absolute;left:7px}
+#note{left:366px;top:64px;width:101px;height:15px;background:rgba(95,100,105,.88);color:#eef1f3;font:4.4px/5.4px "Segoe UI",Arial;padding:2px 8px;text-align:center;border-radius:1px}
+#logo{left:392px;top:8px;display:flex;align-items:flex-end;color:#fff;font-family:"Segoe UI",Arial;text-shadow:0 0 3px rgba(0,0,0,.3)}
+#logo b{font-size:17px;letter-spacing:-.3px;font-weight:800;line-height:15px}
+#logo s{text-decoration:none;font-size:4.5px;position:absolute;left:12px;top:-2px;font-style:italic}
+#logo em{font-style:normal;font-size:22px;font-weight:800;line-height:15px;margin-left:1px}
+</style></head><body>
+<div id="s1" class="st on">
+ <div id="panel" class="a"></div>
+ <div id="logo" class="a"><svg width="9" height="14" viewBox="0 0 9 14" style="margin-right:2px"><path d="M4.5 0L9 7L4.5 14L0 7z" fill="#4ed05a" stroke="#fff" stroke-width=".6"/></svg><s>The</s><b>SIMS</b><em>4</em></div>
+ <button class="a mb" style="top:38px;height:24px" data-m>Resume</button>
+ <div id="note" class="a">Unexpected Sims? Oops, you better check out what they've been up to.</div>
+ <button class="a mb" style="top:82px;height:22px" data-m><svg width="14" height="14" viewBox="0 0 14 14"><rect width="14" height="14" rx="3" fill="#8a42d4" stroke="#fff" stroke-width=".8"/><path d="M4 3h6v5L7 11 4 8z" fill="none" stroke="#fff" stroke-width="1.2"/><path d="M7 4.5v2.5" stroke="#fff"/></svg>Play Scenario</button>
+ <button class="a mb" style="top:108px;height:16px" data-m><svg width="8" height="8" viewBox="0 0 8 8" style="left:9px"><path d="M4 0v5M1.5 3L4 5.5 6.5 3M0 7.5h8" stroke="#fff" stroke-width="1.2" fill="none"/></svg>Load Game</button>
+ <button class="a mb" style="top:129px;height:16px" data-m><svg width="8" height="8" viewBox="0 0 8 8" style="left:9px"><path d="M1 0h6v8H1z" fill="none" stroke="#fff"/><path d="M4 2v4M2 4h4" stroke="#fff"/></svg>New Game</button>
+ <button class="a mb" style="top:150px;height:17px" data-m><svg width="8" height="8" viewBox="0 0 8 8" style="left:9px"><circle cx="4" cy="4" r="3.5" fill="none" stroke="#fff"/><circle cx="4" cy="4" r="1.3" fill="#fff"/></svg>Gallery</button>
+ <button class="a mb" style="top:172px;height:16px" data-m><svg width="10" height="4" viewBox="0 0 10 4" style="left:8px"><circle cx="1.5" cy="2" r="1" fill="#fff"/><circle cx="5" cy="2" r="1" fill="#fff"/><circle cx="8.5" cy="2" r="1" fill="#fff"/></svg>Options</button>
+</div>
+
+<script>
+const W=474,H=267;
+function fit(){const s=Math.min(innerWidth/W,innerHeight/H);document.querySelectorAll('.st').forEach(e=>{e.style.transform='scale('+s+')';e.style.left=(innerWidth-W*s)/2+'px';e.style.top=(innerHeight-H*s)/2+'px'})}
+addEventListener('resize',fit);fit();
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-m]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')});
+</script></body></html>
