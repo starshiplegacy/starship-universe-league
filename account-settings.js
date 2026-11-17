@@ -313,6 +313,11 @@
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
 
   avatarButton?.addEventListener("click",openConfiguration);
+  document.querySelectorAll("[data-open-account-settings]").forEach(button=>button.addEventListener("click",event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    openConfiguration();
+  }));
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
   const personalProfileSection = $("personalProfileSection");
