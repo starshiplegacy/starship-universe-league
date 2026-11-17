@@ -566,7 +566,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
 (function(){
  const home=document.getElementById("privateHome");if(!home)return;
  const grid=document.getElementById("ulhInstalledGrid"),count=document.getElementById("ulhInstalledCount");
- const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",fallback:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",fallback:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg"}};
+ const games={lyrie:{name:"The LyrieLife",genre:"Simulación de vida",image:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",fallback:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",launch:"lyrie"},legacy:{name:"League Of Legacy",genre:"Batalla multijugador",image:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",fallback:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",launch:"legacy"},chess:{name:"Jaque Matte",genre:"Estrategia · Ajedrez",image:"./assets/Jaque-Matte/Images/Jaque%20Matte%20(ICON).jpg",fallback:"./assets/Jaque-Matte/Images/Jaque%20Matte%20(ICON).jpg",launch:"mini"},pixxy:{name:"Pinkie Star",genre:"Puzzle · Mahjong Solitaire",image:"./assets/Pinkie-Star/Images/Pinkie%20Star%20(ICON).jpg",fallback:"./assets/Pinkie-Star/Images/Pinkie%20Star%20(ICON).jpg",launch:"mini"},gellyshow:{name:"GellyShow",genre:"Moda · Vestir · Pasarela",image:"./assets/GellyShow/Images/GellyShow%20(ICON).jpg",fallback:"./assets/GellyShow/Images/GellyShow%20(ICON).jpg",launch:"gelly"},geffenite_beta:{name:"Geffenite: Batalla Estelar",genre:"Batalla estelar · Beta VIP",image:"./assets/Geffenite/images/Geffenite%20(ICON).jpg",fallback:"./assets/Geffenite/images/Geffenite%20(ICON).jpg",launch:"geffenite",entitlement:"geffenite_beta"}};
  let userId=null,installed=new Set(),downloading=null,downloadTimer=null,downloadOwner=null,downloadRemaining=60,downloadLastTick=0;
  const toast=document.createElement("div");toast.className="ulh-toast";toast.setAttribute("role","status");toast.setAttribute("aria-live","polite");document.body.appendChild(toast);
  let toastTimer;function notify(m){toast.textContent=m;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),3500);}
@@ -575,9 +575,9 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  function updateDownloadProgress(){
   if(!downloading)return;
   document.querySelectorAll(".ul-download-progress").forEach(el=>{
-   const card=el.closest(".ulx-game,.ulh-catalog-card");
-   const cardKey=card?.dataset.openGame||card?.querySelector("[data-open-game]")?.dataset.openGame;
-   if(cardKey===downloading)el.textContent=navigator.onLine?"Descargando · "+downloadRemaining+" s":"En pausa · Sin conexión";
+   const card=el.closest(".ulx-game,.ulh-catalog-card,.astronaut-game-card,.ulh-vip-card");
+   const cardKey=card?.dataset.installGame||card?.dataset.openGame||card?.querySelector("[data-open-game]")?.dataset.openGame;
+   if(cardKey===downloading)el.textContent=navigator.onLine?"Instalando · "+downloadRemaining+" s":"En pausa · Sin conexión";
   });
  }
  function finishDownload(){
@@ -586,7 +586,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   if(!key)return;
   if(!userId||userId!==owner){downloading=null;downloadOwner=null;refresh();return;}
   installed.add(key);downloading=null;downloadOwner=null;downloadRemaining=60;
-  save();renderLibrary();refresh();notify("Tu juego ha sido descargado");
+  save();renderLibrary();refresh();notify("El juego ya está instalado y aparece en Juegos instalados.");
  }
  function startDownloadClock(){
   stopDownloadClock();
@@ -612,34 +612,35 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   if(!grid)return;const list=[...installed].filter(k=>games[k]);if(count)count.textContent=list.length+" "+(list.length===1?"juego":"juegos");renderSidebar(list);
   if(!list.length){grid.innerHTML='<p class="ulh-installed-empty">Todavía no tienes juegos instalados. Explora el catálogo y descarga tu primer juego.</p>';return;}
   grid.innerHTML=list.map(k=>{const g=games[k];return '<article class="ulh-library-card"><div class="ulh-entry-open"><img class="ulh-entry-cover" src="'+g.image+'" onerror="this.onerror=null;this.src=\''+g.fallback+'\'" alt="'+g.name+'"></div><div class="ulh-library-copy"><span class="ulh-status"><i></i> Instalado</span><h3>'+g.name+'</h3><p>'+g.genre+'</p></div><div class="ul-game-actions"><button class="ul-game-play" type="button" data-play="'+k+'">PLAY</button><span class="ul-installed-check">✓</span></div><div class="ul-game-menu-wrap"><button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-uninstall="'+k+'">Desinstalar</button><button type="button" data-report="'+k+'">Reportar error</button></div></div></article>';}).join("");
-  grid.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>{activeGameKey=b.dataset.play;renderGameDialog(activeGameKey);gameDialog.showModal();}));
+  grid.querySelectorAll("[data-play]").forEach(b=>b.addEventListener("click",()=>{const key=b.dataset.play,g=games[key];if(g.launch==="mini"){window.launchUniverseMiniGame?.(key);return;}if(g.launch==="gelly"){window.open("./assets/GellyShow/Gameplay/GellyShow.html","_blank","noopener");return;}if(g.launch==="geffenite"){if(window.starshipEntitlements?.has("geffenite_beta"))window.open("./assets/Geffenite/gameplay/Geffenite_%20Batalla%20Estelar.html","_blank","noopener");else notify("Necesitas una membresía VIP activa para acceder a Geffenite.");return;}activeGameKey=key;renderGameDialog(activeGameKey);gameDialog.showModal();}));
   grid.querySelectorAll(".ul-game-more").forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")));
   grid.querySelectorAll("[data-uninstall]").forEach(b=>b.addEventListener("click",()=>{installed.delete(b.dataset.uninstall);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");}));
   grid.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>notify("El sistema de reportes todavía no está habilitado.")));
  }
  function updateCard(card,k){
   if(!card||!games[k])return;
+  if(games[k].entitlement&&!window.starshipEntitlements?.has(games[k].entitlement)){const old=card.querySelector(".ul-game-actions");if(old)old.remove();card.dataset.installState="locked";return;}
   const nextState=installed.has(k)?"installed":(downloading?(downloading===k?"downloading":"waiting"):"idle");
   let actions=card.querySelector(".ul-game-actions");
   if(card.dataset.installState===nextState&&actions)return;
   card.dataset.installState=nextState;if(!actions){actions=document.createElement("div");actions.className="ul-game-actions";card.append(actions);}
   let menu=card.querySelector(".ul-game-menu-wrap");
   if(installed.has(k)){
-   if(!menu){menu=document.createElement("div");menu.className="ul-game-menu-wrap";menu.innerHTML='<button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-action="uninstall">Desinstalar</button><button type="button" data-action="report">Reportar error</button></div>';const art=card.querySelector(".ulx-art,.ulh-entry-open");(art||card).append(menu);
+   if(!menu){menu=document.createElement("div");menu.className="ul-game-menu-wrap";menu.innerHTML='<button class="ul-game-more" type="button" aria-label="Más opciones">⋯</button><div class="ul-game-menu"><button type="button" data-action="uninstall">Desinstalar</button><button type="button" data-action="report">Reportar error</button></div>';const art=card.querySelector(".ulx-art,.ulh-entry-open,.astronaut-game-art,.ulh-vip-art");(art||card).append(menu);
     menu.querySelector(".ul-game-more").addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("open");});
     menu.querySelector('[data-action="uninstall"]').addEventListener("click",e=>{e.stopPropagation();installed.delete(k);save();renderLibrary();refresh();notify("El juego se ha desinstalado.");});
     menu.querySelector('[data-action="report"]').addEventListener("click",e=>{e.stopPropagation();notify("El sistema de reportes todavía no está habilitado.");});
    }menu.hidden=false;
    actions.innerHTML='<button class="ul-game-play" type="button">PLAY</button><span class="ul-installed-check" title="Juego instalado">✓</span>';
-   actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();activeGameKey=k;renderGameDialog(k);gameDialog.showModal();});
+   actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();const g=games[k];if(g.launch==="mini"){window.launchUniverseMiniGame?.(k);return;}if(g.launch==="gelly"){window.open("./assets/GellyShow/Gameplay/GellyShow.html","_blank","noopener");return;}if(g.launch==="geffenite"){if(window.starshipEntitlements?.has("geffenite_beta"))window.open("./assets/Geffenite/gameplay/Geffenite_%20Batalla%20Estelar.html","_blank","noopener");return;}activeGameKey=k;renderGameDialog(k);gameDialog.showModal();});
   }else{
    if(menu)menu.hidden=true;
-   actions.innerHTML='<span class="ul-download-progress">'+(downloading?(downloading===k?"Descargando…":"Otra descarga está en curso"):"")+'</span><button class="ul-download-button" type="button" title="Descargar este juego" aria-label="Descargar este juego" '+(downloading?"disabled":"")+'>↓</button>';
+   actions.innerHTML='<span class="ul-download-progress">'+(downloading?(downloading===k?"Instalando…":"Otra instalación está en curso"):"")+'</span><button class="ul-download-button" type="button" title="Descargar e instalar este juego" aria-label="Descargar e instalar este juego" '+(downloading?"disabled":"")+'>↓ Instalar</button>';
    actions.querySelector("button").addEventListener("click",e=>{e.stopPropagation();start(k);});
   }
  }
  function refresh(){
-  document.querySelectorAll(".ulx-game[data-open-game],.ulh-catalog-card [data-open-game]").forEach(n=>updateCard(n.matches(".ulx-game")?n:n.closest(".ulh-catalog-card"),n.dataset.openGame));
+  document.querySelectorAll(".ulx-game[data-open-game],.ulh-catalog-card[data-install-game],.ulh-catalog-card [data-open-game],.astronaut-game-card[data-install-game],.ulh-vip-card[data-install-game]").forEach(n=>{const card=n.matches(".ulx-game,.ulh-catalog-card[data-install-game],.astronaut-game-card,.ulh-vip-card")?n:n.closest(".ulh-catalog-card");const key=card?.dataset.installGame||n.dataset.openGame;updateCard(card,key);});
  }
  function start(k){
   if(!navigator.onLine){notify("Necesitas conexión a internet para descargar un juego.");return;}
@@ -670,6 +671,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   if(!downloading)return;
   startDownloadClock();updateDownloadProgress();notify("Conexión recuperada. La descarga continúa.");
  });
+ window.addEventListener("universe-entitlements-change",()=>refresh());
  window.addEventListener("universe-auth-change",e=>{
   const nextUserId=e.detail?.session?.user?.id||null;
   if(nextUserId!==userId){
