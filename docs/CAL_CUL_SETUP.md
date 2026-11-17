@@ -13,7 +13,7 @@ El conversor espera una carpeta fuente local `CAL_CUL_converted/` con `male/blen
 El entorno de edición no dispone de Blender; por tanto, los GLB todavía no se han generado ni validado. Con Blender 4.2+ ejecuta:
 
 ```bash
-blender --background --python tools/convert_cal_cul.py -- --source ./CAL_CUL_converted --output ./assets/cal-cul/models
+blender --background --python tools/convert_cal_cul.py -- --source ./CAL_CUL_converted --output ./assets/The-LyrieLife/CAL-CUL/models
 ```
 
 El script importa los FBX, intenta relocalizar mapas WebP por nombre, exporta GLB con armature, morph targets y animaciones, y crea un informe por personaje. Revisa `unresolved_images` antes de publicar.
