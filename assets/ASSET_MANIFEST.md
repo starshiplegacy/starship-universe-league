@@ -151,7 +151,7 @@ El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni
 | Pinkie Star — icono | `assets/Pinkie-Star/Images/Pinkie Star (ICON).jpg` | Almacenado; integración pendiente de confirmar |
 | Pinkie Star — póster | `assets/Pinkie-Star/Images/Pinkie Star (Postel).jpg` | Almacenado; el nombre original contiene `Postel` y se conserva para no romper rutas |
 
-Los cuatro JPG se mantienen en sus carpetas originales. No se asignan todavía a tarjetas ni al sistema de guardado: la relación entre Pinkie Star y los identificadores de juego existentes debe confirmarse antes de conectarlos.
+Los cuatro JPG se mantienen en sus carpetas originales. Los recursos de Pinkie Star corresponden al juego Mahjong Solitaire antes identificado provisionalmente como Pixxy Up. La tarjeta del portal usa el identificador `pinkie-star`; se conserva `pixxy-up` en la lista permitida del sistema de guardado para no invalidar datos anteriores. Los controles internos `pixxy-*` describen la mecánica y se mantienen para evitar cambios innecesarios en la interfaz.
 
 ### The LyrieLife — prototipos de interfaz
 
