@@ -323,16 +323,6 @@
   }
   document.querySelectorAll("#universePayOpen,[data-open-universe-pay]").forEach(button=>button.addEventListener("click",openUniversePay));
   avatarButton?.addEventListener("click",openConfiguration);
-  function leaveUniversePayFor(targetId) {
-    const target = document.getElementById(targetId);
-    if (!target) return;
-    if (dialog?.open) dialog.close();
-    window.setTimeout(() => target.scrollIntoView({behavior:"smooth",block:"start"}), 120);
-  }
-  $("accountPanelContent")?.addEventListener("click",event=>{
-    if (event.target.closest("#universePayPlay")) leaveUniversePayFor("games");
-    if (event.target.closest("#universePayWatch")) leaveUniversePayFor("starshipPlusPremieresTitle");
-  });
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
   const personalProfileSection = $("personalProfileSection");
