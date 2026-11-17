@@ -17,11 +17,15 @@
     tiles:game==="pixxy"?tiles.map(t=>({...t})):null,
     history:game==="pixxy"?history.map(h=>({tiles:h.tiles.map(t=>({...t})),score:h.score})):[],
     power:game==="pixxy"?JSON.parse(JSON.stringify(power)):null};
-   window.starshipSave.save(game==="chess"?"jaque-matte":"pixxy-up",state);
+   window.starshipSave.save(game==="chess"?"jaque-matte":"pinkie-star",state);
   }
   async function restoreGameState(){
    if(!window.starshipSave)return false;
-   const state=await window.starshipSave.load(game==="chess"?"jaque-matte":"pixxy-up");
+   let state=await window.starshipSave.load(game==="chess"?"jaque-matte":"pinkie-star");
+   if(!state&&game==="pixxy"){
+    state=await window.starshipSave.load("pixxy-up");
+    if(state)await window.starshipSave.save("pinkie-star",state);
+   }
    if(!state||state.game!==game)return false;
    mode=state.mode||"easy";$("miniGameMinutes").value=state.customMinutes||10;
    document.querySelectorAll("[data-mini-mode]").forEach(b=>b.classList.toggle("active",b.dataset.miniMode===mode));
