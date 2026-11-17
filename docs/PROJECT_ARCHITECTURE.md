@@ -71,9 +71,30 @@ Los recursos de mapas conservan sus formatos de origen en `assets/league-of-lega
 - Documentación: `assets/GellyShow/Docs/`.
 - Imágenes: `assets/GellyShow/Images/`.
 - La documentación indica que el modo Online requiere un servidor y aún no está disponible.
-- No se encontró conexión con el catálogo o lanzador durante esta revisión. Se conserva como experiencia independiente almacenada; no se afirma que esté publicada o conectada al portal.
+- El juego base está conectado al catálogo gratuito y al flujo de instalación/biblioteca; QA de navegador pendiente. El modo Online requiere servidor y aún no está disponible.
 
-Estos proyectos mantienen sus propios recursos y no se mezclan con The LyrieLife, CAL/CUL, League Of Legacy ni los minijuegos Pinkie Star y Jaque Matte.
+### Geffen: Monopoly
+
+- Juego: `assets/geffen-monopoly/geffen_monopoly_juego_de_mesa_interactivo.html`.
+- Especificación: `assets/geffen-monopoly/documentaci_n_del_sistema_geffen_monopoly.txt`.
+- El portal lo ofrece como Gratis · Demo, con instalación simulada y lanzamiento desde Juegos instalados.
+- El documento describe modos contra bots y Pass & Play local. No se afirma que tenga multijugador online.
+
+### Club de Cartas — Solitario y Versus
+
+- Juego: `assets/star-solitaire/club_de_cartas_solitario_y_versus.html`.
+- El portal lo ofrece como Gratis · Demo, con instalación simulada y lanzamiento desde Juegos instalados.
+- Incluye Solitario en Fila y Versus contra bot; no se ha verificado un servidor multijugador.
+
+### Starship Plus — plataforma audiovisual
+
+- Interfaz: `assets/starship-plus/starship-plus.html`.
+- Especificación: `assets/starship-plus/starship-plus-funcionalidades.txt`.
+- El acceso desde el portal está enlazado en el bloque de beneficios Starship Plus Pro para miembros.
+- La versión actual es una demostración: catálogo de muestra, reproductor simulado y datos guardados en localStorage. No reproduce vídeos reales ni autentica perfiles contra un backend.
+- La visibilidad del botón en el portal no protege el archivo estático frente a acceso directo. Cualquier estreno privado futuro requiere autorización real del servidor y medios privados.
+
+Estos proyectos mantienen sus propios recursos y no se mezclan con The LyrieLife, CAL/CUL, League Of Legacy, Geffenite, GellyShow, Pinkie Star ni Jaque Matte.
 
 ## Recursos compartidos
 
