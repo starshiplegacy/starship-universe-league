@@ -37,7 +37,7 @@ Kataleya y Kariskio comparten el mismo Git blob SHA y tamaño. Se conservan ambo
 
 ### Nuevas experiencias — revisión 17 de noviembre
 
-**Geffenite:** el juego y sus documentos están agrupados en `assets/Geffenite/`. El catálogo VIP y los permisos deben seguir exigiendo membresía activa Young-Moon o Exoplanet. El HTML del mapa es una referencia conceptual. Los dos DOCX se preservan, sin afirmar que su contenido interno haya sido auditado en esta pasada.
+**Geffenite:** el juego y sus documentos están agrupados en `assets/Geffenite/`. El catálogo VIP revela el enlace según la entitlement/plan que devuelve la función Edge `starship-entitlements`; la vigencia real de la membresía debe verificarse en esa función. El HTML del mapa es una referencia conceptual. Los dos DOCX se preservan, sin afirmar que su contenido interno haya sido auditado en esta pasada.
 
 **GellyShow:** el juego autónomo y sus documentos están agrupados en `assets/GellyShow/`. La información del proyecto indica que Online requiere servidor y está pendiente. No se encontró conexión al catálogo/lanzador; queda almacenado, no integrado.
 
