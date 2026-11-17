@@ -1,6 +1,6 @@
 # League Of Legacy — Logistics and Delivery Plan
 
-**Review date:** 16 November 2026  
+**Review date:** 17 November 2026  
 **Repository:** `starshiplegacy/starship-universe-league` · `main`  
 **Status:** Development planning only. No deployment authorized.
 
@@ -51,7 +51,7 @@ Do not invent final numbers or competitive rules in code. Product decisions must
 Tasks:
 - Preserve `main` and all original map/model files.
 - Keep the repository private while rights and backend decisions remain open.
-- Reconcile the map inventory: the current engineering audit reports 421 files while the asset manifest reports 411. Recount the tracked tree and update both documents from the same result.
+- Confirm the map inventory against the recursive Git tree. The 17 November recount verifies 421 tracked files (633.82 MiB) under `assets/league-of-legacy/Map/`; the previous 411 figure was stale.
 - Run `python scripts/repo_audit.py` and JavaScript syntax checks.
 - Record the commit SHA, audit output and any outstanding failures.
 
@@ -197,7 +197,7 @@ For each task, record: owner, priority, dependencies, status, evidence, acceptan
 ## 8. Immediate next actions
 
 1. Confirm whether the Versus 4 to 5 and Training GLB files are original creations or have documented usage permission.
-2. Reconcile the 421/411 map inventory discrepancy.
+2. Map inventory reconciled: 421 tracked files (633.82 MiB), verified against the recursive Git tree on 17 November 2026.
 3. Confirm the canonical Supabase project before any database work.
 4. Approve the Training mode's basic controls and practice-loop requirements.
 5. Start browser QA only with a rights-cleared test map.
