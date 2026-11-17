@@ -85,3 +85,13 @@ La auditoría remota de Supabase es opcional y requiere las variables/secrets de
 3. Antes de mover un recurso, actualizar todas sus referencias y el inventario.
 4. Ejecutar `python scripts/repo_audit.py` y revisar el workflow de GitHub Actions después de cada cambio estructural.
 5. Actualizar `assets/ASSET_MANIFEST.md` al añadir, retirar o sustituir assets.
+
+
+## Prototipos y referencias visuales — revisión 17 de noviembre de 2026
+
+- `assets/The-LyrieLife/CAL-CUL/Create-A-Lyrie-preview.html`: vista previa independiente de Create A Lyrie. El módulo activo sigue siendo `cal-cul.html`.
+- `assets/The-LyrieLife/UI/`: contiene la vista previa del HUD, sus notas y una referencia del menú principal. No se cargan automáticamente desde el lanzador.
+- `assets/league-of-legacy/references/`: conserva una referencia visual del cliente de League of Legends. No es una pantalla activa de League Of Legacy ni debe tratarse como recurso autorizado para reutilización.
+- Los recursos de Jaque Matte y Pinkie Star permanecen en sus carpetas separadas bajo `assets/`; su conexión con tarjetas, juegos y guardados se debe validar por separado.
+
+Los prototipos y referencias se mantienen separados del código de producción hasta que se revisen, adapten a la identidad de cada juego y se conecten explícitamente.
