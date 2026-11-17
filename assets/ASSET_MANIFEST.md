@@ -36,14 +36,14 @@ Los tres archivos existen en assets/videos/ y sus rutas coinciden con launch.htm
 
 ## 4. The LyrieLife — mundos fuente
 
-Los cuatro archivos existen en assets/The-LyrieLife/Worlds/.
+Los cuatro archivos fuente existen dentro de subcarpetas por mundo bajo `assets/The-LyrieLife/Worlds/`.
 
 | Archivo | GitHub blob SHA | Estado de integración |
 |---|---|---|
-| Kataleya.world | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
-| Kariskio.world | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
-| Solnang.world | f972b0bdf641d057f196449123351bdc0c0b081a | Almacenado; importador pendiente |
-| abandoned-island.world | c8e92d0f36960d4010715179c3db4397af33e35e | Almacenado; importador pendiente |
+| `kataleya/Kataleya.world` | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
+| `kariskio/Kariskio.world` | 9d2488566fc1fda96fbcb2f9d406af92b748007f | Almacenado; importador pendiente |
+| `solnang/Solnang.world` | f972b0bdf641d057f196449123351bdc0c0b081a | Almacenado; importador pendiente |
+| `abandoned-island/abandoned-island.world` | c8e92d0f36960d4010715179c3db4397af33e35e | Almacenado; importador pendiente |
 
 **Anomalía:** Kataleya.world y Kariskio.world tienen el mismo Git blob SHA. Se conservan intactos hasta comparar los originales; no asumir que son distintos ni sustituir uno por el otro.
 
@@ -146,12 +146,12 @@ El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni
 
 | Recurso | Ruta en Git | Estado |
 |---|---|---|
-| Jaque Matte — icono | `assets/Jaque-Matte/Images/Jaque Matte (ICON).jpg` | Almacenado; referencia visual disponible |
-| Jaque Matte — póster | `assets/Jaque-Matte/Images/Jaque Matte (Postel).jpg` | Almacenado; el nombre original contiene `Postel` y se conserva para no romper rutas |
-| Pinkie Star — icono | `assets/Pinkie-Star/Images/Pinkie Star (ICON).jpg` | Almacenado; integración pendiente de confirmar |
-| Pinkie Star — póster | `assets/Pinkie-Star/Images/Pinkie Star (Postel).jpg` | Almacenado; el nombre original contiene `Postel` y se conserva para no romper rutas |
+| Jaque Matte — icono | `assets/Jaque-Matte/Images/Jaque Matte (ICON).jpg` | Almacenado; conectado al catálogo |
+| Jaque Matte — póster | `assets/Jaque-Matte/Images/Jaque Matte (Postel).jpg` | Almacenado; el nombre original contiene `Postel`; aún no se muestra en la tarjeta |
+| Pinkie Star — icono | `assets/Pinkie-Star/Images/Pinkie Star (ICON).jpg` | Almacenado; conectado al catálogo gratuito |
+| Pinkie Star — póster | `assets/Pinkie-Star/Images/Pinkie Star (Postel).jpg` | Almacenado; el nombre original contiene `Postel`; aún no se muestra en la tarjeta |
 
-Los cuatro JPG se mantienen en sus carpetas originales. Los recursos de Pinkie Star corresponden al juego Mahjong Solitaire antes identificado provisionalmente como Pixxy Up. La tarjeta del portal usa el identificador `pinkie-star`; se conserva `pixxy-up` en la lista permitida del sistema de guardado para no invalidar datos anteriores. Los controles internos `pixxy-*` describen la mecánica y se mantienen para evitar cambios innecesarios en la interfaz.
+Los cuatro JPG se mantienen en sus carpetas originales. Pinkie Star es el juego Mahjong Solitaire antes identificado como Pixxy Up. El nombre visible es Pinkie Star; el token de lanzamiento heredado sigue siendo `pixxy`, las partidas nuevas usan la clave `pinkie-star` y `games.js` recupera partidas antiguas con la clave `pixxy-up` para migrarlas sin perder progreso. Los controles internos `pixxy-*` se conservan por compatibilidad.
 
 ### The LyrieLife — prototipos de interfaz
 
@@ -203,3 +203,13 @@ El conjunto ocupa 194,984,286 bytes (aprox. 186 MiB). Kataleya.world y Kariskio.
 5. Integrar el GLB exportado en el cargador web y probarlo en escritorio y móvil.
 
 **Conclusión:** todavía no pueden leerse como mundos jugables dentro de The LyrieLife. Hace falta una vía de importación o conversión desde el formato de origen. No se debe prometer una conversión directa a GLB hasta identificar el formato real.
+
+
+## 16. Revisión cruzada de rutas e integración — 17 de noviembre de 2026
+
+- Se confirmó en el árbol recursivo de GitHub que `assets/league-of-legacy/Map/` contiene 421 archivos (633.82 MiB); el valor 411 de un borrador anterior era obsoleto.
+- Los cuatro archivos `.world` están en subcarpetas: `Worlds/kataleya/`, `Worlds/kariskio/`, `Worlds/solnang/` y `Worlds/abandoned-island/`. No se mueven ni se convierten.
+- El selector de League Of Legacy incluye los ocho modelos GLB publicados.
+- Pinkie Star está conectado al catálogo gratuito. Se actualizó la persistencia para usar `pinkie-star` y migrar lecturas de `pixxy-up`.
+- CAL/CUL usa la ruta canónica `assets/The-LyrieLife/CAL-CUL/models/`; sus modelos GLB masculino y femenino siguen pendientes de recibir y validar sus fuentes.
+- Los tres vídeos MP4 están publicados en `assets/videos/` y `launch.html` usa los nombres exactos actuales.
