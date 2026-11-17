@@ -213,3 +213,40 @@ El conjunto ocupa 194,984,286 bytes (aprox. 186 MiB). Kataleya.world y Kariskio.
 - Pinkie Star está conectado al catálogo gratuito. Se actualizó la persistencia para usar `pinkie-star` y migrar lecturas de `pixxy-up`.
 - CAL/CUL usa la ruta canónica `assets/The-LyrieLife/CAL-CUL/models/`; sus modelos GLB masculino y femenino siguen pendientes de recibir y validar sus fuentes.
 - Los tres vídeos MP4 están publicados en `assets/videos/` y `launch.html` usa los nombres exactos actuales.
+
+
+## 17. Nuevos proyectos incorporados — revisión 17 de noviembre de 2026
+
+### Geffenite — Batalla Estelar
+
+La estructura está separada por función y se conserva en su carpeta propia:
+
+| Archivo | Ruta | Tamaño | Git blob SHA | Clasificación |
+|---|---|---:|---|---|
+| Gameplay | `assets/Geffenite/gameplay/Geffenite_ Batalla Estelar.html` | 31,225 bytes | `751ef5e5ed6c11a50044dee74f0111c78b6c372c` | Prototipo de juego; acceso beta protegido |
+| Mapa Eco Sónico Cósmico | `assets/Geffenite/docs/Geffenite_ mapa de Eco Sónico Cósmico.html` | 7,565 bytes | `a20287a5454dd30e221d996fb988b4f57c0427a2` | Documento/prototipo interactivo del mapa |
+| Dossier de Juego y Empresa | `assets/Geffenite/docs/Geffenite - Dossier de Juego y Empresa.docx` | 19,954 bytes | `a3bfc861b7e815a77af30dd981cf2cbfe81d33a6` | Documento fuente DOCX |
+| Acceso VIP y Requisitos | `assets/Geffenite/docs/Geffenite - Acceso VIP y Requisitos.docx` | 14,829 bytes | `34232e3e0c92f5418c2cf9c0aa9f4c33ac5026da` | Documento fuente DOCX |
+| Icono | `assets/Geffenite/images/Geffenite (ICON).jpg` | 348,235 bytes | `11d864dbd306e9defea89e5723c7ffed2cb0ac8f` | Identidad visual |
+| Póster | `assets/Geffenite/images/Geffenite (Postel).jpg` | 87,644 bytes | `f50ffb6f8bddc5660770644f5131644cf49caeb4` | Identidad visual; nombre original conservado |
+
+La beta se presenta en el catálogo VIP y la lógica de permisos limita el acceso a membresías activas Young-Moon o Exoplanet, mensual o anual. Mantener la comprobación de entitlement; no publicar el HTML como acceso abierto ni eliminar la barrera VIP. El archivo del mapa queda clasificado como documentación/prototipo, no como motor de mapa independiente.
+
+### GellyShow
+
+| Archivo | Ruta | Tamaño | Git blob SHA | Clasificación |
+|---|---|---:|---|---|
+| Juego | `assets/GellyShow/Gameplay/GellyShow.html` | 1,289,915 bytes | `3c50d82d6c6a83ea677cc6bccb1ba8a054956b3f` | Juego 2D autónomo para navegador |
+| Información | `assets/GellyShow/Docs/GellyShow_Informacion.md` | 1,229 bytes | `e5998e9343a364e2a4c00561098fcabac6e02869` | Descripción y alcance |
+| Reglas | `assets/GellyShow/Docs/GellyShow_Reglas.md` | 1,352 bytes | `801712e8cc24d1ea734b40b77ebb93c084255ec9` | Reglas y puntuación |
+| Icono | `assets/GellyShow/Images/GellyShow (ICON).jpg` | 293,558 bytes | `30f2828230c76c72e01e2fb81e53f4e355011bc0` | Identidad visual |
+| Póster | `assets/GellyShow/Images/GellyShow (Postel).jpg` | 54,635 bytes | `c70513a68ef5c5808af778c1281a0af8bbf67b94` | Identidad visual; nombre original conservado |
+
+La documentación describe una experiencia 2D autónoma con contenido visual incrustado en el HTML. El modo Online sigue pendiente de servidor. No se encontró una referencia de lanzamiento/catalogación en el portal durante esta revisión: permanece almacenado y documentado, sin declararlo conectado al catálogo ni publicado como juego accesible desde el portal.
+
+### Reglas de conservación
+
+- Se mantienen los directorios existentes `Docs/Gameplay/Images` de GellyShow y `docs/gameplay/images` de Geffenite; no se cambian mayúsculas de carpetas ni nombres.
+- Los dos archivos `(Postel).jpg` conservan su ortografía original para evitar romper rutas.
+- Los DOCX de Geffenite se registran por nombre, tamaño y Git blob SHA. La lectura binaria de esos documentos no estuvo disponible mediante la vista de texto; no se certifica aquí su contenido interno.
+- No se mezclan estos proyectos con The LyrieLife, CAL/CUL, League Of Legacy, Pinkie Star ni Jaque Matte.
