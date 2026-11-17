@@ -42,7 +42,8 @@ button.on{background:var(--st);color:#fff}.big{width:100%;margin-top:14px;paddin
 <p class="sub">Los Sintetizadores quieren silenciar la música del universo. Sé el último en pie en la isla y consigue la Victory Royale.</p>
 <h3>Elige tu personaje</h3><div id="chs"></div><p id="cd" class="sub"></p>
 <h3>Modo</h3><div class="row"><button id="m1" class="on">Battle Royale</button><button id="m2">Cero Construcción (+50 sobreescudo)</button></div>
-<button id="go" class="big">SALTAR DEL AUTOBÚS ▶</button>
+<button id="go" class="big" disabled>SALTAR DEL AUTOBÚS ▶</button>
+<p id="vipAccessStatus" class="help" role="status" aria-live="polite">Comprobando tu membresía Universe Pay…</p>
 <p class="help">WASD mover · Shift esprintar · Ctrl agacharse · Espacio saltar / planeador · Clic disparar · Clic derecho apuntar · R recargar · E abrir cofre · 1-5 armas · 6-0 curación · Q pared · F suelo · C rampa · V techo (mantén pulsado: Turbo-Build) · T material · X habilidad · N música · T en el autobús: agradecer al piloto. Partida reducida a 30 jugadores para el navegador. Solo teclado y ratón.</p>
 </div></div>
 <div id="hud">
@@ -217,4 +218,48 @@ function hudUpd(ph){$('alive').textContent="Quedan "+aliveN();$('kills').textCon
  // radar de sonido
  rd.clearRect(0,0,150,150);rd.strokeStyle='#fff8';rd.beginPath();rd.arc(75,75,60,0,6.3);rd.stroke();snds=snds.filter(s=>t-s.t<1.2);snds.forEach(s=>{const ex=s.x-P.x,ez=s.z-P.z,dd=Math.hypot(ex,ez);if(dd<1||dd>110)return;const f=ex*-Math.sin(yaw)+ez*-Math.cos(yaw),rr=ex*Math.cos(yaw)+ez*-Math.sin(yaw),q=Math.hypot(f,rr)||1;rd.fillStyle='rgba(255,200,60,'+(1-(t-s.t)/1.2)+')';rd.beginPath();rd.arc(75+rr/q*52,75-f/q*52,8,0,6.3);rd.fill()})}
 function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05);t+=dt;update(dt);ren.render(sc,cam)}
+</script>
+<script src="../../supabase-config.js"></script>
+<script type="module">
+(async()=>{
+  const button=document.getElementById("go");
+  const status=document.getElementById("vipAccessStatus");
+  const show=(message,withBack=false)=>{
+    status.textContent=message;
+    if(withBack){
+      const link=document.createElement("a");
+      link.href="../../index.html";
+      link.textContent=" Volver a Universe League e iniciar sesión";
+      link.style.cssText="display:inline-block;margin-top:8px;color:#b99aff;font-weight:800";
+      status.appendChild(document.createElement("br"));
+      status.appendChild(link);
+    }
+  };
+  button.disabled=true;
+  try{
+    const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
+    const client=createClient(window.UNIVERSE_SUPABASE_URL,window.UNIVERSE_SUPABASE_KEY);
+    const {data:sessionData,error:sessionError}=await client.auth.getSession();
+    if(sessionError) throw sessionError;
+    if(!sessionData?.session?.user){
+      show("Esta beta está reservada para miembros activos Young-Moon y Exoplanet.",true);
+      return;
+    }
+    const {data,error}=await client.functions.invoke("starship-entitlements",{body:{}});
+    if(error) throw error;
+    const entitlements=Array.isArray(data?.entitlements)?data.entitlements:[];
+    const plan=String(data?.plan||"").toLowerCase().replace(/-/g,"_");
+    const allowed=entitlements.includes("young_moon")||entitlements.includes("young-moon")||
+      entitlements.includes("exoplanet")||["young_moon","moon","planet","exoplanet"].includes(plan);
+    if(!allowed){
+      show("Tu cuenta no tiene una membresía Young-Moon o Exoplanet activa. La beta no genera un cobro adicional.",true);
+      return;
+    }
+    show("Acceso confirmado · Universe Pay activo. ¡Disfruta la beta!");
+    button.disabled=false;
+  }catch(error){
+    console.error("Geffenite VIP access check:",error);
+    show("No pudimos verificar tu membresía. Por seguridad, el acceso beta permanece bloqueado. Vuelve a intentarlo desde Universe League.");
+  }
+})();
 </script></body></html>
