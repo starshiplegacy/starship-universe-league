@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starship Memberships</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(125deg, #dbeafe 0%, #e0f2fe 24%, #f3e8ff 50%, #fce7f3 74%, #fef3c7 90%, #ffedd5 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            background-size: 160% 160%;
+            animation: dreamySky 18s ease infinite;
+            min-height: 100vh;
+            margin: 0;
+            color: #334155;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .font-starship {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        @keyframes dreamySky {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ==================== TARJETAS Y CONTENEDORES ==================== */
+        .membership-card {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 34px;
+            box-shadow: 0 22px 50px -12px rgba(148, 163, 184, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.9);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .membership-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-baby:hover {
+            box-shadow: 0 28px 60px -10px rgba(96, 165, 250, 0.42), 0 0 0 2px rgba(147, 197, 253, 0.85);
+        }
+
+        .card-moon:hover {
+            box-shadow: 0 28px 60px -10px rgba(244, 114, 182, 0.42), 0 0 0 2px rgba(249, 168, 212, 0.85);
+        }
+
+        .card-exo:hover {
+            box-shadow: 0 28px 60px -10px rgba(245, 158, 11, 0.42), 0 0 0 2px rgba(253, 224, 71, 0.85);
+        }
+
+        /* Cabeceras ilustradas de cada tarjeta */
+        .header-baby {
+            background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 55%, #93c5fd 100%);
+        }
+
+        .header-moon {
+            background: linear-gradient(180deg, #f472b6 0%, #f9a8d4 58%, #fbcfe8 100%);
+        }
+
+        .header-exo {
+            background: linear-gradient(180deg, #f59e0b 0%, #fbbf24 55%, #fde68a 100%);
+        }
+
+        /* ==================== EFECTO BRILLO EN ETIQUETAS (HOVER GLOW + SHIMMER) ==================== */
+        .glow-tag {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: default;
+        }
+
+        .glow-tag::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -75%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.75) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(25deg);
+            transition: left 0.55s ease;
+            pointer-events: none;
+        }
+
+        .glow-tag:hover::after {
+            left: 135%;
+        }
+
+        .glow-tag-blue:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(59, 130, 246, 0.55), 0 0 6px rgba(147, 197, 253, 0.8);
+        }
+
+        .glow-tag-pink:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(236, 72, 153, 0.55), 0 0 6px rgba(249, 168, 212, 0.8);
+        }
+
+        .glow-tag-gold:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(245, 158, 11, 0.6), 0 0 6px rgba(253, 224, 71, 0.9);
+        }
+
+        /* ==================== BOTONES PILL CON BRILLO ==================== */
+        .btn-pill {
+            position: relative;
+            overflow: hidden;
+            border-radius: 9999px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .btn-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease;
+        }
+
+        .btn-pill:hover::before {
+            left: 150%;
+        }
+
+        .btn-pill:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-pill:active {
+            transform: scale(0.97);
+        }
+
+        .btn-baby {
+            background: linear-gradient(90deg, #ff7eb3 0%, #ff4d8d 100%);
+            box-shadow: 0 10px 22px -5px rgba(255, 77, 141, 0.5);
+        }
+        .btn-baby:hover {
+            box-shadow: 0 14px 28px -4px rgba(255, 77, 141, 0.7);
+        }
+
+        .btn-moon {
+            background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+            box-shadow: 0 10px 22px -5px rgba(37, 99, 235, 0.5);
+        }
+        .btn-moon:hover {
+            box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.7);
+        }
+
+        .btn-exo {
+            background: linear-gradient(90deg, #fde047 0%, #f59e0b 100%);
+            box-shadow: 0 10px 22px -5px rgba(245, 158, 11, 0.48);
+        }
+        .btn-exo:hover {
+            box-shadow: 0 14px 28px -4px rgba(245, 158, 11, 0.7);
+        }
+
+        /* ==================== ANIMACIONES DE PERSONAJES Y ASTROS ==================== */
+        @keyframes floatStar {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.03); }
+        }
+
+        @keyframes moonGlowPulse {
+            0%, 100% { filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.75)); }
+            50% { filter: drop-shadow(0 0 26px rgba(255, 255, 255, 1)); }
+        }
+
+        @keyframes floatPlanet {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-9px) rotate(2deg); }
+        }
+
+        @keyframes orbitMini {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(5px, -6px) scale(1.06); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.45; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.18) rotate(12deg); }
+        }
+
+        .anim-star {
+            animation: floatStar 3.8s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .anim-moon {
+            animation: floatMoon 4.5s ease-in-out infinite, moonGlowPulse 3.5s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .anim-planet {
+            animation: floatPlanet 4.2s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .anim-orbit {
+            animation: orbitMini 3.4s ease-in-out infinite;
+        }
+
+        .sparkle-twinkle {
+            animation: twinkle var(--dur, 3s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+        }
+
+        /* Rastro mágico del cursor */
+        .cursor-sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 60;
+            animation: cursorFade 0.85s ease-out forwards;
+        }
+
+        @keyframes cursorFade {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+            }
+            60% {
+                opacity: 0.9;
+                transform: translate(-50%, -90%) scale(1.1) rotate(45deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -140%) scale(0.3) rotate(90deg);
+            }
+        }
+
+        /* Transición suave de vistas */
+        .view-transition {
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .view-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CAPA DE BRILLITOS DECORATIVOS DEL FONDO ==================== -->
+    <div id="decorative-sparkles-layer" class="fixed inset-0 pointer-events-none overflow-hidden z-0 transition-opacity duration-500">
+        <!-- Estrella rosa superior izquierda -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute top-[6%] left-[32%] w-8 h-8 text-pink-400" data-speed="25" style="--dur: 3.2s; --delay: 0.2s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+        </svg>
+
+        <!-- Estrella contorno azul superior derecha -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute top-[7%] right-[31%] w-7 h-7 text-blue-500" data-speed="-20" style="--dur: 3.8s; --delay: 0.7s;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+        </svg>
+
+        <!-- Estrella rosa pastel esquina inferior izquierda -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute bottom-[6%] left-[4%] w-7 h-7 text-pink-300" data-speed="30" style="--dur: 4s; --delay: 0.4s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+        </svg>
+
+        <!-- Destello blanco inferior centro-derecha -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute bottom-[8%] right-[33%] w-6 h-6 text-white" data-speed="-18" style="--dur: 2.9s; --delay: 1s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.5 9.5L23 12L14.5 14.5L12 23L9.5 14.5L1 12L9.5 9.5L12 1Z"/>
+        </svg>
+
+        <!-- Estrella azul brillante inferior derecha -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute bottom-[5%] right-[29%] w-7 h-7 text-blue-500" data-speed="22" style="--dur: 3.5s; --delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+        </svg>
+
+        <!-- Destellos dorados suaves derecha -->
+        <svg class="parallax-sparkle sparkle-twinkle absolute top-[22%] right-[5%] w-5 h-5 text-amber-300" data-speed="-28" style="--dur: 3.1s; --delay: 0.9s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+        </svg>
+
+        <svg class="parallax-sparkle sparkle-twinkle absolute top-[55%] left-[4%] w-5 h-5 text-sky-300" data-speed="16" style="--dur: 3.7s; --delay: 1.3s;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+        </svg>
+
+        <!-- Puntitos luminosos flotantes -->
+        <span class="parallax-sparkle sparkle-twinkle absolute top-[18%] left-[12%] w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#fff]" data-speed="12" style="--dur: 2.5s;"></span>
+        <span class="parallax-sparkle sparkle-twinkle absolute top-[72%] left-[35%] w-2 h-2 rounded-full bg-pink-200 shadow-[0_0_8px_#fbcfe8]" data-speed="-15" style="--dur: 3.3s;"></span>
+        <span class="parallax-sparkle sparkle-twinkle absolute top-[35%] right-[33%] w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#fff]" data-speed="20" style="--dur: 2.8s;"></span>
+        <span class="parallax-sparkle sparkle-twinkle absolute bottom-[14%] right-[12%] w-2.5 h-2.5 rounded-full bg-amber-200 shadow-[0_0_8px_#fde68a]" data-speed="-14" style="--dur: 3.6s;"></span>
+    </div>
+
+    <!-- ==================== VISTA 1: SECCIÓN PRINCIPAL DE PLANES ==================== -->
+    <div id="plans-view" class="view-transition relative z-10 min-h-screen flex flex-col justify-between px-4 sm:px-8 lg:px-14 py-6 max-w-[1360px] mx-auto">
+        
+        <!-- Barra Superior Minimalista -->
+        <header class="w-full flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2 text-white/95 font-starship font-bold text-base sm:text-lg drop-shadow-sm select-none">
+                <span class="text-lg">‹</span>
+                <span>Memberships</span>
+            </div>
+
+            <!-- Selector Pill Mensual / Anual -->
+            <div class="relative">
+                <button id="billing-toggle" onclick="toggleBillingCycle()" class="glow-tag glow-tag-blue flex items-center gap-3 bg-white/95 hover:bg-white text-slate-600 font-starship font-bold text-xs sm:text-sm px-4 py-2 rounded-full shadow-md border border-white">
+                    <span id="billing-label">Mensual</span>
+                    <span class="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 text-xs">⌄</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Grid de 3 Tarjetas -->
+        <main class="my-auto py-2">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-7 xl:gap-9 items-stretch">
+
+                <!-- ==================== TARJETA 1: BABY-STAR ==================== -->
+                <article class="membership-card card-baby">
+                    <!-- Cabecera Ilustrada Azul -->
+                    <div class="header-baby relative h-56 sm:h-60 w-full flex items-center justify-center overflow-hidden">
+                        <!-- Destellos internos -->
+                        <svg class="sparkle-twinkle absolute top-7 left-10 w-5 h-5 text-amber-300" style="--dur: 2.6s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-16 left-7 w-4 h-4 text-white" style="--dur: 3.1s; --delay: 0.4s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-24 left-12 w-3.5 h-3.5 text-amber-300" style="--dur: 2.9s; --delay: 0.8s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-20 right-11 w-4 h-4 text-amber-300" style="--dur: 3.4s; --delay: 0.2s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-32 right-9 w-3.5 h-3.5 text-white" style="--dur: 2.7s; --delay: 0.6s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+
+                        <!-- Mini planeta azul orbitando -->
+                        <svg class="anim-orbit absolute top-7 right-9 w-12 h-12 drop-shadow" viewBox="0 0 64 64">
+                            <defs>
+                                <radialGradient id="miniBluePlanet" cx="35%" cy="30%" r="65%">
+                                    <stop offset="0%" stop-color="#bae6fd"/>
+                                    <stop offset="60%" stop-color="#38bdf8"/>
+                                    <stop offset="100%" stop-color="#0284c7"/>
+                                </radialGradient>
+                            </defs>
+                            <ellipse cx="32" cy="34" rx="26" ry="7" transform="rotate(-22 32 34)" fill="none" stroke="#e0f2fe" stroke-width="2.5" opacity="0.85"/>
+                            <circle cx="32" cy="32" r="13" fill="url(#miniBluePlanet)"/>
+                            <path d="M 10 42 A 26 7 -22 0 0 54 26" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+
+                        <!-- Ilustración Kawaii 3D Estrellita -->
+                        <svg class="anim-star w-36 h-36 z-10 -mt-3 drop-shadow-[0_12px_16px_rgba(30,58,138,0.28)]" viewBox="0 0 200 200">
+                            <defs>
+                                <radialGradient id="starBodyGrad" cx="42%" cy="32%" r="65%">
+                                    <stop offset="0%" stop-color="#fffbeb"/>
+                                    <stop offset="55%" stop-color="#fde68a"/>
+                                    <stop offset="100%" stop-color="#fdba74"/>
+                                </radialGradient>
+                                <radialGradient id="cheekGrad" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fb7185" stop-opacity="0.75"/>
+                                    <stop offset="100%" stop-color="#fb7185" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <!-- Estrella redondeada suave -->
+                            <path d="M100 22 C110 22, 119 56, 127 62 C135 68, 171 67, 175 77 C179 87, 150 109, 147 119 C144 129, 157 163, 148 170 C139 177, 111 156, 100 156 C89 156, 61 177, 52 170 C43 163, 56 129, 53 119 C50 109, 21 87, 25 77 C29 67, 65 68, 73 62 C81 56, 90 22, 100 22 Z" fill="url(#starBodyGrad)" stroke="#fef3c7" stroke-width="2"/>
+                            <!-- Brillo superior -->
+                            <ellipse cx="88" cy="54" rx="12" ry="5" transform="rotate(-25 88 54)" fill="#ffffff" opacity="0.65"/>
+                            <!-- Mejillas rosadas -->
+                            <ellipse cx="75" cy="112" rx="11" ry="7" fill="url(#cheekGrad)"/>
+                            <ellipse cx="125" cy="112" rx="11" ry="7" fill="url(#cheekGrad)"/>
+                            <!-- Ojitos brillantes -->
+                            <circle cx="83" cy="101" r="6.5" fill="#1e293b"/>
+                            <circle cx="81" cy="99" r="2.2" fill="#ffffff"/>
+                            <circle cx="117" cy="101" r="6.5" fill="#1e293b"/>
+                            <circle cx="115" cy="99" r="2.2" fill="#ffffff"/>
+                            <!-- Boquita kawaii -->
+                            <path d="M94 108 Q100 115 106 108" fill="none" stroke="#1e293b" stroke-width="3.2" stroke-linecap="round"/>
+                        </svg>
+
+                        <!-- Curva blanca inferior -->
+                        <svg class="absolute bottom-0 left-0 w-full h-12 text-white" viewBox="0 0 400 60" preserveAspectRatio="none">
+                            <path d="M0,55 Q200,-15 400,55 L400,60 L0,60 Z" fill="#ffffff"/>
+                        </svg>
+                    </div>
+
+                    <!-- Cuerpo de Contenido -->
+                    <div class="px-6 sm:px-7 pb-7 pt-1 flex-grow flex flex-col justify-between">
+                        <div>
+                            <!-- Etiqueta superior brillante -->
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <span class="glow-tag glow-tag-blue inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-bold">
+                                    <span>🌸</span>
+                                    <span>Plan Básico</span>
+                                </span>
+                            </div>
+
+                            <h2 class="font-starship text-2xl sm:text-[26px] font-bold text-slate-800 text-center">
+                                Baby-Star
+                            </h2>
+
+                            <!-- Precio Dinámico -->
+                            <div class="text-center mt-2 mb-4">
+                                <div class="glow-tag glow-tag-blue inline-block px-3.5 py-1 rounded-2xl bg-slate-50 border border-slate-100">
+                                    <span class="price-main font-starship text-2xl font-extrabold text-sky-600" data-monthly="US$3/mes" data-yearly="US$36/año">US$3/mes</span>
+                                </div>
+                                <p class="price-sub text-xs text-slate-400 font-medium mt-1" data-monthly="o US$36 al año" data-yearly="Equivale a US$3/mes">o US$36 al año</p>
+                            </div>
+
+                            <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed mb-3 font-medium">
+                                Es el plan de entrada para formar parte de la comunidad Starship. Incluye:
+                            </p>
+
+                            <!-- Lista de Beneficios -->
+                            <ul class="space-y-2 text-xs sm:text-[13px] text-slate-600 mb-6">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-pink-400 mt-1.5 shrink-0"></span>
+                                    <span>Insignia exclusiva en tu perfil.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
+                                    <span>Personalización del perfil.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></span>
+                                    <span>Emojis y decoraciones especiales.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-pink-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso a eventos y noticias.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso anticipado a determinados lanzamientos de Starship Plus.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></span>
+                                    <span>Starship Plus Pro incluido.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-pink-400 mt-1.5 shrink-0"></span>
+                                    <span>Descuentos en productos digitales seleccionados, cuando sean elegibles.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectMembership('Baby-Star')" class="btn-pill btn-baby w-full py-3.5 px-6 text-white font-starship font-bold text-sm sm:text-[15px] tracking-wide cursor-pointer">
+                            Elegir ser Baby-Star
+                        </button>
+                    </div>
+                </article>
+
+                <!-- ==================== TARJETA 2: YOUNG-MOON ==================== -->
+                <article class="membership-card card-moon">
+                    <!-- Cabecera Ilustrada Rosa -->
+                    <div class="header-moon relative h-56 sm:h-60 w-full flex items-center justify-center overflow-hidden">
+                        
+                        <!-- Badge Flotante "Popular" -->
+                        <span class="glow-tag glow-tag-blue absolute top-4 right-4 z-20 px-3.5 py-1 rounded-full bg-gradient-to-r from-blue-500 to-sky-500 text-white font-starship font-bold text-xs shadow-md">
+                            Popular
+                        </span>
+
+                        <!-- 4 Destellos blancos alrededor de la luna -->
+                        <svg class="sparkle-twinkle absolute top-11 left-11 w-6 h-6 text-white" style="--dur: 2.5s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-28 left-12 w-5 h-5 text-white" style="--dur: 3.1s; --delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-12 right-12 w-6 h-6 text-white" style="--dur: 2.8s; --delay: 0.3s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute top-28 right-10 w-5 h-5 text-white" style="--dur: 3.4s; --delay: 0.7s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+
+                        <!-- Ilustración Detallada Luna Llena -->
+                        <svg class="anim-moon w-36 h-36 z-10 -mt-3" viewBox="0 0 200 200">
+                            <defs>
+                                <radialGradient id="moonSphere" cx="38%" cy="32%" r="65%">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="55%" stop-color="#e2e8f0"/>
+                                    <stop offset="88%" stop-color="#cbd5e1"/>
+                                    <stop offset="100%" stop-color="#94a3b8"/>
+                                </radialGradient>
+                            </defs>
+                            <!-- Disco lunar -->
+                            <circle cx="100" cy="100" r="64" fill="url(#moonSphere)"/>
+                            <!-- Mares y cráteres lunares suaves -->
+                            <circle cx="76" cy="76" r="14" fill="#cbd5e1" opacity="0.65"/>
+                            <circle cx="88" cy="64" r="8" fill="#94a3b8" opacity="0.45"/>
+                            <circle cx="122" cy="84" r="16" fill="#cbd5e1" opacity="0.6"/>
+                            <circle cx="132" cy="96" r="9" fill="#94a3b8" opacity="0.4"/>
+                            <circle cx="70" cy="112" r="11" fill="#94a3b8" opacity="0.42"/>
+                            <circle cx="104" cy="126" r="15" fill="#cbd5e1" opacity="0.55"/>
+                            <circle cx="116" cy="134" r="6" fill="#94a3b8" opacity="0.5"/>
+                            <circle cx="96" cy="98" r="5" fill="#94a3b8" opacity="0.35"/>
+                            <!-- Brillo borde izquierdo -->
+                            <path d="M55 62 A60 60 0 0 0 55 138" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                        </svg>
+
+                        <!-- Curva blanca inferior -->
+                        <svg class="absolute bottom-0 left-0 w-full h-12 text-white" viewBox="0 0 400 60" preserveAspectRatio="none">
+                            <path d="M0,55 Q200,-15 400,55 L400,60 L0,60 Z" fill="#ffffff"/>
+                        </svg>
+                    </div>
+
+                    <!-- Cuerpo de Contenido -->
+                    <div class="px-6 sm:px-7 pb-7 pt-1 flex-grow flex flex-col justify-between">
+                        <div>
+                            <!-- Etiqueta superior brillante -->
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <span class="glow-tag glow-tag-pink inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 text-xs font-bold">
+                                    <span>🌙</span>
+                                    <span>Plan Pro</span>
+                                </span>
+                            </div>
+
+                            <h2 class="font-starship text-2xl sm:text-[26px] font-bold text-slate-800 text-center">
+                                Young-Moon
+                            </h2>
+
+                            <!-- Precio Dinámico -->
+                            <div class="text-center mt-2 mb-4">
+                                <div class="glow-tag glow-tag-pink inline-block px-3.5 py-1 rounded-2xl bg-slate-50 border border-slate-100">
+                                    <span class="price-main font-starship text-2xl font-extrabold text-pink-600" data-monthly="US$6/mes" data-yearly="US$72/año">US$6/mes</span>
+                                </div>
+                                <p class="price-sub text-xs text-slate-400 font-medium mt-1" data-monthly="o US$72 al año" data-yearly="Equivale a US$6/mes">o US$72 al año</p>
+                            </div>
+
+                            <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed mb-3 font-medium">
+                                Un nivel superior con más ventajas, acceso anticipado y experiencias especiales. Incluye todo lo de Baby-Star, además de:
+                            </p>
+
+                            <!-- Lista de Beneficios -->
+                            <ul class="space-y-2 text-xs sm:text-[13px] text-slate-600 mb-6">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-pink-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso VIP a juegos y versiones beta.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
+                                    <span>50% de descuento en productos digitales elegibles.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-pink-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso anticipado a Starship Plus.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
+                                    <span>Starship Plus Pro incluido.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-purple-400 mt-1.5 shrink-0"></span>
+                                    <span>Temas especiales Stars & Moons.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
+                                    <span>Recursos PRO exclusivos.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectMembership('Young-Moon')" class="btn-pill btn-moon w-full py-3.5 px-6 text-white font-starship font-bold text-sm sm:text-[15px] tracking-wide cursor-pointer">
+                            Elegir Ser Young-Moon
+                        </button>
+                    </div>
+                </article>
+
+                <!-- ==================== TARJETA 3: EXOPLANET ==================== -->
+                <article class="membership-card card-exo">
+                    <!-- Cabecera Ilustrada Dorada/Ámbar -->
+                    <div class="header-exo relative h-56 sm:h-60 w-full flex items-center justify-center overflow-hidden">
+                        
+                        <!-- Destellos dorados internos -->
+                        <svg class="sparkle-twinkle absolute top-10 left-10 w-5 h-5 text-amber-700/60" style="--dur: 2.9s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute bottom-14 right-10 w-6 h-6 text-amber-800/65" style="--dur: 3.3s; --delay: 0.4s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+                        <svg class="sparkle-twinkle absolute bottom-20 left-12 w-3.5 h-3.5 text-white" style="--dur: 2.5s; --delay: 0.8s;" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                        </svg>
+
+                        <!-- Luna satélite dorada orbitando -->
+                        <svg class="anim-orbit absolute top-6 right-9 w-12 h-12 drop-shadow" viewBox="0 0 64 64">
+                            <defs>
+                                <radialGradient id="miniGoldMoon" cx="35%" cy="30%" r="65%">
+                                    <stop offset="0%" stop-color="#fef08a"/>
+                                    <stop offset="60%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#92400e"/>
+                                </radialGradient>
+                            </defs>
+                            <ellipse cx="32" cy="33" rx="24" ry="6" transform="rotate(-18 32 33)" fill="none" stroke="#fef3c7" stroke-width="2" opacity="0.8"/>
+                            <circle cx="32" cy="32" r="12" fill="url(#miniGoldMoon)"/>
+                        </svg>
+
+                        <!-- Ilustración Exoplaneta Pastel con Anillos 3D -->
+                        <svg class="anim-planet w-44 h-44 z-10 -mt-3 drop-shadow-[0_14px_18px_rgba(146,64,14,0.28)]" viewBox="0 0 220 200">
+                            <defs>
+                                <linearGradient id="exoSurface" x1="15%" y1="10%" x2="85%" y2="90%">
+                                    <stop offset="0%" stop-color="#fbcfe8"/>
+                                    <stop offset="38%" stop-color="#e9d5ff"/>
+                                    <stop offset="70%" stop-color="#93c5fd"/>
+                                    <stop offset="100%" stop-color="#818cf8"/>
+                                </linearGradient>
+                                <linearGradient id="ringGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#fef08a"/>
+                                    <stop offset="50%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#fde047"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Mitad trasera del anillo -->
+                            <ellipse cx="110" cy="102" rx="88" ry="22" transform="rotate(-14 110 102)" fill="none" stroke="url(#ringGold)" stroke-width="9" opacity="0.85"/>
+                            <ellipse cx="110" cy="102" rx="79" ry="18" transform="rotate(-14 110 102)" fill="none" stroke="#fffbeb" stroke-width="2" opacity="0.7"/>
+
+                            <!-- Esfera del Exoplaneta -->
+                            <circle cx="110" cy="100" r="52" fill="url(#exoSurface)"/>
+
+                            <!-- Cráteres coloridos estilo 3D suave -->
+                            <circle cx="88" cy="78" r="8" fill="#fb923c" stroke="#fed7aa" stroke-width="2"/>
+                            <circle cx="136" cy="84" r="6.5" fill="#3b82f6" stroke="#bfdbfe" stroke-width="2"/>
+                            <circle cx="112" cy="116" r="9.5" fill="#f59e0b" stroke="#fef08a" stroke-width="2"/>
+                            <circle cx="84" cy="118" r="5" fill="#c084fc" opacity="0.7"/>
+
+                            <!-- Mitad delantera del anillo (pasa por delante del planeta) -->
+                            <path d="M 24 123 A 88 22 -14 0 0 196 81" fill="none" stroke="url(#ringGold)" stroke-width="9.5" stroke-linecap="round"/>
+                            <path d="M 33 120 A 79 18 -14 0 0 187 84" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                        </svg>
+
+                        <!-- Curva blanca inferior -->
+                        <svg class="absolute bottom-0 left-0 w-full h-12 text-white" viewBox="0 0 400 60" preserveAspectRatio="none">
+                            <path d="M0,55 Q200,-15 400,55 L400,60 L0,60 Z" fill="#ffffff"/>
+                        </svg>
+                    </div>
+
+                    <!-- Cuerpo de Contenido -->
+                    <div class="px-6 sm:px-7 pb-7 pt-1 flex-grow flex flex-col justify-between">
+                        <div>
+                            <!-- Etiqueta superior brillante -->
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <span class="glow-tag glow-tag-gold inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+                                    <span>🪐</span>
+                                    <span>Plan Elite · VIP</span>
+                                </span>
+                            </div>
+
+                            <h2 class="font-starship text-2xl sm:text-[26px] font-bold text-slate-800 text-center">
+                                Exoplanet
+                            </h2>
+
+                            <!-- Precio Dinámico -->
+                            <div class="text-center mt-2 mb-4">
+                                <div class="glow-tag glow-tag-gold inline-block px-3.5 py-1 rounded-2xl bg-slate-50 border border-slate-100">
+                                    <span class="price-main font-starship text-2xl font-extrabold text-amber-600" data-monthly="US$14/mes" data-yearly="US$168/año">US$14/mes</span>
+                                </div>
+                                <p class="price-sub text-xs text-slate-400 font-medium mt-1" data-monthly="o US$168 al año" data-yearly="Equivale a US$14/mes">o US$168 al año</p>
+                            </div>
+
+                            <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed mb-3 font-medium">
+                                La membresía de mayor categoría, diseñada para ofrecer la experiencia más exclusiva del universo Starship. Incluye todo lo de Baby-Star y Young-Moon, además de:
+                            </p>
+
+                            <!-- Lista de Beneficios -->
+                            <ul class="space-y-2 text-xs sm:text-[13px] text-slate-600 mb-6">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso a juegos y betas Premium.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                                    <span>50% de descuento en productos digitales elegibles.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-yellow-400 mt-1.5 shrink-0"></span>
+                                    <span>Acceso anticipado prioritario a Starship Plus.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></span>
+                                    <span>Starship Plus Pro incluido.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-orange-400 mt-1.5 shrink-0"></span>
+                                    <span>Multimedia y experiencias exclusivas de STARSHIP PLUS.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <button onclick="selectMembership('Exoplanet')" class="btn-pill btn-exo w-full py-3.5 px-6 text-slate-900 font-starship font-bold text-sm sm:text-[15px] tracking-wide cursor-pointer">
+                            Elegir Ser Exoplanet
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+
+        <!-- Espaciador inferior equilibrado -->
+        <div class="h-2"></div>
+    </div>
+
+    <!-- ==================== VISTA 2: FONDO LIMPIO AL ELEGIR PLAN ==================== -->
+    <div id="clean-blank-view" class="hidden fixed inset-0 z-30 opacity-0 transition-opacity duration-500">
+        <!-- Botón superior izquierdo para volver a la sección de planes -->
+        <button onclick="returnToPlans()" class="fixed top-6 left-6 z-40 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/85 hover:bg-white text-slate-700 font-starship font-bold text-xs sm:text-sm shadow-md border border-white/90 backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer">
+            <span>←</span>
+            <span>Volver a planes</span>
+        </button>
+    </div>
+
+    <!-- ==================== LÓGICA INTERACTIVA ==================== -->
+    <script>
+        let isYearly = false;
+        let isCleanViewActive = false;
+
+        // 1. Alternar precios entre Mensual y Anual
+        function toggleBillingCycle() {
+            isYearly = !isYearly;
+            const label = document.getElementById('billing-label');
+            label.textContent = isYearly ? 'Anual' : 'Mensual';
+
+            const mainPrices = document.querySelectorAll('.price-main');
+            const subPrices = document.querySelectorAll('.price-sub');
+
+            mainPrices.forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.textContent = isYearly ? el.dataset.yearly : el.dataset.monthly;
+                    el.style.opacity = '1';
+                }, 150);
+            });
+
+            subPrices.forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.textContent = isYearly ? el.dataset.yearly : el.dataset.monthly;
+                    el.style.opacity = '1';
+                }, 150);
+            });
+        }
+
+        // 2. Ir a la pantalla limpia sin elementos decorativos al elegir un plan
+        function selectMembership(planName) {
+            isCleanViewActive = true;
+            const plansView = document.getElementById('plans-view');
+            const sparklesLayer = document.getElementById('decorative-sparkles-layer');
+            const cleanView = document.getElementById('clean-blank-view');
+
+            // Ocultar tarjetas y brillitos decorativos
+            plansView.classList.add('view-hidden');
+            sparklesLayer.style.opacity = '0';
+
+            setTimeout(() => {
+                plansView.classList.add('hidden');
+                sparklesLayer.classList.add('hidden');
+
+                // Mostrar fondo limpio únicamente con botón superior izquierdo
+                cleanView.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    cleanView.style.opacity = '1';
+                });
+            }, 350);
+        }
+
+        // 3. Regresar a la sección de planes
+        function returnToPlans() {
+            isCleanViewActive = false;
+            const plansView = document.getElementById('plans-view');
+            const sparklesLayer = document.getElementById('decorative-sparkles-layer');
+            const cleanView = document.getElementById('clean-blank-view');
+
+            cleanView.style.opacity = '0';
+
+            setTimeout(() => {
+                cleanView.classList.add('hidden');
+                plansView.classList.remove('hidden');
+                sparklesLayer.classList.remove('hidden');
+
+                requestAnimationFrame(() => {
+                    plansView.classList.remove('view-hidden');
+                    sparklesLayer.style.opacity = '1';
+                });
+            }, 350);
+        }
+
+        // 4. Efecto paralaje suave en los brillitos del fondo al mover el mouse
+        const parallaxItems = document.querySelectorAll('.parallax-sparkle');
+        document.addEventListener('mousemove', (e) => {
+            if (isCleanViewActive) return;
+
+            const xNorm = (e.clientX / window.innerWidth) - 0.5;
+            const yNorm = (e.clientY / window.innerHeight) - 0.5;
+
+            parallaxItems.forEach(item => {
+                const speed = parseFloat(item.dataset.speed || 15);
+                const moveX = xNorm * speed;
+                const moveY = yNorm * speed;
+                item.style.translate = `${moveX}px ${moveY}px`;
+            });
+
+            // Generar chispita sutil al mover el cursor
+            spawnCursorSparkle(e.clientX, e.clientY);
+        });
+
+        // 5. Generador de chispitas al mover el cursor (solo activo en la vista de planes)
+        let lastSparkleTime = 0;
+        const SPARKLE_COLORS = ['#f472b6', '#60a5fa', '#fbbf24', '#ffffff', '#c084fc'];
+
+        function spawnCursorSparkle(x, y) {
+            const now = Date.now();
+            if (now - lastSparkleTime < 65) return; // Control de frecuencia para fluidez
+            lastSparkleTime = now;
+
+            const spark = document.createElement('div');
+            spark.className = 'cursor-sparkle';
+            const color = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
+            const size = Math.floor(Math.random() * 8) + 8;
+
+            spark.style.left = `${x}px`;
+            spark.style.top = `${y}px`;
+            spark.style.width = `${size}px`;
+            spark.style.height = `${size}px`;
+            spark.style.color = color;
+
+            spark.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
+                <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+            </svg>`;
+
+            document.body.appendChild(spark);
+            setTimeout(() => spark.remove(), 850);
+        }
+    </script>
+</body>
+</html>
