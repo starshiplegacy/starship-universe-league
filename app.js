@@ -604,7 +604,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
  }
  function renderSidebar(list){
   const side=document.getElementById("ulhSidebarInstalledList"),status=document.getElementById("ulhSidebarStatus");
-  if(side)side.innerHTML=list.length?list.map(k=>'<a class="ulh-installed" href="#ulh-library" data-sidebar-game="'+k+'"><span class="ulh-mini">'+(k==="lyrie"?"💎":"⚔")+'</span> '+games[k].name+'</a>').join(""):'<p class="ulh-sidebar-empty">Aún no tienes juegos instalados.</p>';
+  if(side)side.innerHTML=list.length?list.map(k=>'<a class="ulh-installed" href="#ulh-library" data-sidebar-game="'+k+'"><span class="ulh-mini">'+(k==="lyrie"?"💎":k==="legacy"?"⚔":k==="chess"?"♟":k==="pixxy"?"✦":k==="gellyshow"?"👗":"✧")+'</span> '+games[k].name+'</a>').join(""):'<p class="ulh-sidebar-empty">Aún no tienes juegos instalados.</p>';
   if(status)status.innerHTML=list.length?'<span>✓</span><div>'+list.length+' juego(s) instalado(s)<br><small>Listos para jugar</small></div>':'<span>✓</span><div>Biblioteca vacía<br><small>Tus descargas aparecerán aquí</small></div>';
   side?.querySelectorAll("[data-sidebar-game]").forEach(link=>link.addEventListener("click",e=>{e.preventDefault();document.querySelector('.ulh-side-item[data-ulh-view="library"]')?.click();}));
  }
