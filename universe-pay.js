@@ -1,54 +1,88 @@
 (() => {
   "use strict";
-  const openPay = (event) => {
-    const settingsTrigger = event.target.closest("[data-open-account-settings]");
-    const payTrigger = event.target.closest("#universePayOpen,[data-open-universe-pay]");
-    if (!settingsTrigger && !payTrigger) return;
+  const dialog = document.getElementById("accountDialog");
+  const menu = document.getElementById("accountSections");
+  const panel = document.getElementById("accountPanel");
+  const note = document.getElementById("accountSectionNote");
+  const title = document.getElementById("accountPanelTitle");
+  const content = document.getElementById("accountPanelContent");
+  const back = document.getElementById("accountBack");
+  const accountTitle = document.getElementById("accountTitle");
+  const accountIntro = document.querySelector(".account-intro");
+  const accountKicker = document.querySelector("#accountDialog .dialog-kicker");
+  const signOut = document.getElementById("accountSignOut");
+  const settingsMessage = document.getElementById("settingsMessage");
+  const original = new Map();
+  let payOpen = false;
+
+  function setHidden(element, hidden) {
+    if (!element) return;
+    if (!original.has(element)) original.set(element, element.hidden);
+    element.hidden = hidden;
+  }
+
+  function restoreAccountView() {
+    for (const [element, hidden] of original) element.hidden = hidden;
+    original.clear();
+    if (accountTitle) accountTitle.textContent = "Configuración de Usuario";
+    if (accountKicker) accountKicker.textContent = "UNIVERSE LEAGUE · ACCOUNT";
+    if (title) title.textContent = "Configuración";
+    if (content) content.replaceChildren();
+    if (menu) menu.hidden = false;
+    if (panel) panel.hidden = true;
+    if (note) {
+      note.hidden = false;
+      note.textContent = "Selecciona una sección para administrar tu cuenta.";
+    }
+    payOpen = false;
+  }
+
+  function openPlans(event) {
+    const trigger = event.target.closest("#universePayOpen,[data-open-universe-pay]");
+    if (!trigger) return;
     event.preventDefault();
-    const dialog = document.getElementById("accountDialog");
-    const menu = document.getElementById("accountSections");
-    const panel = document.getElementById("accountPanel");
-    const note = document.getElementById("accountSectionNote");
-    const title = document.getElementById("accountPanelTitle");
-    const content = document.getElementById("accountPanelContent");
+    event.stopImmediatePropagation();
     if (!dialog || !menu || !panel || !title || !content) {
-      console.error("Universe Pay: faltan elementos del panel en index.html");
+      console.error("Universe Pay: faltan elementos del panel.");
       return;
     }
-    try {
-      if (!dialog.open) dialog.showModal();
-    } catch (error) {
-      console.error("Universe Pay: no se pudo abrir el diálogo", error);
-      return;
-    }
-    if (settingsTrigger) {
-      menu.hidden = false;
-      panel.hidden = true;
-      if (note) {
-        note.hidden = false;
-        note.textContent = "Selecciona una sección para administrar tu cuenta.";
-      }
-      title.textContent = "Configuración de Usuario";
-      return;
-    }
-    menu.hidden = true;
+    if (!dialog.open) dialog.showModal();
+    payOpen = true;
+
+    setHidden(menu, true);
+    setHidden(note, true);
+    setHidden(back, true);
+    setHidden(accountIntro, true);
+    setHidden(signOut, true);
+    setHidden(settingsMessage, true);
+
+    if (accountTitle) accountTitle.textContent = "Universe Pay";
+    if (accountKicker) accountKicker.textContent = "MEMBERSHIPS · UNIVERSE LEAGUE";
     panel.hidden = false;
-    if (note) note.hidden = true;
-    title.textContent = "Universe Pay";
+    title.textContent = "Elige tu plan";
     content.innerHTML = `
-      <p class="geffenland-intro">Universe Pay reúne las membresías de STARSHIP UNIVERSE LEAGUE y sus beneficios.</p>
-      <div class="universe-pay-benefits">
-        <article><span>✦</span><b>Estrenos anticipados</b><p>Ve los estrenos de Starship Plus antes de que se publiquen en YouTube.</p></article>
-        <article><span>🎮</span><b>Juegos VIP</b><p>Young-Moon y Exoplanet desbloquean juegos y betas reservados para miembros VIP.</p></article>
-        <article><span>％</span><b>Descuentos VIP</b><p>50 % de descuento en compras elegibles. Un juego de US$10 queda en US$5.</p></article>
-        <article><span>＋</span><b>Starship Plus Pro</b><p>Acceso incluido como beneficio de una membresía activa.</p></article>
-      </div>
       <div class="geffenland-grid">
-        <article class="geffenland-card baby"><div class="geffenland-symbol">★</div><span class="geffenland-level">BASIC · MEMBER</span><h4>Baby-Star</h4><div class="geffenland-prices"><strong>US$3 <small>/ mes</small></strong><span>US$36 / año</span></div><ul><li>Insignia y personalización del perfil.</li><li>Eventos y novedades especiales.</li><li>Estrenos anticipados seleccionados de Starship Plus.</li><li>Acceso incluido a Starship Plus Pro.</li></ul></article>
-        <article class="geffenland-card moon"><div class="geffenland-symbol">☾</div><span class="geffenland-level">PRO · VIP</span><h4>Young-Moon</h4><div class="geffenland-prices"><strong>US$6 <small>/ mes</small></strong><span>US$72 / año</span></div><ul><li>Todos los beneficios Baby-Star.</li><li>Juegos y betas VIP.</li><li>50 % de descuento en compras elegibles.</li><li>Acceso anticipado a Starship Plus Pro.</li></ul></article>
-        <article class="geffenland-card planet"><div class="geffenland-symbol">♃</div><span class="geffenland-level">PREMIUM · VIP</span><h4>Exoplanet</h4><div class="geffenland-prices"><strong>US$14 <small>/ mes</small></strong><span>US$168 / año</span></div><ul><li>Todos los beneficios Baby-Star y Young-Moon.</li><li>Juegos Premium y betas VIP.</li><li>50 % de descuento en compras elegibles.</li><li>Estrenos anticipados prioritarios y Starship Plus Pro.</li></ul></article>
+        <article class="geffenland-card baby">
+          <div class="geffenland-symbol">★</div><span class="geffenland-level">BASIC · MEMBER</span>
+          <h4>Baby-Star</h4><div class="geffenland-prices"><strong>US$3 <small>/ mes</small></strong><span>US$36 / año</span></div>
+          <ul><li>Insignia Baby-Star y personalización del perfil.</li><li>Emojis y elementos decorativos exclusivos.</li><li>Eventos y novedades especiales.</li><li>Acceso anticipado a estrenos seleccionados de Starship Plus.</li><li>Acceso incluido a Starship Plus Pro.</li><li>Descuentos en compras digitales oficiales elegibles.</li></ul>
+        </article>
+        <article class="geffenland-card moon">
+          <div class="geffenland-symbol">☾</div><span class="geffenland-level">PRO · VIP</span>
+          <h4>Young-Moon</h4><div class="geffenland-prices"><strong>US$6 <small>/ mes</small></strong><span>US$72 / año</span></div>
+          <ul><li>Incluye todos los beneficios de Baby-Star.</li><li>Acceso a juegos y betas reservados para miembros VIP.</li><li>50 % de descuento en compras elegibles.</li><li>Acceso anticipado a estrenos de Starship Plus.</li><li>Acceso incluido a Starship Plus Pro.</li><li>Temas Stars & Moons y recursos digitales PRO.</li></ul>
+        </article>
+        <article class="geffenland-card planet">
+          <div class="geffenland-symbol">♃</div><span class="geffenland-level">PREMIUM · VIP</span>
+          <h4>Exoplanet</h4><div class="geffenland-prices"><strong>US$14 <small>/ mes</small></strong><span>US$168 / año</span></div>
+          <ul><li>Incluye todos los beneficios Baby-Star y Young-Moon.</li><li>Acceso a juegos Premium y betas VIP.</li><li>50 % de descuento en compras elegibles.</li><li>Acceso anticipado prioritario a estrenos de Starship Plus.</li><li>Acceso incluido a Starship Plus Pro.</li><li>Multimedia y experiencias exclusivas de STARSHIP PLUS.</li></ul>
+        </article>
       </div>
-      <p class="settings-muted">Precios en USD. La contratación, renovación y cobro en línea todavía no están conectados; esta pantalla informa de los planes y beneficios, pero no procesa pagos.</p>`;
-  };
-  document.addEventListener("click", openPay, true);
+      <p class="settings-muted">Precios en USD. La contratación, renovación y cobro en línea todavía no están conectados; esta pantalla informa de los planes, pero no procesa pagos.</p>`;
+  }
+
+  document.addEventListener("click", openPlans, true);
+  dialog?.addEventListener("close", () => {
+    if (payOpen) restoreAccountView();
+  });
 })();
