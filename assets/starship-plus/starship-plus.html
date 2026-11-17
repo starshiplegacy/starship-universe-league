@@ -130,9 +130,12 @@ $('#q').oninput=e=>find(e.target.value);
 document.addEventListener('click',e=>{const f=e.target.closest('[data-f]');if(f){e.stopPropagation();return fav(f.dataset.f)}
 const ar=e.target.closest('.ar');if(ar){const s=ar.parentNode.querySelector('.strip');return s.scrollBy({left:(ar.classList.contains('l')?-1:1)*s.clientWidth*.8})}
 const c=e.target.closest('.card');if(c){closeSearch();return info(c.dataset.id)}
-if(e.target.id==='dm')$('#dm').classList.remove('on')});\ndocument.addEventListener('pointerdown',e=>{if(!e.target.closest('#menu')&&!e.target.closest('#av'))closeProfileDropdown()},true);
+if(e.target.id==='dm')$('#dm').classList.remove('on')});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('#menu')&&!e.target.closest('#av'))closeProfileDropdown()},true);
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{cur=b.dataset.t;render()});
-function closeProfileDropdown(){const m=$('#menu');m.classList.remove('on','profile-picker');m.style.removeProperty('display');m.style.removeProperty('visibility');m.style.removeProperty('opacity')}\ndocument.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfileDropdown()});\nfunction toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),1800)}
+function closeProfileDropdown(){const m=$('#menu');m.classList.remove('on','profile-picker');m.style.removeProperty('display');m.style.removeProperty('visibility');m.style.removeProperty('opacity')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfileDropdown()});
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),1800)}
 /* PLAYER */
 let P=null,iv,raf,idle,ccOn=true,SP=[1,1.25,1.5,2],si=0;const LN=['“The stars remember what we forget.”','“Stay. Just until the sky changes.”','“Some nights are bigger than the universe.”','“I never learned how to say goodbye.”','♪ soft music ♪'];
 const fm=s=>{s=s|0;const h=s/3600|0,m=(s%3600/60|0),x=s%60;return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')};
