@@ -158,3 +158,24 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .lyrie-scene-caption{position:absolute;left:clamp(20px,4vw,58px);bottom:clamp(18px,3vw,36px);display:flex;flex-direction:column;gap:5px;color:rgba(87,78,69,.5);font-size:8px;letter-spacing:.24em}
 @media(max-width:820px){.lyrie-scene{align-items:flex-end;justify-content:center;padding:16px}.lyrie-menu-column{width:min(100%,420px);min-width:0;padding:18px}.lyrie-menu-brand h2{font-size:29px}.lyrie-scene-caption{display:none}}
 @media(max-height:650px) and (min-width:821px){.lyrie-menu-column{padding:15px 17px}.lyrie-menu-brand{margin-bottom:10px}.lyrie-menu-brand h2{font-size:28px}.lyrie-menu-buttons{gap:5px}.lyrie-menu-buttons button{padding:10px 13px}.lyrie-limbo-note{margin:7px 2px 10px}}
+
+
+/* Geffenite — acceso beta VIP en Tienda / Compra */
+.ulh-vip-section{margin-top:30px;padding-top:24px;border-top:1px solid #3a4258}
+.ulh-vip-heading{margin-bottom:16px}
+.ulh-vip-heading h3{margin:7px 0 5px;color:#f5f7fc;font-size:21px}
+.ulh-vip-heading p{max-width:720px;margin:0;color:#a9b8cc;font-size:13px;line-height:1.55}
+.ulh-vip-card{display:grid;grid-template-columns:minmax(180px, .8fr) minmax(0,1.2fr);overflow:hidden;border:1px solid #8c6ad1;border-radius:12px;background:linear-gradient(120deg,#211832,#1b2030 62%);box-shadow:0 10px 28px #08061055}
+.ulh-vip-art{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:radial-gradient(circle at 50% 42%,#65449b,#271b43 68%,#151b2c);color:#fff;text-align:center}
+.ulh-vip-art span{font-size:38px;color:#f5d78b;text-shadow:0 0 20px #c49cff}
+.ulh-vip-art strong{font-size:clamp(22px,3vw,34px);font-weight:900;letter-spacing:3px}
+.ulh-vip-art small{font-size:10px;letter-spacing:2px;color:#d9c9f5}
+.ulh-vip-copy{padding:20px}
+.ulh-vip-copy h3{margin:7px 0;color:#f5f7fc;font-size:20px}
+.ulh-vip-copy p{margin:0;color:#a9b8cc;font-size:13px;line-height:1.55}
+.ulh-vip-eligibility{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.ulh-vip-eligibility span{padding:6px 9px;border:1px solid #68538d;border-radius:6px;color:#e6d9ff;font-size:11px;font-weight:700}
+.ulh-vip-copy .ulh-vip-locked{margin:12px 0;color:#e4d5ff;font-size:12px}
+.ulh-vip-launch{display:inline-flex;align-items:center;margin-top:14px;padding:10px 14px;border-radius:7px;background:#7a55bc;color:#fff;text-decoration:none;font-size:12px;font-weight:800}
+.ulh-vip-launch:hover{background:#936bd6}
+@media(max-width:600px){.ulh-vip-card{grid-template-columns:1fr}.ulh-vip-art{min-height:140px}.ulh-vip-copy{padding:16px}}
