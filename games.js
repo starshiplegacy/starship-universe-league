@@ -97,7 +97,14 @@
  function shuffleTiles(){if(game!=="pixxy"||ended||!spendPower("shuffle"))return;const remaining=tiles.filter(t=>!t.removed),values=remaining.map(t=>t.value);for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}let n=0;tiles.forEach(t=>{if(!t.removed)t.value=values[n++];});tilePick=null;hinted=[];ended=false;help.textContent="¡Fichas barajadas! Busca nuevos pares.";renderBoard();saveGameState();}
  function hintPair(){if(game!=="pixxy"||ended)return;const pair=findPair();if(!pair){help.textContent="No hay pares libres. Prueba Barajar.";return;}if(!spendPower("hint"))return;hinted=pair;help.textContent="¡Aquí tienes un par igual disponible!";renderBoard();setTimeout(()=>{hinted=[];if(game==="pixxy")renderBoard();},2500);saveGameState();}
  function undoMove(){if(game!=="pixxy"||ended||!history.length||!spendPower("undo"))return;const last=history.pop();tiles=last.tiles.map(t=>({...t}));score=last.score;tilePick=null;hinted=[];ended=false;help.textContent="Se devolvió el último par retirado.";renderBoard();saveGameState();}
- document.querySelectorAll("[data-launch-mini-game]").forEach(b=>b.addEventListener("click",async()=>{const client=window.universeSupabase;const {data}=client?await client.auth.getSession():{data:{session:null}};if(!data?.session?.user){document.getElementById("accessDialog")?.showModal();return;}game=b.dataset.launchMiniGame;title.textContent=game==="chess"?"Jaque Matte":"Pinkie Star";$("miniGameSubtitle").textContent=game==="chess"?"Tú contra el Bot · Gratis para Astronautas":"Mahjong Solitaire · Gratis para Astronautas";controls.hidden=game!=="pixxy";dialog.showModal();chooseMode("easy");await startGame(true,true);}));
+ window.launchUniverseMiniGame=async key=>{
+  const client=window.universeSupabase;const {data}=client?await client.auth.getSession():{data:{session:null}};
+  if(!data?.session?.user){document.getElementById("accessDialog")?.showModal();return;}
+  if(!["chess","pixxy"].includes(key))return;
+  game=key;title.textContent=game==="chess"?"Jaque Matte":"Pinkie Star";
+  $("miniGameSubtitle").textContent=game==="chess"?"Tú contra el Bot · Gratis para Astronautas":"Mahjong Solitaire · Gratis para Astronautas";
+  controls.hidden=game!=="pixxy";dialog.showModal();chooseMode("easy");await startGame(true,true);
+};
  document.querySelectorAll("[data-mini-mode]").forEach(b=>b.addEventListener("click",()=>{chooseMode(b.dataset.miniMode);if(mode!=="custom")startGame(true,false);else{help.textContent="Indica los minutos y pulsa Comenzar. El reloj empezará al cargar el tablero.";}}));
  $("miniGameStartCustom").addEventListener("click",()=>{const n=Math.max(1,Math.min(180,Number($("miniGameMinutes").value)||10));$("miniGameMinutes").value=n;startGame(false,false).then(()=>{if(!ended&&(chess||game==="pixxy"))startClock(n*60);saveGameState();});});
  $("miniGameRestart").addEventListener("click",()=>startGame(true,false));
