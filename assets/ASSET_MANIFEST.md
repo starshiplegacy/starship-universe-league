@@ -1,6 +1,6 @@
 # Inventario de assets de STARSHIP UNIVERSE LEAGUE
 
-**Última revisión:** 16 de noviembre de 2026  
+**Última revisión:** 17 de noviembre de 2026  
 **Regla:** los nombres y mayúsculas/minúsculas son parte de la ruta. No renombrar sin actualizar el código y volver a ejecutar la auditoría.
 
 ## 1. League Of Legacy — recursos visuales
@@ -250,3 +250,42 @@ La documentación describe una experiencia 2D autónoma con contenido visual inc
 - Los dos archivos `(Postel).jpg` conservan su ortografía original para evitar romper rutas.
 - Los DOCX de Geffenite se registran por nombre, tamaño y Git blob SHA. La lectura binaria de esos documentos no estuvo disponible mediante la vista de texto; no se certifica aquí su contenido interno.
 - No se mezclan estos proyectos con The LyrieLife, CAL/CUL, League Of Legacy, Pinkie Star ni Jaque Matte.
+
+
+## 18. Nuevos juegos y plataforma — revisión 17 de noviembre de 2026
+
+### Geffen: Monopoly
+
+| Archivo | Ruta | Tamaño | Git blob SHA | Estado |
+|---|---|---:|---|---|
+| Juego de mesa interactivo | `assets/geffen-monopoly/geffen_monopoly_juego_de_mesa_interactivo.html` | 60,614 bytes | `44f4243786aa8fd7740adcda2c7e691d7e64ee1a` | Juego HTML autónomo; agregado al catálogo gratuito y a la biblioteca |
+| Documentación técnica | `assets/geffen-monopoly/documentaci_n_del_sistema_geffen_monopoly.txt` | 7,824 bytes | `8b26d857862859d6d7f0dc08125882174694df34` | Fuente de reglas, tablero y estado del juego |
+
+El tablero tiene 24 casillas en un perímetro 7×7. La documentación describe partidas 1v1, 1v2 y 1v3 contra bots, además de 2 jugadores locales (Pass & Play). No se documenta modo online ni sincronización remota. Los recursos permanecen aislados en su carpeta.
+
+### Club de Cartas — Solitario y Versus
+
+| Archivo | Ruta | Tamaño | Git blob SHA | Estado |
+|---|---|---:|---|---|
+| Juego | `assets/star-solitaire/club_de_cartas_solitario_y_versus.html` | 42,866 bytes | `88feac7a40dd8a335a1156b7443fb13e63613c56` | Juego HTML autónomo; agregado al catálogo gratuito y a la biblioteca |
+
+El menú incluye Solitario en Fila (un jugador) y Versus contra un bot. No se afirma que tenga multijugador online. El nombre visible del HTML es CLUB DE CARTAS; la carpeta de origen `star-solitaire` se conserva.
+
+### Starship Plus — plataforma audiovisual
+
+| Archivo | Ruta | Tamaño | Git blob SHA | Estado |
+|---|---|---:|---|---|
+| Plataforma | `assets/starship-plus/starship-plus.html` | 174,042 bytes | `383e9bebc12ff39d877daffd7cd7e5fc8c9a7f49` | Interfaz web demostrativa; enlazada desde el área de miembros |
+| Guía de funcionalidades | `assets/starship-plus/starship-plus-funcionalidades.txt` | 4,376 bytes | `b32cfcd944bfc26345e51e9b5285c814c70e7977` | Especificación de navegación, catálogo y controles |
+
+Incluye vistas de catálogo (For You, Drama & Movie y SPORT), búsqueda, lista personal, ajustes y un reproductor simulado. El propio documento fuente indica que no reproduce vídeo real: el catálogo usa títulos de muestra y el reproductor simula el progreso con animación. El perfil, favoritos, progreso y ajustes se guardan en localStorage; no equivale a cuentas reales ni sincronización entre dispositivos.
+
+El acceso directo se enlazó dentro del bloque de Starship Plus Pro visible para miembros. Esta visibilidad es una condición de interfaz, no un control de seguridad del archivo estático: cualquier contenido privado futuro debe protegerse mediante autorización del servidor y enlaces firmados/privados. No hay checkout, pasarela de pago ni enlaces de estrenos privados conectados.
+
+### Integración en el portal
+
+- Geffen: Monopoly y Club de Cartas aparecen en el panel **Gratis · Demo** del catálogo.
+- Ambos utilizan el flujo existente **Catálogo → Instalar → Juegos instalados → PLAY**. El temporizador de 60 segundos simula el registro en la biblioteca local por cuenta; no descarga un paquete.
+- El botón **Abrir Starship Plus** está dentro del bloque de beneficios para miembros.
+- Se conservan nombres, extensiones y directorios originales. No se mezclan con Geffenite, GellyShow, The LyrieLife, CAL/CUL ni League Of Legacy.
+- QA visual/interactivo en navegador queda pendiente; la conexión de rutas no demuestra que todas las mecánicas estén probadas.
