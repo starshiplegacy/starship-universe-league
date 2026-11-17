@@ -29,6 +29,16 @@ jobs:
           python-version: "3.12"
       - name: Validate audit script syntax
         run: python -m py_compile scripts/repo_audit.py
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check JavaScript syntax
+        run: |
+          for file in account-settings.js app.js entitlements.js gallery.js games.js save-system.js supabase-config.js; do
+            node --check "$file"
+          done
+          node --input-type=module --check < map-registry.js
       - name: Audit local references and backend configuration
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
