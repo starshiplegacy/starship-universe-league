@@ -21,9 +21,15 @@ La prioridad logística es cerrar primero los bloqueos de backend, derechos y va
 | CAL/CUL | Módulo cal-cul.html, vista previa y conversor presentes; no hay GLB masculino/femenino publicados | Espera fuentes correctas y validación de conversión |
 | Jaque Matte | Minijuego de ajedrez; descarga/instalación y lanzamiento desde biblioteca | Implementación presente; requiere prueba real del motor externo y guardado |
 | Pinkie Star | Mahjong Solitaire; descarga/instalación y lanzamiento desde biblioteca | Implementado bajo nombre visible Pinkie Star; guardado nuevo usa pinkie-star y recupera pixxy-up anterior |
+| Geffen: Monopoly | Tablero 7×7, 24 casillas; bots y Pass & Play local | Catálogo Gratis · Demo y biblioteca; QA de navegador pendiente |
+| Club de Cartas | Solitario en Fila y Versus contra bot | Catálogo Gratis · Demo y biblioteca; QA de navegador pendiente |
+| Starship Plus | Interfaz de streaming, catálogo de muestra y player simulado | Enlace de miembros; no hay vídeo real, backend de perfiles ni estrenos privados conectados |
 | Vídeos de inicio | 3 MP4 publicados en assets/videos/ | Lanzador usa los nombres reales actuales |
 | Geffenite | Gameplay HTML, mapa conceptual, 2 DOCX, icono y póster | Beta VIP presentada; conservar entitlement activo y fuentes originales |
 | GellyShow | Juego HTML autónomo, 2 documentos MD y recursos; Gratis · Demo con instalación desde catálogo | Juego base conectado al flujo de instalación; Online pendiente de servidor |
+| Geffen: Monopoly | Juego HTML de tablero y documento técnico; Gratis · Demo | Conectado al catálogo y biblioteca; bots y Pass & Play local descritos; QA pendiente |
+| Club de Cartas | Juego HTML con Solitario en Fila y Versus contra bot; Gratis · Demo | Conectado al catálogo y biblioteca; sin online verificado; QA pendiente |
+| Starship Plus | Plataforma HTML con guía de funciones y reproductor simulado | Enlazada desde beneficios de miembros; vídeos reales, backend y perfiles sincronizados pendientes |
 | Documentación | Índice, arquitectura, manifiesto, planes y auditorías | Referencias principales consolidadas; fuentes originales preservadas |
 
 ### Rutas de mundo
@@ -132,3 +138,26 @@ La revisión se realizó sobre el árbol y los archivos de GitHub. No se ejecut�
 - Young-Moon y Exoplanet se clasifican como VIP: acceso a juegos/betas VIP y 50 % de descuento en compras elegibles. Ejemplo informativo: un producto de US$10 queda en US$5.
 - La sección de estrenos se muestra a cuentas con membresía activa devuelta por `starship-entitlements`; visitantes sin membresía ven el panel informativo de Universe Pay.
 - Límites actuales: no hay pasarela de pago ni checkout conectado; los descuentos son informativos y aún no se aplican a transacciones. No se ha proporcionado una URL del portal Starship Plus Pro ni enlaces de estrenos privados; esos destinos deben conectarse antes de prometer reproducción o acceso directo.
+
+
+## Nuevos juegos y plataforma — integración 17 de noviembre de 2026
+
+### Geffen: Monopoly
+- Se añadió al panel Gratis · Demo del catálogo y al registro de biblioteca de `app.js`.
+- PLAY abre el HTML autónomo. El documento describe partidas contra 1–3 bots y modo local de dos jugadores.
+- No hay servidor, sincronización online ni guardado remoto verificado.
+
+### Club de Cartas
+- Se añadió al panel Gratis · Demo y al registro de biblioteca.
+- PLAY abre el HTML autónomo con Solitario en Fila y Versus contra bot.
+- No se debe presentar el modo Versus como multijugador online.
+
+### Starship Plus
+- Se enlazó desde la sección Starship Plus Pro del área de miembros.
+- La interfaz tiene navegación, filtros, búsqueda, My List, preferencias y progreso local; el reproductor es simulado y no reproduce vídeo real.
+- No hay conexión de cuentas, perfiles multiusuario, contenido privado, HLS ni checkout. El enlace visible para miembros es solo una condición de interfaz; un contenido privado futuro debe autorizarse en backend.
+
+### Límites y pruebas
+- La instalación común tarda 60 segundos como simulación y solo registra el identificador en localStorage por usuario; no descarga los HTML ni sincroniza dispositivos.
+- Se añadieron iconos tipográficos/gradientes de respaldo para las nuevas entradas; no se recibieron iconos JPG nuevos para estos dos juegos.
+- Las rutas están conectadas en el código; las pruebas interactivas reales en escritorio/móvil siguen pendientes.
