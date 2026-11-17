@@ -62,7 +62,7 @@ Los recursos de mapas conservan sus formatos de origen en `assets/league-of-lega
 - Gameplay fuente: `assets/Geffenite/gameplay/Geffenite_ Batalla Estelar.html`.
 - Dossier, requisitos VIP y mapa conceptual: `assets/Geffenite/docs/`.
 - Identidad visual: `assets/Geffenite/images/`.
-- La beta se ofrece desde el área VIP y depende de la validación de entitlement activo Young-Moon o Exoplanet. Mantener el control de acceso tanto en la interfaz como en la lógica de permisos.
+- La beta se ofrece desde el área VIP. El frontend espera una entitlement o plan compatible Young-Moon/Exoplanet devuelto por starship-entitlements; la comprobación real de vigencia debe confirmarse en esa función remota. Mantener el control de acceso tanto en la interfaz como en la lógica de permisos.
 - El HTML del mapa Eco Sónico Cósmico es una referencia interactiva; no sustituye un sistema de mapas jugable.
 
 ### GellyShow
