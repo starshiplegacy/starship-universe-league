@@ -13,6 +13,9 @@
 | Astronaut mini-games | Jaque Matte and Pinkie Star (Mahjong Solitaire) | GitHub for game code/assets; local/cloud saves only after backend confirmation |
 | Geffenite | VIP beta battle-royale prototype | GitHub for gameplay/docs/assets; frontend gate consumes `starship-entitlements`; active-status validation is server-side |
 | GellyShow | Standalone 2D dress-up and runway game | GitHub for gameplay/docs/assets; online mode requires a future server |
+| Geffen: Monopoly | Single-file board game with bots and local pass-and-play | GitHub HTML/docs; portal catalog and simulated install/library flow |
+| Club de Cartas | Single-file solitaire and versus-vs-bot game | GitHub HTML; portal catalog and simulated install/library flow |
+| Starship Plus | Audiovisual platform UI prototype | GitHub HTML/docs; member-area link; real media/backend integration pending |
 | Community | Gallery, comments, reactions, profile media | Supabase data/Storage; GitHub for client code |
 | CAL/CUL | Character creator and conversion pipeline | GitHub for tools; original source assets remain immutable |
 | Shared platform | Auth, profiles, settings, entitlements | Supabase after canonical project is confirmed |
@@ -127,3 +130,12 @@ Every catalog game, including free/demo titles, must follow **Store/Catalog → 
 The header Universe Pay action opens the membership and benefits panel without requiring login to read it. Baby-Star, Young-Moon, and Exoplanet members are described as receiving Starship Plus early premieres before the official YouTube release and Starship Plus Pro access. Young-Moon and Exoplanet are VIP tiers with VIP game/beta access and a 50% discount on eligible purchases (illustrative example: US$10 → US$5). The early-premiere area is gated by the active membership/plan returned by `starship-entitlements`.
 
 Payment processing and purchase checkout are not integrated, so the 50% discount is currently a displayed membership benefit, not an applied transaction price. No Starship Plus Pro destination URL or private premiere video links have been supplied; those integrations remain pending and the page shows a clear empty state rather than fabricated releases or destinations.
+
+
+## New game and platform integration (2026-11-17)
+
+- **Geffen: Monopoly** and **Club de Cartas** are registered in the free/demo catalog and the account library. Their Play actions open their standalone HTML files. The install timer remains a 60-second local simulation, not a package download.
+- **Starship Plus** is linked from the member benefits section. The current page is a UI prototype: its catalog uses sample titles, the player is simulated, and profile/favorites/progress/settings live only in localStorage.
+- Do not claim online play, real video playback, account synchronization, checkout, or private premieres until the relevant backend and media pipelines are implemented and tested.
+- Member-only button visibility is not a security boundary for static files. Private content must be protected by server-side entitlement checks and private/expiring media URLs.
+- Browser QA remains required for each game and the Starship Plus responsive layout.
