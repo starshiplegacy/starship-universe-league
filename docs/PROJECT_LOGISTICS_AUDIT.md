@@ -123,3 +123,12 @@ La revisión se realizó sobre el árbol y los archivos de GitHub. No se ejecut�
 - Jaque Matte, Pinkie Star y GellyShow se ofrecen como **Gratis · Demo** y se registran en la biblioteca de la cuenta después de completar la instalación.
 - The LyrieLife y League Of Legacy conservan sus entradas de catálogo y el mismo mecanismo de instalación. Geffenite conserva el control VIP y solo se ofrece a cuentas con la entitlement `geffenite_beta`.
 - El progreso de 60 segundos es una simulación de instalación para la demo: registra el juego en la biblioteca local por usuario, pero no descarga un paquete nativo ni sincroniza instalaciones entre dispositivos.
+
+
+## Universe Pay y beneficios Starship Plus — 17 de noviembre de 2026
+
+- El botón Universe Pay abre el panel de planes y beneficios sin exigir inicio de sesión para consultar la información.
+- Las membresías Baby-Star, Young-Moon y Exoplanet se presentan con los precios ya existentes en el portal. Las tres incluyen estrenos anticipados de Starship Plus y acceso incluido a Starship Plus Pro.
+- Young-Moon y Exoplanet se clasifican como VIP: acceso a juegos/betas VIP y 50 % de descuento en compras elegibles. Ejemplo informativo: un producto de US$10 queda en US$5.
+- La sección de estrenos se muestra a cuentas con membresía activa devuelta por `starship-entitlements`; visitantes sin membresía ven el panel informativo de Universe Pay.
+- Límites actuales: no hay pasarela de pago ni checkout conectado; los descuentos son informativos y aún no se aplican a transacciones. No se ha proporcionado una URL del portal Starship Plus Pro ni enlaces de estrenos privados; esos destinos deben conectarse antes de prometer reproducción o acceso directo.
