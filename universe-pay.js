@@ -1,5 +1,6 @@
 (() => {
   "use strict";
+
   const dialog = document.getElementById("accountDialog");
   const menu = document.getElementById("accountSections");
   const panel = document.getElementById("accountPanel");
@@ -21,7 +22,7 @@
     element.hidden = hidden;
   }
 
-  function restoreAccountView() {
+  function restoreDialog() {
     for (const [element, hidden] of original) element.hidden = hidden;
     original.clear();
     if (accountTitle) accountTitle.textContent = "Configuración de Usuario";
@@ -37,29 +38,28 @@
     payOpen = false;
   }
 
-  function openPlans(event) {
-    const settingsTrigger = event.target.closest("#accountOpen,[data-open-account-settings]");
-    const payTrigger = event.target.closest("#universePayOpen,[data-open-universe-pay]");
-    if (!settingsTrigger && !payTrigger) return;
-    event.preventDefault(); event.stopImmediatePropagation();
+  function openUniversePay(event) {
+    const trigger = event.target.closest("[data-open-universe-pay]");
+    if (!trigger) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
     if (!dialog || !menu || !panel || !title || !content) return;
     if (!dialog.open) dialog.showModal();
-    if (settingsTrigger) {
-      restoreAccountView();
-      if (accountTitle) accountTitle.textContent = "Configuración de Usuario";
-      if (accountKicker) accountKicker.textContent = "UNIVERSE LEAGUE · ACCOUNT";
-      if (accountIntro) accountIntro.hidden = false;
-      if (signOut) signOut.hidden = false;
-      menu.hidden = false; panel.hidden = true;
-      if (note) { note.hidden = false; note.textContent = "Selecciona una sección para administrar tu cuenta."; }
-      payOpen = false; return;
-    }
+
     payOpen = true;
-    setHidden(menu,true); setHidden(note,true); setHidden(back,true);
-    setHidden(accountIntro,true); setHidden(signOut,true); setHidden(settingsMessage,true);
+    setHidden(menu, true);
+    setHidden(note, true);
+    setHidden(back, true);
+    setHidden(accountIntro, true);
+    setHidden(signOut, true);
+    setHidden(settingsMessage, true);
+
     if (accountTitle) accountTitle.textContent = "Universe Pay";
     if (accountKicker) accountKicker.textContent = "MEMBERSHIPS · UNIVERSE LEAGUE";
-    panel.hidden = false; title.textContent = "Elige tu plan";
+    panel.hidden = false;
+    title.textContent = "Planes y beneficios";
+
     content.innerHTML = [
       '<div class="geffenland-grid">',
       '<article class="geffenland-card baby"><div class="geffenland-symbol">★</div><span class="geffenland-level">BASIC · MEMBER</span><h4>Baby-Star</h4><div class="geffenland-prices"><strong>US$3 <small>/ mes</small></strong><span>US$36 / año</span></div><ul><li>Insignia Baby-Star y personalización del perfil.</li><li>Emojis y elementos decorativos exclusivos.</li><li>Eventos y novedades especiales.</li><li>Acceso anticipado a estrenos seleccionados de Starship Plus.</li><li>Acceso incluido a Starship Plus Pro.</li><li>Descuentos en compras digitales oficiales elegibles.</li></ul></article>',
@@ -69,8 +69,8 @@
     ].join("");
   }
 
-  document.addEventListener("click", openPlans, true);
+  document.addEventListener("click", openUniversePay, true);
   dialog?.addEventListener("close", () => {
-    if (payOpen) restoreAccountView();
+    if (payOpen) restoreDialog();
   });
 })();
