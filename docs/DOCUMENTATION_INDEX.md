@@ -39,7 +39,28 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 **Estado resumido:** The LyrieLife funciona como prototipo web. Los archivos `.world` están almacenados en subcarpetas por mundo, pero todavía no tienen un importador que lea su formato original. CAL/CUL sigue esperando los modelos fuente masculino y femenino y sus texturas; no se deben sustituir por modelos de League Of Legacy.
 
-## 4. Auditorías de servicios y sincronización
+## 4. Geffenite — Batalla Estelar
+
+| Recurso | Función |
+|---|---|
+| [../assets/Geffenite/gameplay/Geffenite_ Batalla Estelar.html](../assets/Geffenite/gameplay/Geffenite_ Batalla Estelar.html) | Prototipo de gameplay de la beta. |
+| [../assets/Geffenite/docs/Geffenite_ mapa de Eco Sónico Cósmico.html](../assets/Geffenite/docs/Geffenite_ mapa de Eco Sónico Cósmico.html) | Mapa conceptual interactivo y referencia de zonas/tormenta. |
+| `../assets/Geffenite/docs/Geffenite - Dossier de Juego y Empresa.docx` | Dossier fuente del proyecto. |
+| `../assets/Geffenite/docs/Geffenite - Acceso VIP y Requisitos.docx` | Documento fuente de acceso y requisitos. |
+
+**Estado resumido:** la beta está presentada en el área VIP y su acceso depende de entitlement activo Young-Moon o Exoplanet. Los DOCX se conservan en formato original. El mapa HTML se clasifica como referencia interactiva, no como sistema de mapas del motor.
+
+## 5. GellyShow
+
+| Documento | Función |
+|---|---|
+| [../assets/GellyShow/Docs/GellyShow_Informacion.md](../assets/GellyShow/Docs/GellyShow_Informacion.md) | Descripción, alcance, pantallas y pendientes. |
+| [../assets/GellyShow/Docs/GellyShow_Reglas.md](../assets/GellyShow/Docs/GellyShow_Reglas.md) | Reglas de vestir, Battle, rondas y puntuación. |
+| [../assets/GellyShow/Gameplay/GellyShow.html](../assets/GellyShow/Gameplay/GellyShow.html) | Juego 2D autónomo para navegador. |
+
+**Estado resumido:** archivos almacenados y documentados. El modo Online está pendiente de servidor y no se encontró conexión al catálogo/lanzador del portal; no se declara integrado.
+
+## 6. Auditorías de servicios y sincronización
 
 | Documento | Función |
 |---|---|
@@ -47,7 +68,7 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 **Bloqueo vigente:** el ref Supabase configurado por el frontend no coincide con los proyectos disponibles verificados. No cambiar URL/clave, crear tablas, modificar políticas ni copiar datos hasta confirmar el backend canónico.
 
-## 5. Fuentes y referencias conservadas
+## 7. Fuentes y referencias conservadas
 
 Estos archivos se mantienen con sus nombres y ubicaciones originales. Son material de consulta, prototipos o fragmentos de referencia; no son automáticamente módulos activos:
 
@@ -59,9 +80,10 @@ Estos archivos se mantienen con sus nombres y ubicaciones originales. Son materi
 - `../assets/The-LyrieLife/UI/` — HUD y menú de referencia, no conectados automáticamente al lanzador.
 - `../assets/The-LyrieLife/CAL-CUL/Create-A-Lyrie-preview.html` — vista previa separada del creador activo `cal-cul.html`.
 - `../assets/league-of-legacy/references/` — referencia visual de un cliente externo; no es interfaz propia ni permiso de reutilización.
-- `../assets/Geffenite/docs/` — documentos de Geffenite, mantenidos en su área independiente.
+- `../assets/Geffenite/docs/` — dossier, requisitos VIP y mapa conceptual de Geffenite.
+- `../assets/GellyShow/Docs/` — información y reglas de GellyShow; el HTML de gameplay permanece separado.
 
-## 6. Reglas para mantener la documentación
+## 8. Reglas para mantener la documentación
 
 1. Actualizar primero el manifiesto cuando se añada, mueva o retire un asset.
 2. Actualizar rutas y referencias de código en el mismo cambio lógico.
