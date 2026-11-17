@@ -201,3 +201,9 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 @media(max-width:900px){.universe-pay-benefits{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.universe-pay-button{font-size:9px;padding:9px 10px}.starship-plus-premieres .ulh-vip-card{grid-template-columns:1fr}.starship-plus-premieres .ulh-vip-art{min-height:140px}.universe-pay-benefits{grid-template-columns:1fr 1fr}.geffenland-card ul{min-height:0}}
 @media(max-width:420px){.universe-pay-benefits{grid-template-columns:1fr}}
+
+.universe-pay-member-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 20px}
+.universe-pay-member-actions button{flex:1 1 180px;min-height:46px;padding:12px 18px;border:1px solid var(--accent);border-radius:12px;background:var(--accent);color:#fff;font:700 12px inherit;letter-spacing:.04em;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.universe-pay-member-actions button:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.universe-pay-member-actions button+button{background:transparent;color:var(--ink)}
+@media(max-width:480px){.universe-pay-member-actions{flex-direction:column}.universe-pay-member-actions button{flex-basis:auto;width:100%}}
