@@ -22,7 +22,9 @@ La prioridad logística es cerrar primero los bloqueos de backend, derechos y va
 | Jaque Matte | Minijuego de ajedrez en games.js; icono conectado al catálogo | Implementación presente; requiere prueba real del motor externo y guardado |
 | Pinkie Star | Mahjong Solitaire en games.js; icono conectado al catálogo | Implementado bajo nombre visible Pinkie Star; guardado nuevo usa pinkie-star y recupera pixxy-up anterior |
 | Vídeos de inicio | 3 MP4 publicados en assets/videos/ | Lanzador usa los nombres reales actuales |
-| Documentación | Índice nuevo, arquitectura, manifiesto, planes y auditorías | Referencias principales consolidadas; fuentes originales preservadas |
+| Geffenite | Gameplay HTML, mapa conceptual, 2 DOCX, icono y póster | Beta VIP presentada; conservar entitlement activo y fuentes originales |
+| GellyShow | Juego HTML autónomo, 2 documentos MD, icono y póster | Almacenado; Online pendiente de servidor; aún sin conexión al catálogo |
+| Documentación | Índice, arquitectura, manifiesto, planes y auditorías | Referencias principales consolidadas; fuentes originales preservadas |
 
 ### Rutas de mundo
 
@@ -32,6 +34,12 @@ La prioridad logística es cerrar primero los bloqueos de backend, derechos y va
 - assets/The-LyrieLife/Worlds/abandoned-island/abandoned-island.world
 
 Kataleya y Kariskio comparten el mismo Git blob SHA y tamaño. Se conservan ambos nombres; no se asume que sean mundos distintos ni se reemplaza uno por el otro.
+
+### Nuevas experiencias — revisión 17 de noviembre
+
+**Geffenite:** el juego y sus documentos están agrupados en `assets/Geffenite/`. El catálogo VIP y los permisos deben seguir exigiendo membresía activa Young-Moon o Exoplanet. El HTML del mapa es una referencia conceptual. Los dos DOCX se preservan, sin afirmar que su contenido interno haya sido auditado en esta pasada.
+
+**GellyShow:** el juego autónomo y sus documentos están agrupados en `assets/GellyShow/`. La información del proyecto indica que Online requiere servidor y está pendiente. No se encontró conexión al catálogo/lanzador; queda almacenado, no integrado.
 
 ## 3. Dependencias y bloqueos
 
@@ -102,6 +110,7 @@ Los iconos de Jaque Matte y Pinkie Star están conectados al catálogo. Los arch
 - Se corrigió el auditor estático para buscar los cuatro mundos en sus subcarpetas y verificar la migración de Pinkie Star.
 - Se añadieron comprobaciones de sintaxis JavaScript al workflow de GitHub Actions.
 - Se actualizó el selector/leyenda de personajes de League Of Legacy para reflejar los ocho modelos publicados.
+- Se inventariaron Geffenite y GellyShow; se clasificaron sus documentos, gameplay e imágenes y se documentó el estado real de conexión.
 
 ## 7. Límites de esta auditoría
 
