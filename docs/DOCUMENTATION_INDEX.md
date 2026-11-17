@@ -58,7 +58,7 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 | [../assets/GellyShow/Docs/GellyShow_Reglas.md](../assets/GellyShow/Docs/GellyShow_Reglas.md) | Reglas de vestir, Battle, rondas y puntuación. |
 | [../assets/GellyShow/Gameplay/GellyShow.html](../assets/GellyShow/Gameplay/GellyShow.html) | Juego 2D autónomo para navegador. |
 
-**Estado resumido:** archivos almacenados y documentados. El modo Online está pendiente de servidor y no se encontró conexión al catálogo/lanzador del portal; no se declara integrado.
+**Estado resumido:** el juego base está conectado al catálogo Gratis · Demo y al flujo de instalación/biblioteca; QA de navegador pendiente. El modo Online está pendiente de servidor.
 
 ## 6. Nuevos juegos y plataforma
 
