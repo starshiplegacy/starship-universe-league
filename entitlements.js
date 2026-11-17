@@ -7,7 +7,7 @@
   function applyGates() {
     const plan = String(state.plan || "").toLowerCase().replace(/-/g,"_");
     const memberAccess = state.entitlements.some(key => ["baby","baby_star","baby-star","moon","planet","young_moon","young-moon","exoplanet"].includes(String(key).toLowerCase())) || memberPlans.has(plan);
-    const geffeniteAccess = has("young_moon") || has("young-moon") || has("exoplanet") ||
+    const geffeniteAccess = has("moon") || has("planet") || has("young_moon") || has("young-moon") || has("exoplanet") ||
       vipPlans.has(plan);
     document.querySelectorAll("[data-requires-membership]").forEach(node => {
       node.hidden = !memberAccess;
