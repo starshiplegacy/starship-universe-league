@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The LyrieLife – Gameplay UI</title>
+<style>
+:root{--p1:#6f7df0;--p2:#3d43b0;--p3:#262a78;--l:#dfe6ff;--g:#5ee05a;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0;user-select:none}
+html,body{height:100%;overflow:hidden;background:#0d1020;font-family:"Segoe UI",Arial,sans-serif}
+#st{position:absolute;width:1200px;height:675px;transform-origin:0 0;overflow:hidden;background:radial-gradient(ellipse at 30% 20%,#3b5a8c,transparent 60%),radial-gradient(ellipse at 80% 90%,#6a3f8f,transparent 55%),linear-gradient(160deg,#1c2a4a,#2c1f4d 60%,#14283a)}
+.a{position:absolute}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.pn{background:linear-gradient(#6e7ae8,#4650c4 40%,#3a3fa6);border:2px solid #aeb8ff;border-radius:6px;box-shadow:0 3px 10px rgba(0,0,0,.45)}
+.hd{height:24px;background:linear-gradient(#3b41a8,#242a80);color:var(--l);font:700 13px "Segoe UI";display:flex;align-items:center;justify-content:space-between;padding:0 8px;border-bottom:1px solid #8993f0}
+.rb{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#fff,#9fb2ff);border:2px solid #fff;color:#2c3490;font:800 13px Arial;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.5);cursor:pointer}
+.rb:hover,.ib:hover{filter:brightness(1.15);transform:scale(1.08)}
+.rb:active{transform:scale(.95)}
+/* top */
+#tl{left:0;top:0;width:72px;height:16px;border-radius:0 0 8px 0;display:flex;gap:6px;padding:2px 8px}
+#tl i{width:12px;height:11px;background:#dfe6ff;border-radius:2px;cursor:pointer}
+#q{left:517px;top:0;width:166px;height:52px;border-radius:0 0 6px 6px}
+#q .av{left:6px;top:4px;width:22px;height:22px;border-radius:4px;background:linear-gradient(#e7ecff,#9fb0ff);border:2px solid #fff;color:#3d43b0;font:800 13px/18px Arial;text-align:center}
+#q .pb{left:33px;top:6px;width:128px;height:12px;background:#1d2060;border-radius:3px;border:1px solid #aeb8ff;overflow:hidden}
+#q .pb i{display:block;height:100%;width:30%;background:linear-gradient(#8bff80,#3fbf3a);transition:width .3s}
+#q .nm{left:0;top:30px;width:100%;height:22px;background:linear-gradient(#3b41a8,#242a80);color:var(--l);font:600 11px Arial;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:0 0 4px 4px;cursor:pointer}
+#tr{left:998px;top:0}
+.cb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#8ac8ff,#2f6fd0);border:3px solid #dfe6ff;box-shadow:0 2px 6px rgba(0,0,0,.5);cursor:pointer;top:2px;display:flex;align-items:center;justify-content:center;color:#fff;font:800 14px Arial}
+.cb:hover{filter:brightness(1.2)}
+.ib{width:18px;height:18px;border-radius:50%;background:#dfe6ff;color:#3d43b0;font:800 11px/18px Arial;text-align:center;cursor:pointer;top:6px}
+#nt{left:1036px;top:24px;width:156px;height:46px;font:600 9.5px/11px Arial;color:#eaf0ff;padding:5px 6px 5px 38px;cursor:pointer;transition:.25s}
+#nt::before{content:"";position:absolute;left:5px;top:6px;width:28px;height:28px;border-radius:4px;background:linear-gradient(#7fe39a,#2f9bd0);border:1px solid #fff}
+#nt.h{opacity:0;transform:translateY(-14px);pointer-events:none}
+/* quests */
+#ql{left:0;top:30px;width:176px}
+.it{margin:3px 5px;height:22px;background:linear-gradient(#fff,#d6defc);border-radius:4px;display:flex;align-items:center;font:600 10.5px Arial;color:#2b3190;cursor:pointer;border:1px solid #fff}
+.it:hover{background:#fff}
+.it b{width:18px;height:18px;margin:0 5px;border-radius:3px;background:linear-gradient(#ffb36b,#e0603a);flex:none}
+.it span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.it em{font-style:normal;color:#5560c8;margin-right:6px;font-size:10px}
+.it.ok{background:#c8ffd0}.it.ok em{color:#1a9a30}
+#qf{display:flex;justify-content:flex-end;gap:5px;padding:4px 8px 6px}
+#qb{overflow:hidden;transition:max-height .25s;max-height:140px}
+#ql.c #qb{max-height:0}
+/* right panel */
+#rp{left:973px;top:270px;width:227px;height:378px;background:#f2f4ff;border:2px solid #aeb8ff;border-radius:6px 0 0 6px;overflow:hidden;transition:transform .3s,opacity .3s;box-shadow:0 3px 12px rgba(0,0,0,.5);display:flex;flex-direction:column}
+#rp.x{transform:translateX(105%);opacity:0;pointer-events:none}
+#rh{height:24px;background:linear-gradient(#5d69e0,#3d43b0);display:flex;align-items:center;padding:0 6px;gap:6px;flex:none}
+#rh .nm{flex:1;height:14px;border-radius:7px;background:#dfe6ff;color:#3d43b0;font:700 9px/14px Arial;text-align:center;border:1px solid #fff}
+#rh .m{width:14px;height:14px;border-radius:50%;background:radial-gradient(#fff,#8ac8ff);border:1px solid #fff;cursor:pointer}
+#rb{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#6f7df0 #dde3ff}
+.sh{height:20px;background:linear-gradient(#3b41a8,#242a80);color:#fff;font:700 11px Arial;display:flex;align-items:center;justify-content:space-between;padding:0 8px;cursor:pointer}
+.sh.s{height:15px;font-size:9px;background:linear-gradient(#5560d0,#3a40a5)}
+.sh:hover{filter:brightness(1.15)}
+.sh i{font-style:normal;font-size:8px;transition:transform .2s}.sh.c i{transform:rotate(-90deg)}
+.sb{overflow:hidden;transition:max-height .25s;max-height:400px;background:#fff}.sb.c{max-height:0}
+.tg{display:grid;grid-template-columns:1fr 1fr}
+.tg div{height:26px;border:1px solid #cfd6f7;display:flex;align-items:center;gap:6px;padding-left:6px;font:600 9px Arial;color:#2b3190;cursor:pointer}
+.tg div:hover{background:#e8ecff}
+.tg b{width:16px;height:16px;border-radius:50%;border:2px solid #6f7df0;flex:none}
+.vm{margin:8px auto 4px;display:block;width:96px;height:20px;border-radius:10px;background:linear-gradient(#fff,#cfd8ff);border:2px solid #6f7df0;color:#2b3190;font:700 9px Arial}
+.vm:hover{background:#fff}
+#mt{text-align:center;font:700 11px Arial;color:#2b3190;padding:6px 0 8px;min-height:30px}
+.md{display:flex;gap:6px;padding:6px;min-height:52px}
+.md b{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#fff,#c0a0ff 60%,#8a62e0);border:3px solid #6f7df0;cursor:pointer}
+.md b.e{background:radial-gradient(#e8e8ee,#aab);border-color:#99a}
+.md b:hover{transform:scale(1.08)}
+/* bottom */
+#bb{left:0;bottom:0;width:1200px;height:24px;background:linear-gradient(#4650c4,#262a78);border-top:2px solid #aeb8ff}
+#mo{left:44px;bottom:3px;font:800 12px Arial;color:#e8ecff;cursor:pointer;letter-spacing:.5px}
+.sm{bottom:3px;width:18px;height:18px;border-radius:3px;background:linear-gradient(#e7ecff,#9fb0ff);border:1px solid #fff;cursor:pointer}
+.sm:hover{filter:brightness(1.15)}
+#ctl{left:520px;bottom:0;width:160px;height:36px;border-radius:12px 12px 0 0;background:linear-gradient(#5d69e0,#2e34a0);border:2px solid #aeb8ff;border-bottom:0}
+#ctl .t{left:0;top:-22px;width:100%;text-align:center;color:#fff;font:700 15px Arial;text-shadow:0 1px 3px #000}
+#ctl .bt{top:5px;width:22px;height:20px;border-radius:5px;background:linear-gradient(#fff,#c4d0ff);border:1px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#2b3190;font:800 9px Arial}
+#ctl .bt.on{background:linear-gradient(#ffd27a,#ff9a30);color:#fff}
+#ctl .ck{left:98px;top:7px;width:52px;height:16px;border-radius:8px;background:#1d2060;color:#dfe6ff;font:600 8.5px/16px Arial;text-align:center}
+.rbn{bottom:2px;width:18px;height:19px;border-radius:4px;background:#dfe6ff;border:1px solid #fff;cursor:pointer;color:#3d43b0;font:800 9px/17px Arial;text-align:center}
+.rbn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+#hx{left:1008px;bottom:0;width:26px;height:24px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:linear-gradient(#ffd27a,#e08a20);border:0;cursor:pointer;color:#fff;font:800 15px/24px Arial;text-align:center;transition:.2s}
+#hx:hover{filter:brightness(1.15)}#hx.on{background:linear-gradient(#8bff80,#2fbf3a)}
+#ts{left:50%;top:-40px;transform:translateX(-50%);padding:6px 14px;background:#262a78;color:#fff;border:1px solid #aeb8ff;border-radius:14px;font:600 11px Arial;transition:top .25s;z-index:9;white-space:nowrap}
+#ts.s{top:60px}
+</style></head><body>
+<div id="st">
+ <div id="tl" class="a pn"><i data-t="Menú de Lyries"></i><i data-t="Vista de familia"></i></div>
+ <div id="q" class="a pn"><div class="a av">L</div><div class="a pb"><i></i></div><div class="a nm" id="qn">Conversación casual <span>&#9660;</span></div></div>
+ <div id="tr" class="a">
+  <div class="a cb" style="left:0" data-t="Construir / Comprar">&#9874;</div><div class="a cb" style="left:38px" data-t="Vecindario">&#9906;</div><div class="a cb" style="left:76px" data-t="Eventos">&#10040;</div>
+  <div class="a ib" style="left:112px" data-t="Inicio">&#8962;</div><div class="a ib" style="left:136px" data-t="Ajustes">&#9881;</div><div class="a ib" style="left:160px" data-t="Ayuda">?</div>
+ </div>
+ <div id="nt" class="a pn">¡La huella ecológica de tu vecindario es Neutral! Aprende más en la lección de Huella Ecológica.</div>
+
+ <div id="ql" class="a pn">
+  <div class="hd" id="qh" style="cursor:pointer">Metas de LyrieLife <span id="qa">&#9650;</span></div>
+  <div id="qb"><div class="it"><b></b><span>Leer un libro o ver TV</span><em>0/1</em></div><div class="it"><b style="background:linear-gradient(#ff8a8a,#d03a50)"></b><span>Tomar una siesta</span><em>0/1</em></div><div class="it"><b style="background:linear-gradient(#9fe0ff,#3a8ad0)"></b><span>Ducharse o bañarse</span><em>0/1</em></div>
+  <div id="qf"><div class="rb" id="qhelp">?</div><div class="rb" id="qstop">&#9632;</div></div></div>
+ </div>
+
+ <div id="rp" class="a">
+  <div id="rh"><div class="m"></div><div class="nm">Lyrie 00</div><div class="m" data-t="Cambiar de Lyrie"></div><div class="m" id="rx" data-t="Cerrar panel"></div></div>
+  <div id="rb">
+   <div class="sh">Rasgos <i>&#9660;</i></div><div class="sb"><div class="tg"><div><b></b>Amante de perros</div><div><b></b>Activo</div><div><b></b>Genio</div><div><b></b>Afecto animal</div></div></div>
+   <div class="sh" style="background:linear-gradient(#e8ecff,#c4cdff);color:#2b3190">Hitos <i>&#9660;</i></div><div class="sb"><button class="vm" id="vm">Ver hitos</button><div id="mt">Hitos de Joven Adulto</div></div>
+   <div class="sh s">Primeros <i>&#9660;</i></div><div class="sb"><div class="md"><b></b></div></div>
+   <div class="sh s">Vida <i>&#9660;</i></div><div class="sb"><div class="md"><b class="e"></b><b></b><b></b><b></b></div></div>
+   <div class="sh s">Social <i>&#9660;</i></div><div class="sb"><div class="md"><b></b><b></b></div></div>
+   <div class="sh">Gustos y disgustos <i>&#9660;</i></div><div class="sb"><div class="md"><b></b><b></b><b></b><b></b><b></b></div></div>
+  </div>
+ </div>
+
+ <div id="bb" class="a"></div>
+ <div id="mo" class="a" data-t="Fondos de Lyrie">&#167; 00</div>
+ <div class="a sm" style="left:130px" data-t="Teléfono"></div><div class="a sm" style="left:154px" data-t="Cámara"></div>
+ <div id="ctl" class="a"><div class="t" id="tx">Pausado</div>
+  <div class="a bt on" data-s="0" style="left:8px">&#10074;&#10074;</div><div class="a bt" data-s="1" style="left:34px">&#9654;</div><div class="a bt" data-s="2" style="left:60px">&#9654;&#9654;</div><div class="a bt" data-s="3" style="left:86px">&#9654;&#9654;&#9654;</div><div class="a ck" id="ck">Lun 5:11</div></div>
+ <button id="hx" class="a on" title="Panel de Lyrie">+</button>
+ <div class="a rbn" style="left:1044px" data-t="Mapa">&#9632;</div><div class="a rbn" style="left:1068px" data-t="Ubicaciones">&#9679;</div><div class="a rbn" style="left:1092px" data-t="Relaciones">&#9829;</div><div class="a rbn" style="left:1116px" data-t="Habilidades">&#9733;</div><div class="a rbn" style="left:1140px" data-t="Inventario">&#9638;</div><div class="a rbn" style="left:1164px" data-t="Mensajes">&#9993;</div>
+ <div id="ts" class="a"></div>
+</div>
+<script>
+const st=document.getElementById('st');
+function fit(){const s=Math.min(innerWidth/1200,innerHeight/675);st.style.transform='scale('+s+')';st.style.left=(innerWidth-1200*s)/2+'px';st.style.top=(innerHeight-675*s)/2+'px'}
+addEventListener('resize',fit);fit();
+const $=id=>document.getElementById(id),ts=$('ts');let tm;
+function toast(m){ts.textContent=m;ts.classList.add('s');clearTimeout(tm);tm=setTimeout(()=>ts.classList.remove('s'),1300)}
+document.querySelectorAll('[data-t]').forEach(e=>e.onclick=()=>toast(e.dataset.t));
+/* panel toggle */
+const rp=$('rp'),hx=$('hx');
+function pan(o){rp.classList.toggle('x',!o);hx.classList.toggle('on',o);hx.textContent=o?'+':'+'}
+hx.onclick=()=>pan(rp.classList.contains('x'));$('rx').onclick=()=>pan(false);
+/* collapsibles */
+document.querySelectorAll('.sh').forEach(h=>h.onclick=()=>{h.classList.toggle('c');h.nextElementSibling.classList.toggle('c')});
+$('vm').onclick=()=>{const t=$('mt');t.textContent=t.dataset.o?'Hitos de Joven Adulto':'Aún no hay hitos alcanzados';t.dataset.o=t.dataset.o?'':'1'};
+/* quests */
+$('qh').onclick=()=>{const q=$('ql');q.classList.toggle('c');$('qa').innerHTML=q.classList.contains('c')?'&#9660;':'&#9650;'};
+document.querySelectorAll('.it').forEach(i=>i.onclick=()=>{const ok=i.classList.toggle('ok');i.querySelector('em').textContent=ok?'1/1':'0/1'});
+$('qhelp').onclick=()=>toast('Completa las metas para ganar recompensas');$('qstop').onclick=()=>$('qh').click();
+$('nt').onclick=()=>$('nt').classList.add('h');
+/* queue */
+let pr=30;$('qn').onclick=()=>{pr=0;toast('Interacción cancelada')};
+/* time */
+const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],names=['Pausado','Velocidad 1','Velocidad 2','Velocidad 3'];
+let sp=0,d=0,m=5*60+11;
+function ck(){$('ck').textContent=days[d]+' '+(Math.floor(m/60)%12||12)+':'+String(m%60).padStart(2,'0')+(m%1440<720?' AM':' PM')}
+function setS(n){sp=n;document.querySelectorAll('[data-s]').forEach(b=>b.classList.toggle('on',+b.dataset.s===n));$('tx').textContent=names[n]}
+document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>setS(+b.dataset.s));
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();setS(sp?0:1)}if('123'.includes(e.key)&&e.key)setS(+e.key)});
+setInterval(()=>{if(!sp)return;m+=[0,1,3,8][sp];if(m>=1440){m-=1440;d=(d+1)%7}ck();pr=(pr+[0,1,2,4][sp])%101;document.querySelector('#q .pb i').style.width=pr+'%'},500);
+</script></body></html>

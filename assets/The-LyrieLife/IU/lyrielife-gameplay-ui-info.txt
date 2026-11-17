@@ -1,0 +1,80 @@
+THE LYRIELIFE – INTERFAZ DE GAMEPLAY (HUD)
+==========================================
+
+1. QUÉ ES
+---------
+La interfaz de gameplay (HUD) es la capa que aparece sobre el mundo mientras
+se juega. No es un menú aparte: es la barra de control con la que el jugador
+maneja, organiza y gestiona a su personaje (o a sus personajes) sin salir de
+la partida.
+
+Esta versión es SOLO la barra de gameplay. Se eliminaron el escenario, los
+personajes, las etiquetas del menú circular y los retratos del hogar.
+
+
+2. ZONAS DE LA INTERFAZ
+-----------------------
+
+2.1 Barras superiores
+  - Barra superior izquierda: accesos pequeños (menú de Lyries y vista de
+    familia).
+  - Cola de interacciones (arriba al centro): muestra la acción que el
+    personaje está haciendo (por ejemplo "Conversación casual"), con una
+    barra de progreso. Al pulsar el nombre se cancela la acción.
+  - Botones circulares (arriba a la derecha): Construir/Comprar, Vecindario
+    y Eventos, más tres iconos pequeños: Inicio, Ajustes y Ayuda.
+  - Tarjeta de notificación (debajo de los botones): avisos del juego, como
+    el estado ecológico del vecindario. Se cierra al pulsarla.
+
+2.2 Panel de metas (arriba a la izquierda)
+  - Lista de objetivos del personaje, por ejemplo: "Leer un libro o ver TV",
+    "Tomar una siesta", "Ducharse o bañarse". Cada meta muestra su progreso
+    (0/1).
+  - Botón "?": ayuda. Botón "■": minimizar. El título también pliega el panel.
+
+2.3 Barra inferior
+  - Dinero (izquierda): saldo del hogar, que aquí está en § 00.
+  - Accesos pequeños: teléfono y cámara.
+  - Control de tiempo (centro): Pausa, Velocidad 1, 2 y 3, y el reloj con día
+    y hora. El texto superior indica el estado ("Pausado" o la velocidad).
+  - Iconos de gestión (derecha): Mapa, Ubicaciones, Relaciones, Habilidades,
+    Inventario y Mensajes.
+  - Botón hexagonal "+" (esquina inferior derecha): abre y cierra el panel
+    del personaje.
+
+2.4 Panel del personaje (pestaña lateral derecha)
+  - Cabecera con el nombre del personaje y botones para cambiar de personaje
+    y cerrar.
+  - Rasgos: la personalidad del personaje.
+  - Hitos: resumen de los logros de su etapa de vida. Incluye "Ver hitos".
+  - Secciones de hitos: Primeros, Vida y Social.
+  - Gustos y disgustos: preferencias del personaje.
+  - Todas las secciones se pliegan y despliegan.
+
+
+3. QUÉ FUNCIONA EN EL ARCHIVO HTML
+----------------------------------
+  - Botón "+" o la "x" de la cabecera: abren y cierran el panel lateral con
+    animación.
+  - Secciones del panel: pliegan y despliegan al pulsar su título.
+  - Metas: al pulsar una se marca como completada (1/1) y vuelve a 0/1.
+  - Tiempo: Pausa y Velocidades 1 a 3 hacen avanzar el reloj y la barra de
+    progreso. Atajos: ESPACIO alterna pausa y juego; teclas 1, 2 y 3 cambian
+    de velocidad.
+  - Notificación: se cierra al pulsarla.
+  - Cola de interacciones: pulsar el nombre reinicia la acción.
+  - Resto de botones: muestran un aviso con su nombre, listos para conectar
+    su función real.
+
+
+4. NOTAS
+--------
+  - El botón "+" de la esquina inferior derecha se adaptó a The LyrieLife
+    como interruptor del panel del personaje. No estoy seguro de cuál es el
+    nombre exacto de ese botón en Los Sims 4, así que lo traté como un botón
+    para mostrar u ocultar la información del personaje.
+  - Las funciones de los iconos de la derecha (Mapa, Relaciones, Habilidades,
+    etc.) son una propuesta mía para el juego, no una copia de las del
+    original.
+  - Nombres, rasgos y metas son de ejemplo y se pueden cambiar.
+  - El fondo es un degradado propio; no contiene imágenes del juego original.
