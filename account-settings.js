@@ -10,7 +10,7 @@
   const avatarButton = $("accountOpen");
   const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neón",galaxy:"Galaxy",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"};
   const languages = {es:"Español",en:"English",ko:"한국어",ja:"日本語"};
-  let client = null, session = null, profile = null, signedAvatarUrl = null, busy = false;
+  let client = null, session = null, profile = null, signedAvatarUrl = null, busy = false, openPlansAfterAuth = false;
   const say = (message, type) => {
     const el = $("settingsMessage");
     if (!el) return;
@@ -202,15 +202,22 @@
 
   function renderPlans() {
     const plans = [
-      {key:"baby",name:"Baby-Star",level:"BASIC",monthly:"US$3",annual:"US$36",symbol:"★",themes:["Stellar Sum"],benefits:["Insignia Baby-Star junto al nombre y al ID público.","Personalización del perfil con detalles de estrellas.","Emojis y elementos decorativos exclusivos.","Eventos exclusivos y novedades especiales de la comunidad.","Descuentos en productos digitales oficiales."]},
-      {key:"moon",name:"Young-Moon",level:"PRO",monthly:"US$6",annual:"US$72",symbol:"☾",themes:["Neptuno","Moon","Orbit"],benefits:["Incluye todos los beneficios Basic.","Insignia Young-Moon.","Temas y elementos Stars & Moons.","Eventos privados y actividades especiales.","Descargas de recursos digitales PRO.","Descuentos superiores en productos digitales oficiales."]},
-      {key:"planet",name:"Exoplanet",level:"PREMIUM VIP",monthly:"US$14",annual:"US$168",symbol:"♃",themes:["Jupiter","Sum","Ruby","Astroblue","Neonblue","Green Blue","Orbit Green"],benefits:["Incluye todos los beneficios Basic y PRO.","Insignia Exoplanet.","Acceso a juegos Premium.","Ver vídeos musicales antes de su estreno.","MULTIMEDIA VIP: libros, series y películas de STARSHIP PLUS antes de Wattpad y YouTube."]}
+      {key:"baby",name:"Baby-Star",level:"BASIC · MEMBER",monthly:"US$3",annual:"US$36",symbol:"★",themes:["Stellar Sum"],benefits:["Insignia Baby-Star junto al nombre y al ID público.","Personalización del perfil con detalles de estrellas.","Emojis y elementos decorativos exclusivos.","Eventos y novedades especiales de la comunidad.","Acceso anticipado a estrenos seleccionados de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Descuentos en compras digitales oficiales elegibles."]},
+      {key:"moon",name:"Young-Moon",level:"PRO · VIP",monthly:"US$6",annual:"US$72",symbol:"☾",themes:["Neptuno","Moon","Orbit"],benefits:["Incluye todos los beneficios de Baby-Star.","Acceso a juegos y betas reservados para miembros VIP.","50 % de descuento en compras elegibles de juegos y productos digitales oficiales.","Acceso anticipado a estrenos de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Temas Stars & Moons, eventos privados y recursos digitales PRO."]},
+      {key:"planet",name:"Exoplanet",level:"PREMIUM · VIP",monthly:"US$14",annual:"US$168",symbol:"♃",themes:["Jupiter","Sum","Ruby","Astroblue","Neonblue","Green Blue","Orbit Green"],benefits:["Incluye todos los beneficios Baby-Star y Young-Moon.","Acceso a juegos Premium y betas VIP.","50 % de descuento en compras elegibles de juegos y productos digitales oficiales.","Acceso anticipado prioritario a estrenos de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Multimedia y experiencias exclusivas de STARSHIP PLUS."]}
     ];
+    const entitlement = window.starshipEntitlements;
+    const membershipStatus = entitlement?.state?.loaded
+      ? (entitlement.isMember ? "Membresía activa detectada" : "No se detecta una membresía activa")
+      : "Estado de membresía pendiente de verificación";
+    const currentPlan = entitlement?.state?.plan || "astronaut";
     $("accountPanelContent").innerHTML =
-      '<p class="geffenland-intro">Hola, astronauta. ¿Quieres vivir en Starship Planet? Viaja a Geffenland con nuestras Stellar-Llaves y disfruta de los beneficios que estas llaves estelares tienen para ti.</p>' +
+      '<p class="geffenland-intro">Universe Pay reúne las membresías de STARSHIP UNIVERSE LEAGUE y sus beneficios. Elige el nivel que mejor encaje contigo y descubre todo lo que incluye.</p>' +
+      '<div class="universe-pay-status"><strong>Estado de tu cuenta:</strong> '+escapeHtml(membershipStatus)+' <span>· Plan: '+escapeHtml(currentPlan)+'</span></div>' +
+      '<div class="universe-pay-benefits"><article><span>✦</span><b>Estrenos anticipados</b><p>Ve los estrenos de Starship Plus antes de que se publiquen en YouTube.</p></article><article><span>🎮</span><b>Juegos VIP</b><p>Young-Moon y Exoplanet desbloquean juegos y betas reservados para miembros VIP.</p></article><article><span>％</span><b>Descuentos VIP</b><p>50 % de descuento en compras elegibles. Un juego de US$10 queda en US$5.</p></article><article><span>＋</span><b>Starship Plus Pro</b><p>Acceso incluido como beneficio de una membresía activa.</p></article></div>' +
       '<div class="geffenland-grid">' + plans.map(plan =>
-        '<article class="geffenland-card '+plan.key+'"><div class="geffenland-symbol">'+plan.symbol+'</div><span class="geffenland-level">'+plan.level+'</span><h4>'+plan.name+'</h4><div class="geffenland-prices"><strong>'+plan.monthly+' <small>/ mes</small></strong><span>'+plan.annual+' / año</span></div><div class="geffenland-themes"><b>Temas incluidos</b><div>'+plan.themes.map(theme=>'<span>'+escapeHtml(theme)+'</span>').join("")+'</div></div><ul>'+plan.benefits.map(item=>'<li>'+escapeHtml(item)+'</li>').join("")+'</ul><button type="button" class="settings-primary" disabled>Próximamente</button></article>'
-      ).join("") + '</div><p class="settings-muted">Precios en dólares estadounidenses (USD). El plan anual equivale a 12 mensualidades, sin descuento adicional. La compra, renovación, devolución de llaves y reembolsos todavía no están habilitados; no se realizará ningún cobro desde esta página.</p>';
+        '<article class="geffenland-card '+plan.key+'"><div class="geffenland-symbol">'+plan.symbol+'</div><span class="geffenland-level">'+plan.level+'</span><h4>'+plan.name+'</h4><div class="geffenland-prices"><strong>'+plan.monthly+' <small>/ mes</small></strong><span>'+plan.annual+' / año</span></div><div class="geffenland-themes"><b>Temas incluidos</b><div>'+plan.themes.map(theme=>'<span>'+escapeHtml(theme)+'</span>').join("")+'</div></div><ul>'+plan.benefits.map(item=>'<li>'+escapeHtml(item)+'</li>').join("")+'</ul></article>'
+      ).join("") + '</div><p class="settings-muted">Precios mostrados en USD, conservados del catálogo actual. El descuento del 50 % se aplica únicamente a compras elegibles y a los niveles VIP Young-Moon y Exoplanet; no se debe interpretar como descuento universal. La contratación, renovación y cobro en línea aún no están conectados, por lo que esta pantalla informa de los beneficios y no procesa pagos.</p>';
   }
 
   async function renderVerification() {
@@ -296,8 +303,18 @@
       finally{button.disabled=false;}
     });
   }
-  const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",plans:"Stellar-Llaves (Plans)",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
+  const sectionTitles = {profile:"Perfil de Usuario","personal-profile":"Perfil personal",plans:"Universe Pay",verification:"Verificaciones",feedback:"Quejas y Sugerencias",security:"Seguridad",privacy:"Privacidad",preferences:"Preferencias",activity:"Mis Actividades"};
   document.querySelectorAll("[data-account-section]").forEach(button=>button.addEventListener("click",()=>showPanel(button.dataset.accountSection,sectionTitles[button.dataset.accountSection] || "Configuración")));
+  function openUniversePay() {
+    if (!session?.user) {
+      openPlansAfterAuth = true;
+      $("accessDialog")?.showModal();
+      return;
+    }
+    if (!dialog?.open) dialog?.showModal();
+    showPanel("plans","Universe Pay");
+  }
+  document.querySelectorAll("#universePayOpen,[data-open-universe-pay]").forEach(button=>button.addEventListener("click",openUniversePay));
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
   const personalProfileSection = $("personalProfileSection");
@@ -314,6 +331,11 @@
     client=window.universeSupabase || client;
     if (!session?.user) {profile=null;renderAvatar(null);showMenu();return;}
     try {await loadProfile();} catch(error){console.warn("No se pudo cargar el perfil:",error);}
+    if (openPlansAfterAuth) {
+      openPlansAfterAuth = false;
+      if (!dialog?.open) dialog?.showModal();
+      showPanel("plans","Universe Pay");
+    }
   });
   window.addEventListener("universe-supabase-ready",async()=>{client=window.universeSupabase; if(session?.user) try{await loadProfile();}catch(error){console.warn(error);}});
   client=window.universeSupabase || null;
