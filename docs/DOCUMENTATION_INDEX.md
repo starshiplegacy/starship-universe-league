@@ -60,7 +60,17 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 **Estado resumido:** archivos almacenados y documentados. El modo Online está pendiente de servidor y no se encontró conexión al catálogo/lanzador del portal; no se declara integrado.
 
-## 6. Auditorías de servicios y sincronización
+## 6. Nuevos juegos y plataforma
+
+| Proyecto | Archivos y función |
+|---|---|
+| [Geffen: Monopoly](../assets/geffen-monopoly/geffen_monopoly_juego_de_mesa_interactivo.html) | Juego de mesa HTML con bots y modo local. [Documentación técnica](../assets/geffen-monopoly/documentaci_n_del_sistema_geffen_monopoly.txt). |
+| [Club de Cartas](../assets/star-solitaire/club_de_cartas_solitario_y_versus.html) | Solitario en Fila y modo Versus contra bot. |
+| [Starship Plus](../assets/starship-plus/starship-plus.html) | Plataforma audiovisual demostrativa. [Guía de funcionalidades](../assets/starship-plus/starship-plus-funcionalidades.txt). |
+
+**Estado resumido:** Geffen: Monopoly y Club de Cartas están conectados al catálogo gratuito y a la biblioteca de juegos instalados; la instalación sigue siendo una simulación local de 60 segundos. Starship Plus tiene una interfaz funcional de demostración, pero su reproductor no contiene vídeo real y no usa cuentas ni backend propios. Su enlace se encuentra en el área de miembros.
+
+## 7. Auditorías de servicios y sincronización
 
 | Documento | Función |
 |---|---|
@@ -68,7 +78,7 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 **Bloqueo vigente:** el ref Supabase configurado por el frontend no coincide con los proyectos disponibles verificados. No cambiar URL/clave, crear tablas, modificar políticas ni copiar datos hasta confirmar el backend canónico.
 
-## 7. Fuentes y referencias conservadas
+## 8. Fuentes y referencias conservadas
 
 Estos archivos se mantienen con sus nombres y ubicaciones originales. Son material de consulta, prototipos o fragmentos de referencia; no son automáticamente módulos activos:
 
@@ -82,8 +92,11 @@ Estos archivos se mantienen con sus nombres y ubicaciones originales. Son materi
 - `../assets/league-of-legacy/references/` — referencia visual de un cliente externo; no es interfaz propia ni permiso de reutilización.
 - `../assets/Geffenite/docs/` — dossier, requisitos VIP y mapa conceptual de Geffenite.
 - `../assets/GellyShow/Docs/` — información y reglas de GellyShow; el HTML de gameplay permanece separado.
+- `../assets/geffen-monopoly/` — juego Geffen: Monopoly y su documentación técnica.
+- `../assets/star-solitaire/` — Club de Cartas, Solitario y Versus.
+- `../assets/starship-plus/` — interfaz demostrativa de Starship Plus y guía de funcionalidades.
 
-## 8. Reglas para mantener la documentación
+## 9. Reglas para mantener la documentación
 
 1. Actualizar primero el manifiesto cuando se añada, mueva o retire un asset.
 2. Actualizar rutas y referencias de código en el mismo cambio lógico.
