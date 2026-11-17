@@ -138,3 +138,44 @@ El registro no define reglas de juego, tamaños de equipo, spawns, colisiones ni
 
 
 **Control de licencias:** el registro ahora exige `licenseStatus: "cleared"` para habilitar cualquier vista previa. Los mapas sin licencia verificada quedan bloqueados aunque exista un cargador compatible.
+
+
+## 13. Recursos nuevos — revisión 17 de noviembre de 2026
+
+### Jaque Matte y Pinkie Star
+
+| Recurso | Ruta en Git | Estado |
+|---|---|---|
+| Jaque Matte — icono | `assets/Jaque-Matte/Images/Jaque Matte (ICON).jpg` | Almacenado; referencia visual disponible |
+| Jaque Matte — póster | `assets/Jaque-Matte/Images/Jaque Matte (Postel).jpg` | Almacenado; el nombre original contiene `Postel` y se conserva para no romper rutas |
+| Pinkie Star — icono | `assets/Pinkie-Star/Images/Pinkie Star (ICON).jpg` | Almacenado; integración pendiente de confirmar |
+| Pinkie Star — póster | `assets/Pinkie-Star/Images/Pinkie Star (Postel).jpg` | Almacenado; el nombre original contiene `Postel` y se conserva para no romper rutas |
+
+Los cuatro JPG se mantienen en sus carpetas originales. No se asignan todavía a tarjetas ni al sistema de guardado: la relación entre Pinkie Star y los identificadores de juego existentes debe confirmarse antes de conectarlos.
+
+### The LyrieLife — prototipos de interfaz
+
+| Recurso | Ruta organizada | Clasificación |
+|---|---|---|
+| Create A Lyrie | `assets/The-LyrieLife/CAL-CUL/Create-A-Lyrie-preview.html` | Vista previa del módulo CAL/CUL; no sustituye `cal-cul.html` |
+| Gameplay HUD | `assets/The-LyrieLife/UI/gameplay-hud-preview.html` | Prototipo visual independiente |
+| Notas del HUD | `assets/The-LyrieLife/UI/gameplay-hud-notes.txt` | Especificación del prototipo |
+| Menú principal | `assets/The-LyrieLife/UI/main-menu-reference.html` | Referencia visual; no conectada al lanzador |
+
+Se corrigió el nombre de carpeta `IU` a `UI`. Los prototipos se conservaron íntegros y se movieron sin convertir su contenido. No se conectaron automáticamente a la navegación activa porque todavía son referencias independientes.
+
+### League Of Legacy — referencia de interfaz
+
+| Recurso | Ruta organizada | Clasificación |
+|---|---|---|
+| Home de League of Legends | `assets/league-of-legacy/references/league-client-home-reference.html` | Referencia visual externa; no es la pantalla Home propia de League Of Legacy |
+| Texto de referencia | `assets/league-of-legacy/references/league-client-home-reference-notes.md` | Texto auxiliar asociado |
+
+Se separó de una carpeta `home/` para evitar confundir una referencia de League of Legends con una pantalla original y funcional de League Of Legacy. No se conectó al juego ni se asumió permiso para reutilizar recursos protegidos.
+
+## 14. Criterio de organización
+
+- `CAL-CUL/`: prototipos y recursos exclusivos de Create A Lyrie.
+- `UI/`: referencias y prototipos de interfaz de The LyrieLife.
+- `references/`: material de consulta que no debe confundirse con pantallas activas del juego.
+- Los nombres de archivo originales se conservan cuando cambiarlo podría romper referencias; los errores tipográficos pendientes quedan documentados hasta una normalización coordinada.
