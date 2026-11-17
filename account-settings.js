@@ -52,7 +52,6 @@
     if (name === "activity") renderActivity();
     if (name === "feedback") renderFeedback();
     if (name === "verification") renderVerification();
-    if (name === "plans") renderPlans();
   }
   function renderAvatar(url) {
     if (!avatarButton) return;
@@ -212,20 +211,6 @@
     $("accountPanelContent").innerHTML = '<div class="settings-facts"><div><small>Cuenta creada</small><strong>'+escapeHtml(dateLabel(session.user.created_at))+'</strong></div><div><small>Último inicio de sesión</small><strong>'+escapeHtml(dateLabel(session.user.last_sign_in_at))+'</strong></div><div><small>Método de acceso</small><strong>'+escapeHtml((session.user.app_metadata?.provider || "email").toUpperCase())+'</strong></div><div><small>ID de usuario</small><strong class="settings-id">'+escapeHtml(profile?.public_id || "—")+'</strong></div></div><p class="settings-muted">Este panel muestra la información de actividad disponible actualmente para tu cuenta.</p>';
   }
 
-  function renderPlans() {
-    const plans = [
-      {key:"baby",name:"Baby-Star",level:"BASIC · MEMBER",monthly:"US$3",annual:"US$36",symbol:"★",themes:["Stellar Sum"],benefits:["Insignia Baby-Star junto al nombre y al ID público.","Personalización del perfil con detalles de estrellas.","Emojis y elementos decorativos exclusivos.","Eventos y novedades especiales de la comunidad.","Acceso anticipado a estrenos seleccionados de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Descuentos en compras digitales oficiales elegibles."]},
-      {key:"moon",name:"Young-Moon",level:"PRO · VIP",monthly:"US$6",annual:"US$72",symbol:"☾",themes:["Neptuno","Moon","Orbit"],benefits:["Incluye todos los beneficios de Baby-Star.","Acceso a juegos y betas reservados para miembros VIP.","50 % de descuento en compras elegibles de juegos y productos digitales oficiales.","Acceso anticipado a estrenos de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Temas Stars & Moons, eventos privados y recursos digitales PRO."]},
-      {key:"planet",name:"Exoplanet",level:"PREMIUM · VIP",monthly:"US$14",annual:"US$168",symbol:"♃",themes:["Jupiter","Sum","Ruby","Astroblue","Neonblue","Green Blue","Orbit Green"],benefits:["Incluye todos los beneficios Baby-Star y Young-Moon.","Acceso a juegos Premium y betas VIP.","50 % de descuento en compras elegibles de juegos y productos digitales oficiales.","Acceso anticipado prioritario a estrenos de Starship Plus antes de YouTube.","Acceso incluido a Starship Plus Pro.","Multimedia y experiencias exclusivas de STARSHIP PLUS."]}
-    ];
-    $("accountPanelContent").innerHTML =
-      '<p class="geffenland-intro">Elige el nivel de membresía que mejor encaje contigo y consulta sus precios, temas y beneficios.</p>' +
-      '<div class="universe-pay-benefits"><article><span>✦</span><b>Estrenos anticipados</b><p>Ve los estrenos de Starship Plus antes de que se publiquen en YouTube.</p></article><article><span>🎮</span><b>Juegos VIP</b><p>Young-Moon y Exoplanet desbloquean juegos y betas reservados para miembros VIP.</p></article><article><span>％</span><b>Descuentos VIP</b><p>50 % de descuento en compras elegibles. Un juego de US$10 queda en US$5.</p></article><article><span>＋</span><b>Starship Plus Pro</b><p>Acceso incluido como beneficio de una membresía activa.</p></article></div>' +
-      '<div class="geffenland-grid">' + plans.map(plan =>
-        '<article class="geffenland-card '+plan.key+'"><div class="geffenland-symbol">'+plan.symbol+'</div><span class="geffenland-level">'+plan.level+'</span><h4>'+plan.name+'</h4><div class="geffenland-prices"><strong>'+plan.monthly+' <small>/ mes</small></strong><span>'+plan.annual+' / año</span></div><div class="geffenland-themes"><b>Temas incluidos</b><div>'+plan.themes.map(theme=>'<span>'+escapeHtml(theme)+'</span>').join("")+'</div></div><ul>'+plan.benefits.map(item=>'<li>'+escapeHtml(item)+'</li>').join("")+'</ul></article>'
-      ).join("") + '</div><p class="settings-muted">Precios mostrados en USD, conservados del catálogo actual. El descuento del 50 % se aplica únicamente a compras elegibles y a los niveles VIP Young-Moon y Exoplanet; no se debe interpretar como descuento universal. La contratación, renovación y cobro en línea aún no están conectados, por lo que esta pantalla informa de los beneficios y no procesa pagos.</p>';
-  }
-
   async function renderVerification() {
     const content = $("accountPanelContent");
     content.innerHTML = '<div class="verification-tier-grid">' +
@@ -327,7 +312,6 @@
   syncPersonalProfileVisibility();
   window.addEventListener("universe-entitlements-change",()=>{
     if (!panel.hidden && title.textContent === "Perfil personal" && session?.user) renderPersonalProfile();
-    if (!panel.hidden && dialog.dataset.view === "plans") renderPlans();
   });
   window.addEventListener("universe-auth-change",async event=>{
     session=event.detail?.session || null;
