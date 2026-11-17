@@ -118,3 +118,10 @@ Los prototipos y referencias se mantienen separados del código de producción h
 
 
 - Jaque Matte and Pinkie Star require the same account installation flow as paid games: catalog → install → installed library → play. GellyShow is listed as Gratis · Demo and launches from the installed library; Online remains server-dependent and unavailable. Geffenite remains behind its VIP entitlement gate and uses the same install/library path after access is verified.
+
+
+## Universe Pay / Starship Plus member benefits (2026-11-17)
+
+The header Universe Pay action opens the membership and benefits panel without requiring login to read it. Baby-Star, Young-Moon, and Exoplanet members are described as receiving Starship Plus early premieres before the official YouTube release and Starship Plus Pro access. Young-Moon and Exoplanet are VIP tiers with VIP game/beta access and a 50% discount on eligible purchases (illustrative example: US$10 → US$5). The early-premiere area is gated by the active membership/plan returned by `starship-entitlements`.
+
+Payment processing and purchase checkout are not integrated, so the 50% discount is currently a displayed membership benefit, not an applied transaction price. No Starship Plus Pro destination URL or private premiere video links have been supplied; those integrations remain pending and the page shows a clear empty state rather than fabricated releases or destinations.
