@@ -242,7 +242,7 @@ La beta se presenta en el catálogo VIP. El enlace se revela cuando entitlements
 | Icono | `assets/GellyShow/Images/GellyShow (ICON).jpg` | 293,558 bytes | `30f2828230c76c72e01e2fb81e53f4e355011bc0` | Identidad visual |
 | Póster | `assets/GellyShow/Images/GellyShow (Postel).jpg` | 54,635 bytes | `c70513a68ef5c5808af778c1281a0af8bbf67b94` | Identidad visual; nombre original conservado |
 
-La documentación describe una experiencia 2D autónoma con contenido visual incrustado en el HTML. El modo Online sigue pendiente de servidor. No se encontró una referencia de lanzamiento/catalogación en el portal durante esta revisión: permanece almacenado y documentado, sin declararlo conectado al catálogo ni publicado como juego accesible desde el portal.
+La documentación describe una experiencia 2D autónoma con contenido visual incrustado en el HTML. El modo Online sigue pendiente de servidor. En la revisión posterior del 17 de noviembre se conectó al panel Gratis · Demo y al flujo de instalación/biblioteca; las pruebas de navegador siguen pendientes.
 
 ### Reglas de conservación
 
