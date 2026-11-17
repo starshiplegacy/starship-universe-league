@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Geffenite: mapa de Eco Sónico Cósmico</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#f6f2ff;--surface:#ffffff;--ink:#1d1236;--muted:#5d5278;--line:#d9cff5;--storm:#7b3ff2;--gold:#c98a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#150c28;--surface:#21143d;--ink:#f3edff;--muted:#b7a9d9;--line:#3a2a63;--storm:#a87bff;--gold:#ffc83d}}
+:root[data-theme="dark"]{--bg:#150c28;--surface:#21143d;--ink:#f3edff;--muted:#b7a9d9;--line:#3a2a63;--storm:#a87bff;--gold:#ffc83d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1;margin:8px 0 6px;font-weight:800}
+.sub{color:var(--muted);margin:0 0 18px;max-width:60ch}
+.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:8px}
+svg{width:100%;height:auto;display:block}
+.zone{cursor:pointer;transition:opacity .15s}
+.zone:hover,.zone:focus{opacity:.8;outline:none}
+.zone.on path,.zone.on rect,.zone.on circle{stroke:var(--ink);stroke-width:3}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.panel h2{margin:0 0 4px;font-size:1.4rem}
+.panel p{margin:8px 0;color:var(--muted)}
+.tag{display:inline-block;font-size:.8rem;border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin:2px 4px 2px 0}
+.loot{color:var(--gold);font-weight:700}
+.ctl{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.ctl label{display:flex;justify-content:space-between;font-weight:700}
+input[type=range]{width:100%;accent-color:var(--storm)}
+#ph{color:var(--muted);margin:6px 0 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Eco Sónico Cósmico</h1>
+<p class="sub">Isla de Geffenite: Batalla Estelar. Toca una zona para ver su botín y su carácter, y mueve la tormenta para ver cómo se cierra el círculo.</p>
+<div class="grid">
+<div class="mapbox">
+<svg viewBox="0 0 600 520" role="img" aria-label="Mapa de la isla con cinco zonas y la Tormenta Cósmica">
+<rect width="600" height="520" rx="12" fill="var(--bg)"/>
+<path d="M70 250C60 130 170 50 300 60C430 50 550 130 535 260C545 390 440 470 300 465C160 475 80 380 70 250Z" fill="var(--line)" opacity=".55"/>
+<g id="zones">
+<g class="zone" tabindex="0" data-z="nebulosa"><path d="M330 90h110v110H330z" fill="#7b3ff2"/><text x="385" y="150" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Ciudad</text><text x="385" y="168" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">Nebulosa</text></g>
+<g class="zone" tabindex="0" data-z="estudios"><path d="M440 220h85v95h-85z" fill="#1f6f8b"/><text x="482" y="262" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Estudios</text><text x="482" y="279" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Starship</text></g>
+<g class="zone" tabindex="0" data-z="anfiteatro"><circle cx="295" cy="285" r="62" fill="#c2185b"/><text x="295" y="282" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Anfiteatro</text><text x="295" y="300" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">del Ritmo</text></g>
+<g class="zone" tabindex="0" data-z="jungla"><path d="M95 150C100 100 190 80 255 105C275 170 250 225 170 250C115 245 90 200 95 150Z" fill="#2e8b57"/><text x="170" y="170" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Jungla</text><text x="170" y="188" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Acústica</text></g>
+<g class="zone" tabindex="0" data-z="paramo"><path d="M110 330h140l30 95H140z" fill="#a8742a"/><text x="195" y="372" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Páramo del</text><text x="195" y="390" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Silencio</text></g>
+</g>
+<mask id="m"><rect width="600" height="520" fill="#fff"/><circle id="hole" cx="320" cy="270" r="230" fill="#000"/></mask>
+<rect width="600" height="520" fill="var(--storm)" opacity=".5" mask="url(#m)" pointer-events="none"/>
+<circle id="ring" cx="320" cy="270" r="230" fill="none" stroke="var(--storm)" stroke-width="3" stroke-dasharray="8 6" pointer-events="none"/>
+</svg>
+</div>
+<div class="panel" id="panel" aria-live="polite"></div>
+</div>
+<div class="ctl">
+<label for="s"><span>Fase de la tormenta</span><span id="pn">1</span></label>
+<input id="s" type="range" min="1" max="6" value="1">
+<p id="ph"></p>
+</div>
+</main>
+<script>
+var Z={
+nebulosa:{n:"Ciudad Nebulosa",t:["Aterrizaje caótico","Botín alto"],d:"Rascacielos de neón con pantallas que transmiten adelantos de UNIIVERSE LEAGUE Ft. STARSHIP MUSIC. Tirolesas entre edificios y muchos cofres de alta rareza.",b:"Épico y legendario en cofres"},
+estudios:{n:"Estudios Starship Legacy",t:["Bóvedas","Jefe: Director del Estudio"],d:"Sede ficticia de la desarrolladora. Salas de servidores subterráneas con tarjetas de acceso a bóvedas secretas.",b:"Armas míticas con tarjeta"},
+anfiteatro:{n:"Anfiteatro del Ritmo",t:["Conciertos","Jefa: Conductora del Coro"],d:"Coliseo al aire libre rodeado de parlantes flotantes. Epicentro de los ensayos y conciertos de temporada.",b:"Botín musical avanzado"},
+jungla:{n:"Jungla Acústica",t:["Bioluminiscente","Jefe: Guardián del Eco"],d:"Las plantas rebotan a los jugadores al compás del ritmo y los ríos curan progresivamente al sumergirse.",b:"Curación y botes en el río"},
+paramo:{n:"Páramo del Silencio",t:["Francotiradores","Jefe: El Silenciador"],d:"Desierto donde las comunicaciones fallan y el sonido se apaga. Ruinas de naves estrelladas.",b:"Épico y legendario en ruinas"}
+};
+var R=[230,185,140,95,55,25],D=[1,2,5,7,10,10],T=["Solo avisa el rugido lejano.","El borde ya se siente en las orillas.","Las rutas de rotación se llenan.","Hay que decidir: construir o correr.","El círculo casi no da espacio.","Último círculo: 10 de daño por segundo."];
+var p=document.getElementById("panel");
+function show(k){var z=Z[k];p.innerHTML="<h2>"+z.n+"</h2>"+z.t.map(function(x){return '<span class="tag">'+x+"</span>"}).join("")+"<p>"+z.d+'</p><p class="loot">Botín: '+z.b+"</p>";
+document.querySelectorAll(".zone").forEach(function(e){e.classList.toggle("on",e.dataset.z===k)})}
+document.querySelectorAll(".zone").forEach(function(e){e.addEventListener("click",function(){show(e.dataset.z)});e.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();show(e.dataset.z)}})});
+var s=document.getElementById("s");
+function st(){var i=s.value-1;document.getElementById("hole").setAttribute("r",R[i]);document.getElementById("ring").setAttribute("r",R[i]);document.getElementById("pn").textContent=s.value+" de 6 · "+D[i]+" de daño por segundo";document.getElementById("ph").textContent=T[i]}
+s.addEventListener("input",st);st();show("anfiteatro");
+</script>
+</body>
+</html>
