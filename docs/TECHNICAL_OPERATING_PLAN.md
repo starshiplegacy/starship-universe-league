@@ -1,6 +1,6 @@
 # STARSHIP UNIVERSE LEAGUE — Technical operating plan
 
-**Last reviewed:** 2026-11-16  
+**Last reviewed:** 2026-11-17  
 **Repository:** `starshiplegacy/starship-universe-league` · `main`
 
 ## 1. Product boundaries
@@ -9,7 +9,8 @@
 |---|---|---|
 | Public/private web shell | Landing, navigation, auth entry points, account UI | GitHub |
 | The LyrieLife | World selection, life-simulation prototype, save integration | GitHub for code/assets; Supabase for cloud saves |
-| League Of Legacy | Character viewer and future multiplayer game | GitHub for code/GLB assets; Supabase for future game data |
+| League Of Legacy | Eight-character viewer and future multiplayer game | GitHub for code/GLB assets; Supabase for future game data |
+| Astronaut mini-games | Jaque Matte and Pinkie Star (Mahjong Solitaire) | GitHub for game code/assets; local/cloud saves only after backend confirmation |
 | Community | Gallery, comments, reactions, profile media | Supabase data/Storage; GitHub for client code |
 | CAL/CUL | Character creator and conversion pipeline | GitHub for tools; original source assets remain immutable |
 | Shared platform | Auth, profiles, settings, entitlements | Supabase after canonical project is confirmed |
@@ -20,7 +21,7 @@
 2. Connected Supabase project `uyhcocdknweqvcqgbnez` is not schema-aligned with current client expectations.
 3. Connected project `fixwovymcfpfididtmud` is a separate catalog/Django backend and must not be reused for these games.
 4. Cloud save, gallery, avatar Storage, creator verification, and feedback resources are not yet verified on the frontend's configured project.
-5. The world files are preserved assets; the browser prototype currently renders CSS-based environments and does not parse proprietary `.world` formats.
+5. The world files are preserved under `assets/The-LyrieLife/Worlds/<world>/`; the browser prototype currently renders CSS-based environments and does not parse proprietary `.world` formats.
 6. League Of Legacy currently provides a Three.js GLB character viewer, not a completed multiplayer gameplay loop.
 
 ## 3. Delivery phases
