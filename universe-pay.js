@@ -1,8 +1,9 @@
 (() => {
   "use strict";
   const openPay = (event) => {
-    const trigger = event.target.closest("#universePayOpen,[data-open-universe-pay]");
-    if (!trigger) return;
+    const settingsTrigger = event.target.closest("[data-open-account-settings]");
+    const payTrigger = event.target.closest("#universePayOpen,[data-open-universe-pay]");
+    if (!settingsTrigger && !payTrigger) return;
     event.preventDefault();
     const dialog = document.getElementById("accountDialog");
     const menu = document.getElementById("accountSections");
@@ -18,6 +19,16 @@
       if (!dialog.open) dialog.showModal();
     } catch (error) {
       console.error("Universe Pay: no se pudo abrir el diálogo", error);
+      return;
+    }
+    if (settingsTrigger) {
+      menu.hidden = false;
+      panel.hidden = true;
+      if (note) {
+        note.hidden = false;
+        note.textContent = "Selecciona una sección para administrar tu cuenta.";
+      }
+      title.textContent = "Configuración de Usuario";
       return;
     }
     menu.hidden = true;
