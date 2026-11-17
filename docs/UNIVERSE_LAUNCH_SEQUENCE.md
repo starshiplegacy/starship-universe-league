@@ -26,8 +26,13 @@ Los ocho modelos GLB pertenecen al conjunto de personajes de League Of Legacy y 
 | `Charlotte.glb` | GLB 2.0, 267 nodos, 7 mallas, 7 materiales, 7 skins, 56 animaciones, 2 imágenes WebP embebidas; usa Meshopt y KHR quantization | No |
 | `Arthur.glb` | GLB 2.0, 105 nodos, 1 malla, 1 material, 1 skin, 1 animación `Default`, 2 imágenes; usa Draco | No |
 | `Bella.glb` | GLB 2.0, 2 nodos, 1 malla, 1 material, 4 imágenes; modelo estático sin rig ni animaciones | No |
+| `Emma.glb` | GLB publicado (32,834,236 bytes); inspección detallada de rig, animaciones y materiales pendiente | No se requiere conversión por ahora |
+| `Aquamarine.glb` | GLB publicado (102,393,040 bytes); inspección detallada y perfil de rendimiento pendiente | No se requiere conversión por ahora |
+| `Opal (Opalo).glb` | GLB publicado (2,133,496 bytes); inspección detallada pendiente | No se requiere conversión por ahora |
+| `Optopool.glb` | GLB publicado (2,231,416 bytes); inspección detallada pendiente | No se requiere conversión por ahora |
+| `Stella.glb` | GLB publicado (31,908,604 bytes); inspección detallada pendiente | No se requiere conversión por ahora |
 
-El menú `league-of-legacy.html` incluye selector para Charlotte, Arthur, Bella, Emma, Aquamarine, Opal (Opalo), Optopool y Stella. Los metadatos detallados de la tabla anterior solo están documentados para Charlotte, Arthur y Bella; los otros cinco modelos no se convierten ni modifican por falta de necesidad. El selector de animación se activa cuando el modelo tiene clips. El visor configura Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`; no hay que volver a convertir ni comprimir estos modelos.
+El menú `league-of-legacy.html` incluye selector para Charlotte, Arthur, Bella, Emma, Aquamarine, Opal (Opalo), Optopool y Stella. Los metadatos detallados de estructura solo están documentados para Charlotte, Arthur y Bella. Los otros cinco están publicados y listados, pero requieren inspección técnica individual antes de optimizar o modificar. El selector de animación se activa cuando el modelo tiene clips. El visor configura Three.js `GLTFLoader`, `MeshoptDecoder` y `DRACOLoader`; no hay que volver a convertir ni comprimir estos modelos.
 
 ### The LyrieLife y CAL_CUL
 Documentación previa describe un archivo fuente `The LyreLife (Para HTML).tar.gz` con 339 entradas (aprox. 411 MB sin comprimir), incluyendo:
