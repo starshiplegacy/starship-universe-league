@@ -9,12 +9,12 @@ import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".html", ".js", ".css"}
 SUPABASE_RE = re.compile(r"https://([a-z0-9-]+)\.supabase\.co", re.I)
-ATTR_RE = re.compile(r"""\b(?:src|href)\s*=\s*["']([^"'#]+)["']""", re.I)
+ATTR_RE = re.compile(r"""(?<![\w.$-])\b(?:src|href)\s*=\s*["']([^"'#]+)["']""", re.I)
 CSS_URL_RE = re.compile(r"""url\(\s*["']?([^"'\)]+)""", re.I)
 MODEL_NAMES = ["Charlotte", "Arthur", "Bella", "Emma", "Aquamarine", "Opal (Opalo)", "Optopool", "Stella"]
 WORLD_PATHS = [
@@ -54,7 +54,7 @@ def static_audit():
         if file.suffix.lower() in {".html", ".css"}:
             candidates.extend(CSS_URL_RE.findall(content))
         for raw in candidates:
-            value = raw.strip().split("?", 1)[0].split("#", 1)[0]
+            value = unquote(raw.strip().split("?", 1)[0].split("#", 1)[0])
             if not value or value.startswith(("http://", "https://", "data:", "blob:", "//", "mailto:", "tel:", "javascript:", "var(")):
                 continue
             if value.startswith(("/", "{")) or "://" in value:
