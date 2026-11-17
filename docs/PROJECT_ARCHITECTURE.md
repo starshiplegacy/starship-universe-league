@@ -55,6 +55,26 @@ La experiencia vive en `league-of-legacy.html`. El flujo de modos se conecta con
 
 Los recursos de mapas conservan sus formatos de origen en `assets/league-of-legacy/Map/`. Un archivo presente no equivale a un mapa integrado, optimizado o listo para partidas.
 
+## Experiencias adicionales
+
+### Geffenite — Batalla Estelar
+
+- Gameplay fuente: `assets/Geffenite/gameplay/Geffenite_ Batalla Estelar.html`.
+- Dossier, requisitos VIP y mapa conceptual: `assets/Geffenite/docs/`.
+- Identidad visual: `assets/Geffenite/images/`.
+- La beta se ofrece desde el área VIP y depende de la validación de entitlement activo Young-Moon o Exoplanet. Mantener el control de acceso tanto en la interfaz como en la lógica de permisos.
+- El HTML del mapa Eco Sónico Cósmico es una referencia interactiva; no sustituye un sistema de mapas jugable.
+
+### GellyShow
+
+- Juego 2D autónomo: `assets/GellyShow/Gameplay/GellyShow.html`.
+- Documentación: `assets/GellyShow/Docs/`.
+- Imágenes: `assets/GellyShow/Images/`.
+- La documentación indica que el modo Online requiere un servidor y aún no está disponible.
+- No se encontró conexión con el catálogo o lanzador durante esta revisión. Se conserva como experiencia independiente almacenada; no se afirma que esté publicada o conectada al portal.
+
+Estos proyectos mantienen sus propios recursos y no se mezclan con The LyrieLife, CAL/CUL, League Of Legacy ni los minijuegos Pinkie Star y Jaque Matte.
+
 ## Recursos compartidos
 
 - `assets/videos/UNIVERSE LEAGUE (Opening).mp4`: apertura compartida.
