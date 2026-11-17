@@ -772,3 +772,15 @@ body.auth-checking>.welcome-gate{display:none!important}
   .geffenland-plan-option .geffenland-card ul{margin-top:12px}
   .geffenland-plan-option > button{min-height:50px}
 }
+
+
+/* Keep the Exoplanet / Elite tier label compact and aligned with the other tiers */
+.geffenland-plan-option.elite-plan .geffenland-level{
+  display:inline-block;
+  width:fit-content;
+  max-width:100%;
+  font-size:8px;
+  line-height:1.2;
+  letter-spacing:.12em;
+  white-space:nowrap;
+}
