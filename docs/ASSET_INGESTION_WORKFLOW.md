@@ -2,7 +2,7 @@
 
 **Proyecto:** STARSHIP UNIVERSE LEAGUE  
 **Repositorio canónico:** `starshiplegacy/starship-universe-league` · rama `main`  
-**Última revisión del inventario:** 16 de noviembre de 2026
+**Última revisión del inventario:** 17 de noviembre de 2026
 
 ## 1. Fuentes y responsabilidades
 
@@ -19,7 +19,7 @@
    - `assets/images/` — portadas, iconos, fondos y UI.
    - `assets/videos/` — opening y vídeos de carga.
    - `assets/league-of-legacy/characters/` — modelos GLB de League Of Legacy.
-   - `assets/cal-cul/models/` — modelos GLB del creador CAL/CUL.
+   - `assets/The-LyrieLife/CAL-CUL/models/` — modelos GLB del creador CAL/CUL.
    - `assets/source/` o Library — originales editables y paquetes propietarios que no deben transformarse.
 4. **Validación técnica:** verificar que el formato sea el esperado y que el archivo abra/pueda analizarse. Para GLB, revisar versión, mallas, materiales, rigs, animaciones y compresión; para vídeo, comprobar códec, duración y resolución.
 5. **Publicación:** elegir almacenamiento según el uso:
@@ -43,13 +43,13 @@
 | `LyrieHomeMainMenu.jpg` | 1920×1080 | `5038b33830d211112f29a8ca7faa6018360f07d4ff6fdcb369e36c91fd633c21` | Fondo de sala blanca para el menú de The LyrieLife; localizado y visualmente identificado, aún no integrado |
 | `LOL_MainMenu.jpg` | 1920×1080 | `301acd2f17a975054ecc6ff7bba4bfdc270b503a2f9c76904b6e66487a173769` | Fondo de arena fantástica para el menú de League Of Legacy; localizado, aún no integrado |
 
-Los originales anteriores están en Library, no en el árbol actual de GitHub. Los dos WebP actuales del repositorio se generaron a 160×160 y son la causa probable de la pixelación al ampliarlos. Deben sustituirse por derivados de alta resolución antes de considerar las portadas terminadas.
+Los originales anteriores están en Library, no en el árbol actual de GitHub. No se sustituyen las portadas del sitio hasta disponer de los bytes originales y generar derivados verificados. Los dos WebP actuales del repositorio se generaron a 160×160 y son la causa probable de la pixelación al ampliarlos. Deben sustituirse por derivados de alta resolución antes de considerar las portadas terminadas.
 
 ### Modelos y vídeos
 
-Los seis binarios siguientes se localizaron en Library y sus SHA-256 se comprobaron contra `assets/ASSET_MANIFEST.md`:
+Los modelos GLB de personajes y los tres vídeos se verificaron en el árbol actual de GitHub y están publicados en sus rutas definitivas:
 
-- `Charlotte.glb`, `Arthur.glb`, `Bella.glb` y otros modelos GLB: están presentes en `assets/league-of-legacy/characters/`.
+- Los ocho modelos `Charlotte.glb`, `Arthur.glb`, `Bella.glb`, `Emma.glb`, `Aquamarine.glb`, `Opal (Opalo).glb`, `Optopool.glb` y `Stella.glb` están presentes en `assets/league-of-legacy/characters/` y el selector del menú los incluye.
 - `UNIVERSE LEAGUE (Opening).mp4`: opening compartido.
 - `Lyrie Loanding.mp4`: carga de The LyrieLife.
 - `Loading LOL.mp4`: carga de League Of Legacy.
@@ -58,7 +58,7 @@ Los seis binarios siguientes se localizaron en Library y sus SHA-256 se comproba
 
 ### Recursos CAL/CUL y paquete fuente
 
-- `assets/cal-cul/models/` solo contiene instrucciones; los GLB masculino y femenino siguen pendientes.
+- `assets/The-LyrieLife/CAL-CUL/models/` no contiene todavía los GLB masculino y femenino; las carpetas de CAL/CUL conservan placeholders. El conversor espera fuentes locales que aún no están publicadas.
 - La documentación menciona un paquete FBX/texture de CAL/CUL y `The LyreLife (Para HTML).tar.gz`. No se localizaron esos dos paquetes por nombre en el inventario actual de Library. No asumir que están disponibles ni reemplazarlos por otros GLB de la biblioteca.
 - Los formatos propietarios de The LyrieLife (`.package`, `.world`, `.layer`, `.blueprint`, `.bpi`, `.ts4script`) se conservan intactos; no convertirlos a GLB.
 
@@ -77,10 +77,10 @@ Los seis binarios siguientes se localizaron en Library y sus SHA-256 se comproba
 
 ## 5. Pendientes y controles de seguridad
 
-1. Sustituir los WebP de 160×160 por derivados de alta resolución de los originales.
+1. Sustituir los WebP de 160×160 por derivados de alta resolución cuando se incorporen los originales de portada desde Library.
 2. Integrar `LyrieHomeMainMenu.jpg` y `LOL_MainMenu.jpg` en los menús correspondientes cuando se autorice el cambio visual.
-3. Publicar los tres GLB y los tres MP4 en sus rutas definitivas o en un bucket/CDN documentado.
-4. Completar los modelos CAL/CUL y localizar el archivo fuente de The LyrieLife.
+3. Los ocho GLB de personajes de League Of Legacy y los tres MP4 de inicio ya están publicados; queda pendiente validar su carga real en navegador y optimizar los recursos grandes sin alterar los originales.
+4. Incorporar las fuentes correctas de CAL/CUL y localizar el archivo fuente de The LyrieLife; no usar `Emma.fbx` ni otros modelos de League Of Legacy como sustitutos.
 5. **Resolver la identidad del proyecto Supabase antes de crear buckets o mover archivos.** El frontend del repositorio apunta a `wvyveduslbsuvyekeccf.supabase.co`, pero las conexiones Supabase disponibles muestran proyectos con referencias distintas (`uyhcocdknweqvcqgbnez` y `fixwovymcfpfididtmud`). En el proyecto `uyhcocdknweqvcqgbnez` sí aparecen `profiles`, `user_badges` y `user_settings`, pero no aparecen las tablas/vistas `game_saves`, `gallery_posts`, `gallery_starlights`, `gallery_comments`, `gallery_mentions`, `public_profile_directory`, `creator_verification_applications` ni `user_feedback`. Tampoco existen los buckets `universe-gallery` y `universe-avatars` que esperan `gallery.js` y `account-settings.js`. Ese proyecto sí tiene buckets distintos (`community-posts`, `profile-media`, `shorts`). No crear copias ni modificar el esquema de un proyecto hasta confirmar cuál es el backend real.
 6. Mantener separados los buckets de assets públicos del juego, los medios públicos de comunidad y los archivos privados de usuario. Un bucket público permite descargar a quien tenga la URL; las subidas y eliminaciones deben seguir restringidas por políticas RLS.
 7. No subir claves secretas al frontend. La clave publishable puede estar en el cliente; nunca una service-role/secret key.
