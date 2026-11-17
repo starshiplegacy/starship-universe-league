@@ -1,0 +1,89 @@
+{
+  "id": "abandoned-island",
+  "file": "abandoned-island.world",
+  "path": "worlds/abandoned-island/abandoned-island.world",
+  "size_bytes": 49656910,
+  "sha256": "431b705f644f41e95e5f63fdc3d18c8c6e091d652a15af764967beb2367f692a",
+  "status": "ok",
+  "problems": [],
+  "format": "DBPF 2.0",
+  "resources": 894,
+  "resource_types": [
+    {
+      "type": "00B2D882",
+      "name": "Textura DDS",
+      "count": 670
+    },
+    {
+      "type": "AE39399F",
+      "name": "Sin catalogar",
+      "count": 128
+    },
+    {
+      "type": "033B2B66",
+      "name": "Sin catalogar",
+      "count": 64
+    },
+    {
+      "type": "01661233",
+      "name": "Modelo (geometría)",
+      "count": 6
+    },
+    {
+      "type": "0498DA7E",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "90620000",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "707CA200",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "087C4287",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "0668F630",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "D9BD0909",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "022B756C",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "0668F628",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "35A33E29",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "05CD4BB3",
+      "name": "Sin catalogar",
+      "count": 1
+    },
+    {
+      "type": "B074ACE6",
+      "name": "Sin catalogar",
+      "count": 1
+    }
+  ],
+  "distinct_types": 30
+}

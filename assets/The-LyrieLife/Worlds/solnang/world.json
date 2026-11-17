@@ -1,0 +1,89 @@
+{
+  "id": "solnang",
+  "file": "Solnang.world",
+  "path": "worlds/solnang/Solnang.world",
+  "size_bytes": 30659696,
+  "sha256": "e09864e1092fefb431776d28761a2053ff565cd7b146d47f87bc7cb18b38bb59",
+  "status": "ok",
+  "problems": [],
+  "format": "DBPF 2.0",
+  "resources": 2822,
+  "resource_types": [
+    {
+      "type": "B125533A",
+      "name": "Sin catalogar",
+      "count": 396
+    },
+    {
+      "type": "00B2D882",
+      "name": "Textura DDS",
+      "count": 346
+    },
+    {
+      "type": "312E7545",
+      "name": "Sin catalogar",
+      "count": 216
+    },
+    {
+      "type": "B1422971",
+      "name": "Sin catalogar",
+      "count": 180
+    },
+    {
+      "type": "F12E5E12",
+      "name": "Sin catalogar",
+      "count": 144
+    },
+    {
+      "type": "01661233",
+      "name": "Modelo (geometría)",
+      "count": 130
+    },
+    {
+      "type": "0553EAD4",
+      "name": "Sin catalogar",
+      "count": 108
+    },
+    {
+      "type": "05ED1226",
+      "name": "Sin catalogar",
+      "count": 89
+    },
+    {
+      "type": "05FF6BA4",
+      "name": "Sin catalogar",
+      "count": 72
+    },
+    {
+      "type": "092E36EA",
+      "name": "Sin catalogar",
+      "count": 72
+    },
+    {
+      "type": "0A0CE7A9",
+      "name": "Sin catalogar",
+      "count": 72
+    },
+    {
+      "type": "4D1A5589",
+      "name": "Sin catalogar",
+      "count": 52
+    },
+    {
+      "type": "06DC847E",
+      "name": "Sin catalogar",
+      "count": 37
+    },
+    {
+      "type": "060E1826",
+      "name": "Sin catalogar",
+      "count": 36
+    },
+    {
+      "type": "089132E8",
+      "name": "Sin catalogar",
+      "count": 36
+    }
+  ],
+  "distinct_types": 71
+}
