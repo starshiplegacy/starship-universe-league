@@ -19,11 +19,11 @@ La prioridad logística es cerrar primero los bloqueos de backend, derechos y va
 | League Of Legacy — mapas | 421 archivos; 633.82 MiB; 405 DDS, 3 MTL, 2 OBJ, 2 GLB y fuentes adicionales | Inventario reconciliado; derechos y validación técnica bloquean uso jugable |
 | The LyrieLife — mundos | 4 archivos .world en subcarpetas por mundo | Almacenados, pero el navegador no interpreta el formato |
 | CAL/CUL | Módulo cal-cul.html, vista previa y conversor presentes; no hay GLB masculino/femenino publicados | Espera fuentes correctas y validación de conversión |
-| Jaque Matte | Minijuego de ajedrez en games.js; icono conectado al catálogo | Implementación presente; requiere prueba real del motor externo y guardado |
-| Pinkie Star | Mahjong Solitaire en games.js; icono conectado al catálogo | Implementado bajo nombre visible Pinkie Star; guardado nuevo usa pinkie-star y recupera pixxy-up anterior |
+| Jaque Matte | Minijuego de ajedrez; descarga/instalación y lanzamiento desde biblioteca | Implementación presente; requiere prueba real del motor externo y guardado |
+| Pinkie Star | Mahjong Solitaire; descarga/instalación y lanzamiento desde biblioteca | Implementado bajo nombre visible Pinkie Star; guardado nuevo usa pinkie-star y recupera pixxy-up anterior |
 | Vídeos de inicio | 3 MP4 publicados en assets/videos/ | Lanzador usa los nombres reales actuales |
 | Geffenite | Gameplay HTML, mapa conceptual, 2 DOCX, icono y póster | Beta VIP presentada; conservar entitlement activo y fuentes originales |
-| GellyShow | Juego HTML autónomo, 2 documentos MD, icono y póster | Almacenado; Online pendiente de servidor; aún sin conexión al catálogo |
+| GellyShow | Juego HTML autónomo, 2 documentos MD y recursos; Gratis · Demo con instalación desde catálogo | Juego base conectado al flujo de instalación; Online pendiente de servidor |
 | Documentación | Índice, arquitectura, manifiesto, planes y auditorías | Referencias principales consolidadas; fuentes originales preservadas |
 
 ### Rutas de mundo
@@ -115,3 +115,11 @@ Los iconos de Jaque Matte y Pinkie Star están conectados al catálogo. Los arch
 ## 7. Límites de esta auditoría
 
 La revisión se realizó sobre el árbol y los archivos de GitHub. No se ejecutó una sesión interactiva en navegador, no se probaron dispositivos físicos, no se aplicaron cambios de Supabase, no se modificaron licencias y no se lanzó un despliegue. Los resultados de GitHub Actions deben consultarse después de que finalice la ejecución correspondiente al último commit.
+
+
+## Flujo uniforme de instalación — actualización 17 de noviembre de 2026
+
+- Todos los juegos del catálogo pasan por **Catálogo → Descargar/Instalar → Juegos instalados → Jugar**. El estado gratuito elimina el pago, no el paso de instalación.
+- Jaque Matte, Pinkie Star y GellyShow se ofrecen como **Gratis · Demo** y se registran en la biblioteca de la cuenta después de completar la instalación.
+- The LyrieLife y League Of Legacy conservan sus entradas de catálogo y el mismo mecanismo de instalación. Geffenite conserva el control VIP y solo se ofrece a cuentas con la entitlement `geffenite_beta`.
+- El estado de instalación se guarda localmente por usuario en el navegador. Esto no equivale a un instalador nativo ni a una instalación remota sincronizada entre dispositivos.
