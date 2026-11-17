@@ -17,7 +17,12 @@ SUPABASE_RE = re.compile(r"https://([a-z0-9-]+)\.supabase\.co", re.I)
 ATTR_RE = re.compile(r"""\b(?:src|href)\s*=\s*["']([^"'#]+)["']""", re.I)
 CSS_URL_RE = re.compile(r"""url\(\s*["']?([^"'\)]+)""", re.I)
 MODEL_NAMES = ["Charlotte", "Arthur", "Bella", "Emma", "Aquamarine", "Opal (Opalo)", "Optopool", "Stella"]
-WORLD_NAMES = ["Kataleya.world", "Kariskio.world", "Solnang.world", "abandoned-island.world"]
+WORLD_PATHS = [
+    "kataleya/Kataleya.world",
+    "kariskio/Kariskio.world",
+    "solnang/Solnang.world",
+    "abandoned-island/abandoned-island.world",
+]
 REQUIRED_TABLES = {
     "game_saves", "gallery_posts", "gallery_starlights", "gallery_comments",
     "gallery_mentions", "creator_verification_applications", "user_feedback",
@@ -78,9 +83,25 @@ def static_audit():
             errors.append(f"Missing model: assets/league-of-legacy/characters/{name}.glb")
 
     world_dir = ROOT / "assets/The-LyrieLife/Worlds"
-    for name in WORLD_NAMES:
-        if not (world_dir / name).is_file():
-            errors.append(f"Missing world source: assets/The-LyrieLife/Worlds/{name}")
+    for relative_path in WORLD_PATHS:
+        if not (world_dir / relative_path).is_file():
+            errors.append(f"Missing world source: assets/The-LyrieLife/Worlds/{relative_path}")
+
+    # Keep the visible Pinkie Star name separate from its stable internal
+    # minigame token, and migrate old saves without discarding progress.
+    index_file = ROOT / "index.html"
+    games_file = ROOT / "games.js"
+    save_file = ROOT / "save-system.js"
+    if index_file.exists() and games_file.exists() and save_file.exists():
+        index_text = index_file.read_text(encoding="utf-8")
+        games_text = games_file.read_text(encoding="utf-8")
+        save_text = save_file.read_text(encoding="utf-8")
+        if "<h3>Pinkie Star</h3>" not in index_text or 'data-launch-mini-game="pixxy"' not in index_text:
+            errors.append("Pinkie Star card is missing its visible name or internal launch token.")
+        if '"pinkie-star"' not in games_text or '"pixxy-up"' not in games_text:
+            errors.append("Pinkie Star save migration or legacy pixxy-up fallback is missing.")
+        if '"pinkie-star"' not in save_text or '"pixxy-up"' not in save_text:
+            errors.append("Save system must accept both Pinkie Star and legacy pixxy-up keys.")
 
     launch = ROOT / "launch.html"
     if launch.exists():
