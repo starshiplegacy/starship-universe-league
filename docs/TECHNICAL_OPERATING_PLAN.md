@@ -113,10 +113,10 @@ See [ENGINEERING_AUDIT.md](ENGINEERING_AUDIT.md) for the full map inventory, rig
 ## Additional experiences — inventory update (2026-11-17)
 
 - **Geffenite:** keep gameplay, design/map documentation, VIP requirements, and images under `assets/Geffenite/{gameplay,docs,images}/`. Preserve the VIP gate. The frontend consumes entitlements/plan returned by `starship-entitlements`; confirm active-status and expiry checks in that remote function. Treat the map HTML as a design reference, not a production map engine.
-- **GellyShow:** keep its standalone HTML, Markdown documentation, and images under `assets/GellyShow/{Gameplay,Docs,Images}/`. The documented online mode is not ready because it requires a server. Do not list it as portal-integrated until a launch/catalog route and the necessary QA exist.
+- **GellyShow:** keep its standalone HTML, Markdown documentation, and images under `assets/GellyShow/{Gameplay,Docs,Images}/`. The documented online mode is not ready because it requires a server. A catalog route and install-to-library flow are now present; browser QA remains pending. The Online mode still requires a server.
 - Preserve original capitalization, spaces, extensions, and the existing `(Postel).jpg` filenames. Update the asset manifest and documentation index whenever these paths change.
 
 
 ## Uniform game installation flow (2026-11-17)
 
-Every catalog game, including free/demo titles, must follow **Store/Catalog → Download/Install → Installed Games → Play**. Free access removes the payment step, not installation. Jaque Matte, Pinkie Star, and GellyShow are included in this flow; Geffenite retains its active VIP entitlement gate. Current installed-state persistence is browser-local and account-keyed; server synchronization and native package installation are not claimed.
+Every catalog game, including free/demo titles, must follow **Store/Catalog → Download/Install → Installed Games → Play**. Free access removes the payment step, not installation. Jaque Matte, Pinkie Star, and GellyShow are included in this flow; Geffenite retains its active VIP entitlement gate. The current 60-second installation progress is a demo simulation that registers the game in the account-keyed browser library; it does not download a native package or synchronize installs across devices.
