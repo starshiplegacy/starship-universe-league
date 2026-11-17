@@ -122,4 +122,4 @@ La revisión se realizó sobre el árbol y los archivos de GitHub. No se ejecut�
 - Todos los juegos del catálogo pasan por **Catálogo → Descargar/Instalar → Juegos instalados → Jugar**. El estado gratuito elimina el pago, no el paso de instalación.
 - Jaque Matte, Pinkie Star y GellyShow se ofrecen como **Gratis · Demo** y se registran en la biblioteca de la cuenta después de completar la instalación.
 - The LyrieLife y League Of Legacy conservan sus entradas de catálogo y el mismo mecanismo de instalación. Geffenite conserva el control VIP y solo se ofrece a cuentas con la entitlement `geffenite_beta`.
-- El estado de instalación se guarda localmente por usuario en el navegador. Esto no equivale a un instalador nativo ni a una instalación remota sincronizada entre dispositivos.
+- El progreso de 60 segundos es una simulación de instalación para la demo: registra el juego en la biblioteca local por usuario, pero no descarga un paquete nativo ni sincroniza instalaciones entre dispositivos.
