@@ -11,6 +11,8 @@
 | The LyrieLife | World selection, life-simulation prototype, save integration | GitHub for code/assets; Supabase for cloud saves |
 | League Of Legacy | Eight-character viewer and future multiplayer game | GitHub for code/GLB assets; Supabase for future game data |
 | Astronaut mini-games | Jaque Matte and Pinkie Star (Mahjong Solitaire) | GitHub for game code/assets; local/cloud saves only after backend confirmation |
+| Geffenite | VIP beta battle-royale prototype | GitHub for gameplay/docs/assets; active Young-Moon or Exoplanet entitlement required |
+| GellyShow | Standalone 2D dress-up and runway game | GitHub for gameplay/docs/assets; online mode requires a future server |
 | Community | Gallery, comments, reactions, profile media | Supabase data/Storage; GitHub for client code |
 | CAL/CUL | Character creator and conversion pipeline | GitHub for tools; original source assets remain immutable |
 | Shared platform | Auth, profiles, settings, entitlements | Supabase after canonical project is confirmed |
@@ -106,3 +108,10 @@ A game area is ready for continued development only when:
 ## Map integration status (16 November 2026)
 
 See [ENGINEERING_AUDIT.md](ENGINEERING_AUDIT.md) for the full map inventory, rights blockers, runtime limitations and recommended order. The main-menu-to-mode-selector route and format-specific preview loaders are prepared. All map previews remain gated until license status is documented as cleared. No matchmaking, physics, collisions, spawn points or authoritative match simulation is claimed as implemented.
+
+
+## Additional experiences — inventory update (2026-11-17)
+
+- **Geffenite:** keep gameplay, design/map documentation, VIP requirements, and images under `assets/Geffenite/{gameplay,docs,images}/`. Preserve the VIP gate for active Young-Moon and Exoplanet entitlements. Treat the map HTML as a design reference, not a production map engine.
+- **GellyShow:** keep its standalone HTML, Markdown documentation, and images under `assets/GellyShow/{Gameplay,Docs,Images}/`. The documented online mode is not ready because it requires a server. Do not list it as portal-integrated until a launch/catalog route and the necessary QA exist.
+- Preserve original capitalization, spaces, extensions, and the existing `(Postel).jpg` filenames. Update the asset manifest and documentation index whenever these paths change.
