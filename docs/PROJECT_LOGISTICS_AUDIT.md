@@ -45,7 +45,7 @@ Kataleya y Kariskio comparten el mismo Git blob SHA y tamaño. Se conservan ambo
 
 **Geffenite:** el juego y sus documentos están agrupados en `assets/Geffenite/`. El catálogo VIP revela el enlace según la entitlement/plan que devuelve la función Edge `starship-entitlements`; la vigencia real de la membresía debe verificarse en esa función. El HTML del mapa es una referencia conceptual. Los dos DOCX se preservan, sin afirmar que su contenido interno haya sido auditado en esta pasada.
 
-**GellyShow:** el juego autónomo y sus documentos están agrupados en `assets/GellyShow/`. La información del proyecto indica que Online requiere servidor y está pendiente. No se encontró conexión al catálogo/lanzador; queda almacenado, no integrado.
+**GellyShow:** el juego autónomo y sus documentos están agrupados en `assets/GellyShow/`. Está conectado al panel Gratis · Demo y al flujo de instalación/biblioteca; QA pendiente. El modo Online requiere servidor y sigue pendiente.
 
 ## 3. Dependencias y bloqueos
 
