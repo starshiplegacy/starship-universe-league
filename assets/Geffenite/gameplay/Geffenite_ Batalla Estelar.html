@@ -219,7 +219,7 @@ function hudUpd(ph){$('alive').textContent="Quedan "+aliveN();$('kills').textCon
  rd.clearRect(0,0,150,150);rd.strokeStyle='#fff8';rd.beginPath();rd.arc(75,75,60,0,6.3);rd.stroke();snds=snds.filter(s=>t-s.t<1.2);snds.forEach(s=>{const ex=s.x-P.x,ez=s.z-P.z,dd=Math.hypot(ex,ez);if(dd<1||dd>110)return;const f=ex*-Math.sin(yaw)+ez*-Math.cos(yaw),rr=ex*Math.cos(yaw)+ez*-Math.sin(yaw),q=Math.hypot(f,rr)||1;rd.fillStyle='rgba(255,200,60,'+(1-(t-s.t)/1.2)+')';rd.beginPath();rd.arc(75+rr/q*52,75-f/q*52,8,0,6.3);rd.fill()})}
 function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05);t+=dt;update(dt);ren.render(sc,cam)}
 </script>
-<script src="../../supabase-config.js"></script>
+<script src="../../../supabase-config.js"></script>
 <script type="module">
 (async()=>{
   const button=document.getElementById("go");
@@ -228,7 +228,7 @@ function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.
     status.textContent=message;
     if(withBack){
       const link=document.createElement("a");
-      link.href="../../index.html";
+      link.href="../../../index.html";
       link.textContent=" Volver a Universe League e iniciar sesión";
       link.style.cssText="display:inline-block;margin-top:8px;color:#b99aff;font-weight:800";
       status.appendChild(document.createElement("br"));
