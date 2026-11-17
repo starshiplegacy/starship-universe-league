@@ -1,5 +1,5 @@
 """Convert the two CAL/CUL source FBX characters to browser-ready GLB.
-Run: blender --background --python tools/convert_cal_cul.py -- --source ./CAL_CUL_converted --output ./assets/cal-cul/models
+Run: blender --background --python tools/convert_cal_cul.py -- --source ./CAL_CUL_converted --output ./assets/The-LyrieLife/CAL-CUL/models
 Requires Blender 4.2+.
 """
 import bpy, os, sys, argparse, glob, json
