@@ -120,3 +120,10 @@ See [ENGINEERING_AUDIT.md](ENGINEERING_AUDIT.md) for the full map inventory, rig
 ## Uniform game installation flow (2026-11-17)
 
 Every catalog game, including free/demo titles, must follow **Store/Catalog → Download/Install → Installed Games → Play**. Free access removes the payment step, not installation. Jaque Matte, Pinkie Star, and GellyShow are included in this flow; Geffenite retains its active VIP entitlement gate. The current 60-second installation progress is a demo simulation that registers the game in the account-keyed browser library; it does not download a native package or synchronize installs across devices.
+
+
+## Universe Pay / Starship Plus member benefits (2026-11-17)
+
+The header Universe Pay action opens the membership and benefits panel without requiring login to read it. Baby-Star, Young-Moon, and Exoplanet members are described as receiving Starship Plus early premieres before the official YouTube release and Starship Plus Pro access. Young-Moon and Exoplanet are VIP tiers with VIP game/beta access and a 50% discount on eligible purchases (illustrative example: US$10 → US$5). The early-premiere area is gated by the active membership/plan returned by `starship-entitlements`.
+
+Payment processing and purchase checkout are not integrated, so the 50% discount is currently a displayed membership benefit, not an applied transaction price. No Starship Plus Pro destination URL or private premiere video links have been supplied; those integrations remain pending and the page shows a clear empty state rather than fabricated releases or destinations.
