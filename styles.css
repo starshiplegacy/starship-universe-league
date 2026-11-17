@@ -696,3 +696,79 @@ body.auth-checking>.welcome-gate{display:none!important}
   box-shadow:0 0 0 1px var(--accent);
 }
 .geffenland-plan-option > button strong{font-weight:800}
+
+
+/* Universe Pay polish: equal plan panels and tier-specific selection buttons */
+.geffenland-plan-option .geffenland-card{
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  min-height:390px;
+  padding:22px 22px 18px;
+  border-radius:18px;
+}
+.geffenland-plan-option .geffenland-card h4{
+  min-height:42px;
+  margin:8px 0 12px;
+  display:flex;
+  align-items:center;
+}
+.geffenland-plan-option .geffenland-prices{
+  min-height:62px;
+  justify-content:center;
+}
+.geffenland-plan-option .geffenland-card ul{
+  flex:1 1 auto;
+  margin:14px 0 4px;
+  padding-left:20px;
+  line-height:1.85;
+}
+.geffenland-plan-option > button{
+  min-height:52px;
+  border-width:1px;
+  border-style:solid;
+  border-radius:14px;
+  font-size:12px;
+  letter-spacing:.01em;
+  box-shadow:0 5px 16px rgba(0,0,0,.12);
+}
+.geffenland-plan-option > button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.07);
+}
+.geffenland-plan-option.baby-plan > button{
+  background:#e85b9d;
+  border-color:#e85b9d;
+  color:#fff;
+}
+.geffenland-plan-option.pro-plan > button{
+  background:#438fe8;
+  border-color:#438fe8;
+  color:#fff;
+}
+.geffenland-plan-option.elite-plan > button{
+  background:#c99a32;
+  border-color:#c99a32;
+  color:#17120a;
+}
+.geffenland-plan-option.baby-plan > button.is-selected{
+  outline:3px solid rgba(232,91,157,.28);
+  box-shadow:0 0 0 1px #e85b9d,0 6px 18px rgba(232,91,157,.22);
+}
+.geffenland-plan-option.pro-plan > button.is-selected{
+  outline:3px solid rgba(67,143,232,.28);
+  box-shadow:0 0 0 1px #438fe8,0 6px 18px rgba(67,143,232,.22);
+}
+.geffenland-plan-option.elite-plan > button.is-selected{
+  outline:3px solid rgba(201,154,50,.3);
+  box-shadow:0 0 0 1px #c99a32,0 6px 18px rgba(201,154,50,.22);
+}
+@media(max-width:560px){
+  .geffenland-plan-option .geffenland-card{
+    min-height:0;
+    padding:20px 17px;
+  }
+  .geffenland-plan-option .geffenland-card h4{min-height:0}
+  .geffenland-plan-option .geffenland-card ul{margin-top:12px}
+  .geffenland-plan-option > button{min-height:50px}
+}
