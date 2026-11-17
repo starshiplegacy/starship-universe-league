@@ -230,7 +230,7 @@ La estructura está separada por función y se conserva en su carpeta propia:
 | Icono | `assets/Geffenite/images/Geffenite (ICON).jpg` | 348,235 bytes | `11d864dbd306e9defea89e5723c7ffed2cb0ac8f` | Identidad visual |
 | Póster | `assets/Geffenite/images/Geffenite (Postel).jpg` | 87,644 bytes | `f50ffb6f8bddc5660770644f5131644cf49caeb4` | Identidad visual; nombre original conservado |
 
-La beta se presenta en el catálogo VIP y la lógica de permisos limita el acceso a membresías activas Young-Moon o Exoplanet, mensual o anual. Mantener la comprobación de entitlement; no publicar el HTML como acceso abierto ni eliminar la barrera VIP. El archivo del mapa queda clasificado como documentación/prototipo, no como motor de mapa independiente.
+La beta se presenta en el catálogo VIP. El enlace se revela cuando entitlements.js recibe de la función Edge starship-entitlements una entitlement o un plan compatible con Young-Moon o Exoplanet. La comprobación efectiva de vigencia/estado de pago depende de esa función remota y no puede certificarse solo desde el frontend. No publicar el HTML como acceso abierto ni eliminar la barrera VIP. El archivo del mapa queda clasificado como documentación/prototipo, no como motor de mapa independiente.
 
 ### GellyShow
 
