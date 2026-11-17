@@ -3,10 +3,17 @@
   const state = { loaded:false, userId:null, entitlements:[], plan:"astronaut", error:null };
   const has = key => state.entitlements.includes(key);
   function applyGates() {
+    const plan = String(state.plan || "").toLowerCase().replace(/-/g,"_");
+    const geffeniteAccess = has("young_moon") || has("young-moon") || has("exoplanet") ||
+      ["young_moon","moon","planet","exoplanet"].includes(plan);
     document.querySelectorAll("[data-requires-entitlement]").forEach(node => {
-      const allowed = has(node.dataset.requiresEntitlement);
+      const requirement = node.dataset.requiresEntitlement;
+      const allowed = requirement === "geffenite_beta" ? geffeniteAccess : has(requirement);
       node.hidden = !allowed;
       node.setAttribute("aria-hidden", String(!allowed));
+    });
+    document.querySelectorAll("[data-entitlement-fallback]").forEach(node => {
+      node.hidden = geffeniteAccess;
     });
     const restrictedThemes = new Set(["jupiter","sum","ruby","astroblue","neonblue","green-blue","orbit-green"]);
     const creatorThemes = new Set(["neon-moon","neon-blue-aura","neon-reimbow","green-light","blue-light","grey-sky","blue-sky"]);
