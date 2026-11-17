@@ -7,6 +7,7 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 ## 1. Documentos de operación y arquitectura
 
+| [PROJECT_LOGISTICS_AUDIT.md](PROJECT_LOGISTICS_AUDIT.md) | Auditoría integral de inventario, dependencias, bloqueos y orden de entrega de todo el repositorio. |
 | Documento | Función |
 |---|---|
 | [PROJECT_ARCHITECTURE.md](PROJECT_ARCHITECTURE.md) | Mapa general del portal, juegos, módulos y límites entre proyectos. |
