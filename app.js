@@ -220,6 +220,18 @@ const gameContent = {
       ja: translations.ja ? [translations.ja.fightCategory, translations.ja.legacyDescription, translations.ja.legacyGameplay] : []
     }
   }
+  ,chess: {
+    category: "ESTRATEGIA · AJEDREZ",
+    title: "Jaque Matte",
+    description: "Un juego de ajedrez gratuito de Universe League.",
+    gameplay: "Enfréntate al Bot en una partida de ajedrez y piensa cada movimiento."
+  },
+  "pinkie-star": {
+    category: "PUZZLE · MAHJONG SOLITAIRE",
+    title: "Pinkie Star",
+    description: "Un juego gratuito de Mahjong Solitaire.",
+    gameplay: "Retira las fichas iguales que tengan al menos un lateral libre hasta despejar el tablero."
+  }
 };
 const gameDialog = document.getElementById("gameDialog");
 const gameDialogCategory = document.getElementById("gameDialogCategory");
@@ -233,18 +245,28 @@ function renderGameDialog(key){
   const game = gameContent[key];
   if (!game) return;
   const dictionary = translations[languageSelect.value] || translations.es;
-  const visualAssets = {lyrie:{icon:"./assets/The-LyrieLife/images/The%20LyrieLife%20(ICON).jpg",poster:"./assets/The-LyrieLife/images/The%20LyrieLife%20(Poster).jpg"},legacy:{icon:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(ICON).jpg",poster:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(Poster).jpg"}};
-  if(gameDialogPoster){gameDialogPoster.src=visualAssets[key].poster;gameDialogPoster.alt=game.title+" — póster oficial";}
-  gameDialogCategory.textContent = dictionary[key === "lyrie" ? "lifeCategory" : "fightCategory"];
+  const visualAssets = {
+    lyrie:{poster:"./assets/The-LyrieLife/images/The%20LyrieLife%20(Poster).jpg"},
+    legacy:{poster:"./assets/league-of-legacy/images/League%20Of%20Legacy%20(Poster).jpg"},
+    chess:{poster:"./assets/Jaque-Matte/Images/Jaque%20Matte%20(Postel).jpg"},
+    "pinkie-star":{poster:"./assets/Pinkie-Star/Images/Pinkie%20Star%20(Postel).jpg"}
+  };
+  const localized = game.i18n?.[languageSelect.value] || [];
+  if(gameDialogPoster){gameDialogPoster.src=visualAssets[key].poster;gameDialogPoster.alt=game.title+" — póster";}
+  gameDialogCategory.textContent = localized[0] || game.category || (key === "lyrie" ? dictionary.lifeCategory : dictionary.fightCategory);
   gameDialogTitle.textContent = game.title;
-  gameDialogDescription.textContent = dictionary[key === "lyrie" ? "lyrieDescription" : "legacyDescription"];
-  gameDialogGameplay.textContent = dictionary[key === "lyrie" ? "lyrieGameplay" : "legacyGameplay"];
+  gameDialogDescription.textContent = localized[1] || game.description;
+  gameDialogGameplay.textContent = localized[2] || game.gameplay;
   gameDialogExtra.hidden = key !== "legacy";
   gameDialogExtra.innerHTML = key === "legacy" ? dictionary.legacyControls : "";
   const launchActions=document.getElementById("lyriePanelActions");
   if(launchActions)launchActions.hidden=key!=="lyrie"&&key!=="legacy";
   const launchNote=document.getElementById("gameDialogNote");
-  if(launchNote)launchNote.textContent=key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":"Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
+  if(launchNote){
+    if(key==="lyrie")launchNote.textContent="Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.";
+    else if(key==="legacy")launchNote.textContent="Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
+    else launchNote.textContent="Esta ficha está en el catálogo gratuito. El módulo de partida de este juego todavía no está conectado.";
+  }
 }
 document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
   activeGameKey = button.dataset.openGame;
@@ -479,7 +501,6 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
     root.querySelectorAll(".ulh-pack-card").forEach(card=>{const match=!query||(card.dataset.search+" "+card.textContent).toLocaleLowerCase().includes(query);card.hidden=!match;if(match)visible++;});
     if(empty)empty.hidden=visible!==0;
   });
-  document.getElementById("ulhNoticeClose")?.addEventListener("click",()=>{const notice=document.getElementById("ulhNotice");if(notice)notice.hidden=true;});
   document.getElementById("ulhBack")?.addEventListener("click",()=>history.back());
   document.getElementById("ulhForward")?.addEventListener("click",()=>history.forward());
   document.getElementById("ulhAvatar")?.addEventListener("click",()=>document.getElementById("accountOpen")?.click());
