@@ -62,6 +62,23 @@ main{margin-left:72px;min-height:100vh;padding-bottom:60px}
 .dm{background:#12121a;border:1px solid #ffffff1f;border-radius:18px;max-width:780px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:230px 1fr;gap:22px;padding:22px}
 .dm .pos{position:relative;height:330px;border-radius:12px;overflow:hidden}.dm h3{margin:0 0 8px;font-size:28px}
 .more{grid-column:1/-1}.more .strip{padding-right:0}
+.detail-actions{grid-column:1/-1;display:flex;gap:9px;flex-wrap:wrap;margin-top:2px}
+.detail-actions .btn{font-size:13px}
+.detail-panel{grid-column:1/-1;border-top:1px solid #ffffff20;padding-top:18px;min-width:0}
+.detail-panel[hidden]{display:none}
+.detail-panel h4{margin:0 0 12px;font-size:18px}
+.detail-back{margin:0 0 14px;background:#ffffff12;border:1px solid #ffffff24;color:#fff;border-radius:9px;padding:8px 12px;cursor:pointer}
+.detail-empty{padding:22px;border:1px dashed #ffffff30;border-radius:12px;color:#aaa;text-align:center}
+.detail-list{display:grid;gap:9px}
+.detail-item{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;text-align:left;background:#ffffff0c;border:1px solid #ffffff18;color:#fff;border-radius:11px;padding:13px;cursor:pointer}
+.detail-item small,.detail-muted{display:block;color:#aaa;margin-top:4px}
+.detail-video{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000;margin-bottom:10px}
+.detail-cast{display:flex;align-items:center;gap:12px}
+.detail-avatar{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:50%;background:var(--ac);font-weight:700}
+.detail-person{background:#ffffff0c;border:1px solid #ffffff18;border-radius:12px;padding:18px}
+.detail-person h3{font-size:22px;margin:0 0 5px}
+@media(max-width:760px){.detail-actions{gap:7px}.detail-actions .btn{flex:1 1 auto}.detail-panel{padding-top:14px}}
+
 #pl{position:fixed;inset:0;background:#000;z-index:90;display:none;overflow:hidden}#pl.on{display:block}
 #pl .bg{position:absolute;inset:0;opacity:.35;filter:blur(18px)}#cv{position:absolute;inset:0;width:100%;height:100%}
 #pc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:26px 34px;background:linear-gradient(#000a,transparent 25%,transparent 65%,#000d);transition:opacity .3s}#pc.hide{opacity:0;cursor:none}
@@ -120,8 +137,27 @@ function profilePicker(){const m=$('#menu');const groups=[['Galaxia',['🌙','�
 function chooseProfileIcon(icon){st.profileIcon=icon;sv();nav();profilePicker();toast(icon?'Profile picture updated ✦':'Default profile restored')}
 function ac(){document.documentElement.style.setProperty('--ac',st.ac)}
 function fav(id){const i=st.fav.indexOf(id);i<0?st.fav.push(id):st.fav.splice(i,1);sv();toast(i<0?'Added to My List':'Removed from My List');const b=$('#hf');if(b)b.textContent=isF('cosmic')?'✓ In My List':'+ My List';document.querySelectorAll(`[data-f="${id}"]`).forEach(e=>e.classList.toggle('on',isF(id)));if(cur==='fav')render()}
-function info(id){const it=cat.find(i=>i.id===id),p=st.prog[id],rel=cat.filter(i=>i.id!==id&&(i.genre===it.genre||i.type===it.type)).slice(0,8);
-$('#dm').innerHTML=`<div class="dm"><div class="pos">${art(it)}</div><div><h3>${it.title}</h3><div class="meta"><span class="chip">${it.rate}</span><span>${it.year} · ${TN[it.type]} · ${it.genre}</span></div><p class="desc">${it.desc}</p><div class="btns"><button class="btn pri" onclick="play('${id}')">▶ ${p?'RESUME':'PLAY'}</button><button class="btn" onclick="fav('${id}')">♥ My List</button><button class="btn" onclick="toast('Link copied')">Share</button><button class="btn" onclick="$('#dm').classList.remove('on')">Close</button></div></div><div class="more"><h2 style="font-size:16px">More like this</h2><div class="strip">${rel.map(card).join('')}</div></div></div>`;$('#dm').classList.add('on')}
+
+/* Content metadata is intentionally empty until official trailers, seasons,
+   episodes and cast details are supplied for each title. */
+const CONTENT_INFO={};
+const escText=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const contentInfo=id=>CONTENT_INFO[id]||{trailers:[],seasons:[],cast:[]};
+function detailHome(id){const it=cat.find(x=>x.id===id),d=contentInfo(id),seasonable=it.type==='series'||it.type==='drama';
+const buttons=[['trailers','▶ Teasers & Trailers'],...(seasonable?[['seasons','▤ Temporada(s)']]:[]),['cast','✦ Elenco / Cast']];
+$('#detail-panel').hidden=false;
+$('#detail-panel').innerHTML='<div class="detail-list">'+buttons.map(([key,label])=>'<button class="detail-item" onclick="detailSection(\''+id+'\',\''+key+'\')"><span>'+label+'</span><span>›</span></button>').join('')+'</div>';
+}
+function detailSection(id,section){const d=contentInfo(id),panel=$('#detail-panel');panel.hidden=false;let html='';
+if(section==='trailers'){const list=d.trailers||[];html='<h4>Teasers & Trailers</h4>'+(list.length?'<div class="detail-list">'+list.map(v=>{const url=String(v.url||v.link||'');const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);const embed=yt?'https://www.youtube-nocookie.com/embed/'+yt[1]:'';return '<div class="detail-person">'+(embed?'<iframe class="detail-video" src="'+embed+'" title="'+escText(v.title||'Trailer')+'" loading="lazy" allowfullscreen></iframe>':(url.startsWith('https://')||url.startsWith('http://')?'<a href="'+escText(url)+'" target="_blank" rel="noopener">▶ Ver video</a>':'<div class="detail-muted">Video próximamente</div>'))+'<b>'+escText(v.title||'Teaser / Trailer')+'</b>'+(v.type?'<small class="detail-muted">'+escText(v.type)+'</small>':'')+'</div>'}).join('')+'</div>':'<div class="detail-empty">Los teasers y tráileres estarán disponibles aquí cuando se anuncien oficialmente.</div>')}
+else if(section==='seasons'){const seasons=d.seasons||[];html='<h4>Temporada(s)</h4>'+(seasons.length?'<div class="detail-list">'+seasons.map((v,i)=>'<button class="detail-item" onclick="showSeason(\''+id+'\','+i+')"><span><b>'+escText(v.title||('Temporada '+(i+1)))+'</b><small>'+(v.episodes||[]).length+' episodios</small></span><span>›</span></button>').join('')+'</div>':'<div class="detail-empty">La información de temporadas y episodios se añadirá próximamente.</div>')}
+else if(section==='cast'){const cast=d.cast||[];html='<h4>Elenco / Cast</h4>'+(cast.length?'<div class="detail-list">'+cast.map((v,i)=>'<button class="detail-item detail-cast" onclick="showCastPerson(\''+id+'\','+i+')"><span class="detail-avatar">'+escText((v.name||'?').trim().charAt(0).toUpperCase())+'</span><span style="flex:1"><b>'+escText(v.name||'Participante')+'</b><small>'+(v.role?escText(v.role):'Participante')+'</small></span><span>›</span></button>').join('')+'</div>':'<div class="detail-empty">El elenco y las fichas de sus participantes se publicarán próximamente.</div>')}
+panel.innerHTML='<button class="detail-back" onclick="detailHome(\''+id+'\')">← Volver</button>'+html;
+}
+function showSeason(id,index){const d=contentInfo(id),season=(d.seasons||[])[index];if(!season)return;const eps=season.episodes||[];$('#detail-panel').innerHTML='<button class="detail-back" onclick="detailSection(\''+id+'\',\'seasons\')">← Temporadas</button><h4>'+escText(season.title||('Temporada '+(index+1)))+'</h4>'+(eps.length?'<div class="detail-list">'+eps.map((ep,i)=>'<div class="detail-item"><span><b>'+(i+1)+'. '+escText(ep.title||('Episodio '+(i+1)))+'</b>'+(ep.description?'<small>'+escText(ep.description)+'</small>':'')+'</span><span>▶</span></div>').join('')+'</div>':'<div class="detail-empty">Los episodios de esta temporada se anunciarán próximamente.</div>')}
+function showCastPerson(id,index){const person=(contentInfo(id).cast||[])[index];if(!person)return;const url=String(person.profileUrl||person.url||'');$('#detail-panel').innerHTML='<button class="detail-back" onclick="detailSection(\''+id+'\',\'cast\')">← Volver al elenco</button><div class="detail-person"><div class="detail-avatar">'+escText((person.name||'?').trim().charAt(0).toUpperCase())+'</div><h3>'+escText(person.name||'Participante')+'</h3>'+(person.role?'<p class="detail-muted">'+escText(person.role)+'</p>':'')+(person.bio?'<p>'+escText(person.bio)+'</p>':'<p class="detail-muted">La biografía y los datos de esta persona se añadirán próximamente.</p>')+((url.startsWith('https://')||url.startsWith('http://'))?'<a href="'+escText(url)+'" target="_blank" rel="noopener">Abrir perfil ↗</a>':'')+'</div>'}
+function info(id){const it=cat.find(i=>i.id===id),p=st.prog[id],rel=cat.filter(i=>i.id!==id&&(i.genre===it.genre||i.type===it.type)).slice(0,8),seasonable=it.type==='series'||it.type==='drama';
+$('#dm').innerHTML=`<div class="dm"><div class="pos">${art(it)}</div><div><h3>${it.title}</h3><div class="meta"><span class="chip">${it.rate}</span><span>${it.year} · ${TN[it.type]} · ${it.genre}</span></div><p class="desc">${it.desc}</p><div class="btns"><button class="btn pri" onclick="play('${id}')">▶ ${p?'RESUME':'PLAY'}</button><button class="btn" onclick="fav('${id}')">♥ My List</button><button class="btn" onclick="toast('Link copied')">Share</button><button class="btn" onclick="$('#dm').classList.remove('on')">Close</button></div></div><div class="detail-actions"><button class="btn" onclick="detailSection('${id}','trailers')">Teasers &amp; Trailers</button>${seasonable?`<button class="btn" onclick="detailSection('${id}','seasons')">Temporada(s)</button>`:''}<button class="btn" onclick="detailSection('${id}','cast')">Elenco / Cast</button></div><div class="detail-panel" id="detail-panel" hidden></div><div class="more"><h2 style="font-size:16px">More like this</h2><div class="strip">${rel.map(card).join('')}</div></div></div>`;$('#dm').classList.add('on')}
 function openSearch(){$('#search').classList.add('on');$('#q').value='';$('#q').focus();find('')}
 function closeSearch(){$('#search').classList.remove('on')}
 function find(v){v=v.trim().toLowerCase();const r=v?cat.filter(i=>(i.title+i.genre+TN[i.type]+i.year).toLowerCase().includes(v)):[];
