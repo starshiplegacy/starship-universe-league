@@ -242,9 +242,10 @@ function renderGameDialog(key){
   gameDialogExtra.hidden = key !== "legacy";
   gameDialogExtra.innerHTML = key === "legacy" ? dictionary.legacyControls : "";
   const launchActions=document.getElementById("lyriePanelActions");
-  if(launchActions)launchActions.hidden=key!=="lyrie"&&key!=="legacy";
+  const canPlay=Boolean(window.starshipGameLibrary?.isInstalled(key));
+  if(launchActions)launchActions.hidden=!canPlay||(key!=="lyrie"&&key!=="legacy");
   const launchNote=document.getElementById("gameDialogNote");
-  if(launchNote)launchNote.textContent=key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":"Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
+  if(launchNote)launchNote.textContent=!canPlay?"Para jugar, primero descarga e instala este juego desde el catálogo. Después aparecerá en Juegos instalados.":key==="lyrie"?"Esta es la entrada a tu experiencia. Pulsa Iniciar para abrir el menú principal.":"Charlotte, Arthur y Bella te esperan en League Of Legacy. Pulsa Iniciar para abrir el menú principal.";
 }
 document.querySelectorAll("[data-open-game]").forEach(button => button.addEventListener("click", () => {
   activeGameKey = button.dataset.openGame;
@@ -643,11 +644,12 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   document.querySelectorAll(".ulx-game[data-open-game],.ulh-catalog-card[data-install-game],.ulh-catalog-card [data-open-game],.astronaut-game-card[data-install-game],.ulh-vip-card[data-install-game]").forEach(n=>{const card=n.matches(".ulx-game,.ulh-catalog-card[data-install-game],.astronaut-game-card,.ulh-vip-card")?n:n.closest(".ulh-catalog-card");const key=card?.dataset.installGame||n.dataset.openGame;updateCard(card,key);});
  }
  function start(k){
-  if(!navigator.onLine){notify("Necesitas conexión a internet para descargar un juego.");return;}
-  if(!userId){notify("Inicia sesión para descargar juegos.");return;}
+  if(!navigator.onLine){notify("Necesitas conexión a internet para instalar un juego.");return;}
+  if(!userId){notify("Inicia sesión para instalar juegos.");return;}
   if(downloading||installed.has(k))return;
   downloading=k;downloadOwner=userId;downloadRemaining=60;refresh();startDownloadClock();updateDownloadProgress();
  }
+ window.starshipGameLibrary={isInstalled:key=>installed.has(key),install:start,refresh};
  window.addEventListener("beforeunload",event=>{
   if(!downloading)return;
   event.preventDefault();event.returnValue="";
