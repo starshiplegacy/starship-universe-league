@@ -1,11 +1,11 @@
 # League Of Legacy — engineering and logistics audit
 
-**Review date:** 16 November 2026  
+**Review date:** 17 November 2026  
 **Scope:** repository structure, map assets, mode routing, preview integration, rights risks, and current gameplay readiness.
 
 ## Executive assessment
 
-The repository now has a single mode-to-map registry and a working navigation path from the League Of Legacy main menu to a mode selector. The selector has Three.js loaders prepared for GLB and OBJ/MTL/DDS. However, all map previews are intentionally gated until the relevant rights are documented. This is a technical integration milestone, not a playable match system.
+The repository has a single mode-to-map registry, a working navigation path from the League Of Legacy main menu to a mode selector, and a character viewer with eight selectable GLB models. The selector has Three.js loaders prepared for GLB and OBJ/MTL/DDS. However, all map previews are intentionally gated until the relevant rights are documented. This is a technical integration milestone, not a playable match system.
 
 ## Mode and map inventory
 
@@ -17,7 +17,7 @@ The repository now has a single mode-to-map registry and a working navigation pa
 | Versus 4 to 5 | Dedicated GLB | 30,607,812 bytes | Loader prepared; preview blocked until license is verified |
 | Entrenamiento | Dedicated GLB | 146,204 bytes currently tracked in folder | Loader prepared; preview blocked until license is verified |
 
-The map directory currently contains 421 files: 405 DDS, 3 MTL, 2 OBJ, 2 GLB, 1 C4D, 1 BLEND, 1 BLEND1, 1 FBX, 1 STL, 1 TIF and 3 PNG. The tracked Training folder currently exposes one GLB. If more training scenarios were delivered elsewhere, they are not currently visible in this repository path.
+The map directory was recounted from the recursive Git tree on 17 November 2026 and contains 421 files: 405 DDS, 3 MTL, 2 OBJ, 2 GLB, 1 C4D, 1 BLEND, 1 BLEND1, 1 FBX, 1 STL, 1 TIF and 3 PNG. The tracked Training folder currently exposes one GLB. If more training scenarios were delivered elsewhere, they are not currently visible in this repository path.
 
 ## Rights and licensing — release blockers
 
