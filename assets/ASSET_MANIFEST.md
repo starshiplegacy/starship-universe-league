@@ -187,10 +187,10 @@ Los cuatro archivos están versionados como binarios y no son texto legible dire
 
 | Archivo | Tamaño | Git blob SHA | Estado |
 |---|---:|---|---|
-| Kataleya.world | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
-| Kariskio.world | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
-| Solnang.world | 30,659,696 bytes | `f972b0bdf641d057f196449123351bdc0c0b081a` | Almacenado; sin lector/importador |
-| abandoned-island.world | 49,656,910 bytes | `c8e92d0f36960d4010715179c3db4397af33e35e` | Almacenado; sin lector/importador |
+| `kataleya/Kataleya.world` | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
+| `kariskio/Kariskio.world` | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
+| `solnang/Solnang.world` | 30,659,696 bytes | `f972b0bdf641d057f196449123351bdc0c0b081a` | Almacenado; sin lector/importador |
+| `abandoned-island/abandoned-island.world` | 49,656,910 bytes | `c8e92d0f36960d4010715179c3db4397af33e35e` | Almacenado; sin lector/importador |
 
 El conjunto ocupa 194,984,286 bytes (aprox. 186 MiB). Kataleya.world y Kariskio.world comparten exactamente el mismo Git blob SHA y tamaño, por lo que Git los identifica como contenido binario idéntico; conservar ambos nombres no significa que contengan mundos distintos.
 
