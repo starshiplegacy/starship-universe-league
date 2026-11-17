@@ -215,6 +215,7 @@
       '<p class="geffenland-intro">Universe Pay reúne las membresías de STARSHIP UNIVERSE LEAGUE y sus beneficios. Elige el nivel que mejor encaje contigo y descubre todo lo que incluye.</p>' +
       '<div class="universe-pay-status"><strong>Estado de tu cuenta:</strong> '+escapeHtml(membershipStatus)+' <span>· Plan: '+escapeHtml(currentPlan)+'</span></div>' +
       '<div class="universe-pay-benefits"><article><span>✦</span><b>Estrenos anticipados</b><p>Ve los estrenos de Starship Plus antes de que se publiquen en YouTube.</p></article><article><span>🎮</span><b>Juegos VIP</b><p>Young-Moon y Exoplanet desbloquean juegos y betas reservados para miembros VIP.</p></article><article><span>％</span><b>Descuentos VIP</b><p>50 % de descuento en compras elegibles. Un juego de US$10 queda en US$5.</p></article><article><span>＋</span><b>Starship Plus Pro</b><p>Acceso incluido como beneficio de una membresía activa.</p></article></div>' +
+      (entitlement?.state?.loaded && entitlement.isMember ? '<div class="universe-pay-member-actions" aria-label="Accesos para miembros"><button type="button" id="universePayPlay">▶ Dale Play</button><button type="button" id="universePayWatch">✦ Hora de Ver</button></div>' : '') +
       '<div class="geffenland-grid">' + plans.map(plan =>
         '<article class="geffenland-card '+plan.key+'"><div class="geffenland-symbol">'+plan.symbol+'</div><span class="geffenland-level">'+plan.level+'</span><h4>'+plan.name+'</h4><div class="geffenland-prices"><strong>'+plan.monthly+' <small>/ mes</small></strong><span>'+plan.annual+' / año</span></div><div class="geffenland-themes"><b>Temas incluidos</b><div>'+plan.themes.map(theme=>'<span>'+escapeHtml(theme)+'</span>').join("")+'</div></div><ul>'+plan.benefits.map(item=>'<li>'+escapeHtml(item)+'</li>').join("")+'</ul></article>'
       ).join("") + '</div><p class="settings-muted">Precios mostrados en USD, conservados del catálogo actual. El descuento del 50 % se aplica únicamente a compras elegibles y a los niveles VIP Young-Moon y Exoplanet; no se debe interpretar como descuento universal. La contratación, renovación y cobro en línea aún no están conectados, por lo que esta pantalla informa de los beneficios y no procesa pagos.</p>';
@@ -310,6 +311,16 @@
     showPanel("plans","Universe Pay");
   }
   document.querySelectorAll("#universePayOpen,[data-open-universe-pay]").forEach(button=>button.addEventListener("click",openUniversePay));
+  function leaveUniversePayFor(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    if (dialog?.open) dialog.close();
+    window.setTimeout(() => target.scrollIntoView({behavior:"smooth",block:"start"}), 120);
+  }
+  $("accountPanelContent")?.addEventListener("click",event=>{
+    if (event.target.closest("#universePayPlay")) leaveUniversePayFor("games");
+    if (event.target.closest("#universePayWatch")) leaveUniversePayFor("starshipPlusPremieresTitle");
+  });
   back?.addEventListener("click",showMenu);
   dialog?.addEventListener("close",showMenu);
   const personalProfileSection = $("personalProfileSection");
@@ -319,6 +330,7 @@
   syncPersonalProfileVisibility();
   window.addEventListener("universe-entitlements-change",()=>{
     if (!panel.hidden && title.textContent === "Perfil personal" && session?.user) renderPersonalProfile();
+    if (!panel.hidden && title.textContent === "Universe Pay") renderPlans();
   });
   window.addEventListener("universe-auth-change",async event=>{
     session=event.detail?.session || null;
