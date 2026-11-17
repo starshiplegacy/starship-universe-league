@@ -645,3 +645,8 @@ body.auth-checking>.welcome-gate{display:none!important}
   .geffenland-select-plans{grid-template-columns:1fr;gap:8px}
   .geffenland-select-plans button{min-height:44px}
 }
+
+/* Respect hidden states inside the account dialog, including elements with component display rules */
+#accountDialog [hidden]{
+  display:none !important;
+}
