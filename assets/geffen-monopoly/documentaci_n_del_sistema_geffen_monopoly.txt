@@ -1,0 +1,113 @@
+================================================================================
+DOCUMENTACIÓN TÉCNICA Y DE DISEÑO DEL SISTEMA: "GEFFEN: MONOPOLY"
+Archivo de contexto estructural para análisis por IA (ChatGPT / LLMs)
+================================================================================
+
+1. RESUMEN GENERAL DEL PROYECTO
+--------------------------------------------------------------------------------
+- Nombre del Juego: Geffen: Monopoly (Edición Ciudad de la Magia).
+- Archivo Principal: geffen_monopoly.html (Aplicación Single-File: HTML5 + Tailwind CSS + Vanilla JS).
+- Temática: Juego de mesa económico por turnos inspirado en el universo de Ragnarok Online (específicamente la ciudad mágica de Geffen), utilizando "Zeny (Z)" como moneda oficial.
+- Modos de Juego Soportados:
+  * 1v1: 1 Jugador Humano vs 1 Bot IA.
+  * 1v2: 1 Jugador Humano vs 2 Bots IA (Modo por defecto).
+  * 1v3: 1 Jugador Humano vs 3 Bots IA.
+  * 2p: 2 Jugadores Humanos en modo local (Pass & Play).
+
+2. ARQUITECTURA DEL TABLERO (GEOMETRÍA Y CASILLAS)
+--------------------------------------------------------------------------------
+- Estructura Visual: Cuadrícula CSS Grid de 7x7 (`grid-template-columns: repeat(7, 1fr)`).
+- Perímetro Jugable: 24 casillas numeradas del índice `0` al `23` en sentido horario.
+- Zona Central: Ocupa el área interna `grid-column: 2 / 7` y `grid-row: 2 / 7`. Muestra el título del juego y el contador en tiempo real del pozo acumulado en la "Fuente de Maná" (`freeParkingPot`).
+
+Distribución de las 24 Casillas (`BOARD_DATA`):
+- [0]  Plaza Central (`start`): Entrega +200 Z cada vez que un jugador pasa o cae aquí.
+- [1]  Campos de Geffen (`property`, grupo `brown`, 60 Z).
+- [2]  Grimorio Arcano (`chance`): Dispara una carta aleatoria de `EVENT_CARDS`.
+- [3]  Bosque Goblin (`property`, grupo `brown`, 80 Z).
+- [4]  Portal Kafra Norte (`station`, grupo `kafra`, 200 Z).
+- [5]  Impuesto del Gremio (`tax`, -120 Z -> se suma a `freeParkingPot`).
+- [6]  Calabozo de Geffen (`jail`): Casilla de cárcel / visita.
+- [7]  Ruinas de Glast (`property`, grupo `cyan`, 110 Z).
+- [8]  Posada del Bardo (`property`, grupo `cyan`, 120 Z).
+- [9]  Portal Kafra Este (`station`, grupo `kafra`, 200 Z).
+- [10] Cofre del Tesoro (`chest`): Dispara una carta aleatoria de `EVENT_CARDS`.
+- [11] Forja de Geffen (`property`, grupo `pink`, 150 Z).
+- [12] Fuente de Maná (`freeparking`): El jugador que cae aquí cobra todo el `freeParkingPot`.
+- [13] Taller de Alquimia (`property`, grupo `pink`, 160 Z).
+- [14] Grimorio Arcano (`chance`).
+- [15] Portal Kafra Sur (`station`, grupo `kafra`, 200 Z).
+- [16] Montañas Mjolnir (`property`, grupo `orange`, 200 Z).
+- [17] Aldea Orca (`property`, grupo `orange`, 220 Z).
+- [18] ¡Ve al Calabozo! (`gotojail`): Teletransporta al jugador al índice `6` y activa `inJail = true`.
+- [19] Biblioteca Mágica (`property`, grupo `purple`, 260 Z - Monopolio de 1 sola casilla).
+- [20] Portal Kafra Oeste (`station`, grupo `kafra`, 200 Z).
+- [21] Diezmo Arcano (`tax`, -150 Z -> se suma a `freeParkingPot`).
+- [22] Academia de Magos (`property`, grupo `gold`, 320 Z).
+- [23] Torre de Geffen (`property`, grupo `gold`, 400 Z).
+
+3. ESTRUCTURAS DE DATOS PRINCIPALES (STATE MANAGEMENT)
+--------------------------------------------------------------------------------
+A) Objeto Jugador (`players` array):
+   {
+     id: Number,          // Índice único (0 a 3)
+     name: String,        // Ej. "Tú (Mago)", "Bot Herrero"
+     icon: String,        // Emoji identificador de ficha
+     color: String,       // Código Hex para bordes de propiedades y ficha
+     zeny: Number,        // Saldo actual (1200, 1500 o 2000 Z inicial)
+     position: Number,    // Índice actual en el tablero (0..23)
+     inJail: Boolean,     // Estado de encarcelamiento
+     jailTurns: Number,   // Turnos restantes en el calabozo (máx. 2)
+     bankrupt: Boolean    // true si su saldo cayó por debajo de 0 Z
+   }
+
+B) Estado Dinámico del Tablero (`boardState` array):
+   Clona `BOARD_DATA` añadiendo:
+   - `ownerId`: `null` o `player.id` del propietario actual.
+   - `level`: Entero de `0` a `3` (0 = terreno base; 1-3 = Torres Arcanas construidas).
+
+C) Variables Globales de Control:
+   - `currentPlayerIdx`: Índice del jugador activo.
+   - `turnCounter`: Contador de rondas completas.
+   - `hasRolledThisTurn`: Booleano que controla si el jugador ya lanzó dados.
+   - `consecutiveDoubles`: Contador de dados dobles seguidos (si llega a 3, envía al Calabozo).
+   - `freeParkingPot`: Pozo económico acumulado por impuestos y fianzas (inicia en 100 Z).
+   - `isAnimating`: Bloqueo de interfaz mientras la ficha se desplaza casilla por casilla.
+
+4. REGLAS DE NEGOCIO Y MECÁNICAS CLAVE
+--------------------------------------------------------------------------------
+1. Cálculo de Renta (`calculateRent(cell)`):
+   - Estaciones (`station`): Escala según cantidad de Portales Kafra poseídos por el mismo dueño:
+     1 portal = 50 Z | 2 portales = 100 Z | 3 portales = 200 Z | 4 portales = 400 Z.
+   - Propiedades (`property`):
+     * Si `level === 0` y el dueño posee TODAS las casillas del mismo `group` (`hasColorMonopoly`), la renta base `rent[0]` se multiplica x2.
+     * Si `level > 0`, cobra `cell.rent[cell.level]` (hasta nivel 3).
+
+2. Sistema de Mejoras (`handleUpgradeProperty()`):
+   - Requiere poseer el monopolio de color (`hasColorMonopoly`) y tener saldo >= `cell.upgradeCost`.
+   - Incrementa `cell.level` hasta un máximo de 3 Torres Arcanas (visualizadas con estrellas ⭐ en la barra de color de la casilla).
+
+3. Sistema de Calabozo (`jail` y `gotojail`):
+   - Al entrar al Calabozo, `jailTurns` se fija en `2`.
+   - El jugador puede salir inmediatamente pagando `100 Z` (`handlePayBail()`), sacando dados dobles en su turno, o esperando a que `jailTurns` llegue a `0`.
+
+4. Bancarrota y Condición de Victoria (`handleBankruptcy()` / `checkWinner()`):
+   - Si un jugador no puede cubrir una deuda o impuesto, `bankrupt` pasa a `true`.
+   - Si la deuda fue con otro jugador (`creditor`), sus propiedades se transfieren al acreedor; si fue con la banca, vuelven a estar disponibles (`ownerId = null`, `level = 0`).
+   - El juego termina cuando `players.filter(p => !p.bankrupt).length === 1`.
+
+5. COMPORTAMIENTO DE LA INTELIGENCIA ARTIFICIAL (`runBotTurn()`)
+--------------------------------------------------------------------------------
+- Los bots operan de forma autónoma mediante temporizadores (`setTimeout` / `setInterval`) respetando las animaciones del tablero:
+  1. Fianza: Si está en el Calabozo y tiene `>= 250 Z`, paga los 100 Z para salir.
+  2. Compra: Si cae en una propiedad libre, la compra solo si conserva un colchón mínimo de seguridad de `120 Z` (`bot.zeny >= cell.price + 120`).
+  3. Construcción: Si tiene un monopolio disponible para mejorar, construye una Torre Arcana siempre que conserve al menos `200 Z` de reserva.
+  4. Dobles: Si saca dados dobles, ejecuta automáticamente su tirada extra antes de pasar el turno.
+
+6. GUÍA PARA EXTENDER EL CÓDIGO (PROMPTS SUGERIDOS PARA IA)
+--------------------------------------------------------------------------------
+Si deseas pedirle a ChatGPT o a otra IA que modifique `geffen_monopoly.html`, puedes usar estas referencias exactas:
+- Para añadir nuevas casillas o cambiar precios: Editar el arreglo `BOARD_DATA` y ajustar las coordenadas `gridRow` / `gridCol` si se cambia el tamaño del grid.
+- Para añadir más cartas de suerte: Agregar objetos al arreglo `EVENT_CARDS` con la firma `{ title, text, effect: (player) => { ... } }`.
+- Para implementar comercio/intercambio entre jugadores: Crear una función que intercambie `boardState[id].ownerId` y ajuste `player.zeny` antes de llamar a `handleEndTurn()`.
+================================================================================

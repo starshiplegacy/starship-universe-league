@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club de Cartas - Solitario y Versus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados para la mesa de juego y cartas */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at center, #166534 0%, #064e3b 70%, #022c22 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        .font-casino {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Textura sutil de fieltro */
+        .felt-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        /* Diseño de Carta */
+        .playing-card {
+            width: 82px;
+            height: 118px;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.2s ease;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 6px 8px;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 640px) {
+            .playing-card {
+                width: 104px;
+                height: 148px;
+                padding: 8px 10px;
+                border-radius: 12px;
+            }
+        }
+
+        .playing-card:hover:not(.card-disabled):not(.card-back) {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 14px 25px rgba(0, 0, 0, 0.55);
+            z-index: 10;
+        }
+
+        .playing-card.selected {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 0 0 3px #fbbf24, 0 16px 28px rgba(251, 191, 36, 0.4);
+            z-index: 20;
+        }
+
+        .playing-card.valid-target {
+            box-shadow: 0 0 0 2px #4ade80, 0 8px 20px rgba(74, 222, 128, 0.35);
+        }
+
+        /* Reverso de la carta */
+        .card-back {
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+            border: 4px solid #f8fafc;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.45);
+            cursor: default;
+        }
+
+        .card-back::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 6px;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.12) 0px,
+                rgba(255, 255, 255, 0.12) 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+
+        /* Animaciones de entrada y combate */
+        @keyframes dealCard {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.8) rotate(-5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        .animate-deal {
+            animation: dealCard 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pulseGold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.6); }
+            50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0); }
+        }
+
+        .btn-gold-pulse {
+            animation: pulseGold 2s infinite;
+        }
+
+        /* Scrollbar personalizada para la fila de cartas en móvil */
+        .cards-row-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .cards-row-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .cards-row-scroll::-webkit-scrollbar-thumb {
+            background: rgba(251, 191, 36, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="felt-pattern flex flex-col justify-between">
+
+    <!-- Barra Superior de Navegación -->
+    <header class="w-full bg-black/35 backdrop-blur-md border-b border-amber-500/20 px-4 py-3 sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl shadow-md">
+                    ♠
+                </div>
+                <div>
+                    <h1 class="font-casino text-lg sm:text-xl font-bold tracking-wider text-amber-300 leading-none">
+                        CLUB DE CARTAS
+                    </h1>
+                    <p id="header-subtitle" class="text-xs text-emerald-200/80 mt-0.5">Selecciona tu modo de juego</p>
+                </div>
+            </div>
+
+            <button id="btn-back-menu" onclick="returnToMenu()" class="hidden items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-400/30 text-sm font-semibold transition shadow-lg active:scale-95">
+                <span>←</span>
+                <span>Menú Principal</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+
+        <!-- ==================== 1. MENÚ PRINCIPAL ==================== -->
+        <section id="screen-menu" class="w-full max-w-4xl mx-auto text-center space-y-8 animate-deal">
+            <div class="space-y-3">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/30 border border-amber-400/30 text-amber-300 text-xs sm:text-sm font-medium">
+                    <span>♦️</span> Mesa Clásica de Naipes <span>♣️</span>
+                </div>
+                <h2 class="font-casino text-3xl sm:text-5xl font-bold text-white drop-shadow-lg">
+                    Elige tu Desafío
+                </h2>
+                <p class="text-emerald-100/80 max-w-xl mx-auto text-sm sm:text-base">
+                    Disfruta de dos modos de juego rápidos y estratégicos con baraja francesa completa.
+                </p>
+            </div>
+
+            <!-- Tarjetas de Selección de Modo -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto pt-2">
+                
+                <!-- Botón / Tarjeta 1: Solitario -->
+                <button onclick="startSolitaire()" class="group relative text-left bg-gradient-to-b from-emerald-900/90 to-emerald-950/95 hover:from-emerald-800/95 hover:to-emerald-950 border-2 border-amber-400/40 hover:border-amber-400 rounded-2xl p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                                🃏
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-400/30">
+                                1 Jugador
+                            </span>
+                        </div>
+                        <h3 class="font-casino text-2xl font-bold text-amber-300 mb-2">
+                            Solitario en Fila
+                        </h3>
+                        <p class="text-emerald-100/80 text-sm leading-relaxed mb-6">
+                            Coloca cartas del mazo en una fila y combina parejas del <strong class="text-white">mismo número</strong> o <strong class="text-white">mismo palo</strong> que estén juntas o separadas por una carta. ¡Limpia la mesa para ganar!
+                        </p>
+                    </div>
+                    <div class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 group-hover:from-amber-400 group-hover:to-amber-500 text-slate-950 font-bold text-center shadow-lg transition flex items-center justify-center gap-2">
+                        <span>Jugar Solitario</span>
+                        <span>→</span>
+                    </div>
+                </button>
+
+                <!-- Botón / Tarjeta 2: Versus (Tú vs Bot) -->
+                <button onclick="startVersus()" class="group relative text-left bg-gradient-to-b from-emerald-900/90 to-emerald-950/95 hover:from-emerald-800/95 hover:to-emerald-950 border-2 border-amber-400/40 hover:border-amber-400 rounded-2xl p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-14 h-14 rounded-2xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                                ⚔️
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-semibold border border-rose-400/30">
+                                Tú vs Bot
+                            </span>
+                        </div>
+                        <h3 class="font-casino text-2xl font-bold text-amber-300 mb-2">
+                            Versus (Duelo de Cartas)
+                        </h3>
+                        <p class="text-emerald-100/80 text-sm leading-relaxed mb-6">
+                            Enfréntate a la inteligencia artificial en rondas tácticas. Elige estratégicamente una carta de tu mano para superar la del Bot. ¡Los empates acumulan puntos en el pozo!
+                        </p>
+                    </div>
+                    <div class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 group-hover:from-rose-400 group-hover:to-red-500 text-white font-bold text-center shadow-lg transition flex items-center justify-center gap-2">
+                        <span>Jugar Versus</span>
+                        <span>→</span>
+                    </div>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- ==================== 2. JUEGO 1: SOLITARIO EN FILA ==================== -->
+        <section id="screen-solitaire" class="hidden w-full max-w-5xl mx-auto space-y-5">
+            
+            <!-- Panel Superior de Estadísticas y Reglas -->
+            <div class="bg-black/35 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6">
+                    <div class="bg-emerald-950/80 px-4 py-2 rounded-xl border border-emerald-500/30 text-center">
+                        <span class="text-xs text-emerald-300 block uppercase tracking-wider">Mazo</span>
+                        <span id="sol-deck-count" class="text-xl font-bold text-white">52</span>
+                    </div>
+                    <div class="bg-emerald-950/80 px-4 py-2 rounded-xl border border-emerald-500/30 text-center">
+                        <span class="text-xs text-emerald-300 block uppercase tracking-wider">En Fila</span>
+                        <span id="sol-row-count" class="text-xl font-bold text-amber-300">0</span>
+                    </div>
+                    <div class="bg-emerald-950/80 px-4 py-2 rounded-xl border border-emerald-500/30 text-center">
+                        <span class="text-xs text-emerald-300 block uppercase tracking-wider">Puntos</span>
+                        <span id="sol-score" class="text-xl font-bold text-emerald-400">0</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="solitaireHint()" class="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 text-xs sm:text-sm font-semibold transition">
+                        💡 Pista
+                    </button>
+                    <button onclick="startSolitaire()" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs sm:text-sm font-semibold transition shadow">
+                        🔄 Reiniciar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instrucciones Rápidas -->
+            <div class="bg-amber-950/40 border border-amber-400/25 rounded-xl px-4 py-2.5 text-center text-xs sm:text-sm text-amber-100/90">
+                <strong>Regla:</strong> Selecciona dos cartas en la fila que tengan el <strong>mismo número</strong> o el <strong>mismo palo</strong> y que estén <strong>juntas</strong> (adyacentes) o con <strong>exactamente 1 carta en medio</strong> para eliminarlas. Si no ves jugadas, roba del mazo.
+            </div>
+
+            <!-- Zona de Mazo y Mensaje de Estado -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 py-2">
+                <!-- Mazo para robar -->
+                <div class="flex items-center gap-4">
+                    <div id="sol-deck-pile" onclick="drawSolitaireCard()" class="playing-card card-back cursor-pointer hover:scale-105 transition-transform flex items-center justify-center" title="Haz clic para robar una carta">
+                        <span class="relative z-10 bg-black/70 text-amber-300 text-xs font-bold px-2 py-1 rounded-md border border-amber-400/40">
+                            ROBAR
+                        </span>
+                    </div>
+                    <div class="text-left max-w-[200px]">
+                        <button id="btn-sol-draw" onclick="drawSolitaireCard()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-lg transition active:scale-95">
+                            + Sacar Carta a la Fila
+                        </button>
+                        <p class="text-xs text-emerald-200/75 mt-1.5">Añade una carta al final de la fila.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje Dinámico del Juego -->
+            <div id="sol-message" class="text-center font-medium text-sm sm:text-base text-amber-300 min-h-[24px]">
+                ¡Empareja cartas iguales en valor o palo!
+            </div>
+
+            <!-- Fila de Cartas en Juego -->
+            <div class="bg-black/25 border border-white/10 rounded-2xl p-4 sm:p-6 min-h-[190px] flex items-center">
+                <div id="sol-cards-row" class="w-full flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+                    <!-- Las cartas se generan dinámicamente aquí -->
+                </div>
+            </div>
+
+            <!-- Banner de Fin de Partida (Solitario) -->
+            <div id="sol-gameover-banner" class="hidden bg-slate-900/95 border-2 border-amber-400 rounded-2xl p-6 text-center space-y-3 shadow-2xl max-w-md mx-auto">
+                <h4 id="sol-gameover-title" class="font-casino text-2xl font-bold text-amber-300">¡Partida Terminada!</h4>
+                <p id="sol-gameover-desc" class="text-sm text-slate-200"></p>
+                <button onclick="startSolitaire()" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition">
+                    Jugar de Nuevo
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== 3. JUEGO 2: VERSUS (TÚ VS BOT) ==================== -->
+        <section id="screen-versus" class="hidden w-full max-w-4xl mx-auto space-y-5">
+            
+            <!-- Marcador Superior -->
+            <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+                <!-- Puntos Jugador -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-xl">
+                        🧑
+                    </div>
+                    <div>
+                        <span class="text-xs text-emerald-300 uppercase font-semibold block">Tú</span>
+                        <span id="vs-player-score" class="text-2xl font-bold text-white">0</span>
+                    </div>
+                </div>
+
+                <!-- Centro: Ronda y Pozo -->
+                <div class="text-center">
+                    <span id="vs-round-badge" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                        Ronda 1 / 10
+                    </span>
+                    <div class="mt-1 text-xs text-emerald-200">
+                        Pozo en juego: <strong id="vs-pot" class="text-amber-300 text-sm">1 pt</strong>
+                    </div>
+                </div>
+
+                <!-- Puntos Bot -->
+                <div class="flex items-center gap-3 text-right">
+                    <div>
+                        <span class="text-xs text-rose-300 uppercase font-semibold block">Bot IA</span>
+                        <span id="vs-bot-score" class="text-2xl font-bold text-white">0</span>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-xl">
+                        🤖
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mano del Bot (Cartas boca abajo) -->
+            <div class="text-center space-y-2">
+                <p class="text-xs uppercase tracking-wider text-rose-200/80 font-semibold">Mano del Bot</p>
+                <div id="vs-bot-hand" class="flex justify-center gap-2 sm:gap-3 min-h-[70px]">
+                    <!-- Cartas ocultas del bot -->
+                </div>
+            </div>
+
+            <!-- Arena de Duelo Central -->
+            <div class="bg-black/30 border border-amber-400/20 rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center space-y-4">
+                <div class="flex items-center justify-center gap-6 sm:gap-12">
+                    <!-- Carta jugada por Tú -->
+                    <div class="text-center space-y-1.5">
+                        <span class="text-xs font-semibold text-emerald-300 block">Tu Carta</span>
+                        <div id="vs-arena-player" class="w-[82px] h-[118px] sm:w-[104px] sm:h-[148px] rounded-xl border-2 border-dashed border-emerald-400/40 flex items-center justify-center text-emerald-300/50 text-xs text-center p-2">
+                            Elige una carta
+                        </div>
+                    </div>
+
+                    <!-- Icono VS -->
+                    <div class="font-casino text-2xl sm:text-3xl font-bold text-amber-400 drop-shadow">
+                        VS
+                    </div>
+
+                    <!-- Carta jugada por el Bot -->
+                    <div class="text-center space-y-1.5">
+                        <span class="text-xs font-semibold text-rose-300 block">Carta del Bot</span>
+                        <div id="vs-arena-bot" class="w-[82px] h-[118px] sm:w-[104px] sm:h-[148px] rounded-xl border-2 border-dashed border-rose-400/40 flex items-center justify-center text-rose-300/50 text-xs text-center p-2">
+                            Esperando...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensaje del Resultado de la Ronda -->
+                <div id="vs-status-msg" class="text-center font-semibold text-sm sm:text-base text-amber-300 min-h-[24px]">
+                    Selecciona una carta de tu mano para lanzar el duelo. (As es la más alta)
+                </div>
+            </div>
+
+            <!-- Mano del Jugador -->
+            <div class="text-center space-y-2.5">
+                <div class="flex items-center justify-between max-w-lg mx-auto px-2">
+                    <p class="text-xs uppercase tracking-wider text-emerald-200 font-semibold">Tu Mano (Haz clic para jugar)</p>
+                    <button onclick="startVersus()" class="text-xs text-amber-300 hover:underline">🔄 Reiniciar Duelo</button>
+                </div>
+                <div id="vs-player-hand" class="flex flex-wrap justify-center gap-2.5 sm:gap-4 min-h-[125px] sm:min-h-[155px]">
+                    <!-- Cartas del jugador -->
+                </div>
+            </div>
+
+            <!-- Banner Final del Duelo Versus -->
+            <div id="vs-gameover-banner" class="hidden bg-slate-900/95 border-2 border-amber-400 rounded-2xl p-6 text-center space-y-3 shadow-2xl max-w-md mx-auto">
+                <h4 id="vs-gameover-title" class="font-casino text-2xl font-bold text-amber-300">¡Fin del Duelo!</h4>
+                <p id="vs-gameover-desc" class="text-sm text-slate-200"></p>
+                <button onclick="startVersus()" class="px-6 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-sm transition">
+                    Revancha contra el Bot
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="w-full text-center py-3 text-xs text-emerald-200/50 border-t border-white/5">
+        Club de Cartas • Baraja Francesa de 52 Cartas
+    </footer>
+
+    <!-- ==================== LÓGICA DEL JUEGO ==================== -->
+    <script>
+        // Definición de palos y valores de la baraja
+        const SUITS = [
+            { symbol: '♠', name: 'Picas', color: 'text-slate-900' },
+            { symbol: '♥', name: 'Corazones', color: 'text-red-600' },
+            { symbol: '♦', name: 'Diamantes', color: 'text-red-600' },
+            { symbol: '♣', name: 'Tréboles', color: 'text-slate-900' }
+        ];
+
+        const VALUES = [
+            { label: '2', rank: 2 },
+            { label: '3', rank: 3 },
+            { label: '4', rank: 4 },
+            { label: '5', rank: 5 },
+            { label: '6', rank: 6 },
+            { label: '7', rank: 7 },
+            { label: '8', rank: 8 },
+            { label: '9', rank: 9 },
+            { label: '10', rank: 10 },
+            { label: 'J', rank: 11 },
+            { label: 'Q', rank: 12 },
+            { label: 'K', rank: 13 },
+            { label: 'A', rank: 14 } // As vale 14 en Versus
+        ];
+
+        // Crea y baraja un mazo completo de 52 cartas
+        function createShuffledDeck() {
+            const deck = [];
+            let idCounter = 1;
+            for (const suit of SUITS) {
+                for (const val of VALUES) {
+                    deck.push({
+                        id: idCounter++,
+                        suit: suit.symbol,
+                        suitName: suit.name,
+                        color: suit.color,
+                        label: val.label,
+                        rank: val.rank
+                    });
+                }
+            }
+            // Algoritmo Fisher-Yates para barajar
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        // Genera el elemento HTML visual de una carta
+        function createCardElement(card, options = {}) {
+            const div = document.createElement('div');
+            div.className = `playing-card animate-deal ${card.color} ${options.extraClasses || ''}`;
+            if (options.onClick) {
+                div.onclick = () => options.onClick(card);
+            }
+
+            div.innerHTML = `
+                <div class="flex flex-col items-start leading-none">
+                    <span class="text-sm sm:text-base font-bold">${card.label}</span>
+                    <span class="text-xs sm:text-sm">${card.suit}</span>
+                </div>
+                <div class="text-2xl sm:text-4xl self-center my-auto select-none">
+                    ${card.suit}
+                </div>
+                <div class="flex flex-col items-end leading-none rotate-180">
+                    <span class="text-sm sm:text-base font-bold">${card.label}</span>
+                    <span class="text-xs sm:text-sm">${card.suit}</span>
+                </div>
+            `;
+            return div;
+        }
+
+        // Navegación entre pantallas
+        function showScreen(screenId, subtitleText) {
+            document.getElementById('screen-menu').classList.add('hidden');
+            document.getElementById('screen-solitaire').classList.add('hidden');
+            document.getElementById('screen-versus').classList.add('hidden');
+
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById('header-subtitle').textContent = subtitleText;
+
+            const btnBack = document.getElementById('btn-back-menu');
+            if (screenId === 'screen-menu') {
+                btnBack.classList.add('hidden');
+                btnBack.classList.remove('flex');
+            } else {
+                btnBack.classList.remove('hidden');
+                btnBack.classList.add('flex');
+            }
+        }
+
+        function returnToMenu() {
+            showScreen('screen-menu', 'Selecciona tu modo de juego');
+        }
+
+        /* =====================================================================
+           MODO 1: SOLITARIO EN FILA (Emparejamiento de cartas iguales)
+           ===================================================================== */
+        let solDeck = [];
+        let solRow = [];
+        let solSelectedIndex = null;
+        let solScore = 0;
+
+        function startSolitaire() {
+            showScreen('screen-solitaire', 'Modo Solitario • Cartas Iguales en Fila');
+            solDeck = createShuffledDeck();
+            solRow = [];
+            solSelectedIndex = null;
+            solScore = 0;
+
+            document.getElementById('sol-gameover-banner').classList.add('hidden');
+            document.getElementById('sol-message').textContent = '¡Selecciona dos cartas válidas para eliminarlas o saca más del mazo!';
+
+            // Repartir 6 cartas iniciales a la fila
+            for (let i = 0; i < 6; i++) {
+                if (solDeck.length > 0) {
+                    solRow.push(solDeck.pop());
+                }
+            }
+            renderSolitaire();
+        }
+
+        // Verifica si dos cartas en posiciones idx1 e idx2 pueden emparejarse
+        function canMatchSolitaire(idx1, idx2) {
+            if (idx1 === idx2 || idx1 < 0 || idx2 < 0 || idx1 >= solRow.length || idx2 >= solRow.length) {
+                return false;
+            }
+            const distance = Math.abs(idx1 - idx2);
+            // Deben estar juntas (distancia 1) o tener 1 carta entre ellas (distancia 2)
+            if (distance !== 1 && distance !== 2) {
+                return false;
+            }
+            const c1 = solRow[idx1];
+            const c2 = solRow[idx2];
+            // Coinciden en número/figura o en palo
+            return c1.label === c2.label || c1.suit === c2.suit;
+        }
+
+        // Saca una carta del mazo y la añade al final de la fila
+        function drawSolitaireCard() {
+            if (solDeck.length === 0) {
+                document.getElementById('sol-message').textContent = 'No quedan más cartas en el mazo.';
+                checkSolitaireEnd();
+                return;
+            }
+            solSelectedIndex = null;
+            const drawn = solDeck.pop();
+            solRow.push(drawn);
+            document.getElementById('sol-message').textContent = `Sacaste el ${drawn.label} de ${drawn.suitName}.`;
+            renderSolitaire();
+            checkSolitaireEnd();
+        }
+
+        // Maneja el clic en una carta de la fila
+        function handleSolitaireCardClick(index) {
+            if (solSelectedIndex === null) {
+                solSelectedIndex = index;
+                const card = solRow[index];
+                document.getElementById('sol-message').textContent = `Seleccionado: ${card.label} de ${card.suitName}. Elige su pareja (junta o saltando 1).`;
+            } else if (solSelectedIndex === index) {
+                // Deseleccionar
+                solSelectedIndex = null;
+                document.getElementById('sol-message').textContent = 'Selección cancelada.';
+            } else {
+                // Intentar emparejar
+                if (canMatchSolitaire(solSelectedIndex, index)) {
+                    const c1 = solRow[solSelectedIndex];
+                    const c2 = solRow[index];
+                    const matchType = c1.label === c2.label ? 'mismo valor' : 'mismo palo';
+
+                    // Eliminar ambas cartas de la fila (primero el índice mayor para no alterar el menor)
+                    const highIdx = Math.max(solSelectedIndex, index);
+                    const lowIdx = Math.min(solSelectedIndex, index);
+                    solRow.splice(highIdx, 1);
+                    solRow.splice(lowIdx, 1);
+
+                    solScore += 100;
+                    solSelectedIndex = null;
+                    document.getElementById('sol-message').textContent = `¡Pareja eliminada (${matchType})! +100 puntos.`;
+                } else {
+                    // Si no hacen pareja, cambiamos la selección a la nueva carta clicada
+                    solSelectedIndex = index;
+                    const card = solRow[index];
+                    document.getElementById('sol-message').textContent = `No coinciden o están muy lejos. Nueva selección: ${card.label} de ${card.suitName}.`;
+                }
+            }
+            renderSolitaire();
+            checkSolitaireEnd();
+        }
+
+        // Busca y resalta una jugada disponible si existe
+        function solitaireHint() {
+            for (let i = 0; i < solRow.length; i++) {
+                for (let j = i + 1; j <= i + 2 && j < solRow.length; j++) {
+                    if (canMatchSolitaire(i, j)) {
+                        solSelectedIndex = i;
+                        document.getElementById('sol-message').textContent = `💡 Pista: Puedes unir ${solRow[i].label}${solRow[i].suit} con ${solRow[j].label}${solRow[j].suit}.`;
+                        renderSolitaire();
+                        return;
+                    }
+                }
+            }
+            if (solDeck.length > 0) {
+                document.getElementById('sol-message').textContent = '💡 No hay parejas disponibles en la fila. ¡Roba una carta del mazo!';
+            } else {
+                document.getElementById('sol-message').textContent = 'No quedan movimientos posibles.';
+            }
+        }
+
+        // Verifica si el jugador ganó o se quedó sin movimientos
+        function checkSolitaireEnd() {
+            const banner = document.getElementById('sol-gameover-banner');
+            const title = document.getElementById('sol-gameover-title');
+            const desc = document.getElementById('sol-gameover-desc');
+
+            // Victoria perfecta: sin cartas en mazo ni en fila
+            if (solDeck.length === 0 && solRow.length === 0) {
+                solScore += 500;
+                document.getElementById('sol-score').textContent = solScore;
+                title.textContent = '🏆 ¡Victoria Total!';
+                desc.textContent = `¡Limpiaste toda la mesa! Puntuación final: ${solScore} puntos.`;
+                banner.classList.remove('hidden');
+                return;
+            }
+
+            // Si aún hay mazo, el juego continúa
+            if (solDeck.length > 0) return;
+
+            // Verificar si queda algún movimiento válido en la fila
+            let hasMoves = false;
+            for (let i = 0; i < solRow.length; i++) {
+                for (let j = i + 1; j <= i + 2 && j < solRow.length; j++) {
+                    if (canMatchSolitaire(i, j)) {
+                        hasMoves = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasMoves) {
+                title.textContent = solRow.length <= 2 ? '👏 ¡Casi lo logras!' : '🃏 Sin más movimientos';
+                desc.textContent = `Quedaron ${solRow.length} cartas en la fila. Puntuación final: ${solScore} puntos.`;
+                banner.classList.remove('hidden');
+            }
+        }
+
+        // Renderiza el estado actual del Solitario
+        function renderSolitaire() {
+            document.getElementById('sol-deck-count').textContent = solDeck.length;
+            document.getElementById('sol-row-count').textContent = solRow.length;
+            document.getElementById('sol-score').textContent = solScore;
+
+            const deckPile = document.getElementById('sol-deck-pile');
+            const btnDraw = document.getElementById('btn-sol-draw');
+            if (solDeck.length === 0) {
+                deckPile.classList.add('opacity-30', 'pointer-events-none');
+                btnDraw.disabled = true;
+                btnDraw.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                deckPile.classList.remove('opacity-30', 'pointer-events-none');
+                btnDraw.disabled = false;
+                btnDraw.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+
+            const rowContainer = document.getElementById('sol-cards-row');
+            rowContainer.innerHTML = '';
+
+            if (solRow.length === 0) {
+                rowContainer.innerHTML = `<p class="text-emerald-200/60 text-sm italic">La fila está vacía. ${solDeck.length > 0 ? 'Saca una carta del mazo.' : '¡Felicidades!'}</p>`;
+                return;
+            }
+
+            solRow.forEach((card, idx) => {
+                let extraClasses = '';
+                if (solSelectedIndex === idx) {
+                    extraClasses = 'selected';
+                } else if (solSelectedIndex !== null && canMatchSolitaire(solSelectedIndex, idx)) {
+                    extraClasses = 'valid-target';
+                }
+
+                const cardEl = createCardElement(card, {
+                    extraClasses,
+                    onClick: () => handleSolitaireCardClick(idx)
+                });
+                rowContainer.appendChild(cardEl);
+            });
+        }
+
+
+        /* =====================================================================
+           MODO 2: VERSUS (TÚ VS BOT - Duelo Táctico de Cartas)
+           ===================================================================== */
+        let vsDeck = [];
+        let vsPlayerHand = [];
+        let vsBotHand = [];
+        let vsPlayerScore = 0;
+        let vsBotScore = 0;
+        let vsRound = 1;
+        const VS_MAX_ROUNDS = 10;
+        let vsPot = 1;
+        let vsRoundLocked = false;
+
+        function startVersus() {
+            showScreen('screen-versus', 'Modo Versus • Tú vs Bot IA');
+            vsDeck = createShuffledDeck();
+            vsPlayerHand = [];
+            vsBotHand = [];
+            vsPlayerScore = 0;
+            vsBotScore = 0;
+            vsRound = 1;
+            vsPot = 1;
+            vsRoundLocked = false;
+
+            document.getElementById('vs-gameover-banner').classList.add('hidden');
+            document.getElementById('vs-status-msg').textContent = 'Elige una carta de tu mano para enfrentar al Bot (El As es la mayor).';
+
+            // Resetear arena
+            resetVersusArena();
+
+            // Repartir 5 cartas iniciales a cada uno
+            for (let i = 0; i < 5; i++) {
+                vsPlayerHand.push(vsDeck.pop());
+                vsBotHand.push(vsDeck.pop());
+            }
+
+            renderVersus();
+        }
+
+        function resetVersusArena() {
+            const pArena = document.getElementById('vs-arena-player');
+            const bArena = document.getElementById('vs-arena-bot');
+            pArena.className = 'w-[82px] h-[118px] sm:w-[104px] sm:h-[148px] rounded-xl border-2 border-dashed border-emerald-400/40 flex items-center justify-center text-emerald-300/50 text-xs text-center p-2';
+            pArena.innerHTML = 'Tu jugada';
+
+            bArena.className = 'w-[82px] h-[118px] sm:w-[104px] sm:h-[148px] rounded-xl border-2 border-dashed border-rose-400/40 flex items-center justify-center text-rose-300/50 text-xs text-center p-2';
+            bArena.innerHTML = 'Jugada Bot';
+        }
+
+        // Lógica de elección del Bot (IA táctica simple)
+        function chooseBotCard(playerCard) {
+            // Ordenar mano del bot de menor a mayor valor
+            vsBotHand.sort((a, b) => a.rank - b.rank);
+
+            // 65% de las veces intenta jugar inteligentemente, 35% juega al azar para ser impredecible
+            if (Math.random() < 0.65) {
+                // Busca la carta más baja que logre ganar a la del jugador
+                const winningCards = vsBotHand.filter(c => c.rank > playerCard.rank);
+                if (winningCards.length > 0) {
+                    const chosen = winningCards[0];
+                    vsBotHand = vsBotHand.filter(c => c.id !== chosen.id);
+                    return chosen;
+                }
+                // Si no puede ganar, sacrifica su carta más baja
+                return vsBotHand.shift();
+            } else {
+                const randIndex = Math.floor(Math.random() * vsBotHand.length);
+                return vsBotHand.splice(randIndex, 1)[0];
+            }
+        }
+
+        // El jugador lanza una carta
+        function playVersusCard(cardIndex) {
+            if (vsRoundLocked || vsRound > VS_MAX_ROUNDS) return;
+            vsRoundLocked = true;
+
+            const playerCard = vsPlayerHand.splice(cardIndex, 1)[0];
+            const botCard = chooseBotCard(playerCard);
+
+            // Mostrar ambas cartas en la arena
+            const pArena = document.getElementById('vs-arena-player');
+            const bArena = document.getElementById('vs-arena-bot');
+            pArena.className = '';
+            pArena.innerHTML = '';
+            pArena.appendChild(createCardElement(playerCard));
+
+            bArena.className = '';
+            bArena.innerHTML = '';
+            bArena.appendChild(createCardElement(botCard));
+
+            // Evaluar ganador de la ronda
+            const msgEl = document.getElementById('vs-status-msg');
+            if (playerCard.rank > botCard.rank) {
+                vsPlayerScore += vsPot;
+                msgEl.innerHTML = `<span class="text-emerald-400">¡Ganaste la ronda!</span> ${playerCard.label}${playerCard.suit} vence a ${botCard.label}${botCard.suit} (+${vsPot} pts).`;
+                vsPot = 1;
+            } else if (botCard.rank > playerCard.rank) {
+                vsBotScore += vsPot;
+                msgEl.innerHTML = `<span class="text-rose-400">¡El Bot gana la ronda!</span> ${botCard.label}${botCard.suit} vence a ${playerCard.label}${playerCard.suit} (+${vsPot} pts).`;
+                vsPot = 1;
+            } else {
+                vsPot += 1;
+                msgEl.innerHTML = `<span class="text-amber-300">⚔️ ¡Empate (${playerCard.label} vs ${botCard.label})!</span> El pozo sube a <strong>${vsPot} puntos</strong>.`;
+            }
+
+            renderVersus();
+
+            // Preparar siguiente ronda tras una pausa breve
+            setTimeout(() => {
+                if (vsRound >= VS_MAX_ROUNDS) {
+                    finishVersusGame();
+                } else {
+                    vsRound++;
+                    // Robar 1 carta cada uno si quedan en el mazo
+                    if (vsDeck.length >= 2) {
+                        vsPlayerHand.push(vsDeck.pop());
+                        vsBotHand.push(vsDeck.pop());
+                    }
+                    resetVersusArena();
+                    vsRoundLocked = false;
+                    renderVersus();
+                }
+            }, 1600);
+        }
+
+        function finishVersusGame() {
+            const banner = document.getElementById('vs-gameover-banner');
+            const title = document.getElementById('vs-gameover-title');
+            const desc = document.getElementById('vs-gameover-desc');
+
+            if (vsPlayerScore > vsBotScore) {
+                title.textContent = '🏆 ¡Victoria contra el Bot!';
+                desc.textContent = `¡Excelente estrategia! Ganaste ${vsPlayerScore} a ${vsBotScore}.`;
+            } else if (vsBotScore > vsPlayerScore) {
+                title.textContent = '🤖 El Bot ganó el duelo';
+                desc.textContent = `Marcador final: Bot ${vsBotScore} - Tú ${vsPlayerScore}. ¡Inténtalo de nuevo!`;
+            } else {
+                title.textContent = '🤝 ¡Empate Épico!';
+                desc.textContent = `Ambos terminaron con ${vsPlayerScore} puntos.`;
+            }
+
+            banner.classList.remove('hidden');
+        }
+
+        function renderVersus() {
+            document.getElementById('vs-player-score').textContent = vsPlayerScore;
+            document.getElementById('vs-bot-score').textContent = vsBotScore;
+            document.getElementById('vs-round-badge').textContent = `Ronda ${Math.min(vsRound, VS_MAX_ROUNDS)} / ${VS_MAX_ROUNDS}`;
+            document.getElementById('vs-pot').textContent = `${vsPot} ${vsPot === 1 ? 'pt' : 'pts'}`;
+
+            // Renderizar cartas ocultas del Bot
+            const botHandEl = document.getElementById('vs-bot-hand');
+            botHandEl.innerHTML = '';
+            vsBotHand.forEach(() => {
+                const miniBack = document.createElement('div');
+                miniBack.className = 'w-11 h-16 sm:w-14 sm:h-20 rounded-lg card-back shadow-md';
+                botHandEl.appendChild(miniBack);
+            });
+
+            // Renderizar mano del Jugador
+            const playerHandEl = document.getElementById('vs-player-hand');
+            playerHandEl.innerHTML = '';
+            vsPlayerHand.forEach((card, idx) => {
+                const cardEl = createCardElement(card, {
+                    extraClasses: vsRoundLocked ? 'opacity-70 pointer-events-none' : '',
+                    onClick: () => playVersusCard(idx)
+                });
+                playerHandEl.appendChild(cardEl);
+            });
+        }
+    </script>
+</body>
+</html>

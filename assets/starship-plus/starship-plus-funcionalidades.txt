@@ -1,0 +1,88 @@
+STARSHIP PLUS - GUIA DE FUNCIONALIDADES
+=======================================
+
+Archivo: starship-plus.html (abrelo con doble clic en cualquier navegador).
+Las fuentes (Cinzel Decorative, Great Vibes, Outfit) se cargan de Google Fonts si hay internet; sin internet usa fuentes de respaldo y todo sigue funcionando.
+
+
+1. BARRA SUPERIOR (pestañas)
+----------------------------
+- For You: inicio con el banner de "Cosmic Love" y todas las filas de contenido.
+- Drama & Movie: dramas y peliculas, ordenados en Romance, Fantasy, todos los dramas y todas las peliculas.
+- SPORT: deportes en vivo (etiqueta LIVE), repeticiones/resumenes y lista por deporte.
+(El boton "Watch" fue eliminado, como pediste.)
+
+
+2. BARRA LATERAL (de arriba hacia abajo)
+----------------------------------------
+- Logo de usuario (arriba): abre un menu con tu nombre, My List, Settings y Sign out (demo).
+- Lupita (Search): abre una pestaña negra con una barra superior que dice "Search". Busca en vivo por titulo, genero, tipo o año. Si esta vacia, muestra sugerencias (Romance, Fantasy, Sci-Fi...). Se cierra con la X o con Esc.
+- Casita (Home): vuelve al inicio (For You).
+- Rayito (Series): solo series, con filtros por genero.
+- [+] (TV Shows): shows de TV (reality, cocina, talk, musica).
+- Cosita de Movie (Movies): peliculas, con filtros por genero.
+- TV (Series, Novelas & Dramas): series y dramas juntos, con filtros por genero.
+- Estrella (My List): tus favoritos guardados.
+- Engranaje (Settings): configuracion.
+En celular la barra lateral pasa abajo, como menu inferior.
+
+
+3. BANNER PRINCIPAL "COSMIC LOVE"
+---------------------------------
+- Fondo: la imagen de la pareja en la banca (la que subiste).
+- "Cosmic": letras fantasia/galacticas con degradado animado (turquesa, azul, violeta, rosa), brillo y destellos.
+- "Love": letra cursiva romantica en rosa con brillo magico.
+- PLAY: abre el reproductor.
+- + My List: guarda o quita de favoritos.
+- Info: abre la ficha del titulo.
+- Marca STARSHIP reemplaza a la antigua marca del servicio.
+
+
+4. FILAS Y TARJETAS
+-------------------
+- Se puede subir y bajar toda la pagina con scroll.
+- Cada fila se desliza horizontalmente (rueda del mouse, dedo o flechas ‹ › al pasar el cursor).
+- Las tarjetas tienen tamaños rectangulares variados (verticales y horizontales) con ilustraciones generadas (planetas, corazones, montañas, lunas, olas, ciudades, estrellas, balones). Ningun espacio queda en blanco.
+- Filas: Continue watching, Featured, Trending now, New dramas, Movies for tonight, Series to binge, Live sports, TV Shows.
+- Corazon en cada tarjeta: agrega/quita de My List al instante.
+- Barra de color debajo de la tarjeta: progreso de lo que ya viste.
+- Clic en una tarjeta: ficha con descripcion, Play/Resume, My List, Share y "More like this".
+
+
+5. REPRODUCTOR (simulado)
+-------------------------
+No hay video real: es una demostracion con fondo de estrellas animado (efecto de viaje espacial).
+- Play/Pausa, retroceder y adelantar 10 s, barra de progreso clicable.
+- Velocidad 1x / 1.25x / 1.5x / 2x (tambien acelera las estrellas).
+- CC: subtitulos de ejemplo.
+- Silencio, pantalla completa, cerrar.
+- Los controles se ocultan solos tras 3 s sin mover el mouse.
+- Guarda donde te quedaste (Continue watching) y pasa al siguiente episodio si Autoplay esta activo.
+- Atajos: Espacio (play/pausa), ← → (±10 s), F (pantalla completa), M (silencio), C (subtitulos), Esc (cerrar).
+
+
+6. SETTINGS
+-----------
+- Nombre del perfil (cambia la inicial del avatar).
+- Color de acento (violeta, rosa, cian, verde, ambar), se aplica a toda la web.
+- Autoplay del siguiente episodio.
+- Subtitulos activados por defecto.
+- Calidad (Auto, 1080p, 720p, 480p).
+- Borrar historial y borrar My List.
+Todo se guarda en el navegador (localStorage) y se mantiene al volver a abrir la pagina.
+
+
+7. EXTRAS QUE AGREGUE
+---------------------
+- Atajo "/" para abrir la busqueda y Esc para cerrar ventanas.
+- Filtros por genero en cada seccion.
+- Etiquetas LIVE en deportes.
+- Diseño adaptable a celular y respeta "reducir movimiento".
+
+
+8. IDEAS PARA EL FUTURO
+-----------------------
+- Conectar videos reales (etiqueta <video> o HLS) y un catalogo desde una base de datos.
+- Cuentas de usuario reales y varios perfiles.
+- Descargas sin conexion, recomendaciones por historial, y modo Kids.
+- Comentarios, calificaciones y sala de "ver juntos".

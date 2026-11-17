@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geffen: Monopoly - Edición Ciudad de la Magia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 70%, #020617 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-geffen {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Cuadrícula del Tablero 7x7 (24 casillas en el perímetro) */
+        .geffen-board {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            grid-template-rows: repeat(7, minmax(0, 1fr));
+            gap: 4px;
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 720px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 3px solid #eab308;
+            border-radius: 16px;
+            padding: 6px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(139, 92, 246, 0.25);
+        }
+
+        .board-cell {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            padding: 2px;
+        }
+
+        .board-cell:hover {
+            transform: scale(1.04);
+            z-index: 20;
+            border-color: #facc15;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+        }
+
+        .board-center {
+            grid-column: 2 / 7;
+            grid-row: 2 / 7;
+            background: radial-gradient(circle at center, rgba(88, 28, 135, 0.35) 0%, rgba(15, 23, 42, 0.92) 85%);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            position: relative;
+        }
+
+        /* Fichas de jugadores */
+        .player-token {
+            width: 22px;
+            height: 22px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @media (min-width: 640px) {
+            .player-token {
+                width: 26px;
+                height: 26px;
+                font-size: 14px;
+            }
+        }
+
+        /* Animación de dados */
+        @keyframes diceShake {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-15deg) scale(1.1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.05); }
+        }
+
+        .rolling {
+            animation: diceShake 0.4s ease-in-out infinite;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between">
+
+    <!-- ENCABEZADO -->
+    <header class="w-full bg-slate-950/80 backdrop-blur-md border-b border-amber-500/30 px-4 py-3 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-800 border border-amber-400 flex items-center justify-center text-xl shadow-lg">
+                    🔮
+                </div>
+                <div>
+                    <h1 class="font-geffen text-lg sm:text-2xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">
+                        GEFFEN: MONOPOLY
+                    </h1>
+                    <p class="text-xs text-indigo-300">Conquista la Ciudad de la Magia • Moneda: Zeny (Z)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openRulesModal()" class="px-3 py-1.5 rounded-lg bg-indigo-900/70 hover:bg-indigo-800 border border-indigo-500/40 text-xs sm:text-sm font-medium text-indigo-200 transition">
+                    📜 Reglas
+                </button>
+                <button onclick="resetToSetup()" class="px-3 py-1.5 rounded-lg bg-rose-950/80 hover:bg-rose-900 border border-rose-500/40 text-xs sm:text-sm font-medium text-rose-200 transition">
+                    🔄 Nueva Partida
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PANTALLA DE CONFIGURACIÓN INICIAL -->
+    <section id="setup-screen" class="flex-grow flex items-center justify-center p-4">
+        <div class="max-w-lg w-full bg-slate-900/90 border-2 border-amber-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <span class="inline-block px-3 py-1 rounded-full bg-violet-500/20 border border-violet-400/40 text-violet-300 text-xs font-semibold">
+                    Edición Arcana
+                </span>
+                <h2 class="font-geffen text-2xl sm:text-3xl font-bold text-amber-300">Configurar Partida</h2>
+                <p class="text-sm text-slate-300">Elige cuántos aventureros competirán por el dominio económico de Geffen.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-amber-300 font-semibold mb-2">Modo de Jugadores</label>
+                    <select id="setup-mode" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400">
+                        <option value="1v1">Tú (Mago) vs 1 Bot (Herrero)</option>
+                        <option value="1v2" selected>Tú (Mago) vs 2 Bots (Herrero y Bardo)</option>
+                        <option value="1v3">Tú (Mago) vs 3 Bots (Batalla Campal de 4)</option>
+                        <option value="2p">2 Jugadores Locales (Mismo dispositivo)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-amber-300 font-semibold mb-2">Zeny Inicial por Jugador</label>
+                    <select id="setup-zeny" class="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400">
+                        <option value="1200">1,200 Z (Partida Rápida)</option>
+                        <option value="1500" selected>1,500 Z (Estándar Geffen)</option>
+                        <option value="2000">2,000 Z (Magnate Arcano)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="initGame()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-extrabold text-base shadow-lg transition transform active:scale-95">
+                ✨ Comenzar en la Plaza Central
+            </button>
+        </div>
+    </section>
+
+    <!-- ÁREA PRINCIPAL DEL JUEGO -->
+    <main id="game-screen" class="hidden flex-grow max-w-7xl w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        
+        <!-- COLUMNA IZQUIERDA/CENTRAL: TABLERO DE GEFFEN (7 columnas en desktop) -->
+        <div class="lg:col-span-7 flex flex-col items-center justify-center">
+            <div id="geffen-board" class="geffen-board">
+                <!-- Se genera dinámicamente con JS -->
+            </div>
+            <p class="text-xs text-slate-400 mt-2 text-center">
+                💡 Haz clic en cualquier casilla del tablero para inspeccionar su renta, dueño y nivel de mejora.
+            </p>
+        </div>
+
+        <!-- COLUMNA DERECHA: PANEL DE CONTROL, JUGADORES Y REGISTRO (5 columnas en desktop) -->
+        <div class="lg:col-span-5 space-y-4">
+            
+            <!-- Tarjeta de Estado de Jugadores -->
+            <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-geffen text-sm font-bold text-amber-300 uppercase tracking-wider">Aventureros en Geffen</h3>
+                    <span id="turn-badge" class="px-2.5 py-0.5 rounded-full bg-violet-600/30 border border-violet-400/40 text-violet-200 text-xs font-semibold">
+                        Turno 1
+                    </span>
+                </div>
+                <div id="players-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5">
+                    <!-- Tarjetas de jugadores dinámicas -->
+                </div>
+            </div>
+
+            <!-- Panel de Acciones del Turno Actual -->
+            <div id="action-panel" class="bg-gradient-to-b from-indigo-950/90 to-slate-900/95 border-2 border-amber-500/40 rounded-2xl p-4 shadow-xl space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span id="current-player-icon" class="text-2xl">🧙‍♂️</span>
+                        <div>
+                            <h4 id="current-player-name" class="font-bold text-white text-base leading-tight">Turno de Mago</h4>
+                            <p id="current-player-status" class="text-xs text-amber-300">Listo para lanzar los dados</p>
+                        </div>
+                    </div>
+                    <!-- Visualizador de Dados -->
+                    <div class="flex items-center gap-2">
+                        <div id="die-1" class="w-10 h-10 rounded-lg bg-white text-slate-950 font-extrabold text-xl flex items-center justify-center shadow-md border-2 border-amber-400">🎲</div>
+                        <div id="die-2" class="w-10 h-10 rounded-lg bg-white text-slate-950 font-extrabold text-xl flex items-center justify-center shadow-md border-2 border-amber-400">🎲</div>
+                    </div>
+                </div>
+
+                <!-- Botones Principales -->
+                <div id="controls-container" class="grid grid-cols-2 gap-2.5 pt-1">
+                    <button id="btn-roll" onclick="handleRollDice()" class="col-span-2 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-extrabold text-sm shadow-lg transition active:scale-95">
+                        🎲 Lanzar Dados
+                    </button>
+                    <button id="btn-buy" onclick="handleBuyProperty()" class="hidden py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow transition">
+                        💰 Comprar Propiedad
+                    </button>
+                    <button id="btn-upgrade" onclick="handleUpgradeProperty()" class="hidden py-2.5 px-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs sm:text-sm shadow transition">
+                        ⬆️ Construir Torre (+Renta)
+                    </button>
+                    <button id="btn-pay-jail" onclick="handlePayBail()" class="hidden py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm shadow transition">
+                        🔓 Pagar Fianza (100 Z)
+                    </button>
+                    <button id="btn-end-turn" onclick="handleEndTurn()" class="hidden col-span-2 py-2.5 px-4 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm border border-slate-500 transition">
+                        ⏭️ Terminar Turno
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bitácora / Historial de Eventos -->
+            <div class="bg-slate-950/85 border border-slate-800 rounded-2xl p-3.5 shadow-inner">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">📜 Crónicas de Geffen</h4>
+                <div id="game-log" class="h-40 overflow-y-auto space-y-1.5 text-xs pr-1">
+                    <!-- Mensajes del juego -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL DE INSPECCIÓN DE CASILLA -->
+    <div id="cell-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="closeCellModal()">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-header-color" class="h-14 flex items-center justify-center px-4 bg-violet-700">
+                <h3 id="modal-cell-name" class="font-geffen text-lg font-bold text-white text-center drop-shadow">Torre de Geffen</h3>
+            </div>
+            <div class="p-5 space-y-3 text-sm">
+                <p id="modal-cell-desc" class="text-slate-300 text-xs italic text-center"></p>
+                <div id="modal-cell-stats" class="bg-slate-950/80 rounded-xl p-3 space-y-2 border border-slate-800">
+                    <!-- Detalles dinámicos -->
+                </div>
+                <button onclick="closeCellModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold text-xs transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CARTA DE SUERTE / GRIMORIO -->
+    <div id="card-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-indigo-950 to-slate-900 border-2 border-amber-400 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div id="card-modal-icon" class="text-5xl mx-auto">📜</div>
+            <h3 id="card-modal-title" class="font-geffen text-xl font-bold text-amber-300">Grimorio Arcano</h3>
+            <p id="card-modal-text" class="text-sm text-slate-200 leading-relaxed"></p>
+            <button onclick="closeCardModal()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition">
+                Aceptar Destino
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE REGLAS -->
+    <div id="rules-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="closeRulesModal()">
+        <div class="bg-slate-900 border-2 border-indigo-400 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <h3 class="font-geffen text-2xl font-bold text-amber-300 text-center">📜 Reglas de Geffen: Monopoly</h3>
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 list-disc pl-5">
+                <li><strong>Objetivo:</strong> Sé el último magnate con <strong>Zeny (Z)</strong> llevando a la bancarrota a tus rivales.</li>
+                <li><strong>Plaza Central (Salida):</strong> Cada vez que pases o caigas en la Plaza Central, recibes <strong>+200 Z</strong> de subsidio del Gremio.</li>
+                <li><strong>Propiedades y Distritos:</strong> Al caer en una propiedad libre, puedes comprarla. Si otro jugador cae en ella, te pagará renta automática.</li>
+                <li><strong>Monopolio de Color y Mejoras:</strong> Si posees <strong>todas las propiedades del mismo color</strong>, la renta base se duplica y podrás construir <strong>Torres Arcanas</strong> (hasta nivel 3) para multiplicar las ganancias.</li>
+                <li><strong>Portales Kafra (Estaciones):</strong> Cuantos más Portales Kafra poseas, mayor será la tarifa de teletransporte que cobras (50 Z, 100 Z, 200 Z, 400 Z).</li>
+                <li><strong>Calabozo de Geffen:</strong> Si caes en <em>"Ve al Calabozo"</em> o sacas 3 dobles seguidos, quedarás atrapado por 2 turnos a menos que pagues 100 Z de fianza o saques dobles.</li>
+            </ul>
+            <button onclick="closeRulesModal()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition">
+                ¡Entendido!
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE VICTORIA -->
+    <div id="winner-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-amber-950/90 to-slate-950 border-2 border-amber-400 rounded-2xl max-w-md w-full p-8 text-center space-y-4 shadow-2xl">
+            <div class="text-6xl">👑</div>
+            <h2 class="font-geffen text-3xl font-extrabold text-amber-300">¡Supremo Archiduque de Geffen!</h2>
+            <p id="winner-text" class="text-base text-slate-200"></p>
+            <button onclick="resetToSetup()" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-base transition">
+                Jugar Otra Partida
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== LÓGICA DE GEFFEN: MONOPOLY ==================== -->
+    <script>
+        /* ---------------------------------------------------------------------
+           1. DEFINICIÓN DEL TABLERO DE GEFFEN (24 Casillas en perímetro 7x7)
+           --------------------------------------------------------------------- */
+        const BOARD_DATA = [
+            // Fila Superior (Izquierda a Derecha: índices 0 a 6)
+            { id: 0, name: "Plaza Central", type: "start", icon: "⛲", desc: "Punto de encuentro de aventureros. Cobra +200 Z al pasar.", gridRow: 1, gridCol: 1 },
+            { id: 1, name: "Campos de Geffen", type: "property", group: "brown", colorHex: "#92400e", price: 60, rent: [10, 30, 90, 160], upgradeCost: 50, icon: "🌾", desc: "Praderas tranquilas habitadas por Porings y Fabres.", gridRow: 1, gridCol: 2 },
+            { id: 2, name: "Grimorio Arcano", type: "chance", icon: "📜", desc: "Abre un pergamino antiguo y descubre tu destino.", gridRow: 1, gridCol: 3 },
+            { id: 3, name: "Bosque Goblin", type: "property", group: "brown", colorHex: "#92400e", price: 80, rent: [15, 45, 120, 220], upgradeCost: 50, icon: "🪓", desc: "Territorio boscoso custodiado por clanes de Goblins.", gridRow: 1, gridCol: 4 },
+            { id: 4, name: "Portal Kafra Norte", type: "station", group: "kafra", colorHex: "#0284c7", price: 200, rent: [50, 100, 200, 400], icon: "🌀", desc: "Servicio de teletransporte oficial de la Corporación Kafra.", gridRow: 1, gridCol: 5 },
+            { id: 5, name: "Impuesto del Gremio", type: "tax", amount: 120, icon: "⚖️", desc: "Tributo obligatorio para el mantenimiento de las murallas.", gridRow: 1, gridCol: 6 },
+            { id: 6, name: "Calabozo de Geffen", type: "jail", icon: "⛓️", desc: "Sólo de visita... a menos que seas enviado aquí por la guardia.", gridRow: 1, gridCol: 7 },
+
+            // Columna Derecha (Arriba hacia Abajo: índices 7 a 11)
+            { id: 7, name: "Ruinas de Glast", type: "property", group: "cyan", colorHex: "#0891b2", price: 110, rent: [20, 60, 150, 300], upgradeCost: 75, icon: "🏚️", desc: "Antiguas ruinas en la frontera oeste de Geffen.", gridRow: 2, gridCol: 7 },
+            { id: 8, name: "Posada del Bardo", type: "property", group: "cyan", colorHex: "#0891b2", price: 120, rent: [22, 65, 165, 330], upgradeCost: 75, icon: "🪕", desc: "Famosa taberna donde se comparten rumores y pociones.", gridRow: 3, gridCol: 7 },
+            { id: 9, name: "Portal Kafra Este", type: "station", group: "kafra", colorHex: "#0284c7", price: 200, rent: [50, 100, 200, 400], icon: "🌀", desc: "Conexión rápida hacia Aldebaran y Prontera.", gridRow: 4, gridCol: 7 },
+            { id: 10, name: "Cofre del Tesoro", type: "chest", icon: "🎁", desc: "Reliquia encontrada en las profundidades subterráneas.", gridRow: 5, gridCol: 7 },
+            { id: 11, name: "Forja de Geffen", type: "property", group: "pink", colorHex: "#db2777", price: 150, rent: [28, 85, 210, 420], upgradeCost: 100, icon: "⚒️", desc: "El corazón del Gremio de Herreros y refinadores de armas.", gridRow: 6, gridCol: 7 },
+
+            // Fila Inferior (Derecha a Izquierda: índices 12 a 18)
+            { id: 12, name: "Fuente de Maná", type: "freeparking", icon: "✨", desc: "Zona de descanso arcano. Acumula todos los impuestos pagados.", gridRow: 7, gridCol: 7 },
+            { id: 13, name: "Taller de Alquimia", type: "property", group: "pink", colorHex: "#db2777", price: 160, rent: [30, 90, 230, 450], upgradeCost: 100, icon: "⚗️", desc: "Laboratorio donde se destilan pociones azules y blancas.", gridRow: 7, gridCol: 6 },
+            { id: 14, name: "Grimorio Arcano", type: "chance", icon: "📜", desc: "Los vientos mágicos alteran el curso de tu viaje.", gridRow: 7, gridCol: 5 },
+            { id: 15, name: "Portal Kafra Sur", type: "station", group: "kafra", colorHex: "#0284c7", price: 200, rent: [50, 100, 200, 400], icon: "🌀", desc: "Enlace dimensional hacia Morroc y Payon.", gridRow: 7, gridCol: 4 },
+            { id: 16, name: "Montañas Mjolnir", type: "property", group: "orange", colorHex: "#ea580c", price: 200, rent: [38, 115, 280, 550], upgradeCost: 125, icon: "⛰️", desc: "Cumbres ricas en minerales raros como Oridecon y Elunium.", gridRow: 7, gridCol: 3 },
+            { id: 17, name: "Aldea Orca", type: "property", group: "orange", colorHex: "#ea580c", price: 220, rent: [42, 125, 310, 600], upgradeCost: 125, icon: "🛡️", desc: "Bastión guerrero al sur de las tierras de Geffen.", gridRow: 7, gridCol: 2 },
+            { id: 18, name: "¡Ve al Calabozo!", type: "gotojail", icon: "🚨", desc: "Has infringido las leyes arcanas. Vas directo al Calabozo.", gridRow: 7, gridCol: 1 },
+
+            // Columna Izquierda (Abajo hacia Arriba: índices 19 a 23)
+            { id: 19, name: "Biblioteca Mágica", type: "property", group: "purple", colorHex: "#7c3aed", price: 260, rent: [50, 150, 360, 700], upgradeCost: 150, icon: "📚", desc: "Archivo supremo de hechizos elementales y pergaminos.", gridRow: 6, gridCol: 1 },
+            { id: 20, name: "Portal Kafra Oeste", type: "station", group: "kafra", colorHex: "#0284c7", price: 200, rent: [50, 100, 200, 400], icon: "🌀", desc: "Portal hacia la misteriosa isla de Comodo.", gridRow: 5, gridCol: 1 },
+            { id: 21, name: "Diezmo Arcano", type: "tax", amount: 150, icon: "💎", desc: "Tasa especial sobre objetos encantados y gemas azules.", gridRow: 4, gridCol: 1 },
+            { id: 22, name: "Academia de Magos", type: "property", group: "gold", colorHex: "#ca8a04", price: 320, rent: [65, 190, 450, 850], upgradeCost: 200, icon: "🎓", desc: "Prestigiosa institución donde se forman los futuros Sabios.", gridRow: 3, gridCol: 1 },
+            { id: 23, name: "Torre de Geffen", type: "property", group: "gold", colorHex: "#ca8a04", price: 400, rent: [85, 250, 600, 1100], upgradeCost: 200, icon: "🏰", desc: "El monumento más emblemático y valioso de toda la ciudad.", gridRow: 2, gridCol: 1 }
+        ];
+
+        // Cartas de Grimorio Arcano y Cofre del Tesoro
+        const EVENT_CARDS = [
+            { title: "Bendición del Archimago", text: "Tu investigación mágica da frutos. Recibes +150 Z del Consejo.", effect: (p) => modifyZeny(p, 150) },
+            { title: "Fallo de Teletransporte", text: "Un portal inestable te envía directo a la Plaza Central. ¡Cobra +200 Z!", effect: (p) => movePlayerDirect(p, 0, true) },
+            { title: "Impuesto por Pociones", text: "Pagas 80 Z por suministros de maná para tu grupo.", effect: (p) => { modifyZeny(p, -80); freeParkingPot += 80; } },
+            { title: "Avance Rápido", text: "Usas Agilidad Aumentada y avanzas 3 casillas.", effect: (p) => advancePlayerSteps(p, 3) },
+            { title: "Emboscada de Goblins", text: "Pierdes 100 Z en el bosque al huir de una patrulla.", effect: (p) => { modifyZeny(p, -100); freeParkingPot += 100; } },
+            { title: "Hallazgo de Oridecon", text: "Vendes un mineral puro en la Forja de Geffen. Ganas +200 Z.", effect: (p) => modifyZeny(p, 200) },
+            { title: "Visita a la Torre", text: "Eres convocado a la Torre de Geffen (Casilla 23).", effect: (p) => movePlayerDirect(p, 23, true) },
+            { title: "Orden de Arresto Arcano", text: "¡Uso indebido de magia en la plaza! Vas directo al Calabozo.", effect: (p) => sendToJail(p) }
+        ];
+
+        /* ---------------------------------------------------------------------
+           2. ESTADO GLOBAL DEL JUEGO
+           --------------------------------------------------------------------- */
+        let players = [];
+        let boardState = []; // Guarda dueño (ownerId) y nivel (level: 0 a 3) de cada casilla
+        let currentPlayerIdx = 0;
+        let turnCounter = 1;
+        let hasRolledThisTurn = false;
+        let consecutiveDoubles = 0;
+        let freeParkingPot = 100; // Pozo acumulado en la Fuente de Maná
+        let isAnimating = false;
+        let pendingCardCallback = null;
+
+        const DICE_FACES = ["🎲", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
+        /* ---------------------------------------------------------------------
+           3. INICIALIZACIÓN Y RENDERIZADO DEL TABLERO
+           --------------------------------------------------------------------- */
+        function initGame() {
+            const mode = document.getElementById('setup-mode').value;
+            const startZeny = parseInt(document.getElementById('setup-zeny').value, 10);
+
+            // Configurar jugadores según modo
+            players = [];
+            if (mode === '1v1') {
+                players.push(createPlayer(0, "Tú (Mago)", "🧙‍♂️", "#8b5cf6", startZeny, false));
+                players.push(createPlayer(1, "Bot Herrero", "⚒️", "#f97316", startZeny, true));
+            } else if (mode === '1v2') {
+                players.push(createPlayer(0, "Tú (Mago)", "🧙‍♂️", "#8b5cf6", startZeny, false));
+                players.push(createPlayer(1, "Bot Herrero", "⚒️", "#f97316", startZeny, true));
+                players.push(createPlayer(2, "Bot Bardo", "🪕", "#10b981", startZeny, true));
+            } else if (mode === '1v3') {
+                players.push(createPlayer(0, "Tú (Mago)", "🧙‍♂️", "#8b5cf6", startZeny, false));
+                players.push(createPlayer(1, "Bot Herrero", "⚒️", "#f97316", startZeny, true));
+                players.push(createPlayer(2, "Bot Bardo", "🪕", "#10b981", startZeny, true));
+                players.push(createPlayer(3, "Bot Alquimista", "⚗️", "#ec4899", startZeny, true));
+            } else if (mode === '2p') {
+                players.push(createPlayer(0, "Jugador 1 (Mago)", "🧙‍♂️", "#8b5cf6", startZeny, false));
+                players.push(createPlayer(1, "Jugador 2 (Herrero)", "⚒️", "#f97316", startZeny, false));
+            }
+
+            // Clonar estado limpio del tablero
+            boardState = BOARD_DATA.map(cell => ({
+                ...cell,
+                ownerId: null,
+                level: 0 // 0 = base, 1-3 = Torres Arcanas construidas
+            }));
+
+            currentPlayerIdx = 0;
+            turnCounter = 1;
+            hasRolledThisTurn = false;
+            consecutiveDoubles = 0;
+            freeParkingPot = 100;
+            isAnimating = false;
+
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('winner-modal').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('game-log').innerHTML = '';
+
+            addLog("✨ ¡Bienvenidos a Geffen: Monopoly! La partida ha comenzado.", "text-amber-300 font-semibold");
+            renderBoard();
+            renderPlayers();
+            updateTurnUI();
+        }
+
+        function createPlayer(id, name, icon, color, zeny, isBot) {
+            return {
+                id,
+                name,
+                icon,
+                color,
+                zeny,
+                position: 0,
+                inJail: false,
+                jailTurns: 0,
+                bankrupt: false
+            };
+        }
+
+        function resetToSetup() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('winner-modal').classList.add('hidden');
+            document.getElementById('setup-screen').classList.remove('hidden');
+        }
+
+        // Renderiza las 24 casillas + el centro del tablero
+        function renderBoard() {
+            const boardEl = document.getElementById('geffen-board');
+            boardEl.innerHTML = '';
+
+            // 1. Crear Centro del Tablero
+            const centerDiv = document.createElement('div');
+            centerDiv.className = 'board-center text-center';
+            centerDiv.innerHTML = `
+                <div class="text-xs uppercase tracking-widest text-amber-400/80 font-semibold">Ciudad de la Magia</div>
+                <div class="my-auto space-y-1">
+                    <div class="text-3xl sm:text-5xl">🏰</div>
+                    <h2 class="font-geffen text-base sm:text-2xl font-extrabold text-amber-300 tracking-wide">GEFFEN</h2>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/80 border border-cyan-400/40 text-xs text-cyan-300">
+                        <span>✨ Fuente de Maná:</span>
+                        <strong id="center-pot-display">${freeParkingPot} Z</strong>
+                    </div>
+                </div>
+                <div class="text-[10px] sm:text-xs text-slate-400">
+                    Pasa por Plaza Central: <span class="text-emerald-400 font-bold">+200 Z</span>
+                </div>
+            `;
+            boardEl.appendChild(centerDiv);
+
+            // 2. Renderizar cada casilla en su coordenada gridRow / gridCol
+            boardState.forEach(cell => {
+                const cellDiv = document.createElement('div');
+                cellDiv.className = 'board-cell';
+                cellDiv.style.gridRow = cell.gridRow;
+                cellDiv.style.gridColumn = cell.gridCol;
+                cellDiv.onclick = () => inspectCell(cell.id);
+
+                // Barra superior de color si es propiedad o estación
+                let topBarHTML = '';
+                if (cell.colorHex) {
+                    const stars = cell.level > 0 ? '⭐'.repeat(cell.level) : '';
+                    topBarHTML = `<div class="h-2.5 sm:h-3 w-full flex items-center justify-center text-[8px] leading-none" style="background-color: ${cell.colorHex}">${stars}</div>`;
+                }
+
+                // Indicador de dueño (borde inferior con color del jugador)
+                let ownerBadgeHTML = '';
+                if (cell.ownerId !== null) {
+                    const owner = players[cell.ownerId];
+                    cellDiv.style.borderColor = owner.color;
+                    cellDiv.style.borderWidth = '2px';
+                    ownerBadgeHTML = `<span class="absolute top-3 right-0.5 text-[10px] bg-slate-950/90 rounded-full px-1 border border-white/30" title="Dueño: ${owner.name}">${owner.icon}</span>`;
+                }
+
+                // Precio o etiqueta inferior
+                let footerText = '';
+                if (cell.price) footerText = `${cell.price} Z`;
+                else if (cell.amount) footerText = `-${cell.amount} Z`;
+                else if (cell.type === 'start') footerText = '+200 Z';
+
+                // Fichas de jugadores en esta casilla
+                const playersHere = players.filter(p => !p.bankrupt && p.position === cell.id);
+                let tokensHTML = '';
+                if (playersHere.length > 0) {
+                    tokensHTML = `<div class="absolute inset-0 flex flex-wrap items-center justify-center gap-0.5 pointer-events-none z-10 bg-black/20">
+                        ${playersHere.map(p => `<div class="player-token" style="background-color: ${p.color}">${p.icon}</div>`).join('')}
+                    </div>`;
+                }
+
+                cellDiv.innerHTML = `
+                    ${topBarHTML}
+                    ${ownerBadgeHTML}
+                    <div class="flex flex-col items-center justify-center flex-grow px-0.5 text-center leading-tight">
+                        <span class="text-sm sm:text-lg">${cell.icon}</span>
+                        <span class="text-[8px] sm:text-[10px] font-semibold text-slate-100 line-clamp-2 mt-0.5">${cell.name}</span>
+                    </div>
+                    ${footerText ? `<div class="text-[8px] sm:text-[9px] font-bold text-amber-300 text-center bg-black/40 py-0.5">${footerText}</div>` : ''}
+                    ${tokensHTML}
+                `;
+
+                boardEl.appendChild(cellDiv);
+            });
+        }
+
+        // Renderiza las tarjetas de estado de cada jugador
+        function renderPlayers() {
+            const listEl = document.getElementById('players-list');
+            listEl.innerHTML = '';
+
+            players.forEach((p, idx) => {
+                const isCurrent = idx === currentPlayerIdx && !p.bankrupt;
+                const propCount = boardState.filter(c => c.ownerId === p.id).length;
+
+                const card = document.createElement('div');
+                card.className = `p-2.5 rounded-xl border transition flex items-center justify-between ${
+                    p.bankrupt 
+                        ? 'bg-slate-950/50 border-slate-800 opacity-50' 
+                        : isCurrent 
+                            ? 'bg-indigo-950/80 border-amber-400 shadow-md' 
+                            : 'bg-slate-800/60 border-slate-700'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-base border-2 border-white shadow" style="background-color: ${p.color}">
+                            ${p.icon}
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-bold text-xs sm:text-sm text-white">${p.name}</span>
+                                ${p.inJail ? '<span class="text-[10px] px-1.5 py-0.2 bg-rose-600 text-white rounded">⛓️ Calabozo</span>' : ''}
+                                ${p.bankrupt ? '<span class="text-[10px] px-1.5 py-0.2 bg-slate-700 text-slate-300 rounded">💀 Bancarrota</span>' : ''}
+                            </div>
+                            <span class="text-[11px] text-slate-400">Propiedades: <strong class="text-slate-200">${propCount}</strong> • Pos: ${boardState[p.position].name}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-extrabold text-sm sm:text-base text-amber-300">${p.zeny} Z</span>
+                    </div>
+                `;
+                listEl.appendChild(card);
+            });
+        }
+
+        /* ---------------------------------------------------------------------
+           4. CONTROL DE TURNOS Y MOVIMIENTO
+           --------------------------------------------------------------------- */
+        function updateTurnUI() {
+            const player = players[currentPlayerIdx];
+            if (!player || player.bankrupt) return;
+
+            document.getElementById('turn-badge').textContent = `Ronda ${turnCounter}`;
+            document.getElementById('current-player-icon').textContent = player.icon;
+            document.getElementById('current-player-name').textContent = `Turno de ${player.name}`;
+
+            const btnRoll = document.getElementById('btn-roll');
+            const btnBuy = document.getElementById('btn-buy');
+            const btnUpgrade = document.getElementById('btn-upgrade');
+            const btnPayJail = document.getElementById('btn-pay-jail');
+            const btnEndTurn = document.getElementById('btn-end-turn');
+
+            // Ocultar todos los botones primero
+            [btnRoll, btnBuy, btnUpgrade, btnPayJail, btnEndTurn].forEach(b => b.classList.add('hidden'));
+
+            // Si es turno de un Bot, bloquear controles humanos y ejecutar IA
+            if (player.isBot) {
+                document.getElementById('current-player-status').textContent = "🤖 El Bot está pensando su jugada...";
+                setTimeout(() => runBotTurn(), 900);
+                return;
+            }
+
+            // Controles para Jugador Humano
+            if (!hasRolledThisTurn) {
+                btnRoll.classList.remove('hidden');
+                if (player.inJail) {
+                    document.getElementById('current-player-status').textContent = `⛓️ En el Calabozo (${player.jailTurns} turnos restantes). Saca dobles o paga fianza.`;
+                    if (player.zeny >= 100) {
+                        btnPayJail.classList.remove('hidden');
+                    }
+                } else {
+                    document.getElementById('current-player-status').textContent = consecutiveDoubles > 0 
+                        ? "🎲 ¡Sacaste dobles! Tira de nuevo." 
+                        : "Lanza los dados para avanzar por Geffen.";
+                }
+            } else {
+                document.getElementById('current-player-status').textContent = "Revisa tus opciones o termina el turno.";
+                btnEndTurn.classList.remove('hidden');
+
+                const currentCell = boardState[player.position];
+                // ¿Puede comprar la casilla actual?
+                if ((currentCell.type === 'property' || currentCell.type === 'station') && currentCell.ownerId === null && player.zeny >= currentCell.price) {
+                    btnBuy.textContent = `💰 Comprar (${currentCell.price} Z)`;
+                    btnBuy.classList.remove('hidden');
+                }
+
+                // ¿Puede mejorar alguna propiedad propia donde tenga monopolio?
+                const upgradableCell = getUpgradableCellForPlayer(player);
+                if (upgradableCell) {
+                    btnUpgrade.textContent = `⬆️ Torre en ${upgradableCell.name} (${upgradableCell.upgradeCost} Z)`;
+                    btnUpgrade.classList.remove('hidden');
+                }
+            }
+        }
+
+        function handleRollDice() {
+            if (isAnimating || hasRolledThisTurn) return;
+            const player = players[currentPlayerIdx];
+            isAnimating = true;
+
+            const d1El = document.getElementById('die-1');
+            const d2El = document.getElementById('die-2');
+            d1El.classList.add('rolling');
+            d2El.classList.add('rolling');
+
+            setTimeout(() => {
+                d1El.classList.remove('rolling');
+                d2El.classList.remove('rolling');
+
+                const d1 = Math.floor(Math.random() * 6) + 1;
+                const d2 = Math.floor(Math.random() * 6) + 1;
+                const total = d1 + d2;
+                const isDoubles = d1 === d2;
+
+                d1El.textContent = DICE_FACES[d1];
+                d2El.textContent = DICE_FACES[d2];
+
+                addLog(`🎲 ${player.name} lanzó ${d1} + ${d2} = ${total}${isDoubles ? ' (¡DOBLES!)' : ''}.`);
+
+                // Lógica si está en el Calabozo
+                if (player.inJail) {
+                    if (isDoubles) {
+                        player.inJail = false;
+                        player.jailTurns = 0;
+                        addLog(`🔓 ¡${player.name} sacó dobles y escapó del Calabozo!`, "text-emerald-400");
+                        hasRolledThisTurn = true;
+                        movePlayerSteps(player, total);
+                    } else {
+                        player.jailTurns--;
+                        if (player.jailTurns <= 0) {
+                            player.inJail = false;
+                            addLog(`⛓️ ${player.name} cumplió su condena y sale libre el próximo turno.`);
+                        } else {
+                            addLog(`⛓️ ${player.name} sigue atrapado en el Calabozo.`);
+                        }
+                        hasRolledThisTurn = true;
+                        isAnimating = false;
+                        renderPlayers();
+                        updateTurnUI();
+                    }
+                    return;
+                }
+
+                // Control de dobles consecutivos
+                if (isDoubles) {
+                    consecutiveDoubles++;
+                    if (consecutiveDoubles >= 3) {
+                        addLog(`🚨 ¡3 dobles seguidos! ${player.name} es enviado al Calabozo por exceso de velocidad mágica.`, "text-rose-400");
+                        sendToJail(player);
+                        hasRolledThisTurn = true;
+                        isAnimating = false;
+                        return;
+                    }
+                } else {
+                    consecutiveDoubles = 0;
+                    hasRolledThisTurn = true;
+                }
+
+                movePlayerSteps(player, total);
+            }, 450);
+        }
+
+        // Mueve al jugador casilla por casilla con animación
+        function movePlayerSteps(player, steps) {
+            let remaining = steps;
+
+            const stepInterval = setInterval(() => {
+                player.position = (player.position + 1) % boardState.length;
+                
+                // Si pasa por la Plaza Central (casilla 0)
+                if (player.position === 0) {
+                    modifyZeny(player, 200);
+                    addLog(`⛲ ${player.name} pasó por la Plaza Central y cobró +200 Z.`, "text-emerald-400");
+                }
+
+                renderBoard();
+                renderPlayers();
+                remaining--;
+
+                if (remaining <= 0) {
+                    clearInterval(stepInterval);
+                    isAnimating = false;
+                    resolveLanding(player);
+                }
+            }, 180);
+        }
+
+        function advancePlayerSteps(player, steps) {
+            isAnimating = true;
+            movePlayerSteps(player, steps);
+        }
+
+        function movePlayerDirect(player, targetPos, collectStartBonus) {
+            if (collectStartBonus && targetPos < player.position) {
+                modifyZeny(player, 200);
+                addLog(`⛲ ${player.name} pasó por la Plaza Central (+200 Z).`, "text-emerald-400");
+            }
+            player.position = targetPos;
+            renderBoard();
+            renderPlayers();
+            resolveLanding(player);
+        }
+
+        // Evalúa lo que ocurre al caer en una casilla
+        function resolveLanding(player) {
+            const cell = boardState[player.position];
+            addLog(`📍 ${player.name} cayó en <strong>${cell.name}</strong>.`);
+
+            if (cell.type === 'property' || cell.type === 'station') {
+                if (cell.ownerId === null) {
+                    addLog(`🏷️ ${cell.name} está disponible por ${cell.price} Z.`);
+                } else if (cell.ownerId !== player.id) {
+                    const owner = players[cell.ownerId];
+                    if (!owner.bankrupt) {
+                        const rentAmount = calculateRent(cell);
+                        addLog(`💸 ${player.name} paga ${rentAmount} Z de renta a ${owner.name}.`, "text-rose-300");
+                        transferZeny(player, owner, rentAmount);
+                    }
+                } else {
+                    addLog(`🏠 ${player.name} descansa en su propia propiedad.`);
+                }
+            } else if (cell.type === 'tax') {
+                addLog(`⚖️ ${player.name} paga ${cell.amount} Z de impuestos a la Fuente de Maná.`, "text-amber-300");
+                modifyZeny(player, -cell.amount);
+                freeParkingPot += cell.amount;
+                renderBoard();
+            } else if (cell.type === 'freeparking') {
+                if (freeParkingPot > 0) {
+                    addLog(`✨ ¡${player.name} absorbe la Fuente de Maná y gana ${freeParkingPot} Z!`, "text-cyan-300 font-bold");
+                    modifyZeny(player, freeParkingPot);
+                    freeParkingPot = 0;
+                    renderBoard();
+                }
+            } else if (cell.type === 'gotojail') {
+                addLog(`🚨 ¡Guardias arcanos arrestan a ${player.name}! Directo al Calabozo.`, "text-rose-400 font-bold");
+                sendToJail(player);
+            } else if (cell.type === 'chance' || cell.type === 'chest') {
+                triggerEventCard(player, cell.type);
+                return; // El modal se encargará de actualizar la UI al cerrarse
+            }
+
+            renderPlayers();
+            updateTurnUI();
+        }
+
+        /* ---------------------------------------------------------------------
+           5. PROPIEDADES, MONOPOLIOS, RENTAS Y CARTAS
+           --------------------------------------------------------------------- */
+        function calculateRent(cell) {
+            if (cell.type === 'station') {
+                const ownedStations = boardState.filter(c => c.type === 'station' && c.ownerId === cell.ownerId).length;
+                return cell.rent[Math.min(ownedStations - 1, 3)];
+            }
+
+            if (cell.type === 'property') {
+                let rent = cell.rent[cell.level];
+                // Si tiene monopolio de grupo y nivel 0, duplica la renta base
+                if (cell.level === 0 && hasColorMonopoly(cell.ownerId, cell.group)) {
+                    rent *= 2;
+                }
+                return rent;
+            }
+            return 0;
+        }
+
+        function hasColorMonopoly(playerId, group) {
+            if (playerId === null || !group) return false;
+            const groupCells = boardState.filter(c => c.group === group);
+            return groupCells.every(c => c.ownerId === playerId);
+        }
+
+        function getUpgradableCellForPlayer(player) {
+            // Verifica si el jugador está parado en una propiedad suya con monopolio o tiene alguna mejorable
+            const currentCell = boardState[player.position];
+            if (currentCell.type === 'property' && currentCell.ownerId === player.id && currentCell.level < 3) {
+                if (hasColorMonopoly(player.id, currentCell.group) && player.zeny >= currentCell.upgradeCost) {
+                    return currentCell;
+                }
+            }
+            // También permite mejorar cualquier propiedad con monopolio durante su turno
+            return boardState.find(c => 
+                c.type === 'property' && 
+                c.ownerId === player.id && 
+                c.level < 3 && 
+                hasColorMonopoly(player.id, c.group) && 
+                player.zeny >= c.upgradeCost
+            );
+        }
+
+        function handleBuyProperty() {
+            const player = players[currentPlayerIdx];
+            const cell = boardState[player.position];
+
+            if ((cell.type === 'property' || cell.type === 'station') && cell.ownerId === null && player.zeny >= cell.price) {
+                modifyZeny(player, -cell.price);
+                cell.ownerId = player.id;
+                addLog(`🏰 ¡${player.name} compró <strong>${cell.name}</strong> por ${cell.price} Z!`, "text-emerald-300 font-semibold");
+                
+                if (cell.type === 'property' && hasColorMonopoly(player.id, cell.group)) {
+                    addLog(`🌟 ¡${player.name} completó el monopolio de color y ahora puede construir Torres Arcanas!`, "text-amber-300");
+                }
+
+                renderBoard();
+                renderPlayers();
+                updateTurnUI();
+            }
+        }
+
+        function handleUpgradeProperty() {
+            const player = players[currentPlayerIdx];
+            const cell = getUpgradableCellForPlayer(player);
+            if (!cell) return;
+
+            modifyZeny(player, -cell.upgradeCost);
+            cell.level++;
+            addLog(`⬆️ ¡${player.name} construyó una Torre Arcana (Nivel ${cell.level}) en ${cell.name}!`, "text-violet-300 font-semibold");
+            renderBoard();
+            renderPlayers();
+            updateTurnUI();
+        }
+
+        function handlePayBail() {
+            const player = players[currentPlayerIdx];
+            if (player.inJail && player.zeny >= 100) {
+                modifyZeny(player, -100);
+                freeParkingPot += 100;
+                player.inJail = false;
+                player.jailTurns = 0;
+                addLog(`🔓 ${player.name} pagó 100 Z de fianza y salió del Calabozo.`, "text-amber-300");
+                renderBoard();
+                renderPlayers();
+                updateTurnUI();
+            }
+        }
+
+        function sendToJail(player) {
+            player.position = 6; // Índice del Calabozo de Geffen
+            player.inJail = true;
+            player.jailTurns = 2;
+            consecutiveDoubles = 0;
+            renderBoard();
+            renderPlayers();
+        }
+
+        function triggerEventCard(player, type) {
+            const card = EVENT_CARDS[Math.floor(Math.random() * EVENT_CARDS.length)];
+            addLog(`📜 Carta para ${player.name}: "${card.title}" - ${card.text}`, "text-indigo-300");
+
+            if (player.isBot) {
+                card.effect(player);
+                renderBoard();
+                renderPlayers();
+                updateTurnUI();
+            } else {
+                document.getElementById('card-modal-icon').textContent = type === 'chance' ? '📜' : '🎁';
+                document.getElementById('card-modal-title').textContent = card.title;
+                document.getElementById('card-modal-text').textContent = card.text;
+                pendingCardCallback = () => {
+                    card.effect(player);
+                    renderBoard();
+                    renderPlayers();
+                    updateTurnUI();
+                };
+                document.getElementById('card-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeCardModal() {
+            document.getElementById('card-modal').classList.add('hidden');
+            if (pendingCardCallback) {
+                const cb = pendingCardCallback;
+                pendingCardCallback = null;
+                cb();
+            }
+        }
+
+        /* ---------------------------------------------------------------------
+           6. ECONOMÍA, BANCARROTA Y CAMBIO DE TURNO
+           --------------------------------------------------------------------- */
+        function modifyZeny(player, delta) {
+            player.zeny += delta;
+            if (player.zeny < 0) {
+                handleBankruptcy(player, null);
+            }
+        }
+
+        function transferZeny(fromPlayer, toPlayer, amount) {
+            if (fromPlayer.zeny >= amount) {
+                fromPlayer.zeny -= amount;
+                toPlayer.zeny += amount;
+            } else {
+                // Paga lo que le queda y cae en bancarrota
+                toPlayer.zeny += Math.max(0, fromPlayer.zeny);
+                fromPlayer.zeny = 0;
+                handleBankruptcy(fromPlayer, toPlayer);
+            }
+        }
+
+        function handleBankruptcy(player, creditor) {
+            if (player.bankrupt) return;
+            player.bankrupt = true;
+            player.zeny = 0;
+            addLog(`💀 ¡${player.name} ha caído en BANCARROTA y queda eliminado de Geffen!`, "text-rose-500 font-extrabold");
+
+            // Liberar o transferir sus propiedades
+            boardState.forEach(cell => {
+                if (cell.ownerId === player.id) {
+                    cell.ownerId = creditor ? creditor.id : null;
+                    if (!creditor) cell.level = 0;
+                }
+            });
+
+            renderBoard();
+            renderPlayers();
+            checkWinner();
+        }
+
+        function checkWinner() {
+            const activePlayers = players.filter(p => !p.bankrupt);
+            if (activePlayers.length === 1) {
+                const winner = activePlayers[0];
+                document.getElementById('winner-text').innerHTML = `<strong>${winner.icon} ${winner.name}</strong> ha dominado la economía de Geffen con una fortuna de <strong>${winner.zeny} Z</strong>.`;
+                document.getElementById('winner-modal').classList.remove('hidden');
+                return true;
+            }
+            return false;
+        }
+
+        function handleEndTurn() {
+            if (isAnimating) return;
+            if (checkWinner()) return;
+
+            hasRolledThisTurn = false;
+            consecutiveDoubles = 0;
+
+            // Buscar siguiente jugador activo
+            let loopCount = 0;
+            do {
+                currentPlayerIdx = (currentPlayerIdx + 1) % players.length;
+                if (currentPlayerIdx === 0) turnCounter++;
+                loopCount++;
+            } while (players[currentPlayerIdx].bankrupt && loopCount <= players.length);
+
+            renderPlayers();
+            updateTurnUI();
+        }
+
+        /* ---------------------------------------------------------------------
+           7. INTELIGENCIA ARTIFICIAL DE LOS BOTS
+           --------------------------------------------------------------------- */
+        function runBotTurn() {
+            const bot = players[currentPlayerIdx];
+            if (!bot || !bot.isBot || bot.bankrupt) return;
+
+            // 1. Si está en el Calabozo y tiene buen dinero, paga fianza
+            if (bot.inJail && bot.zeny >= 250) {
+                handlePayBail();
+            }
+
+            // 2. Lanzar dados
+            handleRollDice();
+
+            // 3. Esperar a que termine la animación de movimiento para decidir compras
+            const waitMove = setInterval(() => {
+                if (!isAnimating && document.getElementById('card-modal').classList.contains('hidden')) {
+                    clearInterval(waitMove);
+
+                    if (bot.bankrupt) {
+                        handleEndTurn();
+                        return;
+                    }
+
+                    // Intentar comprar propiedad si dejó un colchón de seguridad de 120 Z
+                    const cell = boardState[bot.position];
+                    if ((cell.type === 'property' || cell.type === 'station') && cell.ownerId === null && bot.zeny >= cell.price + 120) {
+                        handleBuyProperty();
+                    }
+
+                    // Intentar mejorar propiedad si tiene monopolio y dinero suficiente
+                    const upg = getUpgradableCellForPlayer(bot);
+                    if (upg && bot.zeny >= upg.upgradeCost + 200) {
+                        handleUpgradeProperty();
+                    }
+
+                    // Si sacó dobles, vuelve a tirar; si no, termina turno
+                    setTimeout(() => {
+                        if (!hasRolledThisTurn && !bot.bankrupt) {
+                            runBotTurn();
+                        } else {
+                            handleEndTurn();
+                        }
+                    }, 800);
+                }
+            }, 300);
+        }
+
+        /* ---------------------------------------------------------------------
+           8. UTILIDADES VISUALES Y MODALES
+           --------------------------------------------------------------------- */
+        function addLog(htmlMsg, extraClass = "text-slate-300") {
+            const logEl = document.getElementById('game-log');
+            const entry = document.createElement('div');
+            entry.className = `border-b border-slate-800/70 pb-1 ${extraClass}`;
+            entry.innerHTML = htmlMsg;
+            logEl.prepend(entry);
+        }
+
+        function inspectCell(cellId) {
+            const cell = boardState[cellId];
+            const header = document.getElementById('modal-header-color');
+            header.style.backgroundColor = cell.colorHex || '#312e81';
+
+            document.getElementById('modal-cell-name').textContent = `${cell.icon} ${cell.name}`;
+            document.getElementById('modal-cell-desc').textContent = cell.desc;
+
+            const statsEl = document.getElementById('modal-cell-stats');
+            if (cell.type === 'property') {
+                const ownerName = cell.ownerId !== null ? `${players[cell.ownerId].icon} ${players[cell.ownerId].name}` : "Sin dueño (Disponible)";
+                statsEl.innerHTML = `
+                    <div class="flex justify-between"><span>Dueño:</span><strong class="text-white">${ownerName}</strong></div>
+                    <div class="flex justify-between"><span>Precio de Compra:</span><strong class="text-amber-300">${cell.price} Z</strong></div>
+                    <div class="flex justify-between"><span>Nivel Actual:</span><strong class="text-violet-300">${cell.level === 0 ? 'Base' : 'Torre Nivel ' + cell.level}</strong></div>
+                    <hr class="border-slate-800">
+                    <div class="text-xs text-slate-400 space-y-1">
+                        <div class="flex justify-between"><span>Renta Base (x2 con monopolio):</span><span>${cell.rent[0]} Z</span></div>
+                        <div class="flex justify-between"><span>Con 1 Torre Arcana:</span><span>${cell.rent[1]} Z</span></div>
+                        <div class="flex justify-between"><span>Con 2 Torres Arcanas:</span><span>${cell.rent[2]} Z</span></div>
+                        <div class="flex justify-between"><span>Con 3 Torres Arcanas:</span><span>${cell.rent[3]} Z</span></div>
+                        <div class="flex justify-between text-emerald-400 pt-1"><span>Costo de Mejora:</span><span>${cell.upgradeCost} Z</span></div>
+                    </div>
+                `;
+            } else if (cell.type === 'station') {
+                const ownerName = cell.ownerId !== null ? `${players[cell.ownerId].icon} ${players[cell.ownerId].name}` : "Sin dueño (Disponible)";
+                statsEl.innerHTML = `
+                    <div class="flex justify-between"><span>Dueño:</span><strong class="text-white">${ownerName}</strong></div>
+                    <div class="flex justify-between"><span>Precio de Compra:</span><strong class="text-amber-300">${cell.price} Z</strong></div>
+                    <hr class="border-slate-800">
+                    <div class="text-xs text-slate-400 space-y-1">
+                        <div class="flex justify-between"><span>1 Portal Kafra:</span><span>50 Z</span></div>
+                        <div class="flex justify-between"><span>2 Portales Kafra:</span><span>100 Z</span></div>
+                        <div class="flex justify-between"><span>3 Portales Kafra:</span><span>200 Z</span></div>
+                        <div class="flex justify-between"><span>4 Portales Kafra:</span><span>400 Z</span></div>
+                    </div>
+                `;
+            } else {
+                statsEl.innerHTML = `<div class="text-center text-xs text-amber-300 font-semibold">Casilla Especial de Evento</div>`;
+            }
+
+            document.getElementById('cell-modal').classList.remove('hidden');
+        }
+
+        function closeCellModal() {
+            document.getElementById('cell-modal').classList.add('hidden');
+        }
+
+        function openRulesModal() {
+            document.getElementById('rules-modal').classList.remove('hidden');
+        }
+
+        function closeRulesModal() {
+            document.getElementById('rules-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
