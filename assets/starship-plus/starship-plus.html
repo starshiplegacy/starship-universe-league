@@ -143,11 +143,7 @@ function fav(id){const i=st.fav.indexOf(id);i<0?st.fav.push(id):st.fav.splice(i,
 const CONTENT_INFO={};
 const escText=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const contentInfo=id=>CONTENT_INFO[id]||{trailers:[],seasons:[],cast:[]};
-function detailHome(id){const it=cat.find(x=>x.id===id),d=contentInfo(id),seasonable=it.type==='series'||it.type==='drama';
-const buttons=[['trailers','▶ Teasers & Trailers'],...(seasonable?[['seasons','▤ Temporada(s)']]:[]),['cast','✦ Elenco / Cast']];
-$('#detail-panel').hidden=false;
-$('#detail-panel').innerHTML='<div class="detail-list">'+buttons.map(([key,label])=>'<button class="detail-item" onclick="detailSection(\''+id+'\',\''+key+'\')"><span>'+label+'</span><span>›</span></button>').join('')+'</div>';
-}
+function detailHome(id){const panel=$('#detail-panel');panel.hidden=true;panel.innerHTML='';}
 function detailSection(id,section){const d=contentInfo(id),panel=$('#detail-panel');panel.hidden=false;let html='';
 if(section==='trailers'){const list=d.trailers||[];html='<h4>Teasers & Trailers</h4>'+(list.length?'<div class="detail-list">'+list.map(v=>{const url=String(v.url||v.link||'');const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);const embed=yt?'https://www.youtube-nocookie.com/embed/'+yt[1]:'';return '<div class="detail-person">'+(embed?'<iframe class="detail-video" src="'+embed+'" title="'+escText(v.title||'Trailer')+'" loading="lazy" allowfullscreen></iframe>':(url.startsWith('https://')||url.startsWith('http://')?'<a href="'+escText(url)+'" target="_blank" rel="noopener">▶ Ver video</a>':'<div class="detail-muted">Video próximamente</div>'))+'<b>'+escText(v.title||'Teaser / Trailer')+'</b>'+(v.type?'<small class="detail-muted">'+escText(v.type)+'</small>':'')+'</div>'}).join('')+'</div>':'<div class="detail-empty">Los teasers y tráileres estarán disponibles aquí cuando se anuncien oficialmente.</div>')}
 else if(section==='seasons'){const seasons=d.seasons||[];html='<h4>Temporada(s)</h4>'+(seasons.length?'<div class="detail-list">'+seasons.map((v,i)=>'<button class="detail-item" onclick="showSeason(\''+id+'\','+i+')"><span><b>'+escText(v.title||('Temporada '+(i+1)))+'</b><small>'+(v.episodes||[]).length+' episodios</small></span><span>›</span></button>').join('')+'</div>':'<div class="detail-empty">La información de temporadas y episodios se añadirá próximamente.</div>')}
