@@ -96,12 +96,30 @@ def static_audit():
         index_text = index_file.read_text(encoding="utf-8")
         games_text = games_file.read_text(encoding="utf-8")
         save_text = save_file.read_text(encoding="utf-8")
-        if "<h3>Pinkie Star</h3>" not in index_text or 'data-launch-mini-game="pixxy"' not in index_text:
-            errors.append("Pinkie Star card is missing its visible name or internal launch token.")
+        pinkie_has_install_token = 'data-install-game="pixxy"' in index_text
+        pinkie_has_legacy_token = 'data-launch-mini-game="pixxy"' in index_text
+        if "<h3>Pinkie Star</h3>" not in index_text or not (pinkie_has_install_token or pinkie_has_legacy_token):
+            errors.append("Pinkie Star card is missing its visible name or stable install/launch token.")
         if '"pinkie-star"' not in games_text or '"pixxy-up"' not in games_text:
             errors.append("Pinkie Star save migration or legacy pixxy-up fallback is missing.")
         if '"pinkie-star"' not in save_text or '"pixxy-up"' not in save_text:
             errors.append("Save system must accept both Pinkie Star and legacy pixxy-up keys.")
+
+        app_file = ROOT / "app.js"
+        app_text = app_file.read_text(encoding="utf-8") if app_file.exists() else ""
+        if 'data-install-game="geffen-monopoly"' not in index_text or '"geffen-monopoly"' not in app_text:
+            errors.append("Geffen: Monopoly is missing its catalog or library registration.")
+        if 'data-install-game="star-solitaire"' not in index_text or '"star-solitaire"' not in app_text:
+            errors.append("Club de Cartas is missing its catalog or library registration.")
+        if 'href="./assets/starship-plus/starship-plus.html"' not in index_text:
+            errors.append("Starship Plus member-area link is missing.")
+        for relative in (
+            "assets/geffen-monopoly/geffen_monopoly_juego_de_mesa_interactivo.html",
+            "assets/star-solitaire/club_de_cartas_solitario_y_versus.html",
+            "assets/starship-plus/starship-plus.html",
+        ):
+            if not (ROOT / relative).is_file():
+                errors.append(f"Missing new experience file: {relative}")
 
     launch = ROOT / "launch.html"
     if launch.exists():
