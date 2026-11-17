@@ -48,7 +48,7 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 | `../assets/Geffenite/docs/Geffenite - Dossier de Juego y Empresa.docx` | Dossier fuente del proyecto. |
 | `../assets/Geffenite/docs/Geffenite - Acceso VIP y Requisitos.docx` | Documento fuente de acceso y requisitos. |
 
-**Estado resumido:** la beta está presentada en el área VIP y su acceso depende de entitlement activo Young-Moon o Exoplanet. Los DOCX se conservan en formato original. El mapa HTML se clasifica como referencia interactiva, no como sistema de mapas del motor.
+**Estado resumido:** la beta está presentada en el área VIP y el frontend exige una entitlement o plan compatible devuelto por la función Edge starship-entitlements. La validación real de vigencia/estado de pago debe confirmarse en esa función remota. Los DOCX se conservan en formato original. El mapa HTML se clasifica como referencia interactiva, no como sistema de mapas del motor.
 
 ## 5. GellyShow
 
