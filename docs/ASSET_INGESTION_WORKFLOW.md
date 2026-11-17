@@ -87,7 +87,7 @@ Los modelos GLB de personajes y los tres vídeos se verificaron en el árbol act
 
 ## 6. Regla de continuidad para futuras sesiones
 
-Al recibir una nueva tanda de archivos, empezar por este documento y `assets/ASSET_MANIFEST.md`; después comparar Library, árbol de GitHub y referencias de código. Actualizar el inventario antes de modificar la experiencia. Informar claramente qué está solo en Library, qué ya está en GitHub, qué está integrado en el código y qué se ha desplegado.
+Al recibir una nueva tanda de archivos, usar `docs/DOCUMENTATION_INDEX.md` para orientarse y empezar la validación con este documento y `assets/ASSET_MANIFEST.md`; después comparar Library, árbol de GitHub y referencias de código. Actualizar el inventario antes de modificar la experiencia. Informar claramente qué está solo en Library, qué ya está en GitHub, qué está integrado en el código y qué se ha desplegado.
 
 
 ## 7. Auditoría cruzada Supabase ↔ GitHub (2026-11-16)
