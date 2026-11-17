@@ -650,6 +650,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   downloading=k;downloadOwner=userId;downloadRemaining=60;refresh();startDownloadClock();updateDownloadProgress();
  }
  window.starshipGameLibrary={isInstalled:key=>installed.has(key),install:start,refresh};
+ if(gameDialog?.open&&activeGameKey)renderGameDialog(activeGameKey);
  window.addEventListener("beforeunload",event=>{
   if(!downloading)return;
   event.preventDefault();event.returnValue="";
