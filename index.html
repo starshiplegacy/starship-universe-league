@@ -83,6 +83,7 @@
       <button class="icon-button search-button" id="searchToggle" aria-label="Buscar"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
       <button class="gallery-button" id="galleryOpen" type="button" hidden>GALLERY</button>
       <button class="account-button" id="accountOpen" type="button" aria-label="Configuración de usuario" title="Configuración de usuario" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></button>
+      <button class="login-button universe-pay-button" id="universePayOpen" type="button">Universe Pay</button>
       <button class="login-button" id="accessOpen" type="button" data-i18n="login">Acceder</button>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -152,6 +153,15 @@
 
     <section class="multimedia-section section-wrap" id="multimedia">
       <div class="section-heading"><div><div class="section-kicker">03 / <span data-i18n="multimediaKicker">MIRA Y DESCUBRE</span></div><h2 data-i18n="multimediaTitle">Multimedia</h2></div><p class="heading-note" data-i18n="multimediaNote">VIDEOS Y CONTENIDO DE UNIVERSE LEAGUE.</p></div>
+      <section class="ulh-vip-section starship-plus-premieres" aria-labelledby="starshipPlusPremieresTitle">
+        <div class="ulh-vip-heading"><span class="ulh-tag">UNIVERSE PAY · ACCESO ANTICIPADO</span><h3 id="starshipPlusPremieresTitle">Estrenos anticipados · Starship Plus</h3><p>Los miembros de Universe League podrán disfrutar de los estrenos de Starship Plus antes de su publicación en el canal oficial de YouTube.</p></div>
+        <div data-membership-fallback>
+          <div class="ulh-vip-card"><div class="ulh-vip-art"><span>✦</span><strong>STARSHIP PLUS</strong><small>EARLY PREMIERES</small></div><div class="ulh-vip-copy"><h3>Primero en Universe League</h3><p>Este espacio está reservado para miembros con una membresía activa. Inicia sesión y consulta Universe Pay para conocer los planes y beneficios.</p><button class="ulh-vip-launch" type="button" data-open-universe-pay>Conocer Universe Pay ↗</button></div></div>
+        </div>
+        <div data-requires-membership hidden>
+          <div class="ulh-vip-card"><div class="ulh-vip-art"><span>✦</span><strong>STARSHIP PLUS</strong><small>MEMBER PREMIERE</small></div><div class="ulh-vip-copy"><h3>Tu acceso anticipado está activo</h3><p>Los estrenos exclusivos se publicarán aquí antes de llegar al canal oficial de YouTube de Starship Plus.</p><div class="ulh-vip-eligibility"><span>Acceso anticipado para miembros</span><span>Starship Plus Pro incluido</span></div><p class="ulh-vip-locked">Todavía no hay estrenos anticipados publicados. Vuelve pronto para ver el próximo lanzamiento.</p></div></div>
+        </div>
+      </section>
       <div class="carousel-shell">
         <button class="carousel-arrow carousel-prev" type="button" aria-label="Videos anteriores" data-carousel-prev="mediaTrack">‹</button>
         <div class="media-grid carousel-track" id="mediaTrack" tabindex="0" aria-label="Carrusel de videos">
@@ -355,7 +365,7 @@
     <div class="account-sections" id="accountSections">
       <button type="button" data-account-section="profile"><span>◉</span><span><b>Perfil de Usuario</b><small>Avatar, ID, biografía y redes sociales</small></span><i>›</i></button>
       <button type="button" data-account-section="personal-profile" id="personalProfileSection" hidden><span>✧</span><span><b>Perfil personal</b><small>Acceso privado · Creator + Exoplanet</small></span><i>›</i></button>
-      <button type="button" data-account-section="plans"><span>✧</span><span><b>Stellar-Llaves (Plans)</b><small>Geffenland · Planes y beneficios</small></span><i>›</i></button>
+      <button type="button" data-account-section="plans"><span>✧</span><span><b>Universe Pay</b><small>Membresías, planes y beneficios</small></span><i>›</i></button>
       <button type="button" data-account-section="verification"><span>✦</span><span><b>Verificaciones</b><small>Insignias de apoyo y Creator Verified</small></span><i>›</i></button>
       <button type="button" data-account-section="feedback"><span>✉</span><span><b>Quejas y Sugerencias</b><small>Comparte una consulta o una propuesta</small></span><i>›</i></button>
       <button type="button" data-account-section="security"><span>⌑</span><span><b>Seguridad</b><small>Contraseña y acceso a tu cuenta</small></span><i>›</i></button>
