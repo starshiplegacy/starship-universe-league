@@ -179,3 +179,27 @@ Se separó de una carpeta `home/` para evitar confundir una referencia de League
 - `UI/`: referencias y prototipos de interfaz de The LyrieLife.
 - `references/`: material de consulta que no debe confundirse con pantallas activas del juego.
 - Los nombres de archivo originales se conservan cuando cambiarlo podría romper referencias; los errores tipográficos pendientes quedan documentados hasta una normalización coordinada.
+
+
+## 15. Estado de lectura e integración de los archivos .world — 16 de noviembre de 2026
+
+Los cuatro archivos están versionados como binarios y no son texto legible directamente por el navegador. La página actual de The LyrieLife no contiene un lector/importador de este formato: el selector de mundos cambia entornos CSS de prototipo y no interpreta la geometría ni los recursos internos de estos archivos.
+
+| Archivo | Tamaño | Git blob SHA | Estado |
+|---|---:|---|---|
+| Kataleya.world | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
+| Kariskio.world | 57,333,840 bytes | `9d2488566fc1fda96fbcb2f9d406af92b748007f` | Almacenado; sin lector/importador |
+| Solnang.world | 30,659,696 bytes | `f972b0bdf641d057f196449123351bdc0c0b081a` | Almacenado; sin lector/importador |
+| abandoned-island.world | 49,656,910 bytes | `c8e92d0f36960d4010715179c3db4397af33e35e` | Almacenado; sin lector/importador |
+
+El conjunto ocupa 194,984,286 bytes (aprox. 186 MiB). Kataleya.world y Kariskio.world comparten exactamente el mismo Git blob SHA y tamaño, por lo que Git los identifica como contenido binario idéntico; conservar ambos nombres no significa que contengan mundos distintos.
+
+### Ruta técnica recomendada
+
+1. Identificar qué programa o motor creó/exportó estos archivos y documentar su formato y versión.
+2. Obtener el proyecto fuente o un exportador oficial; inspeccionar cabecera, estructura y dependencias antes de intentar convertir.
+3. Si el formato lo permite, generar una copia de runtime en glTF/GLB con texturas separadas o empaquetadas. No sobrescribir los .world originales.
+4. Validar escala, orientación, materiales, colisiones, zonas caminables y puntos de aparición.
+5. Integrar el GLB exportado en el cargador web y probarlo en escritorio y móvil.
+
+**Conclusión:** todavía no pueden leerse como mundos jugables dentro de The LyrieLife. Hace falta una vía de importación o conversión desde el formato de origen. No se debe prometer una conversión directa a GLB hasta identificar el formato real.
