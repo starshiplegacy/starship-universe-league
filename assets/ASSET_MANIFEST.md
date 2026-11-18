@@ -303,3 +303,18 @@ El primer prototipo local de Entrenamiento se encuentra en `assets/league-of-leg
 | `Camera/third-person-camera.js` | Cámara de seguimiento en tercera persona y control con ratón |
 
 La arena greybox es geometría de prueba creada para este prototipo; no reutiliza el GLB de Training cuyo estado de licencia sigue sin verificarse. Esta primera versión no incluye todavía colisiones físicas con obstáculos, animaciones verificadas, combate, guardado ni multijugador. El modelo de Charlotte debe probarse en navegador servido por HTTP/HTTPS.
+
+
+## 12. League Of Legacy — fichas de animación por personaje
+
+Se añadió `Gameplay/Player/character-roster.js` como catálogo de configuraciones de personaje para el prototipo Training. Incluye Charlotte, Emma, Bella, Stella y Aquamarine. El selector de personaje carga el GLB correspondiente desde `assets/league-of-legacy/characters/`, y el controlador toma de esa ficha los nombres de clips de locomoción, salto, ataques, reposo, victoria y muerte.
+
+| Personaje | Modelo | Notas |
+|---|---|---|
+| Charlotte | `Charlotte.glb` | Configuración base del prototipo |
+| Emma | `Emma.glb` | Incluye `Janna_Skin13_idle1.anm` como reposo |
+| Bella | `Bella.glb` | Ficha de animaciones incorporada |
+| Stella | `Stella.glb` | Se conservan sufijos `.anm` tal como fueron proporcionados |
+| Aquamarine | `Aquamarine.glb` | Salto pendiente; no se asigna clip hasta recibirlo |
+
+**Estado:** fichas y selector integrados en el código. La existencia exacta de cada clip dentro de cada GLB y su reproducción correcta todavía requieren prueba en navegador; los nombres se conservan literalmente y no se consideran verificados por estar registrados.
