@@ -352,7 +352,7 @@ Se incorpora `Optopool.glb` al selector de Training y su ficha queda registrada 
 | Q — Pasivo | `Spell1` |
 | W — Pasivo-agresivo | `Spell2` |
 | E — Agresivo | `Spell3` |
-| H — Hechizo diminuto | `Spell3` |
+| H — Hechizo diminuto | `Spell4` |
 | Victoria | `Dance_Loop` |
 | Muerte/daño | `Death` |
 
