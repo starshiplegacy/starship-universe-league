@@ -21,6 +21,7 @@ export class PlayerController {
     this.animationActions = new Map();
     this.activeAction = null;
     this.locomotionAction = null;
+    this.locomotionName = "idle";
     this.animationClips = {
       idle: "idle1_base1",
       walk: "Run_Haste",
@@ -78,7 +79,11 @@ export class PlayerController {
       this.animationActions.set(clip.name, this.mixer.clipAction(clip));
     }
     this.mixer.addEventListener("finished", event => {
-      if (this.activeAction === event.action) this.activeAction = null;
+      if (this.activeAction !== event.action) return;
+      event.action.fadeOut(0.18);
+      this.activeAction = null;
+      // Resume the current movement state as soon as a one-shot clip ends.
+      this.updateLocomotion(this.locomotionName);
     });
     this.ready = true;
     return gltf.animations || [];
@@ -107,6 +112,7 @@ export class PlayerController {
   }
 
   updateLocomotion(name) {
+    this.locomotionName = name;
     if (this.activeAction) return;
     const clipName = this.animationClips[name];
     const next = this.animationActions.get(clipName);
