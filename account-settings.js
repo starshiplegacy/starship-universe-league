@@ -11,7 +11,6 @@
   const dialogIntro = $("accountIntro");
   const signOutButton = $("accountSignOut");
   const avatarButton = $("accountOpen");
-  const themeNames = {light:"Claro",dark:"Oscuro",green:"Verde",nature:"Naturaleza",neon:"Neón",galaxy:"Galaxy",autumn:"Otoño",winter:"Invierno",spring:"Primavera",summer:"Verano"};
   const languages = {es:"Español",en:"English",ko:"한국어",ja:"日本語"};
   let client = null, session = null, profile = null, signedAvatarUrl = null, busy = false;
   const say = (message, type) => {
@@ -175,9 +174,18 @@
     finally { const current = $("removePhoto"); if (current) current.disabled = !profile?.avatar_path; }
   }
   function renderPreferences() {
-    const theme = profile?.theme || localStorage.getItem("universe-theme") || "light";
+    const savedTheme = profile?.theme || localStorage.getItem("universe-theme") || "light";
     const language = profile?.language || localStorage.getItem("universe-language") || "es";
-    $("accountPanelContent").innerHTML = '<form id="preferencesForm" class="settings-form"><label>Apariencia<select name="theme">' + Object.entries(themeNames).map(([v,l])=>'<option value="'+v+'" '+(theme===v?'selected':'')+'>'+l+'</option>').join("") + '</select></label><label>Idioma<select name="language">' + Object.entries(languages).map(([v,l])=>'<option value="'+v+'" '+(language===v?'selected':'')+'>'+l+'</option>').join("") + '</select></label><button class="settings-primary" type="submit">Guardar preferencias</button></form>';
+    const entitlements = window.starshipEntitlements;
+    const catalog = typeof window.getUniverseThemeCatalog === "function" ? window.getUniverseThemeCatalog() : [
+      {value:"light",label:"Claro"},{value:"dark",label:"Oscuro"},{value:"green",label:"Verde"},{value:"nature",label:"Naturaleza"},
+      {value:"neon",label:"Neón"},{value:"galaxy",label:"Galaxy"},{value:"autumn",label:"Otoño"},{value:"winter",label:"Invierno"},
+      {value:"spring",label:"Primavera"},{value:"summer",label:"Verano"}
+    ];
+    const availableThemes = catalog.filter(item => !item.requirement || entitlements?.has(item.requirement));
+    const theme = availableThemes.some(item => item.value === savedTheme) ? savedTheme : "light";
+    const themeOptions = availableThemes.map(item => '<option value="' + escapeHtml(item.value) + '" ' + (theme === item.value ? "selected" : "") + '>' + escapeHtml(item.label) + '</option>').join("");
+    $("accountPanelContent").innerHTML = '<form id="preferencesForm" class="settings-form"><label>Apariencia<select name="theme">' + themeOptions + '</select></label><label>Idioma<select name="language">' + Object.entries(languages).map(([v,l])=>'<option value="'+v+'" '+(language===v?'selected':'')+'>'+l+'</option>').join("") + '</select></label><button class="settings-primary" type="submit">Guardar preferencias</button></form>';
     $("preferencesForm").addEventListener("submit",async event=>{
       event.preventDefault(); const values=Object.fromEntries(new FormData(event.currentTarget).entries());
       try {
