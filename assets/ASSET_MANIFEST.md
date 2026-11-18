@@ -318,3 +318,23 @@ Se añadió `Gameplay/Player/character-roster.js` como catálogo de configuracio
 | Aquamarine | `Aquamarine.glb` | Salto pendiente; no se asigna clip hasta recibirlo |
 
 **Estado:** fichas y selector integrados en el código. La existencia exacta de cada clip dentro de cada GLB y su reproducción correcta todavía requieren prueba en navegador; los nombres se conservan literalmente y no se consideran verificados por estar registrados.
+
+
+## 19. League Of Legacy — Arthur en Training
+
+Se incorpora `Arthur.glb` al catálogo de Training y se registra su ficha en `Gameplay/Player/character-roster.js`.
+
+| Acción | Clip |
+|---|---|
+| Quieto/reposo | `Idle1` |
+| Caminar | `Run` |
+| Correr (SHIFT) | `Run` |
+| Saltar | `Spell1` |
+| Q — Pasivo | `Attack1` |
+| W — Pasivo-agresivo | `Attack2` |
+| E — Agresivo | `Crit` |
+| H — Hechizo diminuto | `Spell2` |
+| Victoria | `Dance` |
+| Muerte/daño | `Death` |
+
+Arthur utiliza el mismo clip `Run` al caminar y correr; SHIFT cambia la velocidad del desplazamiento, no el clip. La ficha y el selector están integrados; la reproducción de los clips requiere validación en navegador.
