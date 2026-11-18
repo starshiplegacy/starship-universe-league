@@ -308,7 +308,9 @@ function openSel(id){selEl.classList.add('on');renderCg();if(id)choose(id);else 
 function closeSel(){selEl.classList.remove('on')}
 $('#sx').onclick=closeSel;
 $('#cg').onclick=e=>{const c=e.target.closest('.cc');if(c)choose(c.dataset.c)};
-$('#lk').onclick=()=>{if(!pick)return;chosen=byId(pick);closeSel();closeScreen();if(window.setHero)setHero(pick);toast('Personaje bloqueado: '+chosen.name);
+$('#lk').onclick=()=>{if(!pick)return;
+ if(window.__UL_FLOW_ACTIVE){chosen=byId(pick);closeSel();if(window.setHero)setHero(pick);window.dispatchEvent(new CustomEvent('ul-character-locked',{detail:{name:chosen.name}}));return}
+ chosen=byId(pick);closeSel();closeScreen();if(window.setHero)setHero(pick);toast('Personaje bloqueado: '+chosen.name);
  play.classList.add('q');let s=0;play.textContent='CANCELAR 0:00';queue={t:setInterval(()=>{s++;play.textContent='CANCELAR 0:0'+s;if(s>=5){clearInterval(queue.t);queue=null;play.classList.remove('q');play.textContent='PLAY';go('match')}},1000)}};
 $$('#an button').forEach(b=>b.onclick=()=>{$$('#an button').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(window.playPrev)playPrev(b.dataset.a)});
 function choose(id){pick=id;$$('.cc').forEach(x=>x.classList.toggle('on',x.dataset.c===id));$('#pn').textContent=byId(id).name;$('#lk').disabled=false;$('#pl').style.display='flex';$('#pl').textContent='Cargando '+byId(id).name+'…';
@@ -493,7 +495,8 @@ const maps=[
 ];
 const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
 let step='character',map=null,character=null,loadingTimer=null,cinemaTimer=null;
-function show(){overlay.classList.add('open');render()}
+function openCharacterSelector(){overlay.classList.remove('open');window.__UL_FLOW_ACTIVE=true;const selector=document.getElementById('sel');if(selector)selector.classList.add('on');if(window.initPrev)window.initPrev();if(window.queueThumbs)window.queueThumbs()}
+function show(){if(step==='character'){openCharacterSelector();return}overlay.classList.add('open');render()}
 function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer);if(cinemaTimer)clearTimeout(cinemaTimer)}
 function render(){
  back.textContent=step==='character'?'CANCELAR':step==='map'?'← PERSONAJES':step==='confirm'?'← CAMBIAR MAPA':step==='starpion'?'← PERSONAJES':step==='cinema'?'← VOLVER':'SALIR';
@@ -539,7 +542,7 @@ content.addEventListener('click',e=>{
  const m=e.target.closest('[data-map]');if(m){map=maps.find(x=>x.id===m.dataset.map);render();return}
  const c=e.target.closest('[data-character]');if(c){character=c.dataset.character;render()}
 });
-back.addEventListener('click',()=>{if(step==='character'){hide();return}if(step==='map')step='character';else if(step==='confirm')step='map';else if(step==='starpion')step='character';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character'}else if(step==='pending'){hide();step='character'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='map'}render()});
+back.addEventListener('click',()=>{if(step==='character'){hide();return}if(step==='map'){step='character';openCharacterSelector();return}else if(step==='confirm')step='map';else if(step==='starpion')step='character';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character';openCharacterSelector();return}else if(step==='pending'){hide();step='character'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='map'}render()});
 next.addEventListener('click',()=>{
  if(step==='character'&&character)step='map';
  else if(step==='map'&&map)step='confirm';
@@ -549,7 +552,8 @@ next.addEventListener('click',()=>{
  else if(step==='pending'){hide();step='character';return}
  render();
 });
-document.addEventListener('click',e=>{if(e.target.closest('#play')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();map=null;character=null;step='character';show()}},true);
+document.addEventListener('click',e=>{if(e.target.closest('#play')){map=null;character=null;step='character';window.__UL_FLOW_ACTIVE=true;overlay.classList.remove('open')}},true);
+window.addEventListener('ul-character-locked',e=>{character=e.detail&&e.detail.name?e.detail.name:null;if(!character)return;window.__UL_FLOW_ACTIVE=false;step='map';overlay.classList.add('open');render()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))hide()});
 })();
 </script>
