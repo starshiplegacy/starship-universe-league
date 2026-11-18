@@ -69,7 +69,55 @@ const cache=new Map();
 function fitModel(root){const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());root.position.x-=center.x;root.position.z-=center.z;root.position.y-=box.min.y;const max=Math.max(size.x,size.y,size.z);if(max>0)root.scale.setScalar(3.1/max);root.updateMatrixWorld(true)}
 function setAnimations(gltf){mixer=new THREE.AnimationMixer(active);clips=gltf.animations||[];const menu=document.getElementById('animationMenu');menu.innerHTML='';if(!clips.length){menu.innerHTML='<button disabled>Este modelo no incluye animaciones</button>';return}clips.forEach((clip,i)=>{const b=document.createElement('button');b.textContent=clip.name||'Animación '+(i+1);b.addEventListener('click',()=>{playAnimation(i);menu.classList.remove('open')});menu.appendChild(b)});playAnimation(0)}
 function playAnimation(i){if(!mixer||!clips[i])return;const action=mixer.clipAction(clips[i]);if(currentAction&&currentAction!==action)currentAction.fadeOut(.2);action.reset().fadeIn(.2).play();currentAction=action;document.querySelectorAll('#animationMenu button').forEach((b,j)=>b.classList.toggle('active',j===i))}
-async function selectCharacter(name){selected=name;document.getElementById('map').disabled=true;document.getElementById('name').textContent=name;document.getElementById('bio').textContent='Areborn seleccionado · listo para confirmar y elegir un mapa.';document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===name));loading.classList.remove('hide');try{let gltf=cache.get(name);if(!gltf){gltf=await loader.loadAsync(base+files[name]);cache.set(name,gltf)}if(active)scene.remove(active);active=cloneSkinned(gltf.scene);fitModel(active);scene.add(active);setAnimations(gltf);document.getElementById('map').disabled=false;sessionStorage.setItem('leagueOfLegacyAreborn',selected)}catch(err){console.error('Error cargando Areborn:',name,err);document.getElementById('bio').textContent='No se pudo cargar el modelo 3D. Revisa el recurso '+files[name]+'.'}finally{loading.classList.add('hide')}}
+async function selectCharacter(name){
+ const previous=selected;
+ const mapButton=document.getElementById('map');
+ mapButton.disabled=true;
+ document.getElementById('name').textContent=name;
+ document.getElementById('bio').textContent='Cargando el modelo original…';
+ loading.classList.remove('hide');
+ try{
+  if(!files[name]) throw new Error('No existe una ruta registrada para este Areborn.');
+  let gltf=cache.get(name);
+  if(!gltf){
+   const modelUrl=new URL(files[name],new URL(base,import.meta.url)).href;
+   gltf=await loader.loadAsync(modelUrl);
+   if(!gltf||!gltf.scene) throw new Error('El archivo se descargó, pero no contiene una escena 3D válida.');
+   cache.set(name,gltf);
+  }
+  let candidate;
+  try{
+   candidate=cloneSkinned(gltf.scene);
+  }catch(cloneError){
+   let hasSkinnedMesh=false;
+   gltf.scene.traverse(object=>{if(object.isSkinnedMesh)hasSkinnedMesh=true});
+   if(hasSkinnedMesh) throw cloneError;
+   candidate=gltf.scene.clone(true);
+  }
+  fitModel(candidate);
+  scene.add(candidate);
+  const previousModel=active;
+  active=candidate;
+  if(previousModel)scene.remove(previousModel);
+  selected=name;
+  setAnimations(gltf);
+  document.getElementById('name').textContent=name;
+  document.getElementById('bio').textContent='Areborn seleccionado · listo para confirmar y elegir un mapa.';
+  document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===name));
+  mapButton.disabled=false;
+  sessionStorage.setItem('leagueOfLegacyAreborn',selected);
+ }catch(err){
+  console.error('Error cargando Areborn:',name,err);
+  selected=previous;
+  document.getElementById('name').textContent=name;
+  const detail=err&&err.message?err.message:String(err);
+  document.getElementById('bio').textContent='No se pudo completar la carga de '+files[name]+'. Detalle técnico: '+detail;
+  document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===previous));
+  mapButton.disabled=!active;
+ }finally{
+  loading.classList.add('hide');
+ }
+}
 const charMenu=document.getElementById('characterMenu');characters.forEach(name=>{const b=document.createElement('button');b.textContent=name;b.dataset.name=name;b.addEventListener('click',()=>{selectCharacter(name);charMenu.classList.remove('open')});charMenu.appendChild(b)});
 document.getElementById('characterBtn').addEventListener('click',()=>{charMenu.classList.toggle('open');document.getElementById('animationMenu').classList.remove('open')});
 document.getElementById('animationBtn').addEventListener('click',()=>{document.getElementById('animationMenu').classList.toggle('open');charMenu.classList.remove('open')});
