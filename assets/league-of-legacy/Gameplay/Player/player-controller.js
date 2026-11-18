@@ -160,15 +160,7 @@ export class PlayerController {
     this.root.position.x = THREE.MathUtils.clamp(this.root.position.x, -ARENA_LIMIT, ARENA_LIMIT);
     this.root.position.z = THREE.MathUtils.clamp(this.root.position.z, -ARENA_LIMIT, ARENA_LIMIT);
 
-    const turnInput = Number(this.isDown("period", ".")) - Number(this.isDown("comma", ","));
-    if (turnInput !== 0) {
-      this.root.rotation.y += turnInput * TURN_SPEED * delta;
-      this.heading = this.root.rotation.y;
-    } else if (this.move.lengthSq() > 0.0001) {
-      const target = Math.atan2(this.move.x, this.move.z);
-      this.heading = target;
-      this.root.rotation.y = THREE.MathUtils.damp(this.root.rotation.y, target, 12, delta);
-    }
+    // Camera rotation is handled by ThirdPersonCamera; the character keeps its facing direction.
     if (this.isDown(" ","jump") && this.grounded) {
       this.velocityY = JUMP_SPEED;
       this.grounded = false;
