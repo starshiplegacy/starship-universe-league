@@ -500,8 +500,8 @@ function openCharacterSelector(reset){overlay.classList.remove('open');window.__
 function show(){if(step==='character'){openCharacterSelector();return}overlay.classList.add('open');render()}
 function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer);if(cinemaTimer)clearTimeout(cinemaTimer)}
 function render(){
- back.textContent=step==='character'?'CANCELAR':step==='map'?'← PERSONAJES':step==='confirm'?'← CAMBIAR MAPA':step==='starpion'?'← PERSONAJES':step==='cinema'?'← VOLVER':'SALIR';
- next.disabled=step==='character'?!character:step==='map'?!map:step==='confirm'?!map:step==='loading';
+ back.textContent=step==='character'?'CANCELAR':step==='character-confirm'?'← PROBAR OTRO AREBORN':step==='map'?'← PERSONAJE':step==='map-confirm'?'← ELEGIR OTRO MAPA':step==='starpion'?'← PERSONAJES':step==='cinema'?'← VOLVER':'SALIR';
+ next.disabled=step==='character'?!character:step==='character-confirm'?!character:step==='map'?!map:step==='map-confirm'?!map:step==='loading';
  if(step==='character'){
   title.textContent='Elige tu personaje';sub.textContent='Selecciona el Areborn con el que entrarás a esta partida.';
   content.innerHTML='<div class="ul-grid">'+characters.map(c=>'<button type="button" class="ul-option ul-char '+(character===c?'selected':'')+'" data-character="'+c+'"><span class="ul-orb">'+c.charAt(0)+'</span><strong>'+c+'</strong><small>Personaje disponible</small></button>').join('')+'</div>';
@@ -510,11 +510,15 @@ function render(){
  }else if(step==='map'){
   title.textContent='Selecciona un mapa';sub.textContent='Elige el escenario para esta partida. Los mapas 3D todavía no se cargarán en esta fase.';
   content.innerHTML='<div class="ul-grid">'+maps.map(m=>'<button type="button" class="ul-option '+(map&&map.id===m.id?'selected':'')+'" data-map="'+m.id+'" '+(!m.ready?'disabled':'')+'><span class="ul-kicker">'+m.mode+'</span><strong>'+m.name+'</strong><small>'+m.desc+'</small><span class="ul-status">'+m.state+'</span></button>').join('')+'</div>';
-  next.textContent='CONFIRMAR MAPA →';
- }else if(step==='confirm'){
-  title.textContent='¿Confirmas esta partida?';sub.textContent='Comprueba tu Areborn y el mapa elegido antes de iniciar la preparación.';
-  content.innerHTML='<div class="ul-grid"><article class="ul-option selected"><span class="ul-kicker">AREBORN ELEGIDO</span><strong>'+character+'</strong><small>Personaje seleccionado para esta partida.</small></article><article class="ul-option selected"><span class="ul-kicker">'+map.mode+'</span><strong>'+map.name+'</strong><small>'+map.desc+'</small><span class="ul-status">'+map.state+'</span></article></div><div class="ul-map-preview">MAPA 3D · PENDIENTE DE INTEGRACIÓN</div>';
-  next.textContent='INICIAR PARTIDA →';
+  next.textContent='REVISAR MAPA →';
+ }else if(step==='character-confirm'){
+  title.textContent='¿Este es tu Areborn?';sub.textContent='Revisa tu elección. Si no es el correcto, vuelve al visor 3D para probar otro personaje.';
+  content.innerHTML='<div class="ul-option selected" style="min-height:180px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center"><span class="ul-kicker">PERSONAJE SELECCIONADO</span><strong style="font-size:30px">'+character+'</strong><small>Este Areborn será tu personaje para la partida.</small><span class="ul-status">PENDIENTE DE CONFIRMACIÓN</span></div>';
+  next.textContent='CONFIRMAR PERSONAJE →';
+ }else if(step==='map-confirm'){
+  title.textContent='¿Confirmas este mapa?';sub.textContent='Comprueba el escenario elegido. Puedes volver y seleccionar otro mapa antes de continuar.';
+  content.innerHTML='<div class="ul-option selected"><span class="ul-kicker">'+map.mode+'</span><strong>'+map.name+'</strong><small>'+map.desc+'</small><span class="ul-status">'+map.state+'</span></div><div class="ul-map-preview">VISTA PREVIA · '+map.name.toUpperCase()+'</div><p class="ul-sub">Tu Areborn: <strong>'+character+'</strong></p>';
+  next.textContent='CONFIRMAR MAPA Y CONTINUAR →';
  }else if(step==='starpion'){
   title.textContent='Ficha de Areborn';
   sub.textContent='La identidad de los campeones que defienden Nexarie.';
@@ -543,18 +547,19 @@ content.addEventListener('click',e=>{
  const m=e.target.closest('[data-map]');if(m){map=maps.find(x=>x.id===m.dataset.map);render();return}
  const c=e.target.closest('[data-character]');if(c){character=c.dataset.character;render()}
 });
-back.addEventListener('click',()=>{if(step==='character'){hide();return}if(step==='map'){step='character';openCharacterSelector();return}else if(step==='confirm')step='map';else if(step==='starpion')step='character';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character';openCharacterSelector();return}else if(step==='pending'){hide();step='character'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='map'}render()});
+back.addEventListener('click',()=>{if(step==='character'){hide();return}if(step==='character-confirm'){step='character';openCharacterSelector(false);return}else if(step==='map'){step='character-confirm'}else if(step==='map-confirm')step='map';else if(step==='starpion')step='character-confirm';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character';openCharacterSelector();return}else if(step==='pending'){hide();step='character'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='map'}render()});
 next.addEventListener('click',()=>{
- if(step==='character'&&character)step='map';
- else if(step==='map'&&map)step='confirm';
- else if(step==='confirm'&&map){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='cinema';render();cinemaTimer=setTimeout(()=>{if(step==='cinema'){step='pending';render()}},7200)}},110);return}
- else if(step==='starpion')step='character';
+ if(step==='character'&&character)step='character-confirm';
+ else if(step==='character-confirm'&&character)step='map';
+ else if(step==='map'&&map)step='map-confirm';
+ else if(step==='map-confirm'&&map){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='cinema';render();cinemaTimer=setTimeout(()=>{if(step==='cinema'){step='pending';render()}},7200)}},110);return}
+ else if(step==='starpion')step='character-confirm';
  else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='pending'}
  else if(step==='pending'){hide();step='character';return}
  render();
 });
 window.addEventListener('ul-start-match-flow',()=>{map=null;character=null;step='character';openCharacterSelector(true)});
-window.addEventListener('ul-character-locked',e=>{character=e.detail&&e.detail.name?e.detail.name:null;if(!character)return;window.__UL_FLOW_ACTIVE=false;step='map';overlay.classList.add('open');render()});
+window.addEventListener('ul-character-locked',e=>{character=e.detail&&e.detail.name?e.detail.name:null;if(!character)return;window.__UL_FLOW_ACTIVE=false;step='character-confirm';overlay.classList.add('open');render()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))hide()});
 })();
 </script>
