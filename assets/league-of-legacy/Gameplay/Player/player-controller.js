@@ -76,7 +76,9 @@ export class PlayerController {
     this.model = model;
     this.mixer = new THREE.AnimationMixer(model);
     for (const clip of (gltf.animations || [])) {
-      this.animationActions.set(clip.name, this.mixer.clipAction(clip));
+      const action = this.mixer.clipAction(clip);
+      this.animationActions.set(clip.name, action);
+      this.animationActions.set(clip.name.toLowerCase(), action);
     }
     this.mixer.addEventListener("finished", event => {
       if (this.activeAction !== event.action) return;
@@ -90,7 +92,7 @@ export class PlayerController {
   }
 
   playAnimation(name, { loop = false, fade = 0.16 } = {}) {
-    const action = this.animationActions.get(name);
+    const action = this.animationActions.get(name) || this.animationActions.get(name.toLowerCase());
     if (!action) {
       console.warn(`Animación no encontrada en Charlotte.glb: ${name}`);
       return false;
@@ -115,7 +117,7 @@ export class PlayerController {
     this.locomotionName = name;
     if (this.activeAction) return;
     const clipName = this.animationClips[name];
-    const next = this.animationActions.get(clipName);
+    const next = this.animationActions.get(clipName) || this.animationActions.get(clipName.toLowerCase());
     if (!next || this.locomotionAction === next) return;
     if (this.locomotionAction) this.locomotionAction.fadeOut(0.18);
     next.reset().setLoop(THREE.LoopRepeat, Infinity);
@@ -174,10 +176,10 @@ export class PlayerController {
       this.velocityY = 0;
       this.grounded = true;
     }
-    if (!this.activeAction) {
-      const moving = this.move.lengthSq() > 0.0001;
-      this.updateLocomotion(moving ? (this.isDown("shift") ? "run" : "walk") : "idle");
-    }
+    // Keep the desired base pose updated even while a temporary animation is playing.
+    // When that clip ends, the controller can return to the correct state (idle/walk/run).
+    const moving = this.move.lengthSq() > 0.0001;
+    this.updateLocomotion(moving ? (this.isDown("shift") ? "run" : "walk") : "idle");
     this.mixer?.update(delta);
   }
 
