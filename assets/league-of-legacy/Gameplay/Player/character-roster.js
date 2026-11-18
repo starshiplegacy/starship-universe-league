@@ -40,6 +40,14 @@ export const CHARACTER_ROSTER = {
       passive: "Spell3_0", hybrid: "Spell3_90", aggressive: "Spell2_0",
       tiny: "Spell3_Ti_Idle", damage: "Death_Loop", victory: "Dance_Loop"
     }
+  },
+  arthur: {
+    id: "arthur", name: "Arthur", model: "Arthur.glb",
+    animations: {
+      idle: "Idle1", walk: "Run", run: "Run", jump: "Spell1",
+      passive: "Attack1", hybrid: "Attack2", aggressive: "Crit",
+      tiny: "Spell2", damage: "Death", victory: "Dance"
+    }
   }
 };
 
