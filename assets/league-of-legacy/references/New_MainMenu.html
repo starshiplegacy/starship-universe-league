@@ -456,6 +456,23 @@ tick();
 .ul-map-preview{height:150px;margin:18px 0;background:radial-gradient(ellipse at 50% 60%,#334d61,#101b2c 65%,#080e19);border:1px solid #4b5360;display:grid;place-items:center;color:#c8aa6e;font:700 12px Cinzel,serif;letter-spacing:.18em}
 @media(max-width:600px){.ul-panel{padding:20px}.ul-option{min-height:120px}.ul-actions .ul-btn{flex:1}}
 </style>
+
+<style>
+#ul-flow .ul-cinema{position:relative;overflow:hidden;min-height:260px;padding:24px 12px 18px;border:1px solid #8e774c;background:radial-gradient(ellipse at 50% 70%,#263b50 0,#111c2d 48%,#080e18 100%)}
+#ul-flow .ul-cinema:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#07101dcc,transparent 25%,transparent 75%,#07101dcc);pointer-events:none;z-index:2}
+#ul-flow .ul-pan{display:flex;align-items:stretch;justify-content:center;gap:clamp(8px,2vw,22px);width:max-content;min-width:100%;animation:ul-panorama 7s ease-in-out both}
+#ul-flow .ul-member{width:clamp(125px,17vw,190px);min-height:205px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:15px 10px;border:1px solid #8d7954;background:linear-gradient(180deg,#26374a88,#0b1424ee);position:relative;transform:translateY(18px);opacity:0;animation:ul-member-reveal .8s ease-out forwards}
+#ul-flow .ul-member:nth-child(2){animation-delay:.25s}.ul-member:nth-child(3){animation-delay:.5s}.ul-member:nth-child(4){animation-delay:.75s}.ul-member:nth-child(5){animation-delay:1s}
+#ul-flow .ul-member .ul-portrait{width:78px;height:108px;margin-bottom:12px;display:grid;place-items:center;font:700 48px Cinzel,Georgia,serif;color:#e7d2a4;background:radial-gradient(ellipse at 50% 25%,#d3bd8b88,#263c53 55%,#0b1320 100%);clip-path:polygon(50% 0,88% 13%,100% 65%,82% 100%,18% 100%,0 65%,12% 13%)}
+#ul-flow .ul-member.ally-wait .ul-portrait{color:#718096;background:radial-gradient(ellipse,#344255,#111a28)}
+#ul-flow .ul-member strong{font:700 14px Cinzel,Georgia,serif;letter-spacing:.05em;color:#f0e6d2;text-align:center}
+#ul-flow .ul-member small{font-size:9px;color:#c8aa6e;letter-spacing:.12em;margin-top:5px;text-align:center}
+#ul-flow .ul-cinema-caption{position:relative;z-index:3;text-align:center;margin:15px 0 0;color:#d8c18e;font-size:10px;letter-spacing:.28em}
+#ul-flow .ul-cinema-note{color:#aeb8c7;font-size:11px;text-align:center;margin:10px 0 0}
+@keyframes ul-panorama{0%{transform:translateX(0)}45%{transform:translateX(calc(-1px * var(--ul-pan-shift,0)))}100%{transform:translateX(0)}}
+@keyframes ul-member-reveal{to{transform:translateY(0);opacity:1}}
+@media(prefers-reduced-motion:reduce){#ul-flow .ul-pan,#ul-flow .ul-member{animation:none;opacity:1;transform:none}}
+</style>
 <div id="ul-flow" aria-live="polite">
  <section class="ul-panel" id="ul-flow-panel">
   <div class="ul-kicker">League of Legacy · Match setup</div>
@@ -475,11 +492,11 @@ const maps=[
  {id:'summoners-rift',name:"Summoner's Rift",mode:'Battle Royale / Clasificatoria',desc:'El recurso existe en el repositorio, pero permanece bloqueado hasta completar la revisión de derechos.',state:'BLOQUEADO · REVISIÓN DE LICENCIA',ready:false}
 ];
 const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
-let step='map',map=null,character=null,loadingTimer=null;
+let step='map',map=null,character=null,loadingTimer=null,cinemaTimer=null;
 function show(){overlay.classList.add('open');render()}
-function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer)}
+function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer);if(cinemaTimer)clearTimeout(cinemaTimer)}
 function render(){
- back.textContent=step==='map'?'CANCELAR':step==='confirm'?'← CAMBIAR MAPA':step==='character'?'← MAPA':'SALIR';
+ back.textContent=step==='map'?'CANCELAR':step==='confirm'?'← CAMBIAR MAPA':step==='character'?'← MAPA':step==='cinema'?'← VOLVER':'SALIR';
  next.disabled=step==='map'?!map:step==='confirm'?!map:step==='character'?!character:step==='loading';
  if(step==='map'){
   title.textContent='Selecciona un mapa';sub.textContent='Elige el escenario para esta partida. Los mapas 3D todavía no se cargarán en esta fase.';
@@ -497,6 +514,14 @@ function render(){
   title.textContent='Preparando partida';sub.textContent='Preparando '+map.name+' y '+character+'. No se descargará ni abrirá ningún modelo de mapa todavía.';
   content.innerHTML='<div class="ul-map-preview">STARSHIP LEGACY · LOADING</div><div class="ul-progress"><i id="ul-progress-fill"></i></div><small id="ul-progress-label" style="color:#b4bfce">Preparando selección…</small>';
   next.textContent='PREPARANDO…';
+ }else if(step==='cinema'){
+  title.textContent='Presentación de tu equipo';
+  sub.textContent='Una vista panorámica presenta a los integrantes de TU EQUIPO y los personajes que eligieron. El equipo oponente permanece completamente oculto.';
+  const slots=map&&map.id==='versus-4-to-5'?5:map&&map.id==='versus-1-to-3'?3:1;
+  const roster=[{name:character,role:'TÚ · PERSONAJE ELEGIDO',initial:character.charAt(0),mine:true}];
+  for(let i=1;i<slots;i++)roster.push({name:'Aliado '+(i+1),role:'ESPERANDO A UN INTEGRANTE',initial:'?',mine:false});
+  content.innerHTML='<div class="ul-cinema"><div class="ul-pan">'+roster.map((p,i)=>'<div class="ul-member '+(p.mine?'':'ally-wait')+'"><div class="ul-portrait">'+p.initial+'</div><strong>'+p.name+'</strong><small>'+p.role+'</small></div>').join('')+'</div><div class="ul-cinema-caption">STARSHIP LEGACY · TU ESCUADRÓN</div></div><p class="ul-cinema-note">La cámara recorre únicamente tu grupo. No se muestran nombres, personajes ni posiciones del equipo rival.</p>';
+  next.textContent='CONTINUAR AL MAPA →';
  }else if(step==='pending'){
   title.textContent='Preparación completada';sub.textContent='Tu selección está lista. El mapa 3D todavía no está conectado, así que no intentaremos cargar archivos incompletos ni cambiar de escena.';
   content.innerHTML='<div class="ul-map-preview">MAPA SELECCIONADO · '+map.name.toUpperCase()+'</div><div class="ul-option selected"><strong>'+character+'</strong><small>Personaje seleccionado</small><span class="ul-status">SELECCIÓN GUARDADA PARA ESTA SESIÓN</span></div><p class="ul-sub" style="margin-top:18px">Cuando integremos el modelo del mapa, esta pantalla será sustituida por la entrada al mundo 3D.</p>';
@@ -507,11 +532,12 @@ content.addEventListener('click',e=>{
  const m=e.target.closest('[data-map]');if(m){map=maps.find(x=>x.id===m.dataset.map);render();return}
  const c=e.target.closest('[data-character]');if(c){character=c.dataset.character;render()}
 });
-back.addEventListener('click',()=>{if(step==='map'){hide();return}if(step==='confirm')step='map';else if(step==='character')step='map';else if(step==='pending'){hide();step='map'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='character'}render()});
+back.addEventListener('click',()=>{if(step==='map'){hide();return}if(step==='confirm')step='map';else if(step==='character')step='map';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character'}else if(step==='pending'){hide();step='map'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='character'}render()});
 next.addEventListener('click',()=>{
  if(step==='map'&&map)step='confirm';
  else if(step==='confirm'&&map)step='character';
- else if(step==='character'&&character){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='pending';render()}},110);return}
+ else if(step==='character'&&character){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='cinema';render();cinemaTimer=setTimeout(()=>{if(step==='cinema'){step='pending';render()}},7200)}},110);return}
+ else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='pending'}
  else if(step==='pending'){hide();step='map';return}
  render();
 });
