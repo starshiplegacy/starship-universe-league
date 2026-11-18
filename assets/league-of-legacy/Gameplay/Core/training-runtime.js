@@ -110,6 +110,8 @@ function triggerAttack(kind) {
   };
   const config = settings[kind];
   if (!config) return;
+  const animationKey = { passive:"passive", hybrid:"hybrid", aggressive:"aggressive", tiny:"tiny" }[kind];
+  player.playAnimation(player.animationClips[animationKey]);
   messageLabel.textContent = config.label + " · efecto visual de prueba";
   const direction = new THREE.Vector3(-Math.sin(followCamera.yaw),0,-Math.cos(followCamera.yaw));
   const position = player.root.position.clone().addScaledVector(direction,config.forward);
