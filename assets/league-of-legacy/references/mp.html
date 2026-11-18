@@ -1,0 +1,594 @@
+<!-- ... existing code ... -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Librerías 3D (Three.js, GLTFLoader, OrbitControls) y JSZip para leer .zip/.glb -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+<!-- ... existing code ... -->
+        .tactical-modal {
+            width: 100%;
+            max-width: 780px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: linear-gradient(165deg, #0b192e 0%, #050d1a 100%);
+            border: 2px solid var(--cyan-neon);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), inset 0 0 25px rgba(14, 165, 233, 0.15);
+            clip-path: polygon(24px 0, calc(100% - 24px) 0, 100% 24px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 24px 100%, 0 calc(100% - 24px), 0 24px);
+            padding: 1.5rem 1.75rem;
+            transform: scale(0.92) translateY(15px);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .modal-backdrop.active .tactical-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Visor 3D de Mapas dentro de la Sala de Despliegue */
+        .viewer-3d-shell {
+            position: relative;
+            width: 100%;
+            height: 265px;
+            background: radial-gradient(circle at 50% 45%, #0c223f 0%, #030914 100%);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        #map-3d-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .viewer-drop-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(2, 12, 27, 0.88);
+            border: 2px dashed #38bdf8;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            text-align: center;
+            padding: 1rem;
+        }
+        .viewer-drop-overlay.drag-active {
+            display: flex;
+        }
+
+        /* Animación de entrada de tarjetas */
+<!-- ... existing code ... -->
+            <p id="modal-desc" class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                Despliégate en la isla táctica con 60 jugadores. Sobrevive al colapso electromagnético, asegura suministros de élite y asciende en la liga clasificatoria.
+            </p>
+
+            <!-- Visor Interactivo 3D del Mapa (Three.js + GLTFLoader + JSZip) -->
+            <div id="viewer-3d-container" class="viewer-3d-shell hidden">
+                <canvas id="map-3d-canvas"></canvas>
+
+                <!-- HUD Superior del Visor 3D -->
+                <div class="absolute top-2.5 left-3 right-3 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                    <div class="bg-slate-950/80 border border-sky-500/40 px-2.5 py-1 rounded text-[11px] font-mono text-sky-300 flex items-center gap-2">
+                        <span id="viewer-status-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span id="viewer-model-label">For_Training.glb</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 pointer-events-auto">
+                        <button type="button" onclick="reset3DCamera()" class="interactive-target bg-slate-950/85 hover:bg-sky-950 border border-sky-400/50 text-sky-200 text-[11px] px-2.5 py-1 rounded transition-colors">
+                            Centrar Cámara
+                        </button>
+                        <label for="map-file-input" class="interactive-target bg-sky-500/25 hover:bg-sky-500/40 border border-sky-400 text-white text-[11px] font-semibold px-2.5 py-1 rounded transition-colors">
+                            Cargar .ZIP / .GLB
+                        </label>
+                        <input id="map-file-input" type="file" accept=".glb,.gltf,.zip" class="hidden" onchange="handleMapFileUpload(event)">
+                    </div>
+                </div>
+
+                <!-- Mensaje guía cuando aún no se ha cargado el archivo local por seguridad del navegador -->
+                <div id="viewer-hint-banner" class="hidden absolute bottom-2.5 left-3 right-3 bg-slate-950/85 border border-amber-400/50 rounded px-3 py-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+                    <span id="viewer-hint-text" class="text-amber-200">
+                        Vista previa táctica activa. Selecciona o arrastra tu archivo <strong class="text-white">.zip</strong> o <strong class="text-white">.glb</strong> para renderizar el modelo 3D real.
+                    </span>
+                    <label for="map-file-input" class="interactive-target shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-3 py-1 rounded text-[11px] uppercase tracking-wider">
+                        Abrir Archivo
+                    </label>
+                </div>
+
+                <!-- Controles inferiores cuando el modelo 3D está cargado -->
+                <div id="viewer-controls-hint" class="hidden absolute bottom-2 left-3 text-[10px] font-mono text-slate-300/80 bg-slate-950/70 px-2 py-0.5 rounded pointer-events-none">
+                    Click Izq: Rotar 360° • Rueda: Zoom • Click Der: Mover
+                </div>
+
+                <!-- Zona de Drag & Drop -->
+                <div id="viewer-drop-overlay" class="viewer-drop-overlay">
+                    <p class="text-sky-300 font-bold text-base uppercase tracking-wider">Suelta tu archivo .ZIP o .GLB aquí</p>
+                    <p class="text-slate-400 text-xs mt-1">Se extraerá y renderizará automáticamente en 3D</p>
+                </div>
+            </div>
+
+            <!-- Especificaciones del Mapa -->
+<!-- ... existing code ... -->
+        /* =========================================================
+           5. MOTOR 3D DE MAPAS (THREE.JS + GLTFLOADER + JSZIP)
+           ========================================================= */
+        let scene3D, camera3D, renderer3D, controls3D, currentMapGroup;
+        let anim3DId = null;
+        let currentModeKey = null;
+
+        const mapAssetCatalog = {
+            training: [
+                {
+                    label: 'For Training (For_Training.glb)',
+                    relativePath: './For Training/For_Training.glb',
+                    zipMatch: 'for_training.glb',
+                    fallbackType: 'training_sim',
+                    info: 'Mapa 3D de Entrenamiento • For_Training.glb (146 KB)'
+                }
+            ],
+            versus: [
+                {
+                    label: 'Versus 4 a 5 (Battle Guys 500th)',
+                    relativePath: './Versus/Versus 4 to 5/battle_guys_map_500th_model.glb',
+                    zipMatch: 'battle_guys_map_500th_model.glb',
+                    fallbackType: 'versus_arena_4_5',
+                    info: 'Arena 3D • Versus 4 to 5/battle_guys_map_500th_model.glb'
+                },
+                {
+                    label: 'Versus 1 a 3 (BeginningLobby)',
+                    relativePath: './Versus/Versus 1 to 3/images/Actual.png',
+                    zipMatch: 'actual.png',
+                    isTexturePreview: true,
+                    fallbackType: 'versus_lobby_1_3',
+                    info: 'Lobby Inicial • Versus 1 to 3/files/BeginningLobby (.blend/.fbx)'
+                }
+            ]
+        };
+
+        function init3DViewer() {
+            const canvasEl = document.getElementById('map-3d-canvas');
+            const container = document.getElementById('viewer-3d-container');
+            if (!canvasEl || !container || typeof THREE === 'undefined') return;
+
+            if (!renderer3D) {
+                scene3D = new THREE.Scene();
+                scene3D.fog = new THREE.FogExp2(0x040d1d, 0.012);
+
+                camera3D = new THREE.PerspectiveCamera(48, container.clientWidth / container.clientHeight, 0.1, 2000);
+                camera3D.position.set(14, 11, 16);
+
+                renderer3D = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
+                renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer3D.outputEncoding = THREE.sRGBEncoding;
+                renderer3D.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer3D.toneMappingExposure = 1.15;
+
+                // Iluminación táctica Sci-Fi
+                const hemiLight = new THREE.HemisphereLight(0x7dd3fc, 0x0f172a, 1.15);
+                scene3D.add(hemiLight);
+
+                const dirLight = new THREE.DirectionalLight(0xffffff, 1.4);
+                dirLight.position.set(18, 28, 16);
+                scene3D.add(dirLight);
+
+                const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.75);
+                rimLight.position.set(-18, 12, -16);
+                scene3D.add(rimLight);
+
+                // Rejilla holográfica base
+                const gridHelper = new THREE.GridHelper(40, 40, 0x00e5ff, 0x0c4a6e);
+                gridHelper.material.opacity = 0.28;
+                gridHelper.material.transparent = true;
+                scene3D.add(gridHelper);
+
+                currentMapGroup = new THREE.Group();
+                scene3D.add(currentMapGroup);
+
+                if (THREE.OrbitControls) {
+                    controls3D = new THREE.OrbitControls(camera3D, canvasEl);
+                    controls3D.enableDamping = true;
+                    controls3D.dampingFactor = 0.06;
+                    controls3D.autoRotate = true;
+                    controls3D.autoRotateSpeed = 1.1;
+                }
+
+                // Drag & Drop en el visor 3D
+                const dropOverlay = document.getElementById('viewer-drop-overlay');
+                container.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropOverlay.classList.add('drag-active');
+                });
+                container.addEventListener('dragleave', () => {
+                    dropOverlay.classList.remove('drag-active');
+                });
+                container.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropOverlay.classList.remove('drag-active');
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        processUploadedMapFile(e.dataTransfer.files[0]);
+                    }
+                });
+            }
+
+            resize3DViewer();
+            if (!anim3DId) {
+                animate3DViewer();
+            }
+        }
+
+        function resize3DViewer() {
+            const container = document.getElementById('viewer-3d-container');
+            if (!renderer3D || !camera3D || !container || container.classList.contains('hidden')) return;
+            const w = container.clientWidth || 680;
+            const h = container.clientHeight || 265;
+            camera3D.aspect = w / h;
+            camera3D.updateProjectionMatrix();
+            renderer3D.setSize(w, h, false);
+        }
+
+        function animate3DViewer() {
+            anim3DId = requestAnimationFrame(animate3DViewer);
+            if (controls3D) controls3D.update();
+            if (renderer3D && scene3D && camera3D) {
+                renderer3D.render(scene3D, camera3D);
+            }
+        }
+
+        function clearCurrent3DMap() {
+            if (!currentMapGroup) return;
+            while (currentMapGroup.children.length > 0) {
+                currentMapGroup.remove(currentMapGroup.children[0]);
+            }
+        }
+
+        function fitCameraToObject(object3D) {
+            const box = new THREE.Box3().setFromObject(object3D);
+            if (box.isEmpty()) return;
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z) || 10;
+
+            object3D.position.sub(center);
+            object3D.position.y += size.y * 0.5;
+
+            const dist = maxDim * 1.45;
+            camera3D.position.set(dist * 0.85, dist * 0.65, dist * 0.95);
+            if (controls3D) {
+                controls3D.target.set(0, size.y * 0.35, 0);
+                controls3D.update();
+            }
+        }
+
+        function reset3DCamera() {
+            playHoverSound();
+            if (currentMapGroup && currentMapGroup.children.length > 0) {
+                fitCameraToObject(currentMapGroup);
+            }
+        }
+
+        // Genera una maqueta 3D táctica fiel mientras se carga el .glb/.zip externo
+        function buildTacticalFallbackMap(type) {
+            clearCurrent3DMap();
+            const matGround = new THREE.MeshStandardMaterial({ color: 0x3f6212, roughness: 0.85 });
+            const matStone = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.6 });
+            const matAccent = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, emissive: 0x0284c7, emissiveIntensity: 0.5 });
+            const matGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xd97706, emissiveIntensity: 0.45 });
+
+            const base = new THREE.Mesh(new THREE.BoxGeometry(16, 0.5, 16), matGround);
+            currentMapGroup.add(base);
+
+            if (type === 'training_sim') {
+                // Complejo de Entrenamiento (For Training)
+                const hq = new THREE.Mesh(new THREE.BoxGeometry(5, 2.6, 4.5), matStone);
+                hq.position.set(-4, 1.5, -3.5);
+                currentMapGroup.add(hq);
+
+                const tower = new THREE.Mesh(new THREE.BoxGeometry(2.2, 3.8, 2.2), matStone);
+                tower.position.set(-4, 2.1, -3.5);
+                currentMapGroup.add(tower);
+
+                // Dianas holográficas de tiro
+                [[-1, 2], [2.5, 0.5], [1, 4.5], [4.5, 3]].forEach(([x, z], i) => {
+                    const target = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 1.4, 16), i % 2 === 0 ? matAccent : matGold);
+                    target.position.set(x, 0.95, z);
+                    currentMapGroup.add(target);
+                });
+            } else if (type === 'versus_lobby_1_3') {
+                // BeginningLobby (Versus 1 a 3)
+                const platform = new THREE.Mesh(new THREE.CylinderGeometry(6.5, 7.2, 0.7, 8), matStone);
+                platform.position.y = 0.45;
+                currentMapGroup.add(platform);
+
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i / 6) * Math.PI * 2;
+                    const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.9, 3.6, 0.9), matAccent);
+                    pillar.position.set(Math.cos(angle) * 5.2, 2.1, Math.sin(angle) * 5.2);
+                    currentMapGroup.add(pillar);
+                }
+            } else {
+                // Battle Guys Arena (Versus 4 a 5)
+                const blocks = [
+                    [-4.5, 1.2, -4.5, 3, 2, 3],
+                    [4.5, 1.2, 4.5, 3, 2, 3],
+                    [-4.5, 1.0, 4.5, 2.5, 1.6, 2.5],
+                    [4.5, 1.0, -4.5, 2.5, 1.6, 2.5],
+                    [0, 1.5, 0, 3.2, 2.6, 3.2]
+                ];
+                blocks.forEach(([x, y, z, w, h, d], idx) => {
+                    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), idx === 4 ? matGold : matStone);
+                    mesh.position.set(x, y, z);
+                    currentMapGroup.add(mesh);
+                });
+            }
+            fitCameraToObject(currentMapGroup);
+        }
+
+        function setViewerUIState(statusText, dotColor, showHint, hintText = '') {
+            document.getElementById('viewer-model-label').textContent = statusText;
+            const dot = document.getElementById('viewer-status-dot');
+            dot.className = `w-2 h-2 rounded-full ${dotColor}`;
+
+            const hintBanner = document.getElementById('viewer-hint-banner');
+            const controlsHint = document.getElementById('viewer-controls-hint');
+            if (showHint) {
+                hintBanner.classList.remove('hidden');
+                controlsHint.classList.add('hidden');
+                if (hintText) document.getElementById('viewer-hint-text').innerHTML = hintText;
+            } else {
+                hintBanner.classList.add('hidden');
+                controlsHint.classList.remove('hidden');
+            }
+        }
+
+        // Intenta cargar automáticamente el .glb local; si no está servido por HTTP, muestra la maqueta y permite subir el .zip/.glb
+        function loadMapAssetVariant(assetCfg) {
+            init3DViewer();
+            buildTacticalFallbackMap(assetCfg.fallbackType);
+            setViewerUIState(`Cargando ${assetCfg.label}...`, 'bg-amber-400 animate-pulse', false);
+
+            if (assetCfg.isTexturePreview) {
+                const texLoader = new THREE.TextureLoader();
+                texLoader.load(
+                    assetCfg.relativePath,
+                    (texture) => {
+                        clearCurrent3DMap();
+                        texture.encoding = THREE.sRGBEncoding;
+                        const plane = new THREE.Mesh(
+                            new THREE.PlaneGeometry(16, 10),
+                            new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
+                        );
+                        plane.position.y = 5.2;
+                        currentMapGroup.add(plane);
+                        fitCameraToObject(currentMapGroup);
+                        setViewerUIState('BeginningLobby (Actual.png) • Vista 3D', 'bg-emerald-400', false);
+                    },
+                    undefined,
+                    () => {
+                        setViewerUIState(
+                            `${assetCfg.label} (Vista Táctica)`,
+                            'bg-amber-400',
+                            true,
+                            'Sube o arrastra tu archivo <strong>Versus.zip</strong> para cargar las vistas de <strong>BeginningLobby</strong> o el modelo <strong>.glb</strong>.'
+                        );
+                    }
+                );
+                return;
+            }
+
+            if (!THREE.GLTFLoader) return;
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                assetCfg.relativePath,
+                (gltf) => {
+                    clearCurrent3DMap();
+                    currentMapGroup.add(gltf.scene);
+                    fitCameraToObject(currentMapGroup);
+                    setViewerUIState(`${assetCfg.label} • Modelo 3D Activo`, 'bg-emerald-400', false);
+                },
+                undefined,
+                () => {
+                    setViewerUIState(
+                        `${assetCfg.label} • Esperando archivo`,
+                        'bg-amber-400',
+                        true,
+                        `Selecciona o arrastra <strong>${assetCfg.zipMatch}</strong> (o su archivo <strong>.zip</strong>) para visualizar el mapa 3D completo.`
+                    );
+                }
+            );
+        }
+
+        function handleMapFileUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (file) processUploadedMapFile(file);
+            event.target.value = '';
+        }
+
+        async function processUploadedMapFile(file) {
+            init3DViewer();
+            const fileName = file.name.toLowerCase();
+            setViewerUIState(`Procesando ${file.name}...`, 'bg-sky-400 animate-ping', false);
+
+            try {
+                if (fileName.endsWith('.glb') || fileName.endsWith('.gltf')) {
+                    const buffer = await file.arrayBuffer();
+                    parseGLBArrayBuffer(buffer, file.name);
+                } else if (fileName.endsWith('.zip') && typeof JSZip !== 'undefined') {
+                    const zip = await JSZip.loadAsync(file);
+                    const entries = Object.keys(zip.files).filter(k => !zip.files[k].dir);
+
+                    // Buscar primero un archivo .glb dentro del ZIP
+                    const glbEntry = entries.find(k => k.toLowerCase().endsWith('.glb'));
+                    if (glbEntry) {
+                        const glbBuffer = await zip.files[glbEntry].async('arraybuffer');
+                        const cleanName = glbEntry.split('/').pop();
+                        parseGLBArrayBuffer(glbBuffer, cleanName);
+                        playSelectSound(true);
+                        return;
+                    }
+
+                    // Si el ZIP contiene imágenes de referencia (ej. Actual.png / Example.png)
+                    const imgEntry = entries.find(k => k.toLowerCase().endsWith('actual.png') || k.toLowerCase().endsWith('.png'));
+                    if (imgEntry) {
+                        const blob = await zip.files[imgEntry].async('blob');
+                        const url = URL.createObjectURL(blob);
+                        const texLoader = new THREE.TextureLoader();
+                        texLoader.load(url, (texture) => {
+                            clearCurrent3DMap();
+                            texture.encoding = THREE.sRGBEncoding;
+                            const plane = new THREE.Mesh(
+                                new THREE.PlaneGeometry(16, 10),
+                                new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
+                            );
+                            plane.position.y = 5.2;
+                            currentMapGroup.add(plane);
+                            fitCameraToObject(currentMapGroup);
+                            setViewerUIState(`${imgEntry.split('/').pop()} • Extraído de ZIP`, 'bg-emerald-400', false);
+                        });
+                    }
+                }
+            } catch (err) {
+                setViewerUIState('Error al leer el archivo 3D', 'bg-rose-500', true, 'Verifica que el archivo sea un <strong>.glb</strong> o <strong>.zip</strong> válido.');
+            }
+        }
+
+        function parseGLBArrayBuffer(arrayBuffer, displayName) {
+            const loader = new THREE.GLTFLoader();
+            loader.parse(
+                arrayBuffer,
+                '',
+                (gltf) => {
+                    clearCurrent3DMap();
+                    currentMapGroup.add(gltf.scene);
+                    fitCameraToObject(currentMapGroup);
+                    setViewerUIState(`${displayName} • Render 3D Activo`, 'bg-emerald-400', false);
+                },
+                () => {
+                    setViewerUIState('No se pudo parsear el modelo GLB', 'bg-rose-500', true);
+                }
+            );
+        }
+
+        /* =========================================================
+           6. LÓGICA DEL MODAL DE DESPLIEGUE TÁCTICO
+           ========================================================= */
+        const modeConfigs = {
+            versus: {
+                tag: 'COMBATE TÁCTICO // ARENA',
+                title: 'Versus',
+                desc: 'Enfrentamientos frenéticos de escuadrones. Inspecciona en 3D la arena "Battle Guys (Versus 4 a 5)" o el lobby "BeginningLobby (Versus 1 a 3)" antes de desplegarte.',
+                players: '1v1 / 2v2 / 5v5',
+                queue: '~8 seg',
+                squad: 'Escuadrón',
+                accent: '#38bdf8',
+                has3DViewer: true,
+                options: ['Versus 4 a 5 (Arena 3D)', 'Versus 1 a 3 (Lobby)', 'Escuadrón 5v5']
+            },
+            royale: {
+                tag: 'MODO PRINCIPAL // CLASIFICATORIA',
+                title: 'Battle Royale & De Clasificatoria',
+                desc: 'Despliégate en la isla orbital con 60 combatientes. Asegura zonas de alto valor, equípate con armamento legendario y lucha por ser el último escuadrón en pie.',
+                players: '60 / Isla',
+                queue: '~14 seg',
+                squad: 'Solo / Dúo / Escuadra',
+                accent: '#facc15',
+                has3DViewer: false,
+                options: ['Solo (Clasificatoria)', 'Dúo Táctico', 'Escuadra (4 Jugadores)']
+            },
+            training: {
+                tag: 'SIMULACIÓN // FOR TRAINING',
+                title: 'Entrenamiento',
+                desc: 'Perfecciona tu puntería y movilidad en el mapa oficial "For_Training.glb". Rota, haz zoom o carga directamente tu archivo For Training.zip para inspeccionarlo en 3D.',
+                players: '1 - 12',
+                queue: 'Instantáneo',
+                squad: 'Libre',
+                accent: '#fb923c',
+                has3DViewer: true,
+                options: ['Mapa For Training (3D)', 'Campo de Tiro', 'Prueba de Armas']
+            }
+        };
+
+        let selectedOptionIndex = 0;
+        let matchmakingInterval = null;
+        let matchmakingSeconds = 0;
+
+        function openDeployModal(modeKey) {
+            const cfg = modeConfigs[modeKey];
+            if (!cfg) return;
+
+            currentModeKey = modeKey;
+            playSelectSound(modeKey === 'royale');
+            resetMatchmaking();
+
+            const modal = document.getElementById('tactical-modal');
+            modal.style.borderColor = cfg.accent;
+            modal.style.boxShadow = `0 0 40px ${cfg.accent}55, inset 0 0 20px ${cfg.accent}22`;
+
+            document.getElementById('modal-tag').textContent = cfg.tag;
+            document.getElementById('modal-tag').style.color = cfg.accent;
+            document.getElementById('modal-tag').style.borderColor = `${cfg.accent}66`;
+
+            document.getElementById('modal-title').textContent = cfg.title;
+            document.getElementById('modal-desc').textContent = cfg.desc;
+            document.getElementById('modal-players').textContent = cfg.players;
+            document.getElementById('modal-queue').textContent = cfg.queue;
+            document.getElementById('modal-squad').textContent = cfg.squad;
+
+            const viewerContainer = document.getElementById('viewer-3d-container');
+            if (cfg.has3DViewer && mapAssetCatalog[modeKey]) {
+                viewerContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    loadMapAssetVariant(mapAssetCatalog[modeKey][0]);
+                }, 40);
+            } else {
+                viewerContainer.classList.add('hidden');
+            }
+
+            const optionsContainer = document.getElementById('modal-options');
+            optionsContainer.innerHTML = '';
+            selectedOptionIndex = 0;
+
+            cfg.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all ${
+                    idx === 0 
+                    ? 'bg-sky-500/25 border-sky-400 text-white shadow-[0_0_12px_rgba(56,189,248,0.3)]' 
+                    : 'bg-slate-900/70 border-slate-700 text-slate-400 hover:border-slate-500'
+                }`;
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    playHoverSound();
+                    selectedOptionIndex = idx;
+                    Array.from(optionsContainer.children).forEach((child, cIdx) => {
+                        if (cIdx === idx) {
+                            child.className = 'interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all bg-sky-500/25 border-sky-400 text-white shadow-[0_0_12px_rgba(56,189,248,0.3)]';
+                        } else {
+                            child.className = 'interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all bg-slate-900/70 border-slate-700 text-slate-400 hover:border-slate-500';
+                        }
+                    });
+
+                    // Cambiar variante del mapa 3D si corresponde (ej. Versus 4 a 5 vs Versus 1 a 3)
+                    if (cfg.has3DViewer && mapAssetCatalog[modeKey]) {
+                        const variant = mapAssetCatalog[modeKey][idx] || mapAssetCatalog[modeKey][0];
+                        loadMapAssetVariant(variant);
+                    }
+                };
+                optionsContainer.appendChild(btn);
+            });
+
+            bindInteractiveHover();
+            document.getElementById('deploy-modal-backdrop').classList.add('active');
+        }
+<!-- ... existing code ... -->
+        // Inicialización al cargar ventana
+        window.onload = function () {
+            resizeCanvas();
+            drawBackground();
+            bindInteractiveHover();
+            window.addEventListener('resize', resize3DViewer);
+        };
+    </script>
+</body>
+</html>
