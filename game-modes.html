@@ -123,12 +123,12 @@ async function loadMap(modeId){
   console.error(error);status.textContent="No se pudo cargar "+map.name+": "+(error?.message||"error desconocido")+". Revisa la consola y los recursos del mapa.";
  }finally{if(token===loadSequence)setBusy(false)}
 }
-function updateMode(){const info=getModeLaunchInfo(modeSelect.value);const map=info.map;
+function updateMode(){const info=getModeLaunchInfo(modeSelect.value),map=info.map;document.getElementById("preview").textContent=modeSelect.value==="training"?"INICIAR ENTRENAMIENTO":"CARGAR ESCENARIO";
  if(map.runtimeStatus==="blocked-license-review")status.textContent="Bloqueado por licencia: CC BY-NC. El modelo no se cargará.";
- else status.textContent="Mapa asignado: "+map.name+" · "+(info.canLoadPreview?"Vista previa autorizada":"Licencia pendiente; vista previa bloqueada")+". Reglas independientes: "+info.mode.rulesetId+"."+(map.id==="summoners-rift"?" ADVERTENCIA: escenario pesado; OBJ de 63 MB y aproximadamente 215.5 MiB de texturas DDS. Se recomienda escritorio y conexión estable.":"");
+ else if(modeSelect.value==="training")status.textContent="Prototipo jugable disponible: Charlotte + arena original de prueba. El mapa Training original no se carga hasta verificar su licencia. Movimiento, salto y cámara en tercera persona.";\n else status.textContent="Mapa asignado: "+map.name+" · "+(info.canLoadPreview?"Vista previa autorizada":"Licencia pendiente; vista previa bloqueada")+". Reglas independientes: "+info.mode.rulesetId+"."+(map.id==="summoners-rift"?" ADVERTENCIA: escenario pesado; OBJ de 63 MB y aproximadamente 215.5 MiB de texturas DDS. Se recomienda escritorio y conexión estable.":"");
 }
 modeSelect.addEventListener("change",updateMode);
-document.getElementById("preview").addEventListener("click",()=>loadMap(modeSelect.value));
+document.getElementById("preview").addEventListener("click",()=>{if(modeSelect.value==="training"){location.href="./assets/league-of-legacy/Gameplay/training.html";return;}loadMap(modeSelect.value);});
 function goBack(){location.href="./areborn-selector.html"}
 document.getElementById("back").addEventListener("click",goBack);document.getElementById("back2").addEventListener("click",goBack);
 addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
