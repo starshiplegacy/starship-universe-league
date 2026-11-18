@@ -1,8 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
-
-const MODEL_URL = "../characters/Charlotte.glb";
+import { getCharacterConfig } from "./character-roster.js";
 const WALK_SPEED = 6.5;
 const RUN_SPEED = 10.5;
 const JUMP_SPEED = 7.2;
@@ -11,29 +10,20 @@ const ARENA_LIMIT = 27;
 const TURN_SPEED = 2.4;
 
 export class PlayerController {
-  constructor(scene) {
+  constructor(scene, characterId = "charlotte") {
     this.scene = scene;
     this.root = new THREE.Group();
     this.root.position.set(0, 0, 8);
     this.scene.add(this.root);
     this.model = null;
+    this.characterId = characterId;
+    this.character = getCharacterConfig(characterId);
     this.mixer = null;
     this.animationActions = new Map();
     this.activeAction = null;
     this.locomotionAction = null;
     this.locomotionName = "idle";
-    this.animationClips = {
-      idle: "idle1_base1",
-      walk: "Run_Haste",
-      run: "Run",
-      jump: "Spell2",
-      passive: "Attack1",
-      hybrid: "Channel",
-      aggressive: "Idle_Spell4_loop",
-      tiny: "Spell2",
-      damage: "Death",
-      victory: "Dance_Loop"
-    };
+    this.animationClips = this.character.animations;
     this.velocityY = 0;
     this.grounded = true;
     this.heading = 0;
@@ -58,14 +48,26 @@ export class PlayerController {
     window.addEventListener("keyup", this._onKeyUp);
   }
 
-  async load() {
+  async load(characterId = this.characterId) {
+    this.characterId = characterId;
+    this.character = getCharacterConfig(characterId);
+    this.animationClips = this.character.animations;
+    if (this.mixer) this.mixer.stopAllAction();
+    if (this.model) {
+      this.root.remove(this.model);
+      this.model = null;
+      this.animationActions.clear();
+      this.activeAction = null;
+      this.locomotionAction = null;
+    }
     const loader = new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
-    const gltf = await loader.loadAsync(MODEL_URL);
+    const modelUrl = new URL(`../../characters/${this.character.model}`, import.meta.url).href;
+    const gltf = await loader.loadAsync(modelUrl);
     const model = gltf.scene;
     const initialBounds = new THREE.Box3().setFromObject(model);
     const size = initialBounds.getSize(new THREE.Vector3());
-    if (!Number.isFinite(size.y) || size.y < 0.001) throw new Error("El modelo de Charlotte no tiene una altura válida.");
+    if (!Number.isFinite(size.y) || size.y < 0.001) throw new Error(`El modelo de ${this.character.name} no tiene una altura válida.`);
     model.scale.setScalar(1.8 / size.y);
     const bounds = new THREE.Box3().setFromObject(model);
     const center = bounds.getCenter(new THREE.Vector3());
@@ -97,9 +99,10 @@ export class PlayerController {
   }
 
   playAnimation(name, { loop = false, fade = 0.16 } = {}) {
+    if (typeof name !== "string" || !name) return false;
     const action = this.animationActions.get(name) || this.animationActions.get(name.toLowerCase());
     if (!action) {
-      console.warn(`Animación no encontrada en Charlotte.glb: ${name}`);
+      console.warn(`Animación no encontrada en ${this.character.model}: ${name}`);
       return false;
     }
     if (this.activeAction && this.activeAction !== action) {
@@ -122,6 +125,7 @@ export class PlayerController {
     this.locomotionName = name;
     if (this.activeAction) return;
     const clipName = this.animationClips[name];
+    if (typeof clipName !== "string" || !clipName) return;
     const next = this.animationActions.get(clipName) || this.animationActions.get(clipName.toLowerCase());
     if (!next || this.locomotionAction === next) return;
     if (this.locomotionAction) this.locomotionAction.fadeOut(0.18);
@@ -160,7 +164,7 @@ export class PlayerController {
     this.root.position.x = THREE.MathUtils.clamp(this.root.position.x, -ARENA_LIMIT, ARENA_LIMIT);
     this.root.position.z = THREE.MathUtils.clamp(this.root.position.z, -ARENA_LIMIT, ARENA_LIMIT);
 
-    // Charlotte turns smoothly toward the direction she is moving; camera yaw stays independent.
+    // The selected character turns smoothly toward movement; camera yaw stays independent.
     if (this.move.lengthSq() > 0.0001) {
       const targetHeading = Math.atan2(this.move.x, this.move.z);
       const angleDifference = Math.atan2(Math.sin(targetHeading - this.root.rotation.y), Math.cos(targetHeading - this.root.rotation.y));
@@ -169,7 +173,7 @@ export class PlayerController {
     if (this.isDown(" ","jump") && this.grounded) {
       this.velocityY = JUMP_SPEED;
       this.grounded = false;
-      this.playAnimation(this.animationClips.jump);
+      if (this.animationClips.jump) this.playAnimation(this.animationClips.jump);
     }
     this.velocityY -= GRAVITY * delta;
     this.root.position.y += this.velocityY * delta;
