@@ -34,17 +34,21 @@ main{margin-left:72px;min-height:100vh;padding-bottom:60px}
 .hero .hc,.hero .himg{transition:transform .85s cubic-bezier(.22,.7,.2,1),opacity .85s ease,filter .85s ease}
 .hero.is-leaving .hc{opacity:0;filter:blur(15px);transform:translateX(-110px)}
 .hero.is-leaving .himg{opacity:0;filter:blur(22px);transform:translateX(-90px) scale(1.08)}
-.hero.is-entering .hc,.hero.is-entering .himg{opacity:0;filter:blur(16px);transform:translateX(90px)}
-.hero.is-entering .himg{transform:translateX(75px) scale(1.06)}
+.hero.is-entering .hc,.hero.is-entering .himg{animation:heroArrive .7s cubic-bezier(.22,.7,.2,1) both}
+.hero.is-entering .himg{animation-name:heroArriveImage}
+@keyframes heroArrive{from{opacity:1;filter:blur(7px);transform:translateX(46px)}to{opacity:1;filter:blur(0);transform:translateX(0)}}
+@keyframes heroArriveImage{from{opacity:1;filter:blur(9px);transform:translateX(36px) scale(1.04)}to{opacity:1;filter:blur(0);transform:translateX(0) scale(1)}}
 .sport-hero .himg{left:0;right:auto;-webkit-mask-image:linear-gradient(270deg,transparent,#000 42%);mask-image:linear-gradient(270deg,transparent,#000 42%)}
 .sport-hero .hc{margin-left:auto;margin-right:0;padding:70px 44px 0 0;text-align:right}
 .sport-hero .meta,.sport-hero .btns{justify-content:flex-end}
 .sport-hero.is-leaving .hc{transform:translateX(110px)}
 .sport-hero.is-leaving .himg{transform:translateX(90px) scale(1.08)}
-.sport-hero.is-entering .hc,.sport-hero.is-entering .himg{transform:translateX(-90px)}
-.sport-hero.is-entering .himg{transform:translateX(-75px) scale(1.06)}
+.sport-hero.is-entering .hc{animation-name:heroArriveSport}
+.sport-hero.is-entering .himg{animation-name:heroArriveSportImage}
+@keyframes heroArriveSport{from{opacity:1;filter:blur(7px);transform:translateX(-46px)}to{opacity:1;filter:blur(0);transform:translateX(0)}}
+@keyframes heroArriveSportImage{from{opacity:1;filter:blur(9px);transform:translateX(-36px) scale(1.04)}to{opacity:1;filter:blur(0);transform:translateX(0) scale(1)}}
 @media(max-width:760px){.hero-title{font-size:clamp(30px,9vw,48px)}.sport-hero .hc{padding:70px 22px 0 22px}.hero .hc{max-width:min(560px,92vw);padding-left:22px}.sport-hero .meta,.sport-hero .btns{justify-content:flex-end}.himg{width:88%;opacity:.8}}
-@media(prefers-reduced-motion:reduce){.hero .hc,.hero .himg{transition:opacity .2s ease,filter .2s ease}.hero.is-leaving .hc,.hero.is-leaving .himg,.hero.is-entering .hc,.hero.is-entering .himg{transform:none}}
+@media(prefers-reduced-motion:reduce){.hero .hc,.hero .himg{transition:opacity .2s ease,filter .2s ease}.hero.is-leaving .hc,.hero.is-leaving .himg,.hero.is-entering .hc,.hero.is-entering .himg{animation:none;transform:none}}
 
 .himg{position:absolute;right:0;top:0;width:70%;height:100%;background:var(--hero) 55% center/cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
 .hero:after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(transparent,var(--bg))}
@@ -155,7 +159,7 @@ let heroTimers=[],heroIndexes={foryou:0,sport:0,dm:0};
 const dmFeaturedIds=['cosmic','h2o-cosmic','crossing-red-line'];
 function heroPool(mode){return mode==='sport'?cat.filter(i=>i.type==='sport'):mode==='dm'?dmFeaturedIds.map(id=>cat.find(i=>i.id===id)).filter(Boolean):cat.filter(i=>i.type!=='sport')}
 function stopHeroRotation(){heroTimers.forEach(clearTimeout);heroTimers=[]}
-function startHeroRotation(){stopHeroRotation();const mode=cur==='sport'?'sport':cur==='dm'?'dm':cur==='foryou'?'foryou':null;if(!mode)return;const pool=heroPool(mode);if(pool.length<2)return;const scheduleNext=()=>{heroTimers.push(setTimeout(()=>{const current=document.querySelector('#app .hero');if(!current||cur!==mode)return;current.classList.add('is-leaving');heroTimers.push(setTimeout(()=>{if(cur!==mode)return;heroIndexes[mode]=(heroIndexes[mode]+1)%pool.length;current.outerHTML=hero(pool[heroIndexes[mode]],mode==='sport');const next=document.querySelector('#app .hero');if(!next){scheduleNext();return}next.classList.add('is-entering');heroTimers.push(setTimeout(()=>{next.classList.remove('is-entering');if(cur===mode)scheduleNext()},900))},850))},10000))};scheduleNext()}
+function startHeroRotation(){stopHeroRotation();const mode=cur==='sport'?'sport':cur==='dm'?'dm':cur==='foryou'?'foryou':null;if(!mode)return;const pool=heroPool(mode);if(pool.length<2)return;const scheduleNext=()=>{heroTimers.push(setTimeout(()=>{if(cur!==mode)return;const current=document.querySelector('#app .hero');if(!current||!current.isConnected)return;current.classList.add('is-leaving');heroTimers.push(setTimeout(()=>{if(cur!==mode||!current.isConnected)return;const liveHero=document.querySelector('#app .hero');if(liveHero!==current)return;heroIndexes[mode]=(heroIndexes[mode]+1)%pool.length;const nextMarkup=hero(pool[heroIndexes[mode]],mode==='sport');current.outerHTML=nextMarkup;const next=document.querySelector('#app .hero');if(next){next.classList.add('is-entering');heroTimers.push(setTimeout(()=>{next.classList.remove('is-entering');if(cur===mode)scheduleNext()},750))}},650))},10000))};scheduleNext()}
 const VT={series:['Series','Fast-paced stories, one episode at a time.',['series']],shows:['TV Shows','Reality, talk, cooking and more.',['show']],movies:['Movies','Feature films for any mood.',['movie']],dramas:['Series, Novelas & Dramas','Long stories worth getting lost in.',['series','drama']],fav:['My List','Everything you saved.',null]};
 function render(){const a=$('#app');let h='';
 const cont=cat.filter(i=>st.prog[i.id]&&i.type!=='sport');
