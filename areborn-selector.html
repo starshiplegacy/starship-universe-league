@@ -15,6 +15,10 @@ button:hover{background:rgba(40,75,120,.86);border-color:#fff;transform:translat
 .top{position:fixed;top:22px;z-index:5;padding:12px 18px;border-radius:10px;font-size:12px;font-weight:800;letter-spacing:.12em}
 #home{left:24px}#map{right:24px}
 #identity{position:fixed;left:24px;bottom:24px;width:min(330px,calc(100vw - 48px));z-index:4;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(8,20,42,.68);backdrop-filter:blur(16px);box-shadow:0 12px 38px #06152d66}
+#preselect{position:fixed;left:24px;bottom:166px;z-index:5;min-width:180px;padding:11px 17px;border-radius:10px;font-size:11px;font-weight:850;letter-spacing:.1em}
+#preselect.locked{border-color:#e7d7b1;background:rgba(75,59,35,.82);color:#fff0c8}
+#preselect:disabled{opacity:.45;cursor:wait}
+@media(max-width:650px){#preselect{left:12px;bottom:154px;min-width:150px;padding:10px 13px;font-size:10px}}
 .kicker{font-size:9px;letter-spacing:.24em;color:#c6d9f3;font-weight:800}#identity h2{font:600 23px Georgia,serif;margin:9px 0 6px}#identity p{margin:0;color:#d6e1f0;font-size:12px;line-height:1.5}
 .controls{position:fixed;right:24px;bottom:24px;z-index:6;display:flex;gap:10px;align-items:flex-end}
 .control-wrap{position:relative}.control{padding:14px 18px;border-radius:10px;font-size:11px;font-weight:800;letter-spacing:.08em}
@@ -38,6 +42,7 @@ button:hover{background:rgba(40,75,120,.86);border-color:#fff;transform:translat
 <button id="home" class="top">← MENÚ DE INICIO</button>
 <button id="map" class="top">SELECCIONAR MAPA →</button>
 <div id="hint">LEAGUE OF LEGACY · SELECCIÓN DE AREBORN</div>
+<button id="preselect" disabled>PRESELECCIONAR</button>
 <section id="identity"><div class="kicker">FICHA DEL AREBORN SELECCIONADO</div><h2 id="name">Cargando…</h2><p id="bio">Explora el visor y elige el Areborn que te acompañará en la partida.</p></section>
 <div class="controls">
  <div class="control-wrap"><button id="characterBtn" class="control">PERSONAJE ▾</button><div id="characterMenu" class="menu"></div></div>
@@ -81,7 +86,7 @@ loader.setMeshoptDecoder(MeshoptDecoder);
 let active=null,mixer=null,clips=[],selected='',currentAction=null;
 const cache=new Map();
 function fitModel(root){const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());root.position.x-=center.x;root.position.z-=center.z;root.position.y-=box.min.y;const max=Math.max(size.x,size.y,size.z);if(max>0)root.scale.setScalar(3.1/max);root.updateMatrixWorld(true)}
-function setAnimations(gltf,characterName){mixer=new THREE.AnimationMixer(active);clips=gltf.animations||[];const menu=document.getElementById('animationMenu');menu.innerHTML='';if(!clips.length){menu.innerHTML='<button disabled>Este modelo no incluye animaciones</button>';return}let entries=clips.map((clip,index)=>({clip,index,label:clip.name||'Animación '+(index+1)}));if(characterName==='Opalo'){const mapped=[];const used=new Set();opaloAnimationMap.forEach(item=>{const index=clips.findIndex(clip=>clip.name===item.clip);if(index!==-1){mapped.push({clip:clips[index],index,label:item.label});used.add(index)}});const extras=entries.filter(entry=>!used.has(entry.index));entries=[...mapped,...extras];if(!mapped.length){const note=document.createElement('button');note.disabled=true;note.textContent='No se encontraron los nombres de animación configurados para Opalo';menu.appendChild(note)}}entries.forEach(entry=>{const b=document.createElement('button');b.textContent=entry.label;b.title=entry.clip.name||entry.label;b.addEventListener('click',()=>{playAnimation(entry.index);menu.classList.remove('open')});menu.appendChild(b)});if(entries.length)playAnimation(entries[0].index)}
+function setAnimations(gltf,characterName){mixer=new THREE.AnimationMixer(active);clips=gltf.animations||[];currentAction=null;const menu=document.getElementById('animationMenu');menu.innerHTML='';if(!clips.length){menu.innerHTML='<button disabled>Este modelo no incluye animaciones</button>';return}let entries=clips.map((clip,index)=>({clip,index,label:clip.name||'Animación '+(index+1)}));if(characterName==='Opalo'){const mapped=[];const used=new Set();opaloAnimationMap.forEach(item=>{const index=clips.findIndex(clip=>clip.name===item.clip);if(index!==-1){mapped.push({clip:clips[index],index,label:item.label});used.add(index)}});const extras=entries.filter(entry=>!used.has(entry.index));entries=[...mapped,...extras];if(!mapped.length){const note=document.createElement('button');note.disabled=true;note.textContent='No se encontraron los nombres de animación configurados para Opalo';menu.appendChild(note)}}entries.forEach(entry=>{const b=document.createElement('button');b.textContent=entry.label;b.title=entry.clip.name||entry.label;b.addEventListener('click',()=>{playAnimation(entry.index);menu.classList.remove('open')});menu.appendChild(b)});const idleIndex=clips.findIndex(clip=>/(^|[_ .-])(idle|rest|stand|breath|wait|reposo|quiet)([_ .-]|$)/i.test(clip.name||''));if(idleIndex>=0)playAnimation(idleIndex);else{currentAction=null;document.querySelectorAll('#animationMenu button').forEach(b=>b.classList.remove('active'))}}
 function playAnimation(i){if(!mixer||!clips[i])return;const action=mixer.clipAction(clips[i]);if(currentAction&&currentAction!==action)currentAction.fadeOut(.2);action.reset().fadeIn(.2).play();currentAction=action;document.querySelectorAll('#animationMenu button').forEach((b,j)=>b.classList.toggle('active',j===i))}
 async function selectCharacter(name){
  const previous=selected;
@@ -117,6 +122,7 @@ async function selectCharacter(name){
   setAnimations(gltf,name);
   document.getElementById('name').textContent=name;
   document.getElementById('bio').textContent='Areborn seleccionado · listo para confirmar y elegir un mapa.';
+  updatePreselectButton();
   document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===name));
   mapButton.disabled=false;
   sessionStorage.setItem('leagueOfLegacyAreborn',selected);
@@ -128,20 +134,29 @@ async function selectCharacter(name){
   document.getElementById('bio').textContent='No se pudo completar la carga de '+files[name]+'. Detalle técnico: '+detail;
   document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===previous));
   mapButton.disabled=!active;
+  updatePreselectButton();
  }finally{
   loading.classList.add('hide');
  }
 }
+const preselectButton=document.getElementById('preselect');
+const PRESELECT_KEY='leagueOfLegacyPreselectedAreborn';
+let preselected=localStorage.getItem(PRESELECT_KEY)||'';
+function updatePreselectButton(){preselectButton.disabled=!selected;if(!selected){preselectButton.textContent='PRESELECCIONAR';preselectButton.classList.remove('locked');return}if(preselected===selected){preselectButton.textContent='🔒 PRESELECCIONADO';preselectButton.classList.add('locked');preselectButton.title='Haz clic para quitar la preselección';}else{preselectButton.textContent='PRESELECCIONAR';preselectButton.classList.remove('locked');preselectButton.title=preselected?'Cambiar el Areborn preseleccionado':'Guardar este Areborn como preseleccionado';}}
+function showPreselectDialog(title,message,confirmLabel,onConfirm){document.getElementById('modalTitle').textContent=title;document.getElementById('modalText').textContent=message;document.getElementById('confirm').textContent=confirmLabel;document.getElementById('cancel').textContent='CANCELAR';pendingModalAction=onConfirm;modal.classList.add('open')}
+let pendingModalAction=null;
+preselectButton.addEventListener('click',()=>{if(!selected)return;if(preselected===selected){showPreselectDialog('¿Quitar preselección?','¿Quieres quitar a '+selected+' de tu Areborn preseleccionado?','SÍ, QUITAR',()=>{preselected='';localStorage.removeItem(PRESELECT_KEY);updatePreselectButton()});return}if(preselected){showPreselectDialog('Cambiar Areborn preseleccionado','Ya tienes a '+preselected+' preseleccionado. ¿Quieres cambiarlo por '+selected+'?','SÍ, CAMBIAR',()=>{preselected=selected;localStorage.setItem(PRESELECT_KEY,preselected);updatePreselectButton()});return}preselected=selected;localStorage.setItem(PRESELECT_KEY,preselected);updatePreselectButton();});
 const charMenu=document.getElementById('characterMenu');characters.forEach(name=>{const b=document.createElement('button');b.textContent=name;b.dataset.name=name;b.addEventListener('click',()=>{selectCharacter(name);charMenu.classList.remove('open')});charMenu.appendChild(b)});
 document.getElementById('characterBtn').addEventListener('click',()=>{charMenu.classList.toggle('open');document.getElementById('animationMenu').classList.remove('open')});
 document.getElementById('animationBtn').addEventListener('click',()=>{document.getElementById('animationMenu').classList.toggle('open');charMenu.classList.remove('open')});
 const modal=document.getElementById('modal');document.getElementById('map').addEventListener('click',()=>{document.getElementById('modalTitle').textContent='¿Confirmas este Areborn?';document.getElementById('modalText').textContent='Has seleccionado a '+selected+'. ¿Quieres confirmar este personaje y continuar a la selección de mapas?';modal.classList.add('open')});
-document.getElementById('cancel').addEventListener('click',()=>modal.classList.remove('open'));
-document.getElementById('confirm').addEventListener('click',()=>{if(!selected)return;sessionStorage.setItem('leagueOfLegacyAreborn',selected);location.href='./game-modes.html'});
+document.getElementById('cancel').addEventListener('click',()=>{modal.classList.remove('open');pendingModalAction=null;document.getElementById('confirm').textContent='SÍ, CONFIRMAR';document.getElementById('cancel').textContent='NO, VOLVER'});
+document.getElementById('confirm').addEventListener('click',()=>{if(pendingModalAction){const action=pendingModalAction;pendingModalAction=null;modal.classList.remove('open');document.getElementById('confirm').textContent='SÍ, CONFIRMAR';document.getElementById('cancel').textContent='NO, VOLVER';action();return}if(!selected)return;sessionStorage.setItem('leagueOfLegacyAreborn',selected);location.href='./game-modes.html'});
 document.getElementById('home').addEventListener('click',()=>location.href='./assets/league-of-legacy/references/New_MainMenu.html');
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer)mixer.update(dt);controls.update();renderer.render(scene,camera)}
 const clock=new THREE.Clock();
+updatePreselectButton();
 const initial=characters[Math.floor(Math.random()*characters.length)];selectCharacter(initial);
 animate();
 </script>
