@@ -680,6 +680,9 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
   if(userId){try{JSON.parse(localStorage.getItem("universe-installed-games:"+userId)||"[]").forEach(k=>{if(games[k])installed.add(k);});}catch{}}
   renderLibrary();refresh();
  });
- const observer=new MutationObserver(refresh);observer.observe(document.getElementById("ulhExplore")||home,{childList:true,subtree:true});
+ const exploreRoot=document.getElementById("ulhExplore")||home;
+ // refresh() updates cards inside the observed tree; disconnect during its own DOM writes.
+ const observer=new MutationObserver(()=>{observer.disconnect();refresh();observer.observe(exploreRoot,{childList:true,subtree:true});});
+ observer.observe(exploreRoot,{childList:true,subtree:true});
  renderLibrary();refresh();
 })();
