@@ -3,7 +3,7 @@
  * Map assignment and rulesets are independent. This file does not claim that
  * collision, spawn points, navigation or match simulation are implemented.
  */
-const ROOT = "./assets/league-of-legacy/Map/";
+const ROOT = new URL("./assets/league-of-legacy/Map/", import.meta.url).href;
 
 export const MAPS = Object.freeze({
   summonersRift: Object.freeze({
