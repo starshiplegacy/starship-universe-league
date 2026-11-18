@@ -80,7 +80,8 @@ spawnMarker.rotation.x = -Math.PI/2;
 spawnMarker.position.set(0,0.025,8);
 scene.add(spawnMarker);
 
-const player = new PlayerController(scene);
+const characterSelect = document.getElementById("character-select");
+const player = new PlayerController(scene, characterSelect?.value || "charlotte");
 const followCamera = new ThirdPersonCamera(camera, renderer.domElement, player.root);
 let paused = false;
 let loaded = false;
@@ -146,16 +147,38 @@ document.querySelectorAll("[data-move]").forEach(button=>{
 try {
   await player.load();
   loaded = true;
-  loadStatus.textContent = "Charlotte está lista. El escenario es una arena de prueba original; el mapa Training existente sigue pendiente de revisión de licencia.";
+  loadStatus.textContent = `${player.character.name} está listo/a. El escenario es una arena de prueba original; el mapa Training existente sigue pendiente de revisión de licencia.`;
   beginButton.disabled = false;
-  stateLabel.textContent = "Lista para entrenar";
+  stateLabel.textContent = `${player.character.name} listo/a para entrenar`;
 } catch (error) {
   console.error(error);
-  loadStatus.textContent = "No se pudo cargar Charlotte: " + (error?.message || "error desconocido") + ". Comprueba que el archivo GLB esté disponible y que la página se sirva por HTTP/HTTPS.";
+  loadStatus.textContent = `No se pudo cargar ${player.character.name}: ` + (error?.message || "error desconocido") + ". Comprueba que el archivo GLB esté disponible y que la página se sirva por HTTP/HTTPS.";
   beginButton.disabled = true;
   stateLabel.textContent = "Error al cargar el personaje";
 }
 beginButton.disabled = !loaded;
+
+characterSelect?.addEventListener("change", async () => {
+  if (!startOverlay.hidden) {
+    loaded = false;
+    beginButton.disabled = true;
+    characterSelect.disabled = true;
+    loadStatus.textContent = `Cargando ${characterSelect.selectedOptions[0].text}…`;
+    try {
+      await player.load(characterSelect.value);
+      loaded = true;
+      loadStatus.textContent = `${player.character.name} está listo/a. Sus animaciones se reproducirán si existen en su GLB.`;
+      stateLabel.textContent = `${player.character.name} listo/a para entrenar`;
+    } catch (error) {
+      console.error(error);
+      loadStatus.textContent = `No se pudo cargar ${player.character.name}: ${error?.message || "error desconocido"}`;
+      stateLabel.textContent = "Error al cargar el personaje";
+    } finally {
+      characterSelect.disabled = false;
+      beginButton.disabled = !loaded;
+    }
+  }
+});
 
 function animate(now) {
   requestAnimationFrame(animate);
