@@ -48,6 +48,14 @@ export const CHARACTER_ROSTER = {
       passive: "Attack1", hybrid: "Attack2", aggressive: "Crit",
       tiny: "Spell2", damage: "Death", victory: "Dance"
     }
+  },
+  optopool: {
+    id: "optopool", name: "Optopool", model: "Optopool.glb",
+    animations: {
+      idle: "Idle1_Base", walk: "Run_Base", run: "Float_Idle01", jump: null,
+      passive: "Spell1", hybrid: "Spell2", aggressive: "Spell3",
+      tiny: "Spell3", damage: "Death", victory: "Dance_Loop"
+    }
   }
 };
 
