@@ -54,7 +54,7 @@ export const CHARACTER_ROSTER = {
     animations: {
       idle: "Idle1_Base", walk: "Run_Base", run: "Float_Idle01", jump: null,
       passive: "Spell1", hybrid: "Spell2", aggressive: "Spell3",
-      tiny: "Spell3", damage: "Death", victory: "Dance_Loop"
+      tiny: "Spell4", damage: "Death", victory: "Dance_Loop"
     }
   }
 };
