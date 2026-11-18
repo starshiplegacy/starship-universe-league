@@ -8,6 +8,7 @@ const RUN_SPEED = 10.5;
 const JUMP_SPEED = 7.2;
 const GRAVITY = 22;
 const ARENA_LIMIT = 27;
+const TURN_SPEED = 2.4;
 
 export class PlayerController {
   constructor(scene) {
@@ -27,7 +28,7 @@ export class PlayerController {
     this.move = new THREE.Vector3();
     this._onKeyDown = event => {
       const key = event.key.toLowerCase();
-      if (["arrowup","arrowdown","arrowleft","arrowright"," ","shift","r","q","w","e","h","z","x","1","3"].includes(key)) event.preventDefault();
+      if (["arrowup","arrowdown","arrowleft","arrowright"," ","shift","r","q","w","e","h","z","x","1","3",",","."].includes(key)) event.preventDefault();
       this.keys.add(key);
     };
     this._onKeyUp = event => this.keys.delete(event.key.toLowerCase());
@@ -82,7 +83,11 @@ export class PlayerController {
     this.root.position.x = THREE.MathUtils.clamp(this.root.position.x, -ARENA_LIMIT, ARENA_LIMIT);
     this.root.position.z = THREE.MathUtils.clamp(this.root.position.z, -ARENA_LIMIT, ARENA_LIMIT);
 
-    if (this.move.lengthSq() > 0.0001) {
+    const turnInput = Number(this.isDown(".")) - Number(this.isDown(","));
+    if (turnInput !== 0) {
+      this.root.rotation.y += turnInput * TURN_SPEED * delta;
+      this.heading = this.root.rotation.y;
+    } else if (this.move.lengthSq() > 0.0001) {
       const target = Math.atan2(this.move.x, this.move.z);
       this.heading = target;
       this.root.rotation.y = THREE.MathUtils.damp(this.root.rotation.y, target, 12, delta);
