@@ -103,7 +103,7 @@ const root = document.documentElement;
 const languageSelect = document.getElementById("languageSelect");
 const savedTheme = localStorage.getItem("universe-theme");
 const savedLanguage = localStorage.getItem("universe-language");
-if (savedTheme && ["light","dark","green","nature","neon","galaxy","autumn","winter","spring","summer"].includes(savedTheme)) root.dataset.theme = savedTheme;
+if (savedTheme && ["light","dark","green","nature","neon","galaxy","autumn","winter","spring","summer","jupiter","sum","ruby","astroblue","neonblue","green-blue","orbit-green","neon-moon","neon-blue-aura","neon-reimbow","green-light","blue-light","grey-sky","blue-sky"].includes(savedTheme)) root.dataset.theme = savedTheme;
 if (savedLanguage && translations[savedLanguage]) languageSelect.value = savedLanguage;
 function applyLanguage(language){
   const dictionary = translations[language] || translations.es;
@@ -133,8 +133,6 @@ languageSelect.addEventListener("change", event => {
   setTheme(root.dataset.theme || "light");
   if (gameDialog.open && activeGameKey) renderGameDialog(activeGameKey);
 });
-const themeOptions = document.getElementById("themeOptions");
-const themeToggle = document.getElementById("themeToggle");
 const themeNames = translations.es.themeNames;
 Object.assign(translations.es.themeNames, {"jupiter":"Jupiter","sum":"Sum","ruby":"Ruby","astroblue":"Astroblue","neonblue":"Neonblue","green-blue":"Green Blue","orbit-green":"Orbit Green","neon-moon":"Neon Moon","neon-blue-aura":"Neon Blue Aura","neon-reimbow":"Neon Reimbow","green-light":"Green Light","blue-light":"Blue Light","grey-sky":"Grey Sky","blue-sky":"Blue Sky"});
 Object.assign(translations.en.themeNames, {"jupiter":"Jupiter","sum":"Sum","ruby":"Ruby","astroblue":"Astroblue","neonblue":"Neonblue","green-blue":"Green Blue","orbit-green":"Orbit Green","neon-moon":"Neon Moon","neon-blue-aura":"Neon Blue Aura","neon-reimbow":"Neon Reimbow","green-light":"Green Light","blue-light":"Blue Light","grey-sky":"Grey Sky","blue-sky":"Blue Sky"});
@@ -148,30 +146,22 @@ function setTheme(theme){
   document.querySelectorAll("[data-theme-choice]").forEach(button => {
     button.setAttribute("aria-pressed",String(button.dataset.themeChoice===theme));
   });
-  themeToggle.querySelector(".current-theme").textContent = (translations[languageSelect.value]?.themeNames || themeNames)[theme];
-  themeOptions.hidden = true;
-  themeToggle.setAttribute("aria-expanded","false");
+  const preferenceTheme = document.querySelector('#preferencesForm select[name="theme"]');
+  if (preferenceTheme && [...preferenceTheme.options].some(option => option.value === theme)) preferenceTheme.value = theme;
 }
 window.applyUniverseTheme = setTheme;
+window.getUniverseThemeCatalog = () => {
+  const requirements = {jupiter:"exoplanet",sum:"exoplanet",ruby:"exoplanet",astroblue:"exoplanet",neonblue:"exoplanet","green-blue":"exoplanet","orbit-green":"exoplanet","neon-moon":"creator_verified","neon-blue-aura":"creator_verified","neon-reimbow":"creator_verified","green-light":"creator_verified","blue-light":"creator_verified","grey-sky":"creator_verified","blue-sky":"creator_verified"};
+  const names = translations[languageSelect.value]?.themeNames || themeNames;
+  return Object.keys(themeNames).map(value => ({value,label:names[value] || value,requirement:requirements[value] || null}));
+};
 window.applyUniverseLanguage = language => {
   if (!translations[language]) return;
   languageSelect.value = language;
   applyLanguage(language);
   setTheme(root.dataset.theme || "light");
 };
-themeToggle.addEventListener("click",()=>{
-  const opening = themeOptions.hidden;
-  themeOptions.hidden = !opening;
-  themeToggle.setAttribute("aria-expanded",String(opening));
-});
-themeOptions.addEventListener("click",event=>{
-  const option = event.target.closest("[data-theme-choice]");
-  if(option) setTheme(option.dataset.themeChoice);
-});
 setTheme(root.dataset.theme || "light");
-document.addEventListener("click",event=>{
-  if(!event.target.closest(".theme-picker")){themeOptions.hidden=true;themeToggle.setAttribute("aria-expanded","false");}
-});
 const menuToggle=document.getElementById("menuToggle"),mainNav=document.getElementById("mainNav");
 menuToggle.addEventListener("click",()=>{
   const open=mainNav.classList.toggle("open");
