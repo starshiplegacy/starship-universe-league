@@ -496,7 +496,7 @@ let step='map',map=null,character=null,loadingTimer=null,cinemaTimer=null;
 function show(){overlay.classList.add('open');render()}
 function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer);if(cinemaTimer)clearTimeout(cinemaTimer)}
 function render(){
- back.textContent=step==='map'?'CANCELAR':step==='confirm'?'← CAMBIAR MAPA':step==='character'?'← MAPA':step==='cinema'?'← VOLVER':'SALIR';
+ back.textContent=step==='map'?'CANCELAR':step==='confirm'?'← CAMBIAR MAPA':step==='character'?'← MAPA':step==='starpion'?'← PERSONAJES':step==='cinema'?'← VOLVER':'SALIR';
  next.disabled=step==='map'?!map:step==='confirm'?!map:step==='character'?!character:step==='loading';
  if(step==='map'){
   title.textContent='Selecciona un mapa';sub.textContent='Elige el escenario para esta partida. Los mapas 3D todavía no se cargarán en esta fase.';
@@ -509,7 +509,13 @@ function render(){
  }else if(step==='character'){
   title.textContent='Elige tu personaje';sub.textContent='Selecciona el personaje con el que entrarás al mapa: '+map.name+'.';
   content.innerHTML='<div class="ul-grid">'+characters.map((c,i)=>'<button type="button" class="ul-option ul-char '+(character===c?'selected':'')+'" data-character="'+c+'"><span class="ul-orb">'+c.charAt(0)+'</span><strong>'+c+'</strong><small>Personaje disponible</small></button>').join('')+'</div>';
+  content.innerHTML+='<div style="display:flex;justify-content:flex-end;margin-top:16px"><button type="button" class="ul-btn" id="ul-starpion-open">FICHA DE STARPION ⭐</button></div>';
   next.textContent='INICIAR →';
+ }else if(step==='starpion'){
+  title.textContent='Ficha de Starpion';
+  sub.textContent='La identidad de los campeones que defienden Nexarie.';
+  content.innerHTML='<div class="ul-grid"><article class="ul-option selected"><span class="ul-kicker">TÍTULO INDIVIDUAL</span><strong>Starpion</strong><small>Nombre formado por Star (estrella) + Champion (campeón). Representa a un campeón o campeona de la Liga.</small></article><article class="ul-option"><span class="ul-kicker">NOMBRE COLECTIVO</span><strong>Areborn</strong><small>La denominación de los guerreros de Nexarie.</small></article><article class="ul-option"><span class="ul-kicker">MUNDO</span><strong>Nexarie</strong><small>ネクサリエ · 넥사리. El territorio donde se desarrolla League Of Legacy.</small></article><article class="ul-option"><span class="ul-kicker">HABITANTES</span><strong>Nexarios</strong><small>ネクサリー人 · 넥사리인. La población de Nexarie.</small></article><article class="ul-option"><span class="ul-kicker">COMUNIDAD POLÍTICA</span><strong>Concordes</strong><small>Seres mágicos, híbridos de humanos y mágicos, y tecnomágicos.</small></article></div><p class="ul-sub" style="margin-top:18px">League Of Legacy · Starship Universe League · Starship Legacy Entertainment, LLC</p>';
+  next.textContent='VOLVER A PERSONAJES';
  }else if(step==='loading'){
   title.textContent='Preparando partida';sub.textContent='Preparando '+map.name+' y '+character+'. No se descargará ni abrirá ningún modelo de mapa todavía.';
   content.innerHTML='<div class="ul-map-preview">STARSHIP LEGACY · LOADING</div><div class="ul-progress"><i id="ul-progress-fill"></i></div><small id="ul-progress-label" style="color:#b4bfce">Preparando selección…</small>';
@@ -529,13 +535,15 @@ function render(){
  }
 }
 content.addEventListener('click',e=>{
+ const star=e.target.closest('#ul-starpion-open');if(star){step='starpion';render();return}
  const m=e.target.closest('[data-map]');if(m){map=maps.find(x=>x.id===m.dataset.map);render();return}
  const c=e.target.closest('[data-character]');if(c){character=c.dataset.character;render()}
 });
-back.addEventListener('click',()=>{if(step==='map'){hide();return}if(step==='confirm')step='map';else if(step==='character')step='map';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character'}else if(step==='pending'){hide();step='map'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='character'}render()});
+back.addEventListener('click',()=>{if(step==='map'){hide();return}if(step==='confirm')step='map';else if(step==='character')step='map';else if(step==='starpion')step='character';else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='character'}else if(step==='pending'){hide();step='map'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='character'}render()});
 next.addEventListener('click',()=>{
  if(step==='map'&&map)step='confirm';
  else if(step==='confirm'&&map)step='character';
+ else if(step==='starpion')step='character';
  else if(step==='character'&&character){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='cinema';render();cinemaTimer=setTimeout(()=>{if(step==='cinema'){step='pending';render()}},7200)}},110);return}
  else if(step==='cinema'){if(cinemaTimer)clearTimeout(cinemaTimer);step='pending'}
  else if(step==='pending'){hide();step='map';return}
