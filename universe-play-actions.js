@@ -76,7 +76,9 @@
     });
     renderFavorites();
   }
-  const observer=new MutationObserver(decorateFavorites);observer.observe(root,{childList:true,subtree:true});decorateFavorites();
+  // Disconnect while decorating: favorites UI updates inside root must not retrigger this observer.
+  const observer=new MutationObserver(()=>{observer.disconnect();decorateFavorites();observer.observe(root,{childList:true,subtree:true});});
+  observer.observe(root,{childList:true,subtree:true});decorateFavorites();
   function addToCart(item){
     if(!userId||!item||!item.id||!item.name)return false;
     const list=read("cart");if(!list.some(entry=>entry.id===String(item.id)))list.push({id:String(item.id),name:String(item.name),price:item.price?String(item.price):""});
