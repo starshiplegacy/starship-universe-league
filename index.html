@@ -198,7 +198,6 @@
         <nav class="ulh-side-nav" aria-label="Navegación de cuenta">
           <a class="ulh-side-item active" href="#ulh-home-top" data-ulh-view="home"><span>▮</span> Inicio</a>
           <a class="ulh-side-item" href="#ulh-library" data-ulh-view="library"><span>▤</span> Biblioteca</a>
-          <a class="ulh-side-item" href="#account-settings" data-open-account-settings><span>⚙</span> Configuración</a>
           <a class="ulh-side-item" href="./assets/starship-plus/starship-plus.html"><span>✦</span> Starship Plus</a>
           <a class="ulh-side-item" href="#universe-pay" data-open-universe-pay><span>✧</span> Universe Pay</a>
         </nav>
@@ -211,11 +210,27 @@
           <div class="ulh-history"><button type="button" id="ulhBack" aria-label="Atrás">‹</button><button type="button" id="ulhForward" aria-label="Adelante">›</button></div>
           <label class="ulh-search"><span>⌕</span><input id="ulhSearch" type="search" placeholder="Buscar juegos y complementos" autocomplete="off"></label>
           <div class="ulh-actions"><div class="ulh-currency"><span>L</span> 0</div>
-            <button class="ulh-icon" type="button" title="Favoritos" aria-label="Favoritos">♡</button>
-            <button class="ulh-icon" type="button" title="Carrito" aria-label="Carrito">🛒</button>
-            <button class="ulh-icon ulh-notifications" type="button" title="Notificaciones" aria-label="Notificaciones">🔔<i></i></button>
+            <button class="ulh-icon ulh-action-trigger" type="button" data-play-panel="favorites" title="Favoritos" aria-label="Juegos favoritos" aria-expanded="false">♡<i class="ulh-action-count" hidden></i></button>
+            <button class="ulh-icon ulh-action-trigger" type="button" data-play-panel="cart" title="Carrito" aria-label="Carrito de compras" aria-expanded="false">🛒<i class="ulh-action-count" hidden></i></button>
+            <button class="ulh-icon ulh-notifications ulh-action-trigger" type="button" data-play-panel="notifications" title="Notificaciones" aria-label="Notificaciones" aria-expanded="false">🔔<i class="ulh-action-dot" hidden></i></button>
             <button class="ulh-avatar" id="ulhAvatar" type="button" title="Mi cuenta" aria-label="Abrir mi cuenta">R</button>
           </div>
+        </div>
+        <div class="ulh-action-panels" id="ulhActionPanels">
+          <section class="ulh-action-panel" data-play-panel-content="notifications" hidden aria-label="Notificaciones">
+            <header><div><span>UNIVERSE PLAY</span><h3>Notificaciones</h3></div><button type="button" data-panel-close aria-label="Cerrar">×</button></header>
+            <div class="ulh-panel-list" id="ulhNotificationsList"><p class="ulh-panel-empty">Todavía no tienes notificaciones.</p></div>
+            <footer><button type="button" data-notifications-read>Marcar todo como leído</button></footer>
+          </section>
+          <section class="ulh-action-panel" data-play-panel-content="cart" hidden aria-label="Carrito">
+            <header><div><span>UNIVERSE STORE</span><h3>Tu carrito</h3></div><button type="button" data-panel-close aria-label="Cerrar">×</button></header>
+            <div class="ulh-panel-list" id="ulhCartList"><p class="ulh-panel-empty">Tu carrito está vacío.</p></div>
+            <footer><span id="ulhCartSummary">0 productos pendientes</span></footer>
+          </section>
+          <section class="ulh-action-panel" data-play-panel-content="favorites" hidden aria-label="Juegos favoritos">
+            <header><div><span>YOUR COLLECTION</span><h3>Juegos favoritos</h3></div><button type="button" data-panel-close aria-label="Cerrar">×</button></header>
+            <div class="ulh-panel-list" id="ulhFavoritesList"><p class="ulh-panel-empty">Aún no has guardado juegos favoritos.</p></div>
+          </section>
         </div>
         <div class="ulh-view" id="ulhHomeView">\n        <section class="ulh-hero">
           <div class="ulh-hero-copy"><h1>Tu próximo universo comienza aquí</h1><p>Explora nuevos mundos, descubre juegos y organiza tus experiencias desde tu biblioteca.</p><a class="ulh-hero-button" href="#ulh-library" id="ulhHomeLibraryLink" data-ulh-view="library">Abrir mi biblioteca</a></div><div class="ulh-hero-gem" aria-hidden="true">✦</div>
@@ -432,6 +447,7 @@
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-box"><button class="search-close" id="searchClose" aria-label="Cerrar búsqueda" data-i18n-aria="closeSearch">×</button><label for="siteSearch" data-i18n="searchLabel">¿Qué estás buscando?</label><div class="search-input-row"><input id="siteSearch" type="search" placeholder="Buscar juegos, noticias..." data-i18n-placeholder="searchPlaceholder" /><button id="searchGo" aria-label="Buscar">↗</button></div><p id="searchFeedback" aria-live="polite"></p></div></div>
   <script src="./supabase-config.js"></script>
   <script src="./app.js"></script>
+  <script src="./universe-play-actions.js"></script>
   <script src="./entitlements.js"></script>
   <script src="./account-settings.js"></script>
   <script src="./universe-pay.js"></script>
