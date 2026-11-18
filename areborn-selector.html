@@ -50,6 +50,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
 const files={Aquamarine:'Aquamarine.glb',Arthur:'Arthur.glb',Bella:'Bella.glb',Charlotte:'Charlotte.glb',Emma:'Emma.glb',Opalo:'opalo.glb',Optopool:'Optopool.glb',Stella:'Stella.glb'};
 const base='./assets/league-of-legacy/characters/';
@@ -64,7 +65,9 @@ const platform=new THREE.Mesh(new THREE.CylinderGeometry(2.25,2.4,.22,80),new TH
 platform.position.y=-.12;scene.add(platform);
 const ring=new THREE.Mesh(new THREE.TorusGeometry(2.13,.025,10,100),new THREE.MeshBasicMaterial({color:0xc8e6ff,transparent:true,opacity:.8}));ring.rotation.x=Math.PI/2;ring.position.y=.01;scene.add(ring);
 const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,1.15,0);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=12;controls.maxPolarAngle=Math.PI*.49;
-const loader=new GLTFLoader();let active=null,mixer=null,clips=[],selected='',currentAction=null;
+const loader=new GLTFLoader();
+loader.setMeshoptDecoder(MeshoptDecoder);
+let active=null,mixer=null,clips=[],selected='',currentAction=null;
 const cache=new Map();
 function fitModel(root){const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());root.position.x-=center.x;root.position.z-=center.z;root.position.y-=box.min.y;const max=Math.max(size.x,size.y,size.z);if(max>0)root.scale.setScalar(3.1/max);root.updateMatrixWorld(true)}
 function setAnimations(gltf){mixer=new THREE.AnimationMixer(active);clips=gltf.animations||[];const menu=document.getElementById('animationMenu');menu.innerHTML='';if(!clips.length){menu.innerHTML='<button disabled>Este modelo no incluye animaciones</button>';return}clips.forEach((clip,i)=>{const b=document.createElement('button');b.textContent=clip.name||'Animación '+(i+1);b.addEventListener('click',()=>{playAnimation(i);menu.classList.remove('open')});menu.appendChild(b)});playAnimation(0)}
