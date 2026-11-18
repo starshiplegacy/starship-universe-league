@@ -9,6 +9,8 @@ const startOverlay = document.getElementById("start");
 const beginButton = document.getElementById("begin");
 const pauseButton = document.getElementById("pause");
 const exitButton = document.getElementById("exit");
+const messageLabel = document.getElementById("message");
+const attackEffects = [];
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x91a9bd);
@@ -98,10 +100,36 @@ beginButton.addEventListener("click",async()=>{
   setPaused(false);
   await followCamera.lock();
 });
+function triggerAttack(kind) {
+  if (!loaded || paused || !startOverlay.hidden) return;
+  const settings = {
+    passive: { label:"Ataque pasivo · Q", color:0x83d9d0, radius:0.85, duration:0.48, forward:0.7 },
+    hybrid: { label:"Ataque pasivo-agresivo · W", color:0x9b8bdf, radius:1.45, duration:0.58, forward:1.15 },
+    aggressive: { label:"Ataque agresivo · E", color:0xff9b63, radius:2.15, duration:0.68, forward:1.8 },
+    tiny: { label:"Ataque diminuto · H", color:0xf6e6a5, radius:0.42, duration:0.22, forward:0.55 }
+  };
+  const config = settings[kind];
+  if (!config) return;
+  messageLabel.textContent = config.label + " · efecto visual de prueba";
+  const direction = new THREE.Vector3(-Math.sin(followCamera.yaw),0,-Math.cos(followCamera.yaw));
+  const position = player.root.position.clone().addScaledVector(direction,config.forward);
+  position.y += 1.05;
+  const geometry = new THREE.SphereGeometry(config.radius,20,14);
+  const material = new THREE.MeshBasicMaterial({color:config.color,transparent:true,opacity:0.58,wireframe:true,depthWrite:false});
+  const effect = new THREE.Mesh(geometry,material);
+  effect.position.copy(position);
+  scene.add(effect);
+  attackEffects.push({mesh:effect,material,duration:config.duration,elapsed:0});
+}
 window.addEventListener("keydown",event=>{
-  if (event.key.toLowerCase()==="r") player.reset();
-  if (event.key==="Escape" && !startOverlay.hidden) return;
-  if (event.key==="Escape" && loaded) setPaused(true);
+  const key=event.key.toLowerCase();
+  if (key==="r") player.reset();
+  if (key==="q" && !event.repeat) triggerAttack("passive");
+  if (key==="w" && !event.repeat) triggerAttack("hybrid");
+  if (key==="e" && !event.repeat) triggerAttack("aggressive");
+  if (key==="h" && !event.repeat) triggerAttack("tiny");
+  if (key==="escape" && !startOverlay.hidden) return;
+  if (key==="escape" && loaded) setPaused(true);
 });
 document.querySelectorAll("[data-move]").forEach(button=>{
   const key=button.dataset.move;
@@ -132,6 +160,19 @@ function animate(now) {
   const delta = Math.min((now-lastTime)/1000,0.05);
   lastTime = now;
   if (!paused && loaded && startOverlay.hidden) player.update(delta,followCamera.yaw);
+  for (let i=attackEffects.length-1;i>=0;i--) {
+    const effect=attackEffects[i];
+    effect.elapsed+=delta;
+    const progress=Math.min(effect.elapsed/effect.duration,1);
+    effect.mesh.scale.setScalar(0.55+progress*1.1);
+    effect.material.opacity=0.58*(1-progress);
+    if(progress>=1){
+      scene.remove(effect.mesh);
+      effect.mesh.geometry.dispose();
+      effect.material.dispose();
+      attackEffects.splice(i,1);
+    }
+  }
   followCamera.update(delta);
   renderer.render(scene,camera);
 }
