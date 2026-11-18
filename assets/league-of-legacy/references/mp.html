@@ -13,7 +13,7 @@ header{position:fixed;z-index:2;top:0;left:0;right:0;padding:22px 4vw;display:fl
 .brand{font-size:11px;letter-spacing:.3em;color:var(--gold);font-weight:700}.brand small{display:block;color:#b8c5d8;font-size:9px;margin-top:6px}
 button,select{font:inherit}button{cursor:pointer;border:1px solid #c8aa7066;background:#101a2bd9;color:#fff;padding:11px 15px;letter-spacing:.08em}
 button:hover{background:#293c55}button:disabled{opacity:.45;cursor:not-allowed}
-.panel{position:fixed;z-index:2;left:5vw;top:50%;transform:translateY(-45%);width:min(430px,90vw);padding:24px;background:#07101dcc;border:1px solid #c5a66a55;backdrop-filter:blur(14px)}
+.panel{position:fixed;z-index:2;left:4vw;top:50%;transform:translateY(-46%);width:min(650px,92vw);max-height:82vh;overflow:auto;padding:24px;background:#07101de8;border:1px solid #c5a66a66;backdrop-filter:blur(16px);box-shadow:0 24px 90px #0008}.world-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.world-card{position:relative;min-height:116px;text-align:left;padding:15px;border:1px solid #64748b66;background:linear-gradient(135deg,#17263a,#0b1321);transition:border-color .18s,transform .18s,background .18s}.world-card:hover{transform:translateY(-2px);border-color:#d9b875}.world-card[aria-pressed=true]{border:1px solid #e2c78f;background:linear-gradient(135deg,#3a3022,#142238);box-shadow:inset 0 0 0 1px #d9b87555}.world-card .world-type{display:block;color:#d9b875;font-size:9px;letter-spacing:.2em;margin-bottom:9px}.world-card strong{display:block;font:normal 21px Georgia,serif;margin-bottom:6px}.world-card small{display:block;color:#aab5c7;font-size:11px;line-height:1.4}.world-card .world-state{display:inline-block;margin-top:10px;padding:4px 7px;background:#0a111dcc;border:1px solid #64748b66;color:#cbd5e1;font-size:9px;letter-spacing:.08em}.world-card .world-state.ready{color:#b8e6c8;border-color:#4d9a6a66}.selection-line{font-size:11px;color:#e8d4a7;margin-top:13px;letter-spacing:.08em}.field{display:none}
 .eyebrow{font-size:10px;letter-spacing:.35em;color:var(--gold)}h1{font:normal clamp(30px,5vw,54px)/1 Georgia,serif;margin:13px 0}
 p{color:var(--muted);font-size:13px;line-height:1.65}.field{display:grid;gap:8px;margin-top:18px}
 label{font-size:10px;letter-spacing:.15em;color:#c7d1df}select{width:100%;padding:13px;background:#111d2c;color:white;border:1px solid #52627a}
@@ -22,7 +22,7 @@ label{font-size:10px;letter-spacing:.15em;color:#c7d1df}select{width:100%;paddin
 .hint{position:fixed;z-index:2;right:4vw;bottom:24px;color:#aebbd0;font-size:11px;text-shadow:0 2px 8px #000}
 #busy{position:fixed;z-index:5;inset:0;display:grid;place-items:center;background:#050811d9;text-align:center;letter-spacing:.16em;color:var(--gold)}
 #busy[hidden]{display:none}#busy small{display:block;color:#b5c2d5;letter-spacing:.04em;margin-top:12px}
-@media(max-width:650px){.panel{top:auto;bottom:20px;left:4vw;transform:none;width:92vw;padding:18px}.hint{display:none}header{padding:16px 4vw}.brand{font-size:9px}}
+@media(max-width:650px){html,body{overflow:auto}.panel{top:76px;bottom:14px;left:3vw;transform:none;width:94vw;max-height:none;padding:16px}.world-grid{grid-template-columns:1fr;gap:8px}.world-card{min-height:94px;padding:12px}.world-card strong{font-size:19px}.hint{display:none}header{padding:12px 3vw}.brand{font-size:9px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 </head>
@@ -30,17 +30,12 @@ label{font-size:10px;letter-spacing:.15em;color:#c7d1df}select{width:100%;paddin
 <div id="viewport"></div><div class="shade"></div>
 <header><div class="brand">STARSHIP LEGACY ENTERTAINMENT<small id="selectedAreborn">LEAGUE OF LEGACY · MP WORLD SELECT</small></div><button id="back">← MENÚ</button></header>
 <section class="panel">
-<div class="eyebrow">WORLD DEPLOYMENT</div><h1>World Select</h1>
-<p>Selecciona un mundo o modo de juego. MP consulta el catálogo central de League Of Legacy y prepara la vista previa del escenario.</p>
-<div class="field"><label for="mode">MODO DE JUEGO</label><select id="mode">
-<option value="battle-royale">Battle Royale · Summoner's Rift</option>
-<option value="ranked">De Clasificatoria · Summoner's Rift</option>
-<option value="versus-1-to-3">Versus 1 to 3 · Mapa propio</option>
-<option value="versus-4-to-5">Versus 4 to 5 · Mapa propio</option>
-<option value="training">Entrenamiento · Mapa propio</option>
-</select></div>
-<div class="status" id="status" role="status">Preparando escenario…</div>
-<div class="actions"><button class="primary" id="preview">CARGAR ESCENARIO</button><button id="back2">VOLVER</button></div>
+<div class="eyebrow">LEAGUE OF LEGACY · WORLD GATE</div><h1>Elige tu mundo</h1>
+<p>Selecciona el modo al que quieres entrar. MP consulta el catálogo maestro y muestra qué escenarios están disponibles.</p>
+<div class="world-grid" id="worldGrid" aria-label="Mundos y modos disponibles"></div>
+<div class="selection-line" id="selectionLine">MODO SELECCIONADO: TRAINING GROUNDS</div>
+<div class="status" id="status" role="status">Preparando catálogo de mundos…</div>
+<div class="actions"><button class="primary" id="preview">ENTRAR AL ENTRENAMIENTO</button><button id="back2">VOLVER AL AREBORN</button></div>
 </section>
 <div class="hint">ARRASTRA PARA GIRAR · RUEDA PARA ZOOM</div>
 <div id="busy" hidden><div>LOADING MAP<small id="busyText">Preparando recursos…</small></div></div>
@@ -53,11 +48,20 @@ import {MTLLoader} from "three/addons/loaders/MTLLoader.js";
 import {DDSLoader} from "three/addons/loaders/DDSLoader.js";
 import {getModeLaunchInfo,MAPS} from "../../../map-registry.js";
 
-const viewport=document.getElementById("viewport"),modeSelect=document.getElementById("mode");
+const viewport=document.getElementById("viewport"),worldGrid=document.getElementById("worldGrid");
 const chosenAreborn=sessionStorage.getItem("leagueOfLegacyAreborn");
+let selectedMode="training";
 const chosenLabel=document.getElementById("selectedAreborn");
 if(chosenLabel)chosenLabel.textContent=chosenAreborn?"AREBORN: "+chosenAreborn+" · MODE SELECT":"LEAGUE OF LEGACY · MODE SELECT";
 const status=document.getElementById("status"),busy=document.getElementById("busy"),busyText=document.getElementById("busyText");
+const worldCards=[
+{id:"training",title:"Training Grounds",type:"ENTRENAMIENTO",desc:"Arena original de práctica · prototipo jugable",state:"PROTOTIPO JUGABLE",ready:true},
+{id:"versus-4-to-5",title:"Versus 4 to 5",type:"COMBATE POR EQUIPOS",desc:"Escenario 3D · revisión de licencia pendiente",state:"EN REVISIÓN"},
+{id:"versus-1-to-3",title:"Versus 1 to 3",type:"COMBATE REDUCIDO",desc:"Beginning Lobby · validar licencia CC BY-NC",state:"LICENCIA PENDIENTE"},
+{id:"battle-royale",title:"Battle Royale",type:"SUPERVIVENCIA",desc:"Summoner’s Rift · requiere autorización",state:"BLOQUEADO · AUTORIZACIÓN"},
+{id:"ranked",title:"De Clasificatoria",type:"COMPETITIVO",desc:"Summoner’s Rift · requiere autorización",state:"BLOQUEADO · AUTORIZACIÓN"}
+];
+function renderWorldCards(){worldGrid.innerHTML=worldCards.map(card=>`<button type="button" class="world-card" data-mode="${card.id}" aria-pressed="${card.id===selectedMode}"><span class="world-type">${card.type}</span><strong>${card.title}</strong><small>${card.desc}</small><span class="world-state ${card.ready?"ready":""}">${card.state}</span></button>`).join("");worldGrid.querySelectorAll("[data-mode]").forEach(button=>button.addEventListener("click",()=>{selectedMode=button.dataset.mode;updateMode()}));}
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a101b);
 scene.fog=new THREE.Fog(0x0a101b,90,260);
 const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,5000);camera.position.set(20,18,28);
@@ -123,17 +127,17 @@ async function loadMap(modeId){
   console.error(error);status.textContent="No se pudo cargar "+map.name+": "+(error?.message||"error desconocido")+". Revisa la consola y los recursos del mapa.";
  }finally{if(token===loadSequence)setBusy(false)}
 }
-function updateMode(){const info=getModeLaunchInfo(modeSelect.value),map=info.map;document.getElementById("preview").textContent=modeSelect.value==="training"?"INICIAR ENTRENAMIENTO":"CARGAR ESCENARIO";
+function updateMode(){const info=getModeLaunchInfo(selectedMode),map=info.map;worldGrid.querySelectorAll("[data-mode]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.mode===selectedMode)));const card=worldCards.find(item=>item.id===selectedMode);document.getElementById("selectionLine").textContent="MODO SELECCIONADO: "+card.title.toUpperCase();document.getElementById("preview").textContent=selectedMode==="training"?"ENTRAR AL ENTRENAMIENTO":"CARGAR VISTA PREVIA";
  if(map.runtimeStatus==="blocked-license-review")status.textContent="Bloqueado por licencia: CC BY-NC. El modelo no se cargará.";
- else if(modeSelect.value==="training")status.textContent="Prototipo jugable disponible: Charlotte + arena original de prueba. El mapa Training original no se carga hasta verificar su licencia. Movimiento, salto y cámara en tercera persona.";
+ else if(selectedMode==="training")status.textContent="Prototipo jugable disponible: Charlotte + arena original de prueba. El mapa Training original no se carga hasta verificar su licencia. Movimiento, salto y cámara en tercera persona.";
  else status.textContent="Mapa asignado: "+map.name+" · "+(info.canLoadPreview?"Vista previa autorizada":"Licencia pendiente; vista previa bloqueada")+". Reglas independientes: "+info.mode.rulesetId+"."+(map.id==="summoners-rift"?" ADVERTENCIA: escenario pesado; OBJ de 63 MB y aproximadamente 215.5 MiB de texturas DDS. Se recomienda escritorio y conexión estable.":"");
 }
-modeSelect.addEventListener("change",updateMode);
-document.getElementById("preview").addEventListener("click",()=>{if(modeSelect.value==="training"){location.href="../../../assets/league-of-legacy/Gameplay/training.html";return;}loadMap(modeSelect.value);});
+
+document.getElementById("preview").addEventListener("click",()=>{sessionStorage.setItem("leagueOfLegacySelectedMode",selectedMode);sessionStorage.setItem("leagueOfLegacySelectedMap",getModeLaunchInfo(selectedMode).map.id);if(selectedMode==="training"){location.href="../../../assets/league-of-legacy/Gameplay/training.html";return;}loadMap(selectedMode);});
 function goBack(){location.href="../../../areborn-selector.html"}
 document.getElementById("back").addEventListener("click",goBack);document.getElementById("back2").addEventListener("click",goBack);
 addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
-updateMode();
+renderWorldCards();updateMode();
 </script>
 </body></html>
