@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const MODEL_URL = "../characters/Charlotte.glb";
+const MODEL_URL = "../../characters/Charlotte.glb";
 const WALK_SPEED = 6.5;
 const RUN_SPEED = 10.5;
 const JUMP_SPEED = 7.2;
