@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d18">
+<title>League Of Legacy · Entrenamiento</title>
+<style>
+:root{color-scheme:dark;--gold:#d9b875;--panel:#07101dcc;--muted:#b8c5d8}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080d18;color:#f5f3ed;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#game{position:fixed;inset:0}#game canvas{display:block;width:100%;height:100%}
+header{position:fixed;z-index:3;top:0;left:0;right:0;padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.brand,.actions{pointer-events:auto}.brand{font-size:11px;letter-spacing:.25em;color:var(--gold);text-shadow:0 2px 8px #000}.brand small{display:block;color:#d6deeb;font-size:10px;letter-spacing:.12em;margin-top:6px}
+button{font:inherit;cursor:pointer;border:1px solid #c8aa7080;background:#101a2bd9;color:#fff;padding:10px 14px;letter-spacing:.08em}button:hover{background:#293c55}
+#hud{position:fixed;z-index:2;left:22px;bottom:22px;padding:13px 16px;background:var(--panel);border:1px solid #c5a66a55;backdrop-filter:blur(10px);font-size:12px;line-height:1.8;color:#e5edf8}
+#hud strong{color:var(--gold);letter-spacing:.12em}#message{position:fixed;z-index:2;left:50%;top:22px;transform:translateX(-50%);padding:10px 16px;max-width:min(90vw,620px);text-align:center;background:var(--panel);border:1px solid #c5a66a55;color:#e5edf8;font-size:12px}
+#crosshair{position:fixed;z-index:2;left:50%;top:50%;width:8px;height:8px;transform:translate(-50%,-50%);border:1px solid #fff9;border-radius:50%;pointer-events:none}
+#start{position:fixed;z-index:4;inset:0;display:grid;place-items:center;background:#050811b8;padding:20px}
+#start[hidden]{display:none}.dialog{width:min(440px,94vw);padding:24px;background:#07101df2;border:1px solid #c5a66a88;box-shadow:0 18px 60px #0009}
+.eyebrow{font-size:10px;letter-spacing:.3em;color:var(--gold)}h1{font:normal 38px Georgia,serif;margin:12px 0}p{font-size:13px;line-height:1.65;color:var(--muted)}
+.primary{margin-top:12px;background:linear-gradient(110deg,#b9975e,#e2c78f);color:#10131a;border:0;font-weight:800}
+#touch{display:none;position:fixed;z-index:3;right:18px;bottom:22px;gap:8px}#touch button{width:54px;height:54px;border-radius:50%;background:#101a2bdc}
+@media(max-width:700px){header{padding:12px}#hud{left:12px;bottom:12px;font-size:11px}#touch{display:flex}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="game"></div>
+<header><div class="brand">STARSHIP LEGACY ENTERTAINMENT<small>LEAGUE OF LEGACY · TRAINING</small></div><div class="actions"><button id="pause">PAUSAR</button><button id="exit">SALIR</button></div></header>
+<div id="message" role="status">Charlotte · Zona de entrenamiento de prueba</div>
+<div id="crosshair"></div>
+<div id="hud"><strong>CHARLOTTE</strong><br><span id="state">Preparando personaje…</span><br>WASD mover · SHIFT correr · ESPACIO saltar<br>Ratón mirar · ESC liberar cursor · R reiniciar</div>
+<div id="touch"><button data-move="forward">↑</button><button data-move="left">←</button><button data-move="back">↓</button><button data-move="right">→</button><button data-move="jump">↥</button></div>
+<div id="start"><div class="dialog"><div class="eyebrow">PRIMER PROTOTIPO JUGABLE</div><h1>Charlotte</h1><p>Entrenamiento local en una arena de prueba original. Usa WASD para moverte, SHIFT para correr y ESPACIO para saltar. Haz clic en comenzar para capturar el ratón y controlar la cámara.</p><p id="load-status">Cargando el modelo de Charlotte…</p><button class="primary" id="begin">COMENZAR</button></div></div>
+<script type="module" src="./Core/training-runtime.js"></script>
+</body>
+</html>
