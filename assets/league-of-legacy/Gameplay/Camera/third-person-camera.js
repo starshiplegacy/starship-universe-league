@@ -28,6 +28,9 @@ export class ThirdPersonCamera {
       if (key === "3") this.setMode("third");
       if (key === "z") this.zoom(-0.8);
       if (key === "x") this.zoom(0.8);
+      // Rotate the camera around the character; never rotate the character itself.
+      if (event.code === "Comma") this.yaw -= 0.08;
+      if (event.code === "Period") this.yaw += 0.08;
     };
     this._onContext = event => event.preventDefault();
     window.addEventListener("mousemove", this._onMouseMove);
