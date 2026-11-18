@@ -45,10 +45,15 @@ export class PlayerController {
     this.move = new THREE.Vector3();
     this._onKeyDown = event => {
       const key = event.key.toLowerCase();
-      if (["arrowup","arrowdown","arrowleft","arrowright"," ","shift","r","q","w","e","h","z","x","1","3",",","."].includes(key)) event.preventDefault();
-      this.keys.add(key);
+      const physicalKey = event.code === "Comma" ? "comma" : event.code === "Period" ? "period" : key;
+      if (["arrowup","arrowdown","arrowleft","arrowright"," ","shift","r","q","w","e","h","z","x","1","3",",",".","comma","period"].includes(physicalKey)) event.preventDefault();
+      this.keys.add(physicalKey);
     };
-    this._onKeyUp = event => this.keys.delete(event.key.toLowerCase());
+    this._onKeyUp = event => {
+      const key = event.key.toLowerCase();
+      const physicalKey = event.code === "Comma" ? "comma" : event.code === "Period" ? "period" : key;
+      this.keys.delete(physicalKey);
+    };
     window.addEventListener("keydown", this._onKeyDown);
     window.addEventListener("keyup", this._onKeyUp);
   }
@@ -155,7 +160,7 @@ export class PlayerController {
     this.root.position.x = THREE.MathUtils.clamp(this.root.position.x, -ARENA_LIMIT, ARENA_LIMIT);
     this.root.position.z = THREE.MathUtils.clamp(this.root.position.z, -ARENA_LIMIT, ARENA_LIMIT);
 
-    const turnInput = Number(this.isDown(".")) - Number(this.isDown(","));
+    const turnInput = Number(this.isDown("period", ".")) - Number(this.isDown("comma", ","));
     if (turnInput !== 0) {
       this.root.rotation.y += turnInput * TURN_SPEED * delta;
       this.heading = this.root.rotation.y;
