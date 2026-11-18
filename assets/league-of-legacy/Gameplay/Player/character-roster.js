@@ -56,7 +56,7 @@ export const CHARACTER_ROSTER = {
       passive: "Spell1", hybrid: "Spell2", aggressive: "Spell3",
       tiny: "Spell4", damage: "Death", victory: "Dance_Loop"
     }
-  }
+  },
   opalo: {
     id: "opalo", name: "Opalo", model: "opalo.glb",
     animations: {
