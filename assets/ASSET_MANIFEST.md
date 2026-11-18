@@ -289,3 +289,17 @@ El acceso directo se enlazó dentro del bloque de Starship Plus Pro visible para
 - El botón **Abrir Starship Plus** está dentro del bloque de beneficios para miembros.
 - Se conservan nombres, extensiones y directorios originales. No se mezclan con Geffenite, GellyShow, The LyrieLife, CAL/CUL ni League Of Legacy.
 - QA visual/interactivo en navegador queda pendiente; la conexión de rutas no demuestra que todas las mecánicas estén probadas.
+
+
+## 5. League Of Legacy — primer prototipo de gameplay
+
+El primer prototipo local de Entrenamiento se encuentra en `assets/league-of-legacy/Gameplay/`:
+
+| Archivo | Función |
+|---|---|
+| `training.html` | Entrada independiente del prototipo de Entrenamiento |
+| `Core/training-runtime.js` | Escena Three.js, arena greybox original, HUD y ciclo de renderizado |
+| `Player/player-controller.js` | Carga de Charlotte GLB, movimiento, carrera, salto y gravedad básica |
+| `Camera/third-person-camera.js` | Cámara de seguimiento en tercera persona y control con ratón |
+
+La arena greybox es geometría de prueba creada para este prototipo; no reutiliza el GLB de Training cuyo estado de licencia sigue sin verificarse. Esta primera versión no incluye todavía colisiones físicas con obstáculos, animaciones verificadas, combate, guardado ni multijugador. El modelo de Charlotte debe probarse en navegador servido por HTTP/HTTPS.
