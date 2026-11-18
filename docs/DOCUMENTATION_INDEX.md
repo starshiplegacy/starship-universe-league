@@ -18,6 +18,8 @@ Este índice organiza la documentación sin cambiar nombres ni extensiones de lo
 
 ## 2. League Of Legacy
 
+| [LEAGUE_OF_LEGACY_GAMEPLAY_BLUEPRINT.md](LEAGUE_OF_LEGACY_GAMEPLAY_BLUEPRINT.md) | Organización de recursos, estructura futura de runtime y primera vertical slice jugable de Entrenamiento. |
+
 | Documento | Función |
 |---|---|
 | [LEAGUE_OF_LEGACY_LOGISTICS.md](LEAGUE_OF_LEGACY_LOGISTICS.md) | Fases de desarrollo, prioridades, dependencias y puertas de entrega. |
