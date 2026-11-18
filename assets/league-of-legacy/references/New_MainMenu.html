@@ -564,4 +564,14 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.c
 })();
 </script>
 
+
+<script>
+/* PLAY abre el nuevo visor independiente de Areborn. */
+document.getElementById('play')?.addEventListener('click', function(event){
+ event.preventDefault();
+ event.stopImmediatePropagation();
+ window.location.href='../../../areborn-selector.html';
+}, true);
+</script>
+
 </body></html>
