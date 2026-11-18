@@ -113,3 +113,8 @@ Required sequence:
 ## 9. Character animation roster — 18 November 2026
 
 The Training prototype now has a character selector for Charlotte, Emma, Bella, Stella and Aquamarine. Each selection loads its matching GLB and animation-name mapping from `Gameplay/Player/character-roster.js`. The roster preserves owner-supplied clip names, including `.anm` suffixes. Aquamarine's jump animation remains intentionally unassigned. Runtime availability and visual correctness of every clip remain pending browser verification; roster registration is not proof that a clip exists in its GLB.
+
+
+## 10. Arthur added to the Training roster — 18 November 2026
+
+Arthur is now selectable in the Training character selector and configured in `Gameplay/Player/character-roster.js` using `Arthur.glb`. His walk and run both use `Run`; SHIFT changes movement speed without switching animation clips. The supplied clip names are registered but still require browser verification against the model's embedded animation tracks.
