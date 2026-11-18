@@ -338,3 +338,22 @@ Se incorpora `Arthur.glb` al catálogo de Training y se registra su ficha en `Ga
 | Muerte/daño | `Death` |
 
 Arthur utiliza el mismo clip `Run` al caminar y correr; SHIFT cambia la velocidad del desplazamiento, no el clip. La ficha y el selector están integrados; la reproducción de los clips requiere validación en navegador.
+
+
+## 20. League Of Legacy — Optopool en Training
+
+Se incorpora `Optopool.glb` al selector de Training y su ficha queda registrada en `Gameplay/Player/character-roster.js`.
+
+| Acción | Clip |
+|---|---|
+| Reposo | `Idle1_Base` |
+| Caminar | `Run_Base` |
+| Correr (SHIFT) | `Float_Idle01` |
+| Q — Pasivo | `Spell1` |
+| W — Pasivo-agresivo | `Spell2` |
+| E — Agresivo | `Spell3` |
+| H — Hechizo diminuto | `Spell3` |
+| Victoria | `Dance_Loop` |
+| Muerte/daño | `Death` |
+
+No se proporcionó una animación de salto; queda sin asignar (`null`). Los clips se registran con su escritura original y requieren verificación de existencia/reproducción dentro del GLB.
