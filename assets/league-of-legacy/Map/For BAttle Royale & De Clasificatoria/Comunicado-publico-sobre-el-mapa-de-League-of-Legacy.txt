@@ -1,0 +1,95 @@
+﻿DECLARACIÓN INSTITUCIONAL
+Comunicado público sobre
+el mapa de League of Legacy
+
+Presentación y reconocimiento
+
+Starship Universe League, descrita por sus responsables
+como subsidiaria de juegos digitales de Starship Legacy
+Entertainment, LLC, comunica su intención de usar como
+base jugable el mapa de League of Legends en el
+desarrollo de League Of Legacy.
+
+Reconocemos que el mapa original, su diseño espacial,
+arquitectura y todos los elementos constitutivos de League
+of Legends pertenecen a Riot Games o a sus respectivos
+titulares. Starship Universe League no afirma haber creado
+el escenario original ni ostenta titularidad sobre la
+propiedad intelectual de Riot Games.
+El proyecto contempla añadir interacción y decoración
+propia. Reconocer la procedencia no transfiere derechos
+ni autoriza por sí solo reproducción, adaptación o
+distribución pública.
+Alcance y consideraciones jurídicas
+Este documento no afirma ni implica patrocinio, afiliación,
+aprobación previa o licencia de Riot Games. Atribución,
+ausencia de ánimo de apropiación y modificaciones no
+garantizan por sí solas la licitud de la explotación.
+Registro técnico de referencia espacial
+y delimitación de atributos del entorno.
+ESTADO DE PROYECTO
+Fase conceptual sujeta a
+validación regulatoria y análisis
+de licencias de terceros.
+
+Antes de implementar, difundir o publicar material
+protegido de Riot Games, el equipo deberá confirmar los
+permisos pertinentes y, cuando resulte preceptivo, obtener
+autorización formal por escrito. La publicación definitiva
+queda sujeta a revisar las condiciones contractuales
+aplicables y recibir asesoría jurídica profesional.
+
+Departamento de Derechos de Autor
+Starship Universe League
+Departamento de Desarrollo Visual
+Starship Legacy Entertainment, LLCMARCO REGULATORIO Y POLÍTICAS
+Información oficial y condiciones de referencia
+
+Lo que establecen las políticas de Riot Games
+
+Para encuadrar desarrollos basados en material protegido, se identifican las pautas vigentes de la
+compañía titular:
+
+Proyectos de fans
+La política contempla una licencia limitada, revocable y no exclusiva, sujeta
+a directrices no comerciales. Los proyectos que involucren una empresa o
+entidad jurídica requieren acuerdo de licencia formal por escrito, salvo
+excepciones reglamentadas.
+
+Desarrolladores
+Las políticas generales indican que no se deben crear ni poner a disposición
+juegos que usen la propiedad intelectual de Riot Games y restringen
+productos o aplicaciones cuyo aspecto o mecánicas se asemejen
+sustancialmente a sus títulos oficiales. Rigen para el ecosistema de
+integraciones y deben analizarse según su ámbito aplicable.
+
+Cumplimiento
+Este comunicado no es licencia formal, determinación de cumplimiento ni
+garantía de ausencia de infracción. Antes de publicar o distribuir material
+protegido o derivado, consultar con Riot Games y un profesional jurídico
+habilitado.
+
+Fuentes oficiales y documentación
+
+Recurso normativo Descripción institucional Enlace oficial
+
+Política de Propiedad
+Intelectual
+Pautas sobre marcas, arte y proyectos
+de fans.
+riotgames.com/legal
+
+Riot Developer Relations
+Políticas generales de integración
+técnica y ecosistema.
+developer.riotgames.com
+
+Términos de Servicio
+Condiciones de usuario y derechos
+reservados.
+riotgames.com/terms
+
+Documento informativo para la comunidad y entidades interesadas; no reemplaza asesoramiento legal
+especializado ni prejuzga futuras resoluciones de los titulares de derechos.
+
+2
