@@ -1,0 +1,71 @@
+name: Deploy STARSHIP UNIVERSE LEAGUE to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage public website files
+        run: |
+          mkdir -p site
+          rsync -a ./ site/ \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='docs/' \
+            --exclude='scripts/' \
+            --exclude='tools/' \
+            --exclude='assets/**/Docs/' \
+            --exclude='assets/**/docs/' \
+            --exclude='assets/league-of-legacy/Map/' \
+            --exclude='assets/The-LyrieLife/Worlds/' \
+            --exclude='*.md' \
+            --exclude='*.txt' \
+            --exclude='*.world' \
+            --exclude='*.package' \
+            --exclude='*.dds' \
+            --exclude='*.obj' \
+            --exclude='*.mtl' \
+            --exclude='*.fbx' \
+            --exclude='*.blend' \
+            --exclude='*.blend1' \
+            --exclude='*.c4d' \
+            --exclude='*.stl' \
+            --exclude='*.tif' \
+            --exclude='*.ts4script' \
+            --exclude='*.bpi' \
+            --exclude='*.blueprint' \
+            --exclude='*.layer' \
+            --exclude='*.zip' \
+            --exclude='*.psd'
+          touch site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
