@@ -315,7 +315,7 @@ $('#lk').onclick=()=>{if(!pick)return;
  play.classList.add('q');let s=0;play.textContent='CANCELAR 0:00';queue={t:setInterval(()=>{s++;play.textContent='CANCELAR 0:0'+s;if(s>=5){clearInterval(queue.t);queue=null;play.classList.remove('q');play.textContent='PLAY';go('match')}},1000)}};
 $$('#an button').forEach(b=>b.onclick=()=>{$$('#an button').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(window.playPrev)playPrev(b.dataset.a)});
 function choose(id){pick=id;$$('.cc').forEach(x=>x.classList.toggle('on',x.dataset.c===id));$('#pn').textContent=byId(id).name;$('#lk').disabled=false;$('#pl').style.display='flex';$('#pl').textContent='Cargando '+byId(id).name+'…';
- if(window.showPrev)showPrev(id).then(()=>{if(pick===id)$('#pl').style.display='none'}).catch(e=>{$('#pl').textContent='No se pudo cargar el modelo. Revisa que la carpeta "models" esté junto al HTML y que tengas internet (three.js).'});
+ if(window.showPrev)showPrev(id).then(()=>{if(pick===id)$('#pl').style.display='none'}).catch(e=>{$('#pl').textContent='No se pudo cargar el modelo. Revisa la carpeta ../characters y que el servidor permita cargar los archivos del juego y que tengas internet (three.js).'});
  else $('#pl').textContent='La vista 3D necesita internet para cargar three.js.'}
 window.initPrev=function(){};window.queueThumbs=function(){};
 fit();
@@ -333,7 +333,7 @@ function loadChar(id){
   const run=()=>{const b=window.__GLB&&__GLB[id];if(!b)return rej(new Error('sin datos'));
    fetch('data:application/octet-stream;base64,'+b).then(r=>r.arrayBuffer()).then(buf=>{delete __GLB[id];loader.parse(buf,'',res,rej)}).catch(rej)};
   if(window.__GLB&&__GLB[id])return run();
-  const s=document.createElement('script');s.src='models/'+id+'.js';s.onload=run;s.onerror=()=>rej(new Error('No se encontró models/'+id+'.js'));document.head.appendChild(s)
+  const s=document.createElement('script');s.src='../characters/'+id+'.js';s.onload=run;s.onerror=()=>rej(new Error('No se encontró ../characters/'+id+'.js'));document.head.appendChild(s)
  }).catch(e=>{delete cache[id];throw e})}
 function inst(gltf,h){
  const m=SU?SU.clone(gltf.scene):gltf.scene.clone(true);m.updateMatrixWorld(true);
