@@ -72,8 +72,7 @@
       const id=card.dataset.openGame||card.dataset.installGame||title.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
       const button=document.createElement("button");button.type="button";button.className="ulh-card-favorite";button.dataset.playFavorite=id;button.setAttribute("aria-label","Añadir "+title+" a favoritos");button.setAttribute("aria-pressed","false");button.textContent="♡";
       button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();favoriteToggle(id,title);});
-      const art=card.querySelector(".ulx-art,.ulh-entry-open,.ulh-catalog-art,.ulh-library-art,.ulh-library-art,.ulh-entry-cover")||card;
-      art.appendChild(button);
+      card.appendChild(button);
     });
     renderFavorites();
   }
