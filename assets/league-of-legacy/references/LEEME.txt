@@ -1,0 +1,18 @@
+LEAGUE OF LEGENDS - HOME (versión LyrieLife)
+============================================
+
+1) Abre "index.html" con doble clic (Chrome, Edge o Firefox). Mantén la carpeta "models" junto al archivo.
+2) Necesitas internet la primera vez: three.js se carga desde jsDelivr (cdn.jsdelivr.net).
+3) Los 8 personajes están en "models" (un archivo .js por personaje). Se cargan solo cuando hacen falta.
+
+QUÉ HACE CADA COSA
+- PLAY: abre la ventana "Elige tu personaje" (vista 3D que puedes girar; botones Reposo, Bailar, Reír y Provocar).
+  BLOQUEAR PERSONAJE lo pone al frente del campo de batalla y busca partida.
+- Los demás botones (Perfil, Colección, Noticias, Notas del parche, Evento, tienda, ajustes, chat...) abren una pestaña de colores.
+  El triángulo de arriba a la izquierda (o la tecla Esc) vuelve a MainMenu_NewVersion.
+- Ajustes: "Animar personajes" pausa las animaciones y "Calidad alta" cambia la resolución del 3D.
+
+NOTAS
+- Los modelos originales (93 MB) se aligeraron quitando animaciones que no se usan (quedan reposo, baile, risa y provocación).
+  Los GLB originales no se modificaron.
+- Si un personaje se ve de lado o muy grande/pequeño, avísame y lo ajusto por personaje.
