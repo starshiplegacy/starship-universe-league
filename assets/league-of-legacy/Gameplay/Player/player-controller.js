@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const MODEL_URL = "../characters/Charlotte.glb";
+const MODEL_URL = "../../characters/Charlotte.glb";
 const WALK_SPEED = 6.5;
 const RUN_SPEED = 10.5;
 const JUMP_SPEED = 7.2;
@@ -26,7 +26,7 @@ export class PlayerController {
     this.move = new THREE.Vector3();
     this._onKeyDown = event => {
       const key = event.key.toLowerCase();
-      if (["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"," ","shift","r"].includes(key)) event.preventDefault();
+      if (["arrowup","arrowdown","arrowleft","arrowright"," ","shift","r","q","w","e","h","z","x","1","3"].includes(key)) event.preventDefault();
       this.keys.add(key);
     };
     this._onKeyUp = event => this.keys.delete(event.key.toLowerCase());
@@ -68,8 +68,8 @@ export class PlayerController {
 
   update(delta, cameraYaw) {
     if (!this.ready) return;
-    const forwardInput = Number(this.isDown("w","arrowup","forward")) - Number(this.isDown("s","arrowdown","back"));
-    const sideInput = Number(this.isDown("d","arrowright","right")) - Number(this.isDown("a","arrowleft","left"));
+    const forwardInput = Number(this.isDown("arrowup","forward")) - Number(this.isDown("arrowdown","back"));
+    const sideInput = Number(this.isDown("arrowright","right")) - Number(this.isDown("arrowleft","left"));
     this.forward.set(-Math.sin(cameraYaw), 0, -Math.cos(cameraYaw));
     this.right.set(Math.cos(cameraYaw), 0, -Math.sin(cameraYaw));
     this.move.set(0,0,0).addScaledVector(this.forward, forwardInput).addScaledVector(this.right, sideInput);
