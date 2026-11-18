@@ -28,7 +28,7 @@ label{font-size:10px;letter-spacing:.15em;color:#c7d1df}select{width:100%;paddin
 </head>
 <body>
 <div id="viewport"></div><div class="shade"></div>
-<header><div class="brand">STARSHIP LEGACY ENTERTAINMENT<small>LEAGUE OF LEGACY · MODE SELECT</small></div><button id="back">← MENÚ</button></header>
+<header><div class="brand">STARSHIP LEGACY ENTERTAINMENT<small id="selectedAreborn">LEAGUE OF LEGACY · MODE SELECT</small></div><button id="back">← MENÚ</button></header>
 <section class="panel">
 <div class="eyebrow">SELECT YOUR BATTLE</div><h1>Game Modes</h1>
 <p>Selecciona un modo. El escenario se resuelve desde el registro central; Battle Royale y Clasificatoria comparten mapa, pero conservan reglas independientes.</p>
@@ -54,6 +54,9 @@ import {DDSLoader} from "three/addons/loaders/DDSLoader.js";
 import {getModeLaunchInfo,MAPS} from "./map-registry.js";
 
 const viewport=document.getElementById("viewport"),modeSelect=document.getElementById("mode");
+const chosenAreborn=sessionStorage.getItem("leagueOfLegacyAreborn");
+const chosenLabel=document.getElementById("selectedAreborn");
+if(chosenLabel)chosenLabel.textContent=chosenAreborn?"AREBORN: "+chosenAreborn+" · MODE SELECT":"LEAGUE OF LEGACY · MODE SELECT";
 const status=document.getElementById("status"),busy=document.getElementById("busy"),busyText=document.getElementById("busyText");
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a101b);
 scene.fog=new THREE.Fog(0x0a101b,90,260);
@@ -126,7 +129,7 @@ function updateMode(){const info=getModeLaunchInfo(modeSelect.value);const map=i
 }
 modeSelect.addEventListener("change",updateMode);
 document.getElementById("preview").addEventListener("click",()=>loadMap(modeSelect.value));
-function goBack(){location.href="./league-of-legacy.html"}
+function goBack(){location.href="./areborn-selector.html"}
 document.getElementById("back").addEventListener("click",goBack);document.getElementById("back2").addEventListener("click",goBack);
 addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
