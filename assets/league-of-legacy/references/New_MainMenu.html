@@ -434,4 +434,90 @@ let qRun=false;window.queueThumbs=async function(){if(qRun)return;qRun=true;for(
 tick();
 })();
 
-</script></body></html>
+</script>
+<style>
+#ul-flow{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 20%,#172943f2,#030811f7 72%);color:#f0e6d2;font-family:Lato,Arial,sans-serif}
+#ul-flow.open{display:flex}#ul-flow *{box-sizing:border-box}
+.ul-panel{width:min(1080px,96vw);max-height:92vh;overflow:auto;border:1px solid #a9894c;background:linear-gradient(145deg,#0b1828,#111329 65%,#1b1020);box-shadow:0 20px 80px #000b;padding:clamp(20px,4vw,42px);position:relative}
+.ul-kicker{color:#c8aa6e;font-size:10px;letter-spacing:.32em;text-transform:uppercase}
+.ul-title{font:700 clamp(27px,4vw,42px) Cinzel,Georgia,serif;color:#f0e6d2;margin:12px 0 8px}
+.ul-sub{color:#aeb8c7;font-size:13px;line-height:1.6;margin-bottom:24px}
+.ul-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.ul-option{min-height:145px;text-align:left;padding:18px;border:1px solid #536078;background:linear-gradient(145deg,#1a2b40,#0b1422);color:#f0e6d2;cursor:pointer;transition:.18s;position:relative}
+.ul-option:hover{border-color:#c8aa6e;transform:translateY(-2px)}.ul-option.selected{border:2px solid #c8aa6e;background:linear-gradient(145deg,#31445a,#152235);box-shadow:0 0 20px #c8aa6e33}
+.ul-option:disabled{opacity:.42;cursor:not-allowed;transform:none}
+.ul-option strong{display:block;font:700 19px Cinzel,Georgia,serif;margin:8px 0}.ul-option small{display:block;color:#b4bfce;line-height:1.5}
+.ul-status{display:inline-block;margin-top:12px;padding:5px 8px;border:1px solid #a9894c88;color:#e5c98f;font-size:9px;letter-spacing:.13em}
+.ul-actions{display:flex;justify-content:space-between;gap:12px;margin-top:25px;flex-wrap:wrap}
+.ul-btn{padding:12px 22px;border:1px solid #9d804d;background:#142338;color:#f0e6d2;cursor:pointer;font-weight:700;letter-spacing:.12em}
+.ul-btn.primary{background:linear-gradient(110deg,#b9975e,#e2c78f);color:#111722;border:0}.ul-btn:disabled{opacity:.35;cursor:not-allowed}
+.ul-char{min-height:115px}.ul-char strong{font-size:17px}.ul-char .ul-orb{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#fff,#c8aa6e 30%,#28344c 80%);color:#101725;font-weight:900}
+.ul-progress{height:8px;background:#263247;margin:24px 0 10px;overflow:hidden}.ul-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8e6a35,#f0d49a);transition:width .25s}
+.ul-map-preview{height:150px;margin:18px 0;background:radial-gradient(ellipse at 50% 60%,#334d61,#101b2c 65%,#080e19);border:1px solid #4b5360;display:grid;place-items:center;color:#c8aa6e;font:700 12px Cinzel,serif;letter-spacing:.18em}
+@media(max-width:600px){.ul-panel{padding:20px}.ul-option{min-height:120px}.ul-actions .ul-btn{flex:1}}
+</style>
+<div id="ul-flow" aria-live="polite">
+ <section class="ul-panel" id="ul-flow-panel">
+  <div class="ul-kicker">League of Legacy · Match setup</div>
+  <h2 class="ul-title" id="ul-flow-title">Selecciona un mapa</h2>
+  <p class="ul-sub" id="ul-flow-sub">Elige el campo de batalla. Podrás confirmar tu selección antes de continuar.</p>
+  <div id="ul-flow-content"></div>
+  <div class="ul-actions"><button class="ul-btn" id="ul-flow-back" type="button">VOLVER</button><button class="ul-btn primary" id="ul-flow-next" type="button" disabled>CONTINUAR →</button></div>
+ </section>
+</div>
+<script>
+(()=>{'use strict';
+const overlay=document.getElementById('ul-flow'),title=document.getElementById('ul-flow-title'),sub=document.getElementById('ul-flow-sub'),content=document.getElementById('ul-flow-content'),back=document.getElementById('ul-flow-back'),next=document.getElementById('ul-flow-next');
+const maps=[
+ {id:'training-main',name:'Training',mode:'Entrenamiento',desc:'Campo de práctica. Preparado para conectar el mapa 3D más adelante.',state:'MAPA REGISTRADO · 3D PENDIENTE',ready:true},
+ {id:'versus-1-to-3',name:'Versus 1 to 3',mode:'Versus',desc:'Escenario para enfrentamientos de 1 a 3 jugadores.',state:'MAPA REGISTRADO · 3D PENDIENTE',ready:true},
+ {id:'versus-4-to-5',name:'Versus 4 to 5',mode:'Versus',desc:'Escenario para enfrentamientos de 4 a 5 jugadores.',state:'MAPA REGISTRADO · 3D PENDIENTE',ready:true},
+ {id:'summoners-rift',name:"Summoner's Rift",mode:'Battle Royale / Clasificatoria',desc:'El recurso existe en el repositorio, pero permanece bloqueado hasta completar la revisión de derechos.',state:'BLOQUEADO · REVISIÓN DE LICENCIA',ready:false}
+];
+const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
+let step='map',map=null,character=null,loadingTimer=null;
+function show(){overlay.classList.add('open');render()}
+function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer)}
+function render(){
+ back.textContent=step==='map'?'CANCELAR':step==='confirm'?'← CAMBIAR MAPA':step==='character'?'← MAPA':'SALIR';
+ next.disabled=step==='map'?!map:step==='confirm'?!map:step==='character'?!character:step==='loading';
+ if(step==='map'){
+  title.textContent='Selecciona un mapa';sub.textContent='Elige el escenario para esta partida. Los mapas 3D todavía no se cargarán en esta fase.';
+  content.innerHTML='<div class="ul-grid">'+maps.map(m=>'<button type="button" class="ul-option '+(map&&map.id===m.id?'selected':'')+'" data-map="'+m.id+'" '+(!m.ready?'disabled':'')+'><span class="ul-kicker">'+m.mode+'</span><strong>'+m.name+'</strong><small>'+m.desc+'</small><span class="ul-status">'+m.state+'</span></button>').join('')+'</div>';
+  next.textContent='CONFIRMAR MAPA →';
+ }else if(step==='confirm'){
+  title.textContent='¿Confirmas este mapa?';sub.textContent='Comprueba tu selección. Si quieres, puedes volver y elegir otro escenario.';
+  content.innerHTML='<div class="ul-map-preview">MAPA 3D · PENDIENTE DE INTEGRACIÓN</div><div class="ul-option selected"><span class="ul-kicker">'+map.mode+'</span><strong>'+map.name+'</strong><small>'+map.desc+'</small><span class="ul-status">'+map.state+'</span></div>';
+  next.textContent='SÍ, CONTINUAR →';
+ }else if(step==='character'){
+  title.textContent='Elige tu personaje';sub.textContent='Selecciona el personaje con el que entrarás al mapa: '+map.name+'.';
+  content.innerHTML='<div class="ul-grid">'+characters.map((c,i)=>'<button type="button" class="ul-option ul-char '+(character===c?'selected':'')+'" data-character="'+c+'"><span class="ul-orb">'+c.charAt(0)+'</span><strong>'+c+'</strong><small>Personaje disponible</small></button>').join('')+'</div>';
+  next.textContent='INICIAR →';
+ }else if(step==='loading'){
+  title.textContent='Preparando partida';sub.textContent='Preparando '+map.name+' y '+character+'. No se descargará ni abrirá ningún modelo de mapa todavía.';
+  content.innerHTML='<div class="ul-map-preview">STARSHIP LEGACY · LOADING</div><div class="ul-progress"><i id="ul-progress-fill"></i></div><small id="ul-progress-label" style="color:#b4bfce">Preparando selección…</small>';
+  next.textContent='PREPARANDO…';
+ }else if(step==='pending'){
+  title.textContent='Preparación completada';sub.textContent='Tu selección está lista. El mapa 3D todavía no está conectado, así que no intentaremos cargar archivos incompletos ni cambiar de escena.';
+  content.innerHTML='<div class="ul-map-preview">MAPA SELECCIONADO · '+map.name.toUpperCase()+'</div><div class="ul-option selected"><strong>'+character+'</strong><small>Personaje seleccionado</small><span class="ul-status">SELECCIÓN GUARDADA PARA ESTA SESIÓN</span></div><p class="ul-sub" style="margin-top:18px">Cuando integremos el modelo del mapa, esta pantalla será sustituida por la entrada al mundo 3D.</p>';
+  next.textContent='VOLVER AL MENÚ';
+ }
+}
+content.addEventListener('click',e=>{
+ const m=e.target.closest('[data-map]');if(m){map=maps.find(x=>x.id===m.dataset.map);render();return}
+ const c=e.target.closest('[data-character]');if(c){character=c.dataset.character;render()}
+});
+back.addEventListener('click',()=>{if(step==='map'){hide();return}if(step==='confirm')step='map';else if(step==='character')step='map';else if(step==='pending'){hide();step='map'}else if(step==='loading'){if(loadingTimer)clearInterval(loadingTimer);step='character'}render()});
+next.addEventListener('click',()=>{
+ if(step==='map'&&map)step='confirm';
+ else if(step==='confirm'&&map)step='character';
+ else if(step==='character'&&character){step='loading';render();let p=0;loadingTimer=setInterval(()=>{p=Math.min(100,p+10);const fill=document.getElementById('ul-progress-fill'),label=document.getElementById('ul-progress-label');if(fill)fill.style.width=p+'%';if(label)label.textContent=p+'% · Preparando selección';if(p>=100){clearInterval(loadingTimer);step='pending';render()}},110);return}
+ else if(step==='pending'){hide();step='map';return}
+ render();
+});
+document.addEventListener('click',e=>{if(e.target.closest('#play')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();map=null;character=null;step='map';show()}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))hide()});
+})();
+</script>
+
+</body></html>
