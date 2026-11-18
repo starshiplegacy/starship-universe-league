@@ -207,3 +207,34 @@ body:not(.is-authenticated)>.ulh-home,body.auth-checking>.ulh-home{display:none!
 .universe-pay-member-actions button:hover{filter:brightness(1.08);transform:translateY(-2px)}
 .universe-pay-member-actions button+button{background:transparent;color:var(--ink)}
 @media(max-width:480px){.universe-pay-member-actions{flex-direction:column}.universe-pay-member-actions button{flex-basis:auto;width:100%}}
+
+
+/* STARSHIP UNIVERSE PLAY — quick-access panels */
+.ulh-content{position:relative}
+.ulh-action-panels{position:absolute;z-index:40;top:68px;right:18px;width:min(390px,calc(100vw - 36px));}
+.ulh-action-panel{background:#20283a;border:1px solid #46516a;border-radius:14px;box-shadow:0 22px 65px rgba(0,0,0,.42);overflow:hidden;color:#f2f4f8}
+.ulh-action-panel[hidden]{display:none!important}
+.ulh-action-panel>header{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;border-bottom:1px solid #3a4258}
+.ulh-action-panel>header span{font-size:9px;letter-spacing:1.5px;color:#8daeff;font-weight:800}
+.ulh-action-panel>header h3{font-size:19px;margin:3px 0 0}
+.ulh-action-panel>header button,.ulh-panel-item>button{width:30px;height:30px;border:0;border-radius:8px;background:#303b52;color:#f2f4f8;font-size:22px;line-height:1}
+.ulh-panel-list{max-height:min(430px,60vh);overflow:auto;padding:8px}
+.ulh-panel-item{display:flex;align-items:flex-start;gap:11px;padding:12px;border-radius:10px;border-bottom:1px solid rgba(145,160,184,.12)}
+.ulh-panel-item:last-child{border-bottom:0}
+.ulh-panel-item.is-unread{background:rgba(43,108,246,.12)}
+.ulh-panel-symbol{width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:#303b52;display:grid;place-items:center;color:#a9c4ff;font-size:17px}
+.ulh-panel-item>div{flex:1;min-width:0}
+.ulh-panel-item strong{font-size:12px;display:block}
+.ulh-panel-item p{font-size:11px;line-height:1.5;color:#c0c9d8;margin:4px 0}
+.ulh-panel-item small{font-size:9px;color:#8e9bb1}
+.ulh-panel-item>button{flex:0 0 30px;font-size:19px;color:#ff9aa8}
+.ulh-panel-empty{padding:25px 15px;text-align:center;color:#a9b8cc;font-size:12px;line-height:1.6}
+.ulh-action-panel>footer{border-top:1px solid #3a4258;padding:12px 16px;color:#a9b8cc;font-size:10px;display:flex;justify-content:flex-end}
+.ulh-action-panel>footer button{border:0;background:transparent;color:#9fc0ff;font:700 10px inherit}
+.ulh-action-count{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#ff5268;color:#fff;font:800 9px/17px Arial;text-align:center;border:1px solid #141824}
+.ulh-action-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:#ff5268}
+.ulh-action-count[hidden],.ulh-action-dot[hidden]{display:none}
+.ulh-card-favorite{position:absolute;top:9px;right:9px;z-index:6;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(12,17,29,.78);color:#fff;font-size:19px;display:grid;place-items:center;backdrop-filter:blur(8px)}
+.ulh-card-favorite.is-favorite{color:#ff6b91;background:rgba(35,14,30,.9)}
+.ulx-game,.ulh-catalog-card,.ulh-library-card{position:relative}
+@media(max-width:650px){.ulh-action-panels{top:64px;right:10px;width:min(370px,calc(100vw - 20px))}.ulh-action-panel>header{padding:14px}.ulh-panel-list{max-height:55vh}}
