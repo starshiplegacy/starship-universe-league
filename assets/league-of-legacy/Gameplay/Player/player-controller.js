@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
 const MODEL_URL = "../characters/Charlotte.glb";
 const WALK_SPEED = 6.5;
@@ -35,7 +36,9 @@ export class PlayerController {
   }
 
   async load() {
-    const gltf = await new GLTFLoader().loadAsync(MODEL_URL);
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    const gltf = await loader.loadAsync(MODEL_URL);
     const model = gltf.scene;
     const initialBounds = new THREE.Box3().setFromObject(model);
     const size = initialBounds.getSize(new THREE.Vector3());
