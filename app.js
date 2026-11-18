@@ -94,6 +94,11 @@ Object.assign(translations.ja, {
   releaseItem:"音楽リリース", releaseOpen:"ONCEで開く ↗"
 });
 
+Object.assign(translations.es, {notificationsMarkAllRead:"Marcar todo como leído"});
+Object.assign(translations.en, {notificationsMarkAllRead:"Mark all as read"});
+Object.assign(translations.ko, {notificationsMarkAllRead:"모두 읽음으로 표시"});
+Object.assign(translations.ja, {notificationsMarkAllRead:"すべて既読にする"});
+
 const root = document.documentElement;
 const languageSelect = document.getElementById("languageSelect");
 const savedTheme = localStorage.getItem("universe-theme");
