@@ -32,13 +32,38 @@ label{font-size:10px;letter-spacing:.15em;color:#c7d1df}select{width:100%;paddin
 <section class="panel">
 <div class="eyebrow">LEAGUE OF LEGACY · WORLD GATE</div><h1>Elige tu mundo</h1>
 <p>Selecciona el modo al que quieres entrar. MP consulta el catálogo maestro y muestra qué escenarios están disponibles.</p>
-<div class="world-grid" id="worldGrid" aria-label="Mundos y modos disponibles"></div>
+<div class="world-grid" id="worldGrid" aria-label="Mundos y modos disponibles">
+<button type="button" class="world-card" data-mode="training" aria-pressed="true"><span class="world-type">ENTRENAMIENTO</span><strong>Training Grounds</strong><small>Arena original de práctica · prototipo jugable</small><span class="world-state ready">PROTOTIPO JUGABLE</span></button>
+<button type="button" class="world-card" data-mode="versus-4-to-5" aria-pressed="false"><span class="world-type">COMBATE POR EQUIPOS</span><strong>Versus 4 to 5</strong><small>Escenario 3D · revisión de licencia pendiente</small><span class="world-state">EN REVISIÓN</span></button>
+<button type="button" class="world-card" data-mode="versus-1-to-3" aria-pressed="false"><span class="world-type">COMBATE REDUCIDO</span><strong>Versus 1 to 3</strong><small>Beginning Lobby · validar licencia CC BY-NC</small><span class="world-state">LICENCIA PENDIENTE</span></button>
+<button type="button" class="world-card" data-mode="battle-royale" aria-pressed="false"><span class="world-type">SUPERVIVENCIA</span><strong>Battle Royale</strong><small>Summoner’s Rift · requiere autorización</small><span class="world-state">BLOQUEADO · AUTORIZACIÓN</span></button>
+<button type="button" class="world-card" data-mode="ranked" aria-pressed="false"><span class="world-type">COMPETITIVO</span><strong>De Clasificatoria</strong><small>Summoner’s Rift · requiere autorización</small><span class="world-state">BLOQUEADO · AUTORIZACIÓN</span></button>
+</div>
 <div class="selection-line" id="selectionLine">MODO SELECCIONADO: TRAINING GROUNDS</div>
 <div class="status" id="status" role="status">Preparando catálogo de mundos…</div>
 <div class="actions"><button class="primary" id="preview">ENTRAR AL ENTRENAMIENTO</button><button id="back2">VOLVER AL AREBORN</button></div>
 </section>
 <div class="hint">ARRASTRA PARA GIRAR · RUEDA PARA ZOOM</div>
 <div id="busy" hidden><div>LOADING MAP<small id="busyText">Preparando recursos…</small></div></div>
+<script>
+(function(){
+ const grid=document.getElementById("worldGrid"),status=document.getElementById("status"),go=document.getElementById("preview");
+ let mode="training";
+ grid.querySelectorAll("[data-mode]").forEach(card=>card.addEventListener("click",()=>{
+  mode=card.dataset.mode;
+  grid.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",String(x===card)));
+  document.getElementById("selectionLine").textContent="MODO SELECCIONADO: "+card.querySelector("strong").textContent.toUpperCase();
+  const ready=mode==="training";
+  go.textContent=ready?"ENTRAR AL ENTRENAMIENTO":"VISTA PREVIA NO DISPONIBLE";
+  status.textContent=ready?"Arena original de entrenamiento disponible.":"Este mundo requiere completar revisión técnica y de permisos antes de habilitarlo.";
+ }));
+ go.addEventListener("click",()=>{
+  if(mode!=="training"){status.textContent="Este escenario todavía no está habilitado. Selecciona Training Grounds para entrar al prototipo jugable.";return;}
+  sessionStorage.setItem("leagueOfLegacySelectedMode","training");
+  location.href="../../../assets/league-of-legacy/Gameplay/training.html";
+ });
+})();
+</script>
 <script type="module">
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
