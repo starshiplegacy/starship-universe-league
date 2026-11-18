@@ -10,6 +10,7 @@ const beginButton = document.getElementById("begin");
 const pauseButton = document.getElementById("pause");
 const exitButton = document.getElementById("exit");
 const messageLabel = document.getElementById("message");
+const characterNameLabel = document.getElementById("character-name");
 const attackEffects = [];
 
 const scene = new THREE.Scene();
@@ -148,6 +149,8 @@ try {
   await player.load();
   loaded = true;
   loadStatus.textContent = `${player.character.name} está listo/a. El escenario es una arena de prueba original; el mapa Training existente sigue pendiente de revisión de licencia.`;
+  characterNameLabel.textContent = player.character.name.toUpperCase();
+  messageLabel.textContent = `${player.character.name} · Zona de entrenamiento de prueba`;
   beginButton.disabled = false;
   stateLabel.textContent = `${player.character.name} listo/a para entrenar`;
 } catch (error) {
@@ -168,6 +171,8 @@ characterSelect?.addEventListener("change", async () => {
       await player.load(characterSelect.value);
       loaded = true;
       loadStatus.textContent = `${player.character.name} está listo/a. Sus animaciones se reproducirán si existen en su GLB.`;
+      characterNameLabel.textContent = player.character.name.toUpperCase();
+      messageLabel.textContent = `${player.character.name} · Zona de entrenamiento de prueba`;
       stateLabel.textContent = `${player.character.name} listo/a para entrenar`;
     } catch (error) {
       console.error(error);
