@@ -16,7 +16,7 @@ TEXT_SUFFIXES = {".html", ".js", ".css"}
 SUPABASE_RE = re.compile(r"https://([a-z0-9-]+)\.supabase\.co", re.I)
 ATTR_RE = re.compile(r"""(?<![\w.$-])\b(?:src|href)\s*=\s*["']([^"'#]+)["']""", re.I)
 CSS_URL_RE = re.compile(r"""url\(\s*["']?([^"'\)]+)""")
-MODEL_NAMES = ["Charlotte", "Arthur", "Bella", "Emma", "Aquamarine", "Opal (Opalo)", "Optopool", "Stella"]
+MODEL_FILES = ["Charlotte.glb", "Arthur.glb", "Bella.glb", "Emma.glb", "Aquamarine.glb", "opalo.glb", "Optopool.glb", "Stella.glb"]
 WORLD_PATHS = [
     "kataleya/Kataleya.world",
     "kariskio/Kariskio.world",
@@ -55,7 +55,8 @@ def static_audit():
             candidates.extend(CSS_URL_RE.findall(content))
         for raw in candidates:
             value = unquote(raw.strip().split("?", 1)[0].split("#", 1)[0])
-            if not value or value.startswith(("http://", "https://", "data:", "blob:", "//", "mailto:", "tel:", "javascript:", "var(")):
+            # Ignore a lone backslash captured from escaped JavaScript CSS url() strings.
+            if value in ("", chr(92)) or value.startswith(("http://", "https://", "data:", "blob:", "//", "mailto:", "tel:", "javascript:", "var(")):
                 continue
             if value.startswith(("/", "{")) or "://" in value:
                 continue
@@ -78,9 +79,9 @@ def static_audit():
         print(f"Supabase ref in source: {ref} ({', '.join(sorted(files))})")
 
     character_dir = ROOT / "assets/league-of-legacy/characters"
-    for name in MODEL_NAMES:
-        if not (character_dir / f"{name}.glb").is_file():
-            errors.append(f"Missing model: assets/league-of-legacy/characters/{name}.glb")
+    for filename in MODEL_FILES:
+        if not (character_dir / filename).is_file():
+            errors.append(f"Missing model: assets/league-of-legacy/characters/{filename}")
 
     world_dir = ROOT / "assets/The-LyrieLife/Worlds"
     for relative_path in WORLD_PATHS:
