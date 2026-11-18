@@ -82,7 +82,14 @@ spawnMarker.position.set(0,0.025,8);
 scene.add(spawnMarker);
 
 const characterSelect = document.getElementById("character-select");
+const chosenAreborn = sessionStorage.getItem("leagueOfLegacyAreborn");
+const characterKey = chosenAreborn ? chosenAreborn.toLowerCase().replace(/[^a-z0-9]/g,"") : "";
+if (characterSelect && [...characterSelect.options].some(option => option.value === characterKey)) characterSelect.value = characterKey;
 const player = new PlayerController(scene, characterSelect?.value || "charlotte");
+if (chosenAreborn) {
+  characterNameLabel.textContent = chosenAreborn.toUpperCase();
+  messageLabel.textContent = chosenAreborn + " · Zona de entrenamiento de prueba";
+}
 const followCamera = new ThirdPersonCamera(camera, renderer.domElement, player.root);
 let paused = false;
 let loaded = false;
@@ -95,7 +102,7 @@ function setPaused(value) {
   if (paused && document.pointerLockElement) document.exitPointerLock();
 }
 pauseButton.addEventListener("click",()=>setPaused(!paused));
-exitButton.addEventListener("click",()=>{ location.href = "../../../game-modes.html"; });
+exitButton.addEventListener("click",()=>{ location.href = "../../references/mp.html"; });
 beginButton.addEventListener("click",async()=>{
   if (!loaded) return;
   startOverlay.hidden = true;
