@@ -108,3 +108,8 @@ Required sequence:
 5. Keep mode rules separate from map assignment.
 6. Run the repository audit and syntax checks after structural or code changes.
 7. Mark an item as integrated, browser-tested or deployed only after that exact step has been performed and verified.
+
+
+## 9. Character animation roster — 18 November 2026
+
+The Training prototype now has a character selector for Charlotte, Emma, Bella, Stella and Aquamarine. Each selection loads its matching GLB and animation-name mapping from `Gameplay/Player/character-roster.js`. The roster preserves owner-supplied clip names, including `.anm` suffixes. Aquamarine's jump animation remains intentionally unassigned. Runtime availability and visual correctness of every clip remain pending browser verification; roster registration is not proof that a clip exists in its GLB.
