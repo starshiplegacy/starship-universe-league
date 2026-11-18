@@ -160,7 +160,12 @@ export class PlayerController {
     this.root.position.x = THREE.MathUtils.clamp(this.root.position.x, -ARENA_LIMIT, ARENA_LIMIT);
     this.root.position.z = THREE.MathUtils.clamp(this.root.position.z, -ARENA_LIMIT, ARENA_LIMIT);
 
-    // Camera rotation is handled by ThirdPersonCamera; the character keeps its facing direction.
+    // Charlotte turns smoothly toward the direction she is moving; camera yaw stays independent.
+    if (this.move.lengthSq() > 0.0001) {
+      const targetHeading = Math.atan2(this.move.x, this.move.z);
+      const angleDifference = Math.atan2(Math.sin(targetHeading - this.root.rotation.y), Math.cos(targetHeading - this.root.rotation.y));
+      this.root.rotation.y += angleDifference * Math.min(1, TURN_SPEED * delta);
+    }
     if (this.isDown(" ","jump") && this.grounded) {
       this.velocityY = JUMP_SPEED;
       this.grounded = false;
