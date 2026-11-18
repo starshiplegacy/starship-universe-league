@@ -57,6 +57,14 @@ export const CHARACTER_ROSTER = {
       tiny: "Spell4", damage: "Death", victory: "Dance_Loop"
     }
   }
+  opalo: {
+    id: "opalo", name: "Opalo", model: "opalo.glb",
+    animations: {
+      idle: "idle1", walk: "Run_Base", run: "Spell3_base", jump: "Spell4_NoMove",
+      passive: "Spell2", hybrid: "Spell4_W", aggressive: "Spell4_E_Long.Yunara.anm",
+      tiny: "Spell4_NoMove", damage: "Death", victory: "Dance_Loop"
+    }
+  }
 };
 
 export function getCharacterConfig(id = "charlotte") {
