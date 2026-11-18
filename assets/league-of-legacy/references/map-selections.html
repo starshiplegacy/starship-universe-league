@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Mapas - Interfaz Táctica Sci-Fi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ruby-primary: #e0115f;
+            --ruby-glow: #ff0044;
+            --slate-blue: rgba(96, 125, 139, 0.38);
+            --slate-blue-solid: #607d8b;
+            --cyan-neon: #00e5ff;
+            --gold-neon: #ffbe0b;
+            --bronze-neon: #d97736;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        /* Ocultar cursor nativo en dispositivos con puntero fino */
+        @media (pointer: fine) {
+            body, a, button, [role="button"], .interactive-target {
+                cursor: none !important;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #030917;
+            color: #ffffff;
+            font-family: 'Chakra Petch', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* =========================================
+           CURSOR PERSONALIZADO AZUL GRISÁCEO + RUBÍ
+           ========================================= */
+        #custom-cursor-core,
+        #custom-cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.2s ease;
+        }
+
+        @media (pointer: coarse) {
+            #custom-cursor-core, #custom-cursor-ring {
+                display: none !important;
+            }
+        }
+
+        /* Núcleo táctico del cursor: azul grisáceo (#687d94 / #7c93ad) con bordes rojo rubí (#e0115f / #ff1e56) */
+        #custom-cursor-core {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, rgba(124, 147, 173, 0.85) 0%, rgba(104, 125, 148, 0.6) 100%);
+            border: 1.8px solid #ff1e56;
+            box-shadow: 0 0 10px rgba(224, 17, 95, 0.85), inset 0 0 5px rgba(255, 30, 86, 0.6);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, transform 0.08s ease-out;
+        }
+
+        /* Anillo exterior con líneas tácticas rubí y tono azul grisáceo */
+        #custom-cursor-ring {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(104, 125, 148, 0.22);
+            border: 1.5px solid #e0115f;
+            box-shadow: 0 0 16px rgba(224, 17, 95, 0.55), inset 0 0 10px rgba(124, 147, 173, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.25s ease,
+                        background 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        /* Líneas de mira color rubí */
+        #custom-cursor-ring::before,
+        #custom-cursor-ring::after {
+            content: '';
+            position: absolute;
+            box-shadow: 0 0 6px #ff1e56;
+            transition: all 0.25s ease;
+        }
+
+        #custom-cursor-ring::before {
+            width: 124%;
+            height: 1.5px;
+            background: linear-gradient(90deg, #ff1e56 0%, #ff1e56 20%, transparent 20%, transparent 80%, #ff1e56 80%, #ff1e56 100%);
+        }
+
+        #custom-cursor-ring::after {
+            height: 124%;
+            width: 1.5px;
+            background: linear-gradient(180deg, #ff1e56 0%, #ff1e56 20%, transparent 20%, transparent 80%, #ff1e56 80%, #ff1e56 100%);
+        }
+
+        /* Estado Hover del Cursor */
+        body.cursor-hover #custom-cursor-ring {
+            width: 58px;
+            height: 58px;
+            background: rgba(124, 147, 173, 0.32);
+            border-color: #ff1e56;
+            border-width: 2px;
+            box-shadow: 0 0 24px rgba(255, 30, 86, 0.9), inset 0 0 14px rgba(124, 147, 173, 0.6);
+            animation: spinCursor 4.5s linear infinite;
+        }
+
+        body.cursor-hover #custom-cursor-core {
+            width: 11px;
+            height: 11px;
+            background: #7c93ad;
+            border-color: #ff1e56;
+            box-shadow: 0 0 14px #ff1e56;
+        }
+
+        body.cursor-clicking #custom-cursor-ring {
+            width: 32px;
+            height: 32px;
+            background: rgba(224, 17, 95, 0.4);
+        }
+
+        /* Anillo exterior con líneas tácticas rubí y relleno azul grisáceo sutil */
+        #custom-cursor-ring {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(96, 125, 139, 0.16);
+            border: 1.5px solid rgba(224, 17, 95, 0.85);
+            box-shadow: 0 0 15px rgba(224, 17, 95, 0.45), inset 0 0 10px rgba(96, 125, 139, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.25s ease,
+                        background 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        /* Miras o líneas cruzadas color rubí en el anillo */
+        #custom-cursor-ring::before,
+        #custom-cursor-ring::after {
+            content: '';
+            position: absolute;
+            background: var(--ruby-glow);
+            box-shadow: 0 0 6px var(--ruby-glow);
+            transition: all 0.25s ease;
+        }
+
+        #custom-cursor-ring::before {
+            width: 120%;
+            height: 1.5px;
+            background: linear-gradient(90deg, var(--ruby-glow) 0%, var(--ruby-glow) 18%, transparent 18%, transparent 82%, var(--ruby-glow) 82%, var(--ruby-glow) 100%);
+        }
+
+        #custom-cursor-ring::after {
+            height: 120%;
+            width: 1.5px;
+            background: linear-gradient(180deg, var(--ruby-glow) 0%, var(--ruby-glow) 18%, transparent 18%, transparent 82%, var(--ruby-glow) 82%, var(--ruby-glow) 100%);
+        }
+
+        /* Estado Hover del Cursor */
+        body.cursor-hover #custom-cursor-ring {
+            width: 62px;
+            height: 62px;
+            background: rgba(96, 125, 139, 0.28);
+            border-color: #ff1e6e;
+            border-width: 2px;
+            box-shadow: 0 0 24px rgba(255, 0, 68, 0.85), inset 0 0 14px rgba(120, 144, 156, 0.55);
+            animation: spinCursor 4s linear infinite;
+        }
+
+        body.cursor-hover #custom-cursor-core {
+            width: 12px;
+            height: 12px;
+            background: rgba(144, 164, 174, 0.9);
+            border-color: #ffffff;
+            box-shadow: 0 0 14px var(--ruby-glow);
+        }
+
+        body.cursor-clicking #custom-cursor-ring {
+            width: 34px;
+            height: 34px;
+            background: rgba(224, 17, 95, 0.35);
+        }
+
+        @keyframes spinCursor {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* =========================================
+           FONDO ESPACIAL Y CIRCUITOS CIBERNÉTICOS
+           ========================================= */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .nebula-overlay {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 15%, rgba(14, 78, 168, 0.32) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 30%, rgba(30, 58, 138, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 25%, rgba(2, 132, 199, 0.22) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 105%, rgba(0, 180, 255, 0.38) 0%, rgba(3, 15, 38, 0.85) 45%, #020611 85%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Horizonte planetario y mapa holográfico inferior */
+        .planet-horizon {
+            position: fixed;
+            bottom: -18vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150vw;
+            height: 44vh;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.45) 0%, rgba(14, 116, 144, 0.15) 35%, transparent 70%);
+            box-shadow: 0 -8px 45px rgba(0, 229, 255, 0.45), inset 0 4px 25px rgba(186, 230, 253, 0.65);
+            border-top: 2px solid rgba(125, 211, 252, 0.75);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .holo-grid-floor {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 32vh;
+            background-image: 
+                linear-gradient(to right, rgba(0, 229, 255, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 229, 255, 0.12) 1px, transparent 1px);
+            background-size: 55px 28px;
+            transform: perspective(420px) rotateX(62deg);
+            transform-origin: bottom center;
+            mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 95%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 95%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Circuitos SVG laterales */
+        .circuit-lines {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 24vw;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.75;
+        }
+        .circuit-left { left: 0; }
+        .circuit-right { right: 0; transform: scaleX(-1); }
+
+        .pulse-path {
+            stroke-dasharray: 90 260;
+            animation: circuitFlow 5s linear infinite;
+        }
+        .pulse-path-delay {
+            stroke-dasharray: 60 300;
+            animation: circuitFlow 7s linear infinite 2s;
+        }
+
+        @keyframes circuitFlow {
+            0% { stroke-dashoffset: 350; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        /* =========================================
+           TÍTULO PRINCIPAL
+           ========================================= */
+        .title-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            padding-top: clamp(1.5rem, 3.5vh, 2.75rem);
+            padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
+        }
+
+        .title-wing {
+            height: 2px;
+            width: clamp(45px, 10vw, 150px);
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.85), #ffffff);
+            position: relative;
+        }
+        .title-wing.right {
+            background: linear-gradient(270deg, transparent, rgba(125, 211, 252, 0.85), #ffffff);
+        }
+        .title-wing::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background: #38bdf8;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px #38bdf8;
+        }
+        .title-wing.right::after {
+            right: auto;
+            left: 0;
+        }
+
+        .main-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: clamp(2rem, 4.5vw, 3.65rem);
+            letter-spacing: 0.03em;
+            text-transform: none;
+            color: #ffffff;
+            text-shadow: 
+                0 2px 0 #0284c7,
+                0 4px 12px rgba(0, 229, 255, 0.85),
+                0 0 32px rgba(56, 189, 248, 0.65);
+            transform: skewX(-6deg);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        /* =========================================
+           TARJETAS DE MAPAS (MARCOS BISELADOS SCI-FI)
+           ========================================= */
+        .cards-stage {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(1.25rem, 2.8vw, 2.5rem);
+            padding: 1rem 1.5rem 2.5rem;
+            max-width: 1320px;
+            margin: 0 auto;
+            width: 100%;
+            perspective: 1200px;
+        }
+
+        .map-card-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Tarjeta central más grande y elevada como en la imagen */
+        .map-card-wrapper.featured {
+            max-width: 385px;
+            z-index: 12;
+        }
+
+        @media (min-width: 960px) {
+            .map-card-wrapper.featured {
+                transform: translateY(-12px) scale(1.03);
+            }
+            .map-card-wrapper.featured:hover {
+                transform: translateY(-22px) scale(1.06);
+            }
+            .map-card-wrapper:not(.featured):hover {
+                transform: translateY(-14px) scale(1.03);
+            }
+        }
+
+        /* Contenedor exterior que actúa como borde neón biselado */
+        .card-neon-frame {
+            position: relative;
+            padding: 3px;
+            clip-path: polygon(
+                22px 0%, calc(100% - 22px) 0%, 
+                100% 22px, 100% calc(100% - 22px), 
+                calc(100% - 22px) 100%, 22px 100%, 
+                0% calc(100% - 22px), 0% 22px
+            );
+            transition: all 0.35s ease;
+        }
+
+        /* Colores de marco Cian (Versus y Entrenamiento) */
+        .theme-cyan .card-neon-frame {
+            background: linear-gradient(160deg, #7dd3fc 0%, #0284c7 35%, #0ea5e9 70%, #bae6fd 100%);
+        }
+        .theme-cyan {
+            filter: drop-shadow(0 0 16px rgba(14, 165, 233, 0.45));
+        }
+        .theme-cyan:hover {
+            filter: drop-shadow(0 0 28px rgba(0, 229, 255, 0.85));
+        }
+
+        /* Colores de marco Dorado (Battle Royale) */
+        .theme-gold .card-neon-frame {
+            background: linear-gradient(160deg, #fef08a 0%, #f59e0b 35%, #d97706 70%, #fde047 100%);
+        }
+        .theme-gold {
+            filter: drop-shadow(0 0 22px rgba(245, 158, 11, 0.55));
+        }
+        .theme-gold:hover {
+            filter: drop-shadow(0 0 36px rgba(251, 191, 36, 0.95));
+        }
+
+        /* Interior oscuro de la tarjeta */
+        .card-inner {
+            position: relative;
+            background: linear-gradient(180deg, #0b192c 0%, #071224 68%, #040b17 100%);
+            clip-path: polygon(
+                20px 0%, calc(100% - 20px) 0%, 
+                100% 20px, 100% calc(100% - 20px), 
+                calc(100% - 20px) 100%, 20px 100%, 
+                0% calc(100% - 20px), 0% 20px
+            );
+            padding: 10px 10px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Detalles de muescas tecnológicas en los bordes de la tarjeta */
+        .card-tech-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 36%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.85);
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+            z-index: 5;
+            opacity: 0.75;
+        }
+
+        /* Contenedor de arte/mapa */
+        .card-art-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1.02;
+            overflow: hidden;
+            clip-path: polygon(
+                14px 0%, calc(100% - 14px) 0%, 
+                100% 14px, 100% 100%, 
+                0% 100%, 0% 14px
+            );
+            background: #091526;
+        }
+
+        .card-art-box svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .map-card-wrapper:hover .card-art-box svg {
+            transform: scale(1.06);
+        }
+
+        /* Degradado inferior para fundir la imagen con el título */
+        .card-art-fade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(6, 15, 30, 0.1) 50%, rgba(7, 18, 36, 0.92) 92%, #071224 100%);
+            pointer-events: none;
+        }
+
+        /* Efecto de escáner holográfico diagonal al pasar el mouse */
+        .card-scanner {
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 250%;
+            height: 45px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: rotate(-32deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .map-card-wrapper:hover .card-scanner {
+            opacity: 1;
+            animation: scanSweep 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes scanSweep {
+            0% { transform: translate(-30%, -30%) rotate(-32deg); }
+            100% { transform: translate(65%, 95%) rotate(-32deg); }
+        }
+
+        /* Título de cada modo */
+        .mode-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: clamp(1.3rem, 2vw, 1.65rem);
+            color: #ffffff;
+            text-align: center;
+            margin: -6px 0 14px;
+            line-height: 1.15;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+            z-index: 4;
+            padding: 0 8px;
+        }
+
+        .featured .mode-title {
+            font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+            margin-top: -10px;
+        }
+
+        /* =========================================
+           BOTONES 'ELEGIR' HEXAGONALES CON ILUMINACIÓN
+           ========================================= */
+        .btn-elegir-wrap {
+            position: relative;
+            width: 78%;
+            max-width: 230px;
+            padding: 2px;
+            clip-path: polygon(16px 0%, calc(100% - 16px) 0%, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0% 50%);
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+            z-index: 5;
+        }
+
+        .btn-elegir {
+            position: relative;
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            outline: none;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.04em;
+            clip-path: polygon(15px 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0% 50%);
+            overflow: hidden;
+            transition: all 0.28s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Remaches laterales decorativos dentro del botón */
+        .btn-elegir::before,
+        .btn-elegir::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 6px;
+            height: 6px;
+            transition: all 0.3s ease;
+        }
+        .btn-elegir::before { left: 12px; }
+        .btn-elegir::after { right: 12px; }
+
+        /* Barrido de luz metálico en hover */
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+            transform: skewX(-25deg);
+            transition: none;
+            pointer-events: none;
+        }
+
+        .btn-elegir-wrap:hover .btn-shine {
+            animation: btnLightSweep 0.7s ease forwards;
+        }
+
+        @keyframes btnLightSweep {
+            0% { left: -120%; }
+            100% { left: 160%; }
+        }
+
+        /* Estilo Botón 1: Plateado Metálico (Versus) */
+        .btn-silver-wrap {
+            background: linear-gradient(180deg, #ffffff 0%, #64748b 50%, #cbd5e1 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+        .btn-silver {
+            background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 52%, #64748b 100%);
+            color: #0f172a;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+        .btn-silver::before, .btn-silver::after {
+            background: #334155;
+        }
+        .btn-silver-wrap:hover {
+            transform: translateY(-2px) scale(1.07);
+            filter: drop-shadow(0 0 18px rgba(125, 211, 252, 1)) drop-shadow(0 0 34px rgba(255, 255, 255, 0.8));
+        }
+        .btn-silver-wrap:hover .btn-silver {
+            background: linear-gradient(180deg, #ffffff 0%, #bae6fd 50%, #7dd3fc 100%);
+            color: #020617;
+        }
+        .btn-silver-wrap:hover .btn-silver::before,
+        .btn-silver-wrap:hover .btn-silver::after {
+            background: #0284c7;
+            box-shadow: 0 0 8px #00e5ff;
+        }
+
+        /* Estilo Botón 2: Dorado Brillante (Battle Royale) */
+        .btn-gold-wrap {
+            background: linear-gradient(180deg, #fef9c3 0%, #b45309 50%, #fde047 100%);
+            box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
+        }
+        .btn-gold {
+            background: linear-gradient(180deg, #fde047 0%, #eab308 50%, #b45309 100%);
+            color: #1c1002;
+            text-shadow: 0 1px 0 rgba(254, 240, 138, 0.8);
+        }
+        .btn-gold::before, .btn-gold::after {
+            background: #78350f;
+        }
+        .btn-gold-wrap:hover {
+            transform: translateY(-2px) scale(1.08);
+            filter: drop-shadow(0 0 22px rgba(253, 224, 71, 1)) drop-shadow(0 0 40px rgba(245, 158, 11, 0.95));
+        }
+        .btn-gold-wrap:hover .btn-gold {
+            background: linear-gradient(180deg, #fef9c3 0%, #fde047 48%, #f59e0b 100%);
+            color: #000000;
+        }
+        .btn-gold-wrap:hover .btn-gold::before,
+        .btn-gold-wrap:hover .btn-gold::after {
+            background: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
+        }
+
+        /* Estilo Botón 3: Bronce / Cobrizo (Entrenamiento) */
+        .btn-bronze-wrap {
+            background: linear-gradient(180deg, #fed7aa 0%, #7c2d12 50%, #fdba74 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+        .btn-bronze {
+            background: linear-gradient(180deg, #d97736 0%, #9a4a1c 52%, #6c2e0e 100%);
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
+        .btn-bronze::before, .btn-bronze::after {
+            background: #fed7aa;
+        }
+        .btn-bronze-wrap:hover {
+            transform: translateY(-2px) scale(1.07);
+            filter: drop-shadow(0 0 20px rgba(251, 146, 60, 1)) drop-shadow(0 0 34px rgba(234, 88, 12, 0.85));
+        }
+        .btn-bronze-wrap:hover .btn-bronze {
+            background: linear-gradient(180deg, #fdba74 0%, #ea580c 50%, #9a3412 100%);
+            color: #ffffff;
+        }
+        .btn-bronze-wrap:hover .btn-bronze::before,
+        .btn-bronze-wrap:hover .btn-bronze::after {
+            background: #ffffff;
+            box-shadow: 0 0 8px #fdba74;
+        }
+
+        .btn-elegir-wrap:active {
+            transform: scale(0.97) !important;
+        }
+
+        /* =========================================
+           INSIGNIA SUPERIOR BATTLE ROYALE
+           ========================================= */
+        .br-badge {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            z-index: 6;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.95));
+            border: 1.5px solid #facc15;
+            padding: 3px 10px;
+            clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+        }
+        .br-badge span {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 0.68rem;
+            line-height: 1.05;
+            letter-spacing: 0.06em;
+            color: #fef08a;
+            text-shadow: 0 0 6px rgba(234, 179, 8, 0.8);
+        }
+
+        /* Pines pulsantes dentro del mapa Battle Royale */
+        @keyframes pinPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.25); opacity: 0.75; }
+        }
+        .map-pin-glow {
+            animation: pinPulse 2.2s ease-in-out infinite;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+
+        /* =========================================
+           MODAL / SALA DE DESPLIEGUE TÁCTICO
+           ========================================= */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 17, 0.82);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tactical-modal {
+            width: 100%;
+            max-width: 560px;
+            background: linear-gradient(165deg, #0b192e 0%, #050d1a 100%);
+            border: 2px solid var(--cyan-neon);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), inset 0 0 25px rgba(14, 165, 233, 0.15);
+            clip-path: polygon(24px 0, calc(100% - 24px) 0, 100% 24px, 100% calc(100% - 24px), calc(100% - 24px) 100%, 24px 100%, 0 calc(100% - 24px), 0 24px);
+            padding: 1.75rem;
+            transform: scale(0.92) translateY(15px);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .modal-backdrop.active .tactical-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Animación de entrada de tarjetas */
+        @keyframes cardEntrance {
+            0% { opacity: 0; transform: translateY(35px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-entry-1 { animation: cardEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
+        .animate-entry-2 { animation: cardEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards; }
+        .animate-entry-3 { animation: cardEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.34s backwards; }
+
+        /* Responsive ajuste móvil */
+        @media (max-width: 959px) {
+            .cards-stage {
+                flex-direction: column;
+                gap: 2rem;
+                padding-bottom: 4rem;
+            }
+            .map-card-wrapper, .map-card-wrapper.featured {
+                max-width: 340px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cursor Personalizado (Azul Grisáceo + Líneas Rojo Rubí) -->
+    <div id="custom-cursor-ring"></div>
+    <div id="custom-cursor-core"></div>
+
+    <!-- Canvas de Estrellas, Meteoritos y Partículas -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="nebula-overlay"></div>
+    <div class="holo-grid-floor"></div>
+    <div class="planet-horizon"></div>
+
+    <!-- Circuitos Cibernéticos Laterales -->
+    <svg class="circuit-lines circuit-left" viewBox="0 0 300 900" fill="none" preserveAspectRatio="none">
+        <path d="M0 140 H90 L130 180 H210" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1.5"/>
+        <path d="M0 140 H90 L130 180 H210" stroke="#38bdf8" stroke-width="2" class="pulse-path"/>
+        <circle cx="210" cy="180" r="3.5" fill="#38bdf8"/>
+
+        <path d="M0 360 H70 L115 405 H185 L215 435 H255" stroke="#0284c7" stroke-opacity="0.4" stroke-width="1.5"/>
+        <path d="M0 360 H70 L115 405 H185 L215 435 H255" stroke="#00e5ff" stroke-width="2.2" class="pulse-path-delay"/>
+        <circle cx="255" cy="435" r="4" fill="#00e5ff"/>
+
+        <path d="M0 620 H110 L155 575 H230" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1.5"/>
+        <path d="M0 620 H110 L155 575 H230" stroke="#7dd3fc" stroke-width="2" class="pulse-path"/>
+        <circle cx="230" cy="575" r="3.5" fill="#7dd3fc"/>
+
+        <path d="M0 780 H140 L180 740 H270" stroke="#0284c7" stroke-opacity="0.45" stroke-width="1.5"/>
+        <circle cx="270" cy="740" r="3" fill="#38bdf8"/>
+    </svg>
+
+    <svg class="circuit-lines circuit-right" viewBox="0 0 300 900" fill="none" preserveAspectRatio="none">
+        <path d="M0 140 H90 L130 180 H210" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1.5"/>
+        <path d="M0 140 H90 L130 180 H210" stroke="#38bdf8" stroke-width="2" class="pulse-path-delay"/>
+        <circle cx="210" cy="180" r="3.5" fill="#38bdf8"/>
+
+        <path d="M0 360 H70 L115 405 H185 L215 435 H255" stroke="#0284c7" stroke-opacity="0.4" stroke-width="1.5"/>
+        <path d="M0 360 H70 L115 405 H185 L215 435 H255" stroke="#00e5ff" stroke-width="2.2" class="pulse-path"/>
+        <circle cx="255" cy="435" r="4" fill="#00e5ff"/>
+
+        <path d="M0 620 H110 L155 575 H230" stroke="#0ea5e9" stroke-opacity="0.35" stroke-width="1.5"/>
+        <circle cx="230" cy="575" r="3.5" fill="#7dd3fc"/>
+
+        <path d="M0 780 H140 L180 740 H270" stroke="#0284c7" stroke-opacity="0.45" stroke-width="1.5"/>
+        <path d="M0 780 H140 L180 740 H270" stroke="#38bdf8" stroke-width="2" class="pulse-path-delay"/>
+        <circle cx="270" cy="740" r="3" fill="#38bdf8"/>
+    </svg>
+
+    <!-- Contenedor Principal Centrado Verticalmente -->
+    <div class="relative z-10 flex-1 flex flex-col justify-center w-full">
+
+        <!-- Título Principal -->
+        <div class="title-container px-4">
+            <div class="title-wing left"></div>
+            <h1 class="main-title text-center">Selección de Mapas</h1>
+            <div class="title-wing right"></div>
+        </div>
+
+        <!-- Escenario Principal de las 3 Tarjetas -->
+        <main class="cards-stage">
+
+            <!-- ==========================================
+                 TARJETA 1: VERSUS (IZQUIERDA)
+                 ========================================== -->
+            <article class="map-card-wrapper theme-cyan interactive-target animate-entry-1" data-mode="versus">
+                <div class="card-neon-frame">
+                    <div class="card-inner">
+                        <div class="card-tech-notch"></div>
+                        
+                        <!-- Ilustración Táctica Escuadrón / Versus -->
+                        <div class="card-art-box">
+                            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="skyVersus" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#38bdf8"/>
+                                        <stop offset="55%" stop-color="#bae6fd"/>
+                                        <stop offset="100%" stop-color="#fef08a"/>
+                                    </linearGradient>
+                                    <linearGradient id="groundVersus" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#84a955"/>
+                                        <stop offset="50%" stop-color="#658342"/>
+                                        <stop offset="100%" stop-color="#3f5229"/>
+                                    </linearGradient>
+                                    <radialGradient id="explosionGlow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#ffffff"/>
+                                        <stop offset="30%" stop-color="#fde047"/>
+                                        <stop offset="65%" stop-color="#f97316" stop-opacity="0.85"/>
+                                        <stop offset="100%" stop-color="#ea580c" stop-opacity="0"/>
+                                    </radialGradient>
+                                </defs>
+                                <!-- Cielo y sol -->
+                                <rect width="400" height="210" fill="url(#skyVersus)"/>
+                                <circle cx="290" cy="75" r="45" fill="#fef9c3" opacity="0.6"/>
+                                <!-- Micro-texto UI táctico original -->
+                                <text x="368" y="24" text-anchor="end" fill="#e0f2fe" opacity="0.65" font-family="Orbitron, monospace" font-size="7" letter-spacing="1.5">SEC-01 // ARENA</text>
+                                <text x="16" y="346" fill="#bae6fd" opacity="0.55" font-family="Orbitron, monospace" font-size="6.5" letter-spacing="1.2">SQUAD OPS 4V4</text>
+                                <!-- Montañas y árboles lejanos -->
+                                <path d="M0 165 L65 125 L140 155 L235 115 L320 150 L400 130 L400 210 L0 210 Z" fill="#476953"/>
+                                <!-- Ruinas y fortificaciones -->
+                                <rect x="25" y="125" width="75" height="65" fill="#57534e"/>
+                                <rect x="35" y="115" width="14" height="15" fill="#78716c"/>
+                                <rect x="60" y="115" width="14" height="15" fill="#78716c"/>
+                                <rect x="275" y="120" width="95" height="70" fill="#44403c"/>
+                                <!-- Terreno de batalla -->
+                                <polygon points="0,185 400,185 400,400 0,400" fill="url(#groundVersus)"/>
+                                <polygon points="90,185 260,185 330,400 20,400" fill="#a89f81" opacity="0.65"/>
+                                <!-- Cajas de cobertura y barricadas -->
+                                <rect x="255" y="195" width="48" height="36" fill="#78716c" stroke="#292524" stroke-width="2"/>
+                                <rect x="270" y="172" width="38" height="28" fill="#a8a29e" stroke="#292524" stroke-width="2"/>
+                                <path d="M45 315 L95 345 M90 315 L45 345 M70 308 L70 352" stroke="#292524" stroke-width="6" stroke-linecap="round"/>
+                                <!-- Explosión táctica izquierda -->
+                                <circle cx="95" cy="245" r="58" fill="url(#explosionGlow)"/>
+                                <!-- Soldado Enemigo Izquierda -->
+                                <g transform="translate(105, 195)">
+                                    <ellipse cx="15" cy="58" rx="14" ry="5" fill="#000" opacity="0.4"/>
+                                    <path d="M8 22 L22 22 L25 42 L5 42 Z" fill="#1e293b"/>
+                                    <circle cx="15" cy="14" r="7" fill="#334155"/>
+                                    <rect x="13" y="12" width="8" height="3" fill="#ef4444"/>
+                                    <path d="M6 42 L4 58 M22 42 L26 58" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
+                                    <line x1="18" y1="26" x2="42" y2="18" stroke="#0f172a" stroke-width="4"/>
+                                </g>
+                                <!-- Soldado Central con Espada de Energía -->
+                                <g transform="translate(165, 205)">
+                                    <ellipse cx="18" cy="65" rx="16" ry="5" fill="#000" opacity="0.45"/>
+                                    <path d="M10 24 L26 24 L30 46 L6 46 Z" fill="#334155"/>
+                                    <circle cx="18" cy="14" r="8" fill="#475569"/>
+                                    <rect x="16" y="12" width="9" height="3.5" fill="#38bdf8"/>
+                                    <path d="M10 46 L4 64 M26 46 L34 62" stroke="#1e293b" stroke-width="5.5" stroke-linecap="round"/>
+                                    <!-- Hoja láser cian -->
+                                    <line x1="25" y1="26" x2="58" y2="8" stroke="#00e5ff" stroke-width="5" stroke-linecap="round"/>
+                                    <line x1="25" y1="26" x2="58" y2="8" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                                </g>
+                                <!-- Soldado Principal en Primer Plano (Espalda) -->
+                                <g transform="translate(205, 235)">
+                                    <ellipse cx="32" cy="108" rx="28" ry="8" fill="#000" opacity="0.5"/>
+                                    <!-- Piernas blindadas -->
+                                    <path d="M18 65 L12 105 M44 65 L52 105" stroke="#1e293b" stroke-width="11" stroke-linecap="round"/>
+                                    <path d="M18 65 L12 105 M44 65 L52 105" stroke="#64748b" stroke-width="5" stroke-linecap="round"/>
+                                    <!-- Torso Exotraje -->
+                                    <path d="M12 28 L50 28 L55 68 L8 68 Z" fill="#334155" stroke="#0f172a" stroke-width="2"/>
+                                    <rect x="20" y="34" width="22" height="24" rx="4" fill="#1e293b"/>
+                                    <circle cx="31" cy="44" r="5" fill="#38bdf8"/>
+                                    <!-- Hombreras naranja táctico -->
+                                    <circle cx="10" cy="32" r="8" fill="#f97316"/>
+                                    <circle cx="52" cy="32" r="8" fill="#f97316"/>
+                                    <!-- Casco -->
+                                    <circle cx="31" cy="16" r="11" fill="#475569" stroke="#0f172a" stroke-width="2"/>
+                                    <path d="M24 14 L38 14" stroke="#38bdf8" stroke-width="3"/>
+                                    <!-- Arma de plasma derecha -->
+                                    <line x1="54" y1="42" x2="92" y2="34" stroke="#00e5ff" stroke-width="5" stroke-linecap="round"/>
+                                    <line x1="54" y1="42" x2="92" y2="34" stroke="#ffffff" stroke-width="2"/>
+                                </g>
+                            </svg>
+                            <div class="card-art-fade"></div>
+                            <div class="card-scanner"></div>
+                        </div>
+
+                        <h2 class="mode-title">Versus</h2>
+
+                        <div class="btn-elegir-wrap btn-silver-wrap">
+                            <button class="btn-elegir btn-silver" onclick="openDeployModal('versus')">
+                                <span>Elegir</span>
+                                <div class="btn-shine"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ==========================================
+                 TARJETA 2: BATTLE ROYALE (CENTRAL DESTACADA)
+                 ========================================== -->
+            <article class="map-card-wrapper theme-gold featured interactive-target animate-entry-2" data-mode="royale">
+                <div class="card-neon-frame">
+                    <div class="card-inner">
+                        <div class="card-tech-notch" style="background: #fef08a;"></div>
+
+                        <!-- Insignia Superior -->
+                        <div class="br-badge">
+                            <span>BATTLE</span>
+                            <span>ROYALE</span>
+                        </div>
+
+                        <!-- Ilustración Isla Battle Royale Vista Aérea -->
+                        <div class="card-art-box">
+                            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <radialGradient id="oceanGrad" cx="50%" cy="50%" r="65%">
+                                        <stop offset="0%" stop-color="#0ea5e9"/>
+                                        <stop offset="55%" stop-color="#0369a1"/>
+                                        <stop offset="100%" stop-color="#082f49"/>
+                                    </radialGradient>
+                                    <linearGradient id="islandGrass" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#84cc16"/>
+                                        <stop offset="50%" stop-color="#4d7c0f"/>
+                                        <stop offset="100%" stop-color="#365314"/>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Océano profundo -->
+                                <rect width="400" height="400" fill="url(#oceanGrad)"/>
+                                <!-- Micro-texto UI táctico original -->
+                                <text x="368" y="24" text-anchor="end" fill="#fef08a" opacity="0.7" font-family="Orbitron, monospace" font-size="7" letter-spacing="1.5">ISLAND-09 // RANKED</text>
+                                <text x="16" y="346" fill="#fde047" opacity="0.55" font-family="Orbitron, monospace" font-size="6.5" letter-spacing="1.2">CLASIFICATORIA</text>
+                                <!-- Cuadrícula táctica oceánica -->
+                                <g stroke="#38bdf8" stroke-opacity="0.18" stroke-width="1">
+                                    <line x1="0" y1="80" x2="400" y2="80"/>
+                                    <line x1="0" y1="160" x2="400" y2="160"/>
+                                    <line x1="0" y1="240" x2="400" y2="240"/>
+                                    <line x1="0" y1="320" x2="400" y2="320"/>
+                                    <line x1="80" y1="0" x2="80" y2="400"/>
+                                    <line x1="160" y1="0" x2="160" y2="400"/>
+                                    <line x1="240" y1="0" x2="240" y2="400"/>
+                                    <line x1="320" y1="0" x2="320" y2="400"/>
+                                </g>
+
+                                <!-- Costa / Arena exterior de la isla -->
+                                <path d="M185 45 L255 60 L325 95 L355 150 L335 210 L365 255 L315 305 L245 335 L180 315 L125 330 L75 280 L45 215 L65 155 L115 110 L145 65 Z" 
+                                      fill="#fde68a" opacity="0.75"/>
+                                <!-- Masa terrestre principal -->
+                                <path d="M188 53 L250 67 L316 100 L345 150 L326 208 L354 252 L308 297 L244 325 L182 306 L128 320 L83 274 L55 214 L74 158 L121 116 L150 72 Z" 
+                                      fill="url(#islandGrass)" stroke="#bef264" stroke-width="2"/>
+
+                                <!-- Relieve montañoso y ríos internos -->
+                                <path d="M140 120 Q190 155 230 140 T305 185" fill="none" stroke="#38bdf8" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+                                <circle cx="245" cy="175" r="18" fill="#00e5ff" opacity="0.65"/>
+                                <circle cx="245" cy="175" r="10" fill="#ffffff" opacity="0.85"/>
+
+                                <!-- Carreteras internas -->
+                                <path d="M100 200 L185 185 L270 225 L235 285 L145 265 Z" fill="none" stroke="#d6d3d1" stroke-width="3" stroke-dasharray="6 4"/>
+
+                                <!-- Estructuras / Zonas nombradas -->
+                                <rect x="175" y="95" width="24" height="16" fill="#78716c" rx="2"/>
+                                <rect x="120" y="175" width="28" height="18" fill="#57534e" rx="2"/>
+                                <rect x="260" y="210" width="30" height="20" fill="#78716c" rx="2"/>
+                                <rect x="165" y="255" width="26" height="18" fill="#57534e" rx="2"/>
+
+                                <!-- Pines Tácticos de Despliegue (Dorados y Azules) -->
+                                <g class="map-pin-glow" transform="translate(215, 78)">
+                                    <circle cx="0" cy="0" r="11" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#38bdf8"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(295, 112)">
+                                    <circle cx="0" cy="0" r="11" fill="#d97706" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(142, 138)">
+                                    <circle cx="0" cy="0" r="12" fill="#ea580c" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4.5" fill="#ffffff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(95, 205)">
+                                    <circle cx="0" cy="0" r="11" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#38bdf8"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(205, 215)">
+                                    <circle cx="0" cy="0" r="13" fill="#eab308" stroke="#ffffff" stroke-width="2.5"/>
+                                    <circle cx="0" cy="0" r="5" fill="#78350f"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(288, 245)">
+                                    <circle cx="0" cy="0" r="11" fill="#dc2626" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(155, 278)">
+                                    <circle cx="0" cy="0" r="11" fill="#d97706" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                </g>
+                            </svg>
+                            <div class="card-art-fade"></div>
+                            <div class="card-scanner"></div>
+                        </div>
+
+                        <h2 class="mode-title">Battle Royale &amp; De<br>Clasificatoria</h2>
+
+                        <div class="btn-elegir-wrap btn-gold-wrap">
+                            <button class="btn-elegir btn-gold" onclick="openDeployModal('royale')">
+                                <span>Elegir</span>
+                                <div class="btn-shine"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ==========================================
+                 TARJETA 3: ENTRENAMIENTO (DERECHA)
+                 ========================================== -->
+            <article class="map-card-wrapper theme-cyan interactive-target animate-entry-3" data-mode="training">
+                <div class="card-neon-frame">
+                    <div class="card-inner">
+                        <div class="card-tech-notch"></div>
+
+                        <!-- Ilustración Campo de Entrenamiento Isométrico -->
+                        <div class="card-art-box">
+                            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="trainGrass" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#4d7c0f"/>
+                                        <stop offset="100%" stop-color="#1a2e05"/>
+                                    </linearGradient>
+                                    <linearGradient id="arenaFloor" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#84a955"/>
+                                        <stop offset="100%" stop-color="#5a7d32"/>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Entorno boscoso exterior -->
+                                <rect width="400" height="400" fill="url(#trainGrass)"/>
+                                <!-- Micro-texto UI táctico original -->
+                                <text x="368" y="24" text-anchor="end" fill="#e0f2fe" opacity="0.65" font-family="Orbitron, monospace" font-size="7" letter-spacing="1.5">BASE-03 // SIM</text>
+                                <text x="16" y="346" fill="#bae6fd" opacity="0.55" font-family="Orbitron, monospace" font-size="6.5" letter-spacing="1.2">PRACTICE RANGE</text>
+                                <!-- Sombras de árboles -->
+                                <g fill="#14532d" opacity="0.85">
+                                    <circle cx="35" cy="45" r="26"/>
+                                    <circle cx="75" cy="30" r="22"/>
+                                    <circle cx="345" cy="55" r="30"/>
+                                    <circle cx="370" cy="110" r="25"/>
+                                    <circle cx="355" cy="295" r="32"/>
+                                    <circle cx="45" cy="310" r="28"/>
+                                </g>
+
+                                <!-- Complejo de Edificios Tácticos Superior Izquierdo -->
+                                <g transform="translate(55, 55)">
+                                    <polygon points="10,75 95,35 175,75 90,115" fill="#78716c"/>
+                                    <polygon points="10,75 90,115 90,145 10,105" fill="#57534e"/>
+                                    <polygon points="90,115 175,75 175,105 90,145" fill="#44403c"/>
+                                    <!-- Torre superior -->
+                                    <polygon points="55,45 95,25 135,45 95,65" fill="#a8a29e"/>
+                                    <polygon points="55,45 95,65 95,88 55,68" fill="#78716c"/>
+                                    <polygon points="95,65 135,45 135,68 95,88" fill="#57534e"/>
+                                </g>
+
+                                <!-- Explanada / Polígono de Tiro Amurallado -->
+                                <polygon points="175,135 335,205 225,315 75,235" fill="url(#arenaFloor)" stroke="#e7e5e4" stroke-width="6"/>
+                                <!-- Líneas de carriles de tiro -->
+                                <line x1="150" y1="160" x2="295" y2="225" stroke="#ffffff" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="8 6"/>
+                                <line x1="125" y1="185" x2="270" y2="250" stroke="#ffffff" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="8 6"/>
+                                <line x1="100" y1="210" x2="245" y2="275" stroke="#ffffff" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="8 6"/>
+
+                                <!-- Dianas Holográficas y Marcadores de Práctica -->
+                                <g class="map-pin-glow" transform="translate(215, 185)">
+                                    <circle cx="0" cy="0" r="10" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#00e5ff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(265, 215)">
+                                    <circle cx="0" cy="0" r="10" fill="#ea580c" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(185, 235)">
+                                    <circle cx="0" cy="0" r="10" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#00e5ff"/>
+                                </g>
+                                <g class="map-pin-glow" transform="translate(230, 265)">
+                                    <circle cx="0" cy="0" r="10" fill="#ea580c" stroke="#fef08a" stroke-width="2"/>
+                                    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                </g>
+                            </svg>
+                            <div class="card-art-fade"></div>
+                            <div class="card-scanner"></div>
+                        </div>
+
+                        <h2 class="mode-title">Entrenamiento</h2>
+
+                        <div class="btn-elegir-wrap btn-bronze-wrap">
+                            <button class="btn-elegir btn-bronze" onclick="openDeployModal('training')">
+                                <span>Elegir</span>
+                                <div class="btn-shine"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </main>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE DESPLIEGUE TÁCTICO (LOBBY)
+         ========================================== -->
+    <div id="deploy-modal-backdrop" class="modal-backdrop">
+        <div id="tactical-modal" class="tactical-modal">
+            <div class="flex items-start justify-between border-b border-sky-500/30 pb-3 mb-4">
+                <div>
+                    <span id="modal-tag" class="text-xs font-bold tracking-widest uppercase px-2.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40">SECTOR SELECCIONADO</span>
+                    <h3 id="modal-title" class="text-2xl sm:text-3xl font-bold italic text-white mt-1.5 tracking-wide">Battle Royale &amp; De Clasificatoria</h3>
+                </div>
+                <button onclick="closeDeployModal()" class="interactive-target text-slate-400 hover:text-rose-400 p-1.5 transition-colors" aria-label="Cerrar">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <p id="modal-desc" class="text-slate-300 text-sm sm:text-base leading-relaxed mb-5">
+                Despliégate en la isla táctica con 60 jugadores. Sobrevive al colapso electromagnético, asegura suministros de élite y asciende en la liga clasificatoria.
+            </p>
+
+            <!-- Especificaciones del Mapa -->
+            <div class="grid grid-cols-3 gap-3 mb-5">
+                <div class="bg-slate-900/80 border border-slate-700/80 p-3 rounded text-center">
+                    <div class="text-[11px] text-slate-400 uppercase tracking-wider">Jugadores</div>
+                    <div id="modal-players" class="text-lg font-bold text-sky-300 mt-0.5">60 / Sala</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/80 p-3 rounded text-center">
+                    <div class="text-[11px] text-slate-400 uppercase tracking-wider">Cola Est.</div>
+                    <div id="modal-queue" class="text-lg font-bold text-emerald-400 mt-0.5">~12 seg</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700/80 p-3 rounded text-center">
+                    <div class="text-[11px] text-slate-400 uppercase tracking-wider">Escuadrón</div>
+                    <div id="modal-squad" class="text-lg font-bold text-amber-300 mt-0.5">Tríos / Solo</div>
+                </div>
+            </div>
+
+            <!-- Selector rápido de sub-modo -->
+            <div class="mb-6">
+                <label class="block text-xs uppercase tracking-wider text-sky-300/80 mb-2">Configuración de Despliegue:</label>
+                <div id="modal-options" class="grid grid-cols-3 gap-2.5">
+                    <!-- Opciones dinámicas por JS -->
+                </div>
+            </div>
+
+            <!-- Barra de búsqueda de partida -->
+            <div id="matchmaking-box" class="hidden mb-5 bg-sky-950/60 border border-sky-400/50 p-3.5 rounded">
+                <div class="flex items-center justify-between text-xs font-semibold text-sky-200 mb-2">
+                    <span id="matchmaking-status" class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-sky-400 animate-ping"></span>
+                        ESCANEANDO ÓRBITA Y EMPAREJANDO ESCUADRÓN...
+                    </span>
+                    <span id="matchmaking-timer">00:00</span>
+                </div>
+                <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                    <div id="matchmaking-bar" class="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-amber-400 w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="closeDeployModal()" class="interactive-target px-5 py-2.5 rounded border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-semibold text-sm uppercase tracking-wider transition-all">
+                    Volver
+                </button>
+                <button id="btn-start-match" onclick="toggleMatchmaking()" class="interactive-target px-7 py-2.5 rounded bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-400 hover:to-white text-slate-950 font-bold text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(0,229,255,0.6)] transition-all">
+                    Iniciar Despliegue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           1. CURSOR PERSONALIZADO (AZUL GRISÁCEO + BORDES RUBÍ)
+           ========================================================= */
+        const cursorCore = document.getElementById('custom-cursor-core');
+        const cursorRing = document.getElementById('custom-cursor-ring');
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorCore.style.left = `${mouseX}px`;
+            cursorCore.style.top = `${mouseY}px`;
+        });
+
+        // Interpolación suave para el anillo exterior del cursor
+        function animateCursor() {
+            ringX += (mouseX - ringX) * 0.22;
+            ringY += (mouseY - ringY) * 0.22;
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
+
+        // Detectar hover en elementos interactivos
+        function bindInteractiveHover() {
+            const targets = document.querySelectorAll('.interactive-target, button');
+            targets.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                    playHoverSound();
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+        }
+
+        /* =========================================================
+           2. EFECTO 3D TILT SUTIL EN LAS TARJETAS
+           ========================================================= */
+        const cards = document.querySelectorAll('.map-card-wrapper');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                if (window.innerWidth < 960) return;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+                const isFeatured = card.classList.contains('featured');
+                const baseTransform = isFeatured ? 'translateY(-22px) scale(1.06)' : 'translateY(-14px) scale(1.03)';
+                card.style.transform = `${baseTransform} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        /* =========================================================
+           3. SINTETIZADOR DE SONIDO SCI-FI (WEB AUDIO API)
+           ========================================================= */
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playHoverSound() {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(620, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(980, audioCtx.currentTime + 0.055);
+                gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.065);
+            } catch (e) {}
+        }
+
+        function playSelectSound(isGold = false) {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+
+                const baseFreq = isGold ? 440 : 380;
+                osc1.frequency.setValueAtTime(baseFreq, now);
+                osc1.frequency.exponentialRampToValueAtTime(baseFreq * 2, now + 0.22);
+
+                osc2.frequency.setValueAtTime(baseFreq * 1.5, now + 0.05);
+                osc2.frequency.exponentialRampToValueAtTime(baseFreq * 2.5, now + 0.28);
+
+                gain.gain.setValueAtTime(0.09, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now + 0.05);
+                osc1.stop(now + 0.33);
+                osc2.stop(now + 0.33);
+            } catch (e) {}
+        }
+
+        /* =========================================================
+           4. FONDO ESPACIAL ANIMADO (ESTRELLAS + METEORITOS)
+           ========================================================= */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        let meteors = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = Math.floor((width * height) / 5500);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height * 0.85,
+                    r: Math.random() * 1.6 + 0.3,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.015 + 0.005,
+                    hue: Math.random() > 0.8 ? '#7dd3fc' : '#ffffff'
+                });
+            }
+        }
+
+        function spawnMeteor() {
+            const fromLeft = Math.random() > 0.45;
+            meteors.push({
+                x: fromLeft ? Math.random() * width * 0.3 : width * (0.7 + Math.random() * 0.3),
+                y: Math.random() * height * 0.25,
+                vx: fromLeft ? (5 + Math.random() * 4) : -(5 + Math.random() * 4),
+                vy: 2.2 + Math.random() * 2,
+                len: 75 + Math.random() * 65,
+                life: 1,
+                color: fromLeft ? '#fb923c' : '#38bdf8'
+            });
+        }
+
+        function drawBackground() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Estrellas parpadeantes
+            for (const s of stars) {
+                s.alpha += s.speed;
+                if (s.alpha > 1 || s.alpha < 0.15) s.speed *= -1;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = s.hue;
+                ctx.globalAlpha = Math.max(0.1, Math.min(1, s.alpha));
+                ctx.fill();
+            }
+
+            // Meteoritos fugaces
+            if (Math.random() < 0.008 && meteors.length < 3) {
+                spawnMeteor();
+            }
+
+            for (let i = meteors.length - 1; i >= 0; i--) {
+                const m = meteors[i];
+                m.x += m.vx;
+                m.y += m.vy;
+                m.life -= 0.012;
+
+                if (m.life <= 0) {
+                    meteors.splice(i, 1);
+                    continue;
+                }
+
+                const grad = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 12, m.y - m.vy * 12);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.3, m.color);
+                grad.addColorStop(1, 'transparent');
+
+                ctx.globalAlpha = m.life;
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(m.x, m.y);
+                ctx.lineTo(m.x - m.vx * 12, m.y - m.vy * 12);
+                ctx.stroke();
+
+                // Cabeza brillante
+                ctx.beginPath();
+                ctx.arc(m.x, m.y, 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(drawBackground);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        /* =========================================================
+           5. LÓGICA DEL MODAL DE DESPLIEGUE TÁCTICO
+           ========================================================= */
+        const modeConfigs = {
+            versus: {
+                tag: 'COMBATE TÁCTICO // ARENA',
+                title: 'Versus',
+                desc: 'Enfrentamientos frenéticos de escuadrones en ruinas fortificadas. Coordina habilidades cibernéticas, controla puntos estratégicos y elimina al equipo rival.',
+                players: '1v1 / 2v2 / 5v5',
+                queue: '~8 seg',
+                squad: 'Escuadrón',
+                accent: '#38bdf8',
+                options: ['Duelo 1v1', 'Táctico 2v2', 'Escuadrón 5v5']
+            },
+            royale: {
+                tag: 'MODO PRINCIPAL // CLASIFICATORIA',
+                title: 'Battle Royale & De Clasificatoria',
+                desc: 'Despliégate en la isla orbital con 60 combatientes. Asegura zonas de alto valor, equípate con armamento legendario y lucha por ser el último escuadrón en pie.',
+                players: '60 / Isla',
+                queue: '~14 seg',
+                squad: 'Solo / Dúo / Escuadra',
+                accent: '#facc15',
+                options: ['Solo (Clasificatoria)', 'Dúo Táctico', 'Escuadra (4 Jugadores)']
+            },
+            training: {
+                tag: 'SIMULACIÓN // CAMPO DE PRUEBAS',
+                title: 'Entrenamiento',
+                desc: 'Perfecciona tu puntería, prueba todas las armas y exotrajes sin límites de munición y domina el movimiento táctico en el complejo de prácticas.',
+                players: '1 - 12',
+                queue: 'Instantáneo',
+                squad: 'Libre',
+                accent: '#fb923c',
+                options: ['Campo de Tiro', 'Práctica de Movimiento', 'Prueba de Armas']
+            }
+        };
+
+        let selectedOptionIndex = 0;
+        let matchmakingInterval = null;
+        let matchmakingSeconds = 0;
+
+        function openDeployModal(modeKey) {
+            const cfg = modeConfigs[modeKey];
+            if (!cfg) return;
+
+            playSelectSound(modeKey === 'royale');
+            resetMatchmaking();
+
+            const modal = document.getElementById('tactical-modal');
+            modal.style.borderColor = cfg.accent;
+            modal.style.boxShadow = `0 0 40px ${cfg.accent}55, inset 0 0 20px ${cfg.accent}22`;
+
+            document.getElementById('modal-tag').textContent = cfg.tag;
+            document.getElementById('modal-tag').style.color = cfg.accent;
+            document.getElementById('modal-tag').style.borderColor = `${cfg.accent}66`;
+
+            document.getElementById('modal-title').textContent = cfg.title;
+            document.getElementById('modal-desc').textContent = cfg.desc;
+            document.getElementById('modal-players').textContent = cfg.players;
+            document.getElementById('modal-queue').textContent = cfg.queue;
+            document.getElementById('modal-squad').textContent = cfg.squad;
+
+            const optionsContainer = document.getElementById('modal-options');
+            optionsContainer.innerHTML = '';
+            selectedOptionIndex = 0;
+
+            cfg.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all ${
+                    idx === 0 
+                    ? 'bg-sky-500/25 border-sky-400 text-white shadow-[0_0_12px_rgba(56,189,248,0.3)]' 
+                    : 'bg-slate-900/70 border-slate-700 text-slate-400 hover:border-slate-500'
+                }`;
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    playHoverSound();
+                    selectedOptionIndex = idx;
+                    Array.from(optionsContainer.children).forEach((child, cIdx) => {
+                        if (cIdx === idx) {
+                            child.className = 'interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all bg-sky-500/25 border-sky-400 text-white shadow-[0_0_12px_rgba(56,189,248,0.3)]';
+                        } else {
+                            child.className = 'interactive-target p-2.5 rounded text-xs font-semibold border text-center transition-all bg-slate-900/70 border-slate-700 text-slate-400 hover:border-slate-500';
+                        }
+                    });
+                };
+                optionsContainer.appendChild(btn);
+            });
+
+            bindInteractiveHover();
+            document.getElementById('deploy-modal-backdrop').classList.add('active');
+        }
+
+        function closeDeployModal() {
+            playHoverSound();
+            resetMatchmaking();
+            document.getElementById('deploy-modal-backdrop').classList.remove('active');
+        }
+
+        function resetMatchmaking() {
+            if (matchmakingInterval) {
+                clearInterval(matchmakingInterval);
+                matchmakingInterval = null;
+            }
+            matchmakingSeconds = 0;
+            const box = document.getElementById('matchmaking-box');
+            const bar = document.getElementById('matchmaking-bar');
+            const startBtn = document.getElementById('btn-start-match');
+            box.classList.add('hidden');
+            bar.style.width = '0%';
+            startBtn.textContent = 'Iniciar Despliegue';
+            startBtn.classList.remove('from-rose-600', 'to-rose-500', 'text-white');
+            startBtn.classList.add('from-sky-500', 'to-cyan-400', 'text-slate-950');
+        }
+
+        function toggleMatchmaking() {
+            if (matchmakingInterval) {
+                playHoverSound();
+                resetMatchmaking();
+                return;
+            }
+
+            playSelectSound(true);
+            const box = document.getElementById('matchmaking-box');
+            const bar = document.getElementById('matchmaking-bar');
+            const timerEl = document.getElementById('matchmaking-timer');
+            const statusEl = document.getElementById('matchmaking-status');
+            const startBtn = document.getElementById('btn-start-match');
+
+            box.classList.remove('hidden');
+            startBtn.textContent = 'Cancelar Búsqueda';
+            startBtn.classList.remove('from-sky-500', 'to-cyan-400', 'text-slate-950');
+            startBtn.classList.add('from-rose-600', 'to-rose-500', 'text-white');
+
+            matchmakingSeconds = 0;
+            timerEl.textContent = '00:00';
+            bar.style.width = '12%';
+
+            matchmakingInterval = setInterval(() => {
+                matchmakingSeconds++;
+                const mins = String(Math.floor(matchmakingSeconds / 60)).padStart(2, '0');
+                const secs = String(matchmakingSeconds % 60).padStart(2, '0');
+                timerEl.textContent = `${mins}:${secs}`;
+
+                const progress = Math.min(100, matchmakingSeconds * 22);
+                bar.style.width = `${progress}%`;
+
+                if (progress >= 100) {
+                    clearInterval(matchmakingInterval);
+                    matchmakingInterval = null;
+                    statusEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> ¡PARTIDA ENCONTRADA! PREPARANDO CÁPSULA...`;
+                    playSelectSound(true);
+                }
+            }, 1000);
+        }
+
+        // Cerrar modal al hacer clic fuera del cuadro
+        document.getElementById('deploy-modal-backdrop').addEventListener('click', (e) => {
+            if (e.target.id === 'deploy-modal-backdrop') {
+                closeDeployModal();
+            }
+        });
+
+        // Inicialización al cargar ventana
+        window.onload = function () {
+            resizeCanvas();
+            drawBackground();
+            bindInteractiveHover();
+        };
+    </script>
+</body>
+</html>
