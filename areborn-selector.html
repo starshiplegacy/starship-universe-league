@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b73"><title>League Of Legacy · Visor de Areborn</title>
+<style>
+:root{color-scheme:dark;--glass:rgba(13,28,54,.72);--line:rgba(255,255,255,.34);--gold:#e7d7b1}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;color:#fff}
+body{background:linear-gradient(125deg,#102d69 0%,#245e9c 28%,#477fc0 49%,#9b3b50 76%,#451c3b 100%);background-size:240% 240%;animation:bgshift 22s ease-in-out infinite}
+@keyframes bgshift{0%,100%{background-position:0% 40%}50%{background-position:100% 60%}}
+#scene{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}
+#vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 35%,#07132966 100%),linear-gradient(180deg,#07132935,transparent 25%,transparent 72%,#07132966)}
+button{font:inherit;color:#fff;cursor:pointer;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(12px);box-shadow:0 8px 24px #06152d55;transition:background .18s,transform .18s,border-color .18s}
+button:hover{background:rgba(40,75,120,.86);border-color:#fff;transform:translateY(-2px)}
+.top{position:fixed;top:22px;z-index:5;padding:12px 18px;border-radius:10px;font-size:12px;font-weight:800;letter-spacing:.12em}
+#home{left:24px}#map{right:24px}
+#identity{position:fixed;left:24px;bottom:24px;width:min(330px,calc(100vw - 48px));z-index:4;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(8,20,42,.68);backdrop-filter:blur(16px);box-shadow:0 12px 38px #06152d66}
+.kicker{font-size:9px;letter-spacing:.24em;color:#c6d9f3;font-weight:800}#identity h2{font:600 23px Georgia,serif;margin:9px 0 6px}#identity p{margin:0;color:#d6e1f0;font-size:12px;line-height:1.5}
+.controls{position:fixed;right:24px;bottom:24px;z-index:6;display:flex;gap:10px;align-items:flex-end}
+.control-wrap{position:relative}.control{padding:14px 18px;border-radius:10px;font-size:11px;font-weight:800;letter-spacing:.08em}
+.menu{display:none;position:absolute;right:0;bottom:58px;min-width:220px;max-height:45vh;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:12px;background:rgba(8,20,42,.94);backdrop-filter:blur(18px);box-shadow:0 14px 38px #06152d88}
+.menu.open{display:grid;gap:5px}.menu button{padding:10px 12px;text-align:left;border-radius:7px;font-size:12px;box-shadow:none}
+.menu button.active{border-color:#fff;background:#477fc088}
+#animations{min-width:230px}
+#hint{position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:3;color:#e9f2ff;font-size:10px;letter-spacing:.18em;text-shadow:0 2px 8px #001}
+#loading{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:#071329bb;font-size:13px;letter-spacing:.18em}
+#loading.hide{display:none}
+#modal{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:20px;background:#020817aa;backdrop-filter:blur(8px)}
+#modal.open{display:grid}.dialog{width:min(430px,94vw);padding:28px;border:1px solid #d5e3f4aa;border-radius:16px;background:linear-gradient(145deg,#17355f,#301f49);box-shadow:0 22px 80px #0009;text-align:center}
+.dialog .kicker{color:#c9dcf6}.dialog h2{font:600 27px Georgia,serif;margin:12px 0}.dialog p{font-size:13px;color:#d6e1f0;line-height:1.6}
+.actions{display:flex;justify-content:center;gap:12px;margin-top:22px}.actions button{padding:12px 18px;border-radius:9px;font-size:11px;font-weight:800;letter-spacing:.08em}.yes{background:#dce9f7;color:#142846;border-color:#fff}.no{background:#152747}
+@media(max-width:650px){#home{left:12px;top:12px}#map{right:12px;top:12px}.controls{right:12px;bottom:12px;left:12px;justify-content:flex-end;flex-wrap:wrap}.control{padding:12px 13px}#identity{left:12px;bottom:82px;width:min(260px,calc(100vw - 24px));padding:13px 15px}#identity h2{font-size:19px}#hint{top:70px;font-size:8px;white-space:nowrap}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="scene"></div><div id="vignette"></div>
+<button id="home" class="top">← MENÚ DE INICIO</button>
+<button id="map" class="top">SELECCIONAR MAPA →</button>
+<div id="hint">LEAGUE OF LEGACY · SELECCIÓN DE AREBORN</div>
+<section id="identity"><div class="kicker">FICHA DEL AREBORN SELECCIONADO</div><h2 id="name">Cargando…</h2><p id="bio">Explora el visor y elige el Areborn que te acompañará en la partida.</p></section>
+<div class="controls">
+ <div class="control-wrap"><button id="characterBtn" class="control">PERSONAJE ▾</button><div id="characterMenu" class="menu"></div></div>
+ <div class="control-wrap"><button id="animationBtn" class="control">ANIMACIONES DEL PERSONAJE ▾</button><div id="animationMenu" class="menu"><button disabled>Esperando modelo…</button></div></div>
+</div>
+<div id="loading">PREPARANDO VISOR 3D…</div>
+<div id="modal"><div class="dialog"><div class="kicker">CONFIRMACIÓN DE AREBORN</div><h2 id="modalTitle">¿Confirmas tu Areborn?</h2><p id="modalText">Vas a continuar con el personaje seleccionado.</p><div class="actions"><button id="cancel" class="no">NO, VOLVER</button><button id="confirm" class="yes">SÍ, CONFIRMAR</button></div></div></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
+const files={Aquamarine:'Aquamarine.glb',Arthur:'Arthur.glb',Bella:'Bella.glb',Charlotte:'Charlotte.glb',Emma:'Emma.glb',Opalo:'opalo.glb',Optopool:'Optopool.glb',Stella:'Stella.glb'};
+const base='./assets/league-of-legacy/characters/';
+const sceneHost=document.getElementById('scene'),loading=document.getElementById('loading');
+const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x19345f,18,48);
+const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,.1,100);camera.position.set(0,2.5,8);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;sceneHost.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xdceaff,0x39405b,2));
+const key=new THREE.DirectionalLight(0xffffff,2.6);key.position.set(4,8,5);scene.add(key);
+const rim=new THREE.DirectionalLight(0xff637f,2);rim.position.set(-5,3,-4);scene.add(rim);
+const platform=new THREE.Mesh(new THREE.CylinderGeometry(2.25,2.4,.22,80),new THREE.MeshStandardMaterial({color:0xaab5c3,transparent:true,opacity:.42,roughness:.34,metalness:.28}));
+platform.position.y=-.12;scene.add(platform);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(2.13,.025,10,100),new THREE.MeshBasicMaterial({color:0xc8e6ff,transparent:true,opacity:.8}));ring.rotation.x=Math.PI/2;ring.position.y=.01;scene.add(ring);
+const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,1.15,0);controls.enableDamping=true;controls.minDistance=4;controls.maxDistance=12;controls.maxPolarAngle=Math.PI*.49;
+const loader=new GLTFLoader();let active=null,mixer=null,clips=[],selected='',currentAction=null;
+const cache=new Map();
+function fitModel(root){const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());root.position.x-=center.x;root.position.z-=center.z;root.position.y-=box.min.y;const max=Math.max(size.x,size.y,size.z);if(max>0)root.scale.setScalar(3.1/max);root.updateMatrixWorld(true)}
+function setAnimations(gltf){mixer=new THREE.AnimationMixer(active);clips=gltf.animations||[];const menu=document.getElementById('animationMenu');menu.innerHTML='';if(!clips.length){menu.innerHTML='<button disabled>Este modelo no incluye animaciones</button>';return}clips.forEach((clip,i)=>{const b=document.createElement('button');b.textContent=clip.name||'Animación '+(i+1);b.addEventListener('click',()=>{playAnimation(i);menu.classList.remove('open')});menu.appendChild(b)});playAnimation(0)}
+function playAnimation(i){if(!mixer||!clips[i])return;const action=mixer.clipAction(clips[i]);if(currentAction&&currentAction!==action)currentAction.fadeOut(.2);action.reset().fadeIn(.2).play();currentAction=action;document.querySelectorAll('#animationMenu button').forEach((b,j)=>b.classList.toggle('active',j===i))}
+async function selectCharacter(name){selected=name;document.getElementById('name').textContent=name;document.getElementById('bio').textContent='Areborn seleccionado · listo para confirmar y elegir un mapa.';document.querySelectorAll('#characterMenu button').forEach(b=>b.classList.toggle('active',b.dataset.name===name));loading.classList.remove('hide');try{let gltf=cache.get(name);if(!gltf){gltf=await loader.loadAsync(base+files[name]);cache.set(name,gltf)}if(active)scene.remove(active);active=THREE.SkeletonUtils?.clone?THREE.SkeletonUtils.clone(gltf.scene):gltf.scene.clone(true);fitModel(active);scene.add(active);setAnimations(gltf)}catch(err){console.error('Error cargando Areborn:',name,err);document.getElementById('bio').textContent='No se pudo cargar el modelo 3D. Revisa el recurso '+files[name]+'.'}finally{loading.classList.add('hide')}}
+const charMenu=document.getElementById('characterMenu');characters.forEach(name=>{const b=document.createElement('button');b.textContent=name;b.dataset.name=name;b.addEventListener('click',()=>{selectCharacter(name);charMenu.classList.remove('open')});charMenu.appendChild(b)});
+document.getElementById('characterBtn').addEventListener('click',()=>{charMenu.classList.toggle('open');document.getElementById('animationMenu').classList.remove('open')});
+document.getElementById('animationBtn').addEventListener('click',()=>{document.getElementById('animationMenu').classList.toggle('open');charMenu.classList.remove('open')});
+const modal=document.getElementById('modal');document.getElementById('map').addEventListener('click',()=>{document.getElementById('modalTitle').textContent='¿Confirmas este Areborn?';document.getElementById('modalText').textContent='Has seleccionado a '+selected+'. ¿Quieres confirmar este personaje y continuar a la selección de mapas?';modal.classList.add('open')});
+document.getElementById('cancel').addEventListener('click',()=>modal.classList.remove('open'));
+document.getElementById('confirm').addEventListener('click',()=>{sessionStorage.setItem('leagueOfLegacyAreborn',selected);location.href='./game-modes.html'});
+document.getElementById('home').addEventListener('click',()=>location.href='./assets/league-of-legacy/references/New_MainMenu.html');
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+function animate(){requestAnimationFrame(animate);const dt=clock.getDelta();if(mixer)mixer.update(dt);controls.update();renderer.render(scene,camera)}
+const clock=new THREE.Clock();
+const initial=characters[Math.floor(Math.random()*characters.length)];selectCharacter(initial);
+animate();
+</script>
+</body></html>
