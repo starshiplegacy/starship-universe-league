@@ -298,13 +298,14 @@ $('#online').onclick=function(){const o=['Online','Away','Offline'],c=['#0ac86e'
 addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#sel').classList.contains('on'))closeSel();else if(openKey)closeScreen()}});
 /* ---------- PLAY / selección ---------- */
 const play=$('#play');let queue=null;
-play.onclick=()=>{if(queue){clearInterval(queue.t);queue=null;play.classList.remove('q');play.textContent='PLAY';toast('Búsqueda cancelada')}else openSel('')};
+play.onclick=()=>{if(queue){clearInterval(queue.t);queue=null;play.classList.remove('q');play.textContent='PLAY';toast('Búsqueda cancelada')}else window.dispatchEvent(new CustomEvent('ul-start-match-flow'))};
 const selEl=document.createElement('div');selEl.id='sel';
 selEl.innerHTML=`<div id="sw"><h2>ELIGE TU PERSONAJE</h2><button class="x" id="sx">&#10005;</button><div id="cg"></div><div id="pv"><canvas id="pc" width="372" height="430"></canvas><div id="pn"></div><div id="pl">Elige un personaje</div></div><div id="an"><button data-a="idle" class="on">REPOSO</button><button data-a="dance">BAILAR</button><button data-a="laugh">REÍR</button><button data-a="taunt">PROVOCAR</button></div><button id="lk" disabled>BLOQUEAR PERSONAJE</button><div class="hint">Arrastra el modelo para girarlo · Esc para cerrar</div></div>`;
 st.insertBefore(selEl,$('#toast'));
 let pick=null;
 function renderCg(){$('#cg').innerHTML=CH.map(c=>`<div class="cc ${pick===c.id?'on':''}" data-c="${c.id}">${thumbs[c.id]?`<img src="${thumbs[c.id]}" alt="">`:`<div class="ph" style="background:radial-gradient(circle at 35% 30%,#fff7,${c.c})">${c.name[0]}</div>`}<b>${c.name}</b></div>`).join('')}
 function openSel(id){selEl.classList.add('on');renderCg();if(id)choose(id);else if(!pick)$('#pl').textContent='Elige un personaje';$('#pl').style.display=pick?'none':'flex';initPrev();queueThumbs()}
+window.startCharacterSelection=function(){pick=null;openSel('')};
 function closeSel(){selEl.classList.remove('on')}
 $('#sx').onclick=closeSel;
 $('#cg').onclick=e=>{const c=e.target.closest('.cc');if(c)choose(c.dataset.c)};
@@ -495,7 +496,7 @@ const maps=[
 ];
 const characters=['Aquamarine','Arthur','Bella','Charlotte','Emma','Opalo','Optopool','Stella'];
 let step='character',map=null,character=null,loadingTimer=null,cinemaTimer=null;
-function openCharacterSelector(){overlay.classList.remove('open');window.__UL_FLOW_ACTIVE=true;const selector=document.getElementById('sel');if(selector)selector.classList.add('on');if(window.initPrev)window.initPrev();if(window.queueThumbs)window.queueThumbs()}
+function openCharacterSelector(reset){overlay.classList.remove('open');window.__UL_FLOW_ACTIVE=true;if(reset&&window.startCharacterSelection)window.startCharacterSelection();else if(window.openSel)window.openSel('')}
 function show(){if(step==='character'){openCharacterSelector();return}overlay.classList.add('open');render()}
 function hide(){overlay.classList.remove('open');if(loadingTimer)clearInterval(loadingTimer);if(cinemaTimer)clearTimeout(cinemaTimer)}
 function render(){
@@ -552,7 +553,7 @@ next.addEventListener('click',()=>{
  else if(step==='pending'){hide();step='character';return}
  render();
 });
-document.addEventListener('click',e=>{if(e.target.closest('#play')){map=null;character=null;step='character';window.__UL_FLOW_ACTIVE=true;overlay.classList.remove('open')}},true);
+window.addEventListener('ul-start-match-flow',()=>{map=null;character=null;step='character';openCharacterSelector(true)});
 window.addEventListener('ul-character-locked',e=>{character=e.detail&&e.detail.name?e.detail.name:null;if(!character)return;window.__UL_FLOW_ACTIVE=false;step='map';overlay.classList.add('open');render()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))hide()});
 })();
