@@ -122,4 +122,4 @@ Arthur is now selectable in the Training character selector and configured in `G
 
 ## 11. Optopool added to the Training roster — 18 November 2026
 
-Optopool is selectable in Training and uses `Optopool.glb`. Its supplied animation mapping is recorded in `Gameplay/Player/character-roster.js`: idle `Idle1_Base`, walk `Run_Base`, run `Float_Idle01`, Q `Spell1`, W `Spell2`, E/H `Spell3`, victory `Dance_Loop`, and damage `Death`. No jump clip was supplied, so jump remains unassigned. Clip availability and visual playback still require browser verification.
+Optopool is selectable in Training and uses `Optopool.glb`. Its supplied animation mapping is recorded in `Gameplay/Player/character-roster.js`: idle `Idle1_Base`, walk `Run_Base`, run `Float_Idle01`, Q `Spell1`, W `Spell2`, E `Spell3`, H `Spell4`, victory `Dance_Loop`, and damage `Death`. No jump clip was supplied, so jump remains unassigned. Clip availability and visual playback still require browser verification.
