@@ -412,6 +412,7 @@ document.querySelectorAll(".carousel-shell").forEach(shell=>{
         if(password!==$("confirmPassword").value){message(dict().passwordMismatch,"error");return;}
         const {data,error}=await supabase.auth.signUp({email,password,options:{data:{first_name:first,last_name:last},emailRedirectTo:window.location.origin}});
         if(error) throw error;
+        if(data.user)window.dispatchEvent(new CustomEvent("universe-account-created",{detail:{user:data.user}}));
         message(data.session?dict().signedIn:dict().checkEmail,"success");
         if(data.session) setTimeout(()=>dialog.close(),1200);
       }else{
