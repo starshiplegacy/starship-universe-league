@@ -31,8 +31,9 @@ jobs:
 
       - name: Stage public website files
         run: |
-          mkdir -p site
-          rsync -a ./ site/ \
+          mkdir -p "$RUNNER_TEMP/starship-site"
+          rsync -a ./ "$RUNNER_TEMP/starship-site/" \
+            --exclude='site/' \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='docs/' \
@@ -61,12 +62,12 @@ jobs:
             --exclude='*.layer' \
             --exclude='*.zip' \
             --exclude='*.psd'
-          touch site/.nojekyll
+          touch "$RUNNER_TEMP/starship-site/.nojekyll"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: ${{ runner.temp }}/starship-site
 
       - name: Deploy to GitHub Pages
         id: deployment
