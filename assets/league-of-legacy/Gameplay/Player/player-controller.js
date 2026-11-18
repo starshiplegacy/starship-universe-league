@@ -17,6 +17,22 @@ export class PlayerController {
     this.root.position.set(0, 0, 8);
     this.scene.add(this.root);
     this.model = null;
+    this.mixer = null;
+    this.animationActions = new Map();
+    this.activeAction = null;
+    this.locomotionAction = null;
+    this.animationClips = {
+      idle: "idle1_base1",
+      walk: "Run_Haste",
+      run: "Run",
+      jump: "Spell2",
+      passive: "Attack1",
+      hybrid: "Channel",
+      aggressive: "Idle_Spell4_loop",
+      tiny: "Spell2",
+      damage: "Death",
+      victory: "Dance_Loop"
+    };
     this.velocityY = 0;
     this.grounded = true;
     this.heading = 0;
@@ -57,8 +73,56 @@ export class PlayerController {
     });
     this.root.add(model);
     this.model = model;
+    this.mixer = new THREE.AnimationMixer(model);
+    for (const clip of (gltf.animations || [])) {
+      this.animationActions.set(clip.name, this.mixer.clipAction(clip));
+    }
+    this.mixer.addEventListener("finished", event => {
+      if (this.activeAction === event.action) this.activeAction = null;
+    });
     this.ready = true;
     return gltf.animations || [];
+  }
+
+  playAnimation(name, { loop = false, fade = 0.16 } = {}) {
+    const action = this.animationActions.get(name);
+    if (!action) {
+      console.warn(`Animación no encontrada en Charlotte.glb: ${name}`);
+      return false;
+    }
+    if (this.activeAction && this.activeAction !== action) {
+      this.activeAction.fadeOut(fade);
+    }
+    if (this.locomotionAction && this.locomotionAction !== action) {
+      this.locomotionAction.fadeOut(fade);
+      this.locomotionAction = null;
+    }
+    action.reset();
+    action.enabled = true;
+    action.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, loop ? Infinity : 1);
+    action.clampWhenFinished = !loop;
+    action.fadeIn(fade).play();
+    this.activeAction = action;
+    return true;
+  }
+
+  updateLocomotion(name) {
+    if (this.activeAction) return;
+    const clipName = this.animationClips[name];
+    const next = this.animationActions.get(clipName);
+    if (!next || this.locomotionAction === next) return;
+    if (this.locomotionAction) this.locomotionAction.fadeOut(0.18);
+    next.reset().setLoop(THREE.LoopRepeat, Infinity);
+    next.fadeIn(0.18).play();
+    this.locomotionAction = next;
+  }
+
+  playDamage() {
+    return this.playAnimation(this.animationClips.damage);
+  }
+
+  playVictory() {
+    return this.playAnimation(this.animationClips.victory, { loop: true });
   }
 
   setTouchKey(key, pressed) {
@@ -95,6 +159,7 @@ export class PlayerController {
     if (this.isDown(" ","jump") && this.grounded) {
       this.velocityY = JUMP_SPEED;
       this.grounded = false;
+      this.playAnimation(this.animationClips.jump);
     }
     this.velocityY -= GRAVITY * delta;
     this.root.position.y += this.velocityY * delta;
@@ -103,6 +168,11 @@ export class PlayerController {
       this.velocityY = 0;
       this.grounded = true;
     }
+    if (!this.activeAction) {
+      const moving = this.move.lengthSq() > 0.0001;
+      this.updateLocomotion(moving ? (this.isDown("shift") ? "run" : "walk") : "idle");
+    }
+    this.mixer?.update(delta);
   }
 
   reset() {
