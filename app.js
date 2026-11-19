@@ -236,6 +236,8 @@ function renderGameDialog(key){
   gameDialogGameplay.textContent = dictionary[key === "lyrie" ? "lyrieGameplay" : "legacyGameplay"];
   gameDialogExtra.hidden = key !== "legacy";
   gameDialogExtra.innerHTML = key === "legacy" ? dictionary.legacyControls : "";
+  const moreInfo=document.getElementById("legacyMoreInfo");
+  if(moreInfo)moreInfo.hidden=key!=="legacy";
   const launchActions=document.getElementById("lyriePanelActions");
   const canPlay=Boolean(window.starshipGameLibrary?.isInstalled(key));
   if(launchActions)launchActions.hidden=!canPlay||(key!=="lyrie"&&key!=="legacy");
