@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Of Legacy — Códice Oficial &amp; Los Areborns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Noto+Sans+JP:wght@500;700&family=Noto+Sans+KR:wght@500;700&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #030917;
+            --cyan-neon: #00e5ff;
+            --sky-glow: #38bdf8;
+            --gold-imperial: #ffbe0b;
+            --ruby-primary: #e0115f;
+            --ruby-glow: #ff1e56;
+            --slate-blue: rgba(104, 125, 148, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (pointer: fine) {
+            body, a, button, input, [role="button"], .interactive-target {
+                cursor: none !important;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            font-family: 'Chakra Petch', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           CURSOR PERSONALIZADO AZUL GRISÁCEO + RUBÍ
+           ========================================= */
+        #custom-cursor-core,
+        #custom-cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (pointer: coarse) {
+            #custom-cursor-core, #custom-cursor-ring {
+                display: none !important;
+            }
+        }
+
+        #custom-cursor-core {
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(124, 147, 173, 0.9) 0%, rgba(104, 125, 148, 0.65) 100%);
+            border: 1.8px solid var(--ruby-glow);
+            box-shadow: 0 0 10px rgba(224, 17, 95, 0.85), inset 0 0 5px rgba(255, 30, 86, 0.65);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+        }
+
+        #custom-cursor-ring {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(104, 125, 148, 0.2);
+            border: 1.5px solid var(--ruby-primary);
+            box-shadow: 0 0 16px rgba(224, 17, 95, 0.5), inset 0 0 10px rgba(124, 147, 173, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.25s ease,
+                        background 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        #custom-cursor-ring::before,
+        #custom-cursor-ring::after {
+            content: '';
+            position: absolute;
+            box-shadow: 0 0 6px var(--ruby-glow);
+        }
+
+        #custom-cursor-ring::before {
+            width: 122%;
+            height: 1.5px;
+            background: linear-gradient(90deg, var(--ruby-glow) 0%, var(--ruby-glow) 18%, transparent 18%, transparent 82%, var(--ruby-glow) 82%, var(--ruby-glow) 100%);
+        }
+
+        #custom-cursor-ring::after {
+            height: 122%;
+            width: 1.5px;
+            background: linear-gradient(180deg, var(--ruby-glow) 0%, var(--ruby-glow) 18%, transparent 18%, transparent 82%, var(--ruby-glow) 82%, var(--ruby-glow) 100%);
+        }
+
+        body.cursor-hover #custom-cursor-ring {
+            width: 60px;
+            height: 60px;
+            background: rgba(124, 147, 173, 0.32);
+            border-color: var(--ruby-glow);
+            border-width: 2px;
+            box-shadow: 0 0 24px rgba(255, 30, 86, 0.9), inset 0 0 14px rgba(124, 147, 173, 0.6);
+            animation: spinCursor 4.5s linear infinite;
+        }
+
+        body.cursor-hover #custom-cursor-core {
+            width: 11px;
+            height: 11px;
+            background: #94a3b8;
+            box-shadow: 0 0 14px var(--ruby-glow);
+        }
+
+        body.cursor-clicking #custom-cursor-ring {
+            width: 32px;
+            height: 32px;
+            background: rgba(224, 17, 95, 0.42);
+        }
+
+        @keyframes spinCursor {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* =========================================
+           FONDO ESPACIAL & ATMÓSFERA NEXARIE
+           ========================================= */
+        #starfield-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cosmic-backdrop {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(14, 116, 144, 0.28) 0%, transparent 55%),
+                radial-gradient(ellipse at 15% 35%, rgba(30, 58, 138, 0.24) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 65%, rgba(224, 17, 95, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(255, 190, 11, 0.14) 0%, transparent 55%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           TIPOGRAFÍA Y PANELES SCI-FI BISELADOS
+           ========================================= */
+        .font-display {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .font-cjk {
+            font-family: 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+        }
+
+        .hero-title-glow {
+            text-shadow:
+                0 2px 0 #0284c7,
+                0 0 24px rgba(0, 229, 255, 0.75),
+                0 0 50px rgba(56, 189, 248, 0.45);
+        }
+
+        .gold-title-glow {
+            text-shadow:
+                0 2px 0 #b45309,
+                0 0 20px rgba(255, 190, 11, 0.65);
+        }
+
+        .bevel-panel {
+            background: linear-gradient(165deg, rgba(11, 25, 46, 0.92) 0%, rgba(5, 13, 26, 0.95) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), inset 0 0 20px rgba(14, 165, 233, 0.08);
+            clip-path: polygon(
+                18px 0%, calc(100% - 18px) 0%,
+                100% 18px, 100% calc(100% - 18px),
+                calc(100% - 18px) 100%, 18px 100%,
+                0% calc(100% - 18px), 0% 18px
+            );
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .bevel-panel:hover {
+            border-color: rgba(0, 229, 255, 0.75);
+            box-shadow: 0 14px 42px rgba(0, 229, 255, 0.18), inset 0 0 24px rgba(0, 229, 255, 0.12);
+        }
+
+        .bevel-panel-gold {
+            background: linear-gradient(165deg, rgba(24, 20, 12, 0.92) 0%, rgba(9, 13, 24, 0.96) 100%);
+            border: 1px solid rgba(255, 190, 11, 0.45);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.65), inset 0 0 20px rgba(255, 190, 11, 0.08);
+            clip-path: polygon(
+                18px 0%, calc(100% - 18px) 0%,
+                100% 18px, 100% calc(100% - 18px),
+                calc(100% - 18px) 100%, 18px 100%,
+                0% calc(100% - 18px), 0% 18px
+            );
+            backdrop-filter: blur(10px);
+        }
+
+        /* Botones tácticos iluminados */
+        .tactical-btn {
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0% 50%);
+            transition: all 0.25s ease;
+        }
+
+        .tactical-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+            transform: skewX(-25deg);
+            pointer-events: none;
+        }
+
+        .tactical-btn:hover::after {
+            animation: btnSweep 0.65s ease forwards;
+        }
+
+        .tactical-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 22px rgba(0, 229, 255, 0.75);
+        }
+
+        @keyframes btnSweep {
+            0% { left: -120%; }
+            100% { left: 160%; }
+        }
+
+        /* Tarjetas de los Areborns */
+        .areborn-card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(12, 26, 48, 0.94) 0%, rgba(5, 11, 23, 0.98) 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.35);
+            clip-path: polygon(
+                18px 0%, calc(100% - 18px) 0%,
+                100% 18px, 100% calc(100% - 18px),
+                calc(100% - 18px) 100%, 18px 100%,
+                0% calc(100% - 18px), 0% 18px
+            );
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+            overflow: hidden;
+        }
+
+        .areborn-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--card-accent, #00e5ff);
+            box-shadow: 0 14px 36px -6px var(--card-glow, rgba(0, 229, 255, 0.45));
+        }
+
+        .areborn-scanner {
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 240%;
+            height: 36px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: rotate(-30deg);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .areborn-card:hover .areborn-scanner {
+            opacity: 1;
+            animation: cardScan 1.3s ease-in-out infinite;
+        }
+
+        @keyframes cardScan {
+            0% { transform: translate(-30%, -30%) rotate(-30deg); }
+            100% { transform: translate(65%, 95%) rotate(-30deg); }
+        }
+
+        /* Jerarquía escalonada */
+        .hierarchy-step {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .hierarchy-step:hover {
+            transform: translateX(6px);
+            border-color: #ffbe0b;
+            background: rgba(255, 190, 11, 0.08);
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 17, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s ease;
+        }
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            width: 100%;
+            max-width: 620px;
+            background: linear-gradient(165deg, #0b192e 0%, #040a16 100%);
+            border: 2px solid var(--cyan-neon);
+            clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 22px, 100% calc(100% - 22px), calc(100% - 22px) 100%, 22px 100%, 0 calc(100% - 22px), 0 22px);
+            padding: 1.75rem;
+            transform: scale(0.92) translateY(14px);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-backdrop.active .modal-box {
+            transform: scale(1) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cursor Táctico Azul Grisáceo con Líneas Rojo Rubí -->
+    <div id="custom-cursor-ring"></div>
+    <div id="custom-cursor-core"></div>
+
+    <!-- Fondo Espacial Animado -->
+    <canvas id="starfield-canvas"></canvas>
+    <div class="cosmic-backdrop"></div>
+
+    <!-- Barra de Navegación Táctica Superior -->
+    <header class="sticky top-0 z-40 bg-[#030917]/85 backdrop-blur-md border-b border-sky-500/25">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="#inicio" class="interactive-target flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded bg-gradient-to-br from-sky-400 to-blue-700 p-[1.5px] shadow-[0_0_15px_rgba(0,229,255,0.5)]">
+                    <div class="w-full h-full bg-[#040c1c] flex items-center justify-center font-display font-black text-sky-300 text-sm">
+                        LoL
+                    </div>
+                </div>
+                <div>
+                    <span class="font-display font-extrabold text-base sm:text-lg tracking-wider text-white group-hover:text-sky-300 transition-colors">
+                        LEAGUE OF LEGACY
+                    </span>
+                    <span class="block text-[10px] tracking-[0.2em] text-amber-400/90 uppercase">
+                        Starship Universe League
+                    </span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-widest">
+                <a href="#inicio" class="interactive-target text-slate-300 hover:text-sky-300 transition-colors">Universo</a>
+                <a href="#ficha-referencia" class="interactive-target text-slate-300 hover:text-amber-300 transition-colors">Ficha Oficial</a>
+                <a href="#jerarquia" class="interactive-target text-slate-300 hover:text-sky-300 transition-colors">Jerarquía Nexarie</a>
+                <a href="#areborns" class="interactive-target text-slate-300 hover:text-rose-400 transition-colors">Los Areborns</a>
+            </nav>
+
+            <a href="#areborns" class="interactive-target tactical-btn bg-gradient-to-r from-sky-400 to-cyan-300 text-slate-950 font-bold text-xs uppercase tracking-wider px-5 py-2 shadow-[0_0_16px_rgba(0,229,255,0.45)]">
+                Explorar Campeones
+            </a>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         1. HERO / PRESENTACIÓN DEL JUEGO Y AREBORNS
+         ========================================== -->
+    <section id="inicio" class="relative z-10 pt-12 pb-14 sm:pt-16 sm:pb-20 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-950/70 border border-sky-400/40 text-sky-300 text-xs font-bold uppercase tracking-[0.2em] mb-5 shadow-[0_0_20px_rgba(0,229,255,0.2)]">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                Starship Legacy Entertainment, LLC
+            </div>
+
+            <h1 class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white hero-title-glow mb-4">
+                LEAGUE OF LEGACY
+            </h1>
+
+            <p class="text-lg sm:text-2xl font-semibold text-sky-200 max-w-3xl mx-auto leading-relaxed mb-8">
+                Un juego en <span class="text-amber-300 font-bold">modo 3D</span> que mezcla <span class="text-cyan-300 font-bold">RPG</span> con <span class="text-cyan-300 font-bold">MOBA</span>.
+            </p>
+
+            <!-- Bloque Destacado: Definición de Los Areborns -->
+            <div class="bevel-panel-gold max-w-3xl mx-auto p-6 sm:p-8 text-left sm:text-center relative">
+                <div class="flex flex-wrap items-center justify-center gap-3 mb-2">
+                    <span class="text-xs font-display font-bold uppercase tracking-widest text-amber-400">
+                        ★ LOS AREBORNS ★
+                    </span>
+                    <span class="font-cjk text-xs px-2.5 py-0.5 rounded bg-amber-500/15 border border-amber-400/40 text-amber-200">
+                        アリボーン / 아리
+                    </span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold italic text-white gold-title-glow mb-3">
+                    ¿Quiénes son los Areborns?
+                </h2>
+                <p class="text-slate-200 text-base sm:text-lg leading-relaxed">
+                    Los <strong class="text-amber-300">Areborns</strong> son los <strong class="text-white">campeones/soldados</strong> del universo de <strong class="text-sky-300">League Of Legacy</strong>. Guerreros de linajes híbridos y arcanos que luchan en las batallas multijugador de <strong class="text-cyan-300">Nexarie</strong>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         2. LEAGUE OF LEGACY — FICHA DE REFERENCIA
+         ========================================== -->
+    <section id="ficha-referencia" class="relative z-10 py-10 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Encabezado de Sección -->
+            <div class="flex items-center justify-center gap-4 mb-10">
+                <div class="h-[2px] w-12 sm:w-28 bg-gradient-to-r from-transparent to-sky-400"></div>
+                <h2 class="font-display font-bold text-xl sm:text-3xl text-center uppercase tracking-wider text-white">
+                    LEAGUE OF LEGACY — <span class="text-sky-400">FICHA DE REFERENCIA</span>
+                </h2>
+                <div class="h-[2px] w-12 sm:w-28 bg-gradient-to-l from-transparent to-sky-400"></div>
+            </div>
+
+            <!-- Grid de Datos Generales + El Mundo / Habitantes / Guerreros -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+
+                <!-- 1. Datos Generales (5 columnas) -->
+                <div class="lg:col-span-5 bevel-panel p-6 sm:p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-sky-500/30 pb-3 mb-5">
+                            <span class="font-display text-xs font-bold tracking-widest text-sky-400 uppercase">01 // ARCHIVO TÉCNICO</span>
+                            <span class="w-2.5 h-2.5 rotate-45 bg-sky-400 shadow-[0_0_8px_#38bdf8]"></span>
+                        </div>
+                        <h3 class="text-2xl font-bold italic text-white mb-5">Datos generales</h3>
+
+                        <ul class="space-y-3.5 text-sm sm:text-base">
+                            <li class="flex items-center justify-between bg-slate-900/75 border border-slate-700/70 px-4 py-2.5 rounded">
+                                <span class="text-slate-400 uppercase text-xs tracking-wider">Juego</span>
+                                <span class="font-bold text-white">League Of Legacy</span>
+                            </li>
+                            <li class="flex items-center justify-between bg-slate-900/75 border border-slate-700/70 px-4 py-2.5 rounded">
+                                <span class="text-slate-400 uppercase text-xs tracking-wider">Estudio</span>
+                                <span class="font-bold text-sky-300">Starship Universe League</span>
+                            </li>
+                            <li class="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-900/75 border border-slate-700/70 px-4 py-2.5 rounded gap-1">
+                                <span class="text-slate-400 uppercase text-xs tracking-wider">Empresa matriz</span>
+                                <span class="font-bold text-amber-300 text-right">Starship Legacy Entertainment, LLC</span>
+                            </li>
+                            <li class="flex items-center justify-between bg-slate-900/75 border border-slate-700/70 px-4 py-2.5 rounded">
+                                <span class="text-slate-400 uppercase text-xs tracking-wider">Modo</span>
+                                <span class="font-bold text-rose-400 uppercase tracking-wider">Batalla</span>
+                            </li>
+                            <li class="flex items-center justify-between bg-slate-900/75 border border-slate-700/70 px-4 py-2.5 rounded">
+                                <span class="text-slate-400 uppercase text-xs tracking-wider">Rol</span>
+                                <span class="font-bold text-emerald-400 uppercase tracking-wider">Multijugador</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. El Mundo, Habitantes y Guerreros (7 columnas) -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Tarjeta: El Mundo -->
+                    <div class="bevel-panel p-6 flex flex-col justify-between border-t-2 border-t-cyan-400">
+                        <div>
+                            <div class="w-11 h-11 rounded-lg bg-cyan-500/15 border border-cyan-400/50 flex items-center justify-center mb-4 text-cyan-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="9" stroke-width="1.8"/>
+                                    <path stroke-width="1.5" d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>
+                                </svg>
+                            </div>
+                            <span class="text-[11px] font-display uppercase tracking-widest text-cyan-400">El mundo</span>
+                            <h4 class="text-2xl font-bold text-white mt-1 mb-4">Nexarie</h4>
+                        </div>
+                        <div class="space-y-2 pt-3 border-t border-slate-700/70">
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Japonés</span>
+                                <span class="font-cjk font-bold text-cyan-200 text-sm">ネクサリエ</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Coreano</span>
+                                <span class="font-cjk font-bold text-cyan-200 text-sm">넥사리에</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta: Habitantes -->
+                    <div class="bevel-panel p-6 flex flex-col justify-between border-t-2 border-t-indigo-400">
+                        <div>
+                            <div class="w-11 h-11 rounded-lg bg-indigo-500/15 border border-indigo-400/50 flex items-center justify-center mb-4 text-indigo-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <span class="text-[11px] font-display uppercase tracking-widest text-indigo-400">Habitantes (Gentilicio)</span>
+                            <h4 class="text-2xl font-bold text-white mt-1 mb-4">Nexarios</h4>
+                        </div>
+                        <div class="space-y-2 pt-3 border-t border-slate-700/70">
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Japonés</span>
+                                <span class="font-cjk font-bold text-indigo-200 text-sm">ネクサリエ人</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Coreano</span>
+                                <span class="font-cjk font-bold text-indigo-200 text-sm">넥사리인</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta: Guerreros -->
+                    <div class="bevel-panel p-6 flex flex-col justify-between border-t-2 border-t-amber-400">
+                        <div>
+                            <div class="w-11 h-11 rounded-lg bg-amber-500/15 border border-amber-400/50 flex items-center justify-center mb-4 text-amber-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
+                                </svg>
+                            </div>
+                            <span class="text-[11px] font-display uppercase tracking-widest text-amber-400">Guerreros (Colectivo)</span>
+                            <h4 class="text-2xl font-bold text-white mt-1 mb-4">Areborn</h4>
+                        </div>
+                        <div class="space-y-2 pt-3 border-t border-slate-700/70">
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Japonés</span>
+                                <span class="font-cjk font-bold text-amber-200 text-sm">アリボーン</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs bg-slate-950/70 px-3 py-2 rounded">
+                                <span class="text-slate-400">Coreano</span>
+                                <span class="font-cjk font-bold text-amber-200 text-sm">아리</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Jerarquía de Nombres -->
+            <div id="jerarquia" class="bevel-panel p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-sky-500/30 pb-4 mb-6">
+                    <div>
+                        <span class="font-display text-xs font-bold tracking-widest text-amber-400 uppercase">02 // ESTRUCTURA DEL UNIVERSO</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold italic text-white mt-0.5">Jerarquía de nombres</h3>
+                    </div>
+                    <span class="text-xs text-slate-400 uppercase tracking-wider">Del territorio a la élite guerrera</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Nivel 1 -->
+                    <div class="hierarchy-step interactive-target bg-slate-900/80 border border-cyan-500/40 rounded-lg p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-display font-bold text-cyan-400">NIVEL 01</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300">Mundo</span>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">Nexarie</div>
+                        <div class="text-sm text-cyan-200 font-semibold">= el territorio</div>
+                    </div>
+
+                    <!-- Nivel 2 -->
+                    <div class="hierarchy-step interactive-target bg-slate-900/80 border border-indigo-500/40 rounded-lg p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-display font-bold text-indigo-400">NIVEL 02</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300">Gentilicio</span>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">Nexarios</div>
+                        <div class="text-sm text-indigo-200 font-semibold">= la población</div>
+                    </div>
+
+                    <!-- Nivel 3 -->
+                    <div class="hierarchy-step interactive-target bg-slate-900/80 border border-emerald-500/40 rounded-lg p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-display font-bold text-emerald-400">NIVEL 03</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300">Sociedad</span>
+                        </div>
+                        <div class="text-2xl font-bold text-white mb-1">Concordes</div>
+                        <div class="text-sm text-emerald-200 font-semibold">= la comunidad política</div>
+                    </div>
+
+                    <!-- Nivel 4 -->
+                    <div class="hierarchy-step interactive-target bg-slate-900/80 border border-amber-500/50 rounded-lg p-5 shadow-[0_0_20px_rgba(255,190,11,0.12)]">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-display font-bold text-amber-400">NIVEL 04</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">Campeones</span>
+                        </div>
+                        <div class="text-2xl font-bold text-amber-300 mb-1">Areborn</div>
+                        <div class="text-sm text-amber-100 font-semibold">= los guerreros</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         3. GALERÍA INTERACTIVA DE PERSONAJES / AREBORNS
+         ========================================== -->
+    <section id="areborns" class="relative z-10 py-14 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Encabezado de Sección -->
+            <div class="text-center mb-10">
+                <span class="font-display text-xs font-bold tracking-[0.25em] text-rose-400 uppercase">
+                    CÓDICE DE CAMPEONES // 08 UNIDADES REGISTRADAS
+                </span>
+                <h2 class="font-display font-black text-3xl sm:text-5xl text-white hero-title-glow mt-2 mb-3">
+                    PERSONAJES / AREBORNS
+                </h2>
+                <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base">
+                    Explora los linajes arcanos, elementales, feéricos y cibernéticos que luchan en las arenas 3D de League Of Legacy. Haz clic en cualquier Areborn para abrir su expediente completo.
+                </p>
+            </div>
+
+            <!-- Barra de Filtros y Buscador -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 bg-slate-950/75 border border-sky-500/30 p-4 rounded-xl backdrop-blur-md">
+                <div id="filter-buttons" class="flex flex-wrap items-center justify-center gap-2">
+                    <button data-filter="all" class="interactive-target filter-btn active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-500 text-slate-950 shadow-[0_0_14px_rgba(0,229,255,0.6)] transition-all">
+                        Todos (8)
+                    </button>
+                    <button data-filter="arcano" class="interactive-target filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 border border-slate-700 text-slate-300 hover:border-sky-400 transition-all">
+                        Hechicería &amp; Brujería
+                    </button>
+                    <button data-filter="elemental" class="interactive-target filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 border border-slate-700 text-slate-300 hover:border-sky-400 transition-all">
+                        Elemental &amp; Acuático
+                    </button>
+                    <button data-filter="feerico" class="interactive-target filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 border border-slate-700 text-slate-300 hover:border-sky-400 transition-all">
+                        Linaje Feérico
+                    </button>
+                    <button data-filter="tecno" class="interactive-target filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 border border-slate-700 text-slate-300 hover:border-sky-400 transition-all">
+                        Tecno-Fusión
+                    </button>
+                </div>
+
+                <div class="relative w-full md:w-64">
+                    <input id="areborn-search" type="text" placeholder="Buscar Areborn o linaje..."
+                        class="interactive-target w-full bg-slate-900/90 border border-slate-700 focus:border-sky-400 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-slate-400 outline-none transition-colors">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Grid de Tarjetas de Areborns -->
+            <div id="areborns-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Renderizado dinámicamente por JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Oficial -->
+    <footer class="relative z-10 border-t border-sky-500/20 bg-[#020611]/90 py-8 px-4 text-center text-xs text-slate-400">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="font-display font-bold text-slate-200 tracking-wider">
+                LEAGUE OF LEGACY • UNIVERSO NEXARIE
+            </div>
+            <div>
+                Estudio: <span class="text-sky-300">Starship Universe League</span> | <span class="text-amber-300">Starship Legacy Entertainment, LLC</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         MODAL DE EXPEDIENTE DETALLADO DEL AREBORN
+         ========================================== -->
+    <div id="areborn-modal" class="modal-backdrop">
+        <div id="areborn-modal-box" class="modal-box">
+            <div class="flex items-start justify-between border-b border-sky-500/30 pb-4 mb-5">
+                <div class="flex items-center gap-4">
+                    <div id="modal-avatar" class="w-16 h-16 rounded-xl bg-slate-900 border border-sky-400/50 flex items-center justify-center p-2 shrink-0"></div>
+                    <div>
+                        <span id="modal-lineage-badge" class="text-[11px] font-display font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40">
+                            LINAJE AREBORN
+                        </span>
+                        <h3 id="modal-char-name" class="text-2xl sm:text-3xl font-bold italic text-white mt-1">Charlotte</h3>
+                    </div>
+                </div>
+                <button onclick="closeArebornModal()" class="interactive-target text-slate-400 hover:text-rose-400 p-1.5 transition-colors" aria-label="Cerrar">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="bg-slate-900/80 border border-slate-700/80 rounded-lg p-4 mb-5">
+                <div class="text-[11px] font-display uppercase tracking-widest text-amber-400 mb-1">Registro Oficial del Universo</div>
+                <p id="modal-char-desc" class="text-base sm:text-lg text-white leading-relaxed font-medium"></p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-6 text-xs">
+                <div class="bg-slate-950/70 border border-slate-800 p-3 rounded">
+                    <span class="text-slate-400 block uppercase tracking-wider mb-0.5">Herencia / Naturaleza</span>
+                    <span id="modal-char-heritage" class="text-sky-300 font-bold text-sm"></span>
+                </div>
+                <div class="bg-slate-950/70 border border-slate-800 p-3 rounded">
+                    <span class="text-slate-400 block uppercase tracking-wider mb-0.5">Facción / Mundo</span>
+                    <span class="text-amber-300 font-bold text-sm">Areborn • Nexarie</span>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeArebornModal()" class="interactive-target tactical-btn bg-gradient-to-r from-sky-500 to-cyan-400 text-slate-950 font-bold text-xs uppercase tracking-wider px-6 py-2.5">
+                    Cerrar Expediente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           1. DATOS OFICIALES DE LOS 8 AREBORNS
+           ========================================================= */
+        const arebornsData = [
+            {
+                id: 'charlotte',
+                name: 'Charlotte',
+                description: 'Es una híbrida entre un zorro de nueve colas y un hechizero.',
+                heritage: 'Zorro de Nueve Colas + Hechicero',
+                category: 'arcano',
+                categoryLabel: 'Mística Arcana',
+                accent: '#f97316',
+                glow: 'rgba(249, 115, 22, 0.45)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <defs>
+                        <linearGradient id="g-charlotte" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#fdba74"/>
+                            <stop offset="50%" stop-color="#f97316"/>
+                            <stop offset="100%" stop-color="#c2410c"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+                    <path d="M50 82 C25 75 18 52 24 30 C32 45 38 48 42 48 C34 32 38 18 50 14 C62 18 66 32 58 48 C62 48 68 45 76 30 C82 52 75 75 50 82 Z" fill="url(#g-charlotte)" opacity="0.9"/>
+                    <polygon points="50,36 60,54 50,72 40,54" fill="#fef08a"/>
+                    <circle cx="50" cy="54" r="4" fill="#ea580c"/>
+                </svg>`
+            },
+            {
+                id: 'opal-zen',
+                name: 'Opal Zen',
+                description: 'Opal es una híbrida entre una gema humanoide y un humano.',
+                heritage: 'Gema Humanoide + Humano',
+                category: 'elemental',
+                categoryLabel: 'Cristal & Humano',
+                accent: '#e879f9',
+                glow: 'rgba(232, 121, 249, 0.45)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <defs>
+                        <linearGradient id="g-opal" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#67e8f9"/>
+                            <stop offset="50%" stop-color="#e879f9"/>
+                            <stop offset="100%" stop-color="#fde047"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,12 80,35 72,78 28,78 20,35" fill="url(#g-opal)" opacity="0.9"/>
+                    <polygon points="50,12 65,42 50,78 35,42" fill="#ffffff" opacity="0.45"/>
+                    <line x1="20" y1="35" x2="80" y2="35" stroke="#ffffff" stroke-width="1.5" opacity="0.7"/>
+                    <circle cx="50" cy="48" r="6" fill="#ffffff"/>
+                </svg>`
+            },
+            {
+                id: 'arthur',
+                name: 'Arthur',
+                description: 'Es hijo de de bruja y hechizero.',
+                heritage: 'Bruja + Hechicero',
+                category: 'arcano',
+                categoryLabel: 'Linaje Arcano Puro',
+                accent: '#a855f7',
+                glow: 'rgba(168, 85, 247, 0.48)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <defs>
+                        <linearGradient id="g-arthur" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#e9d5ff"/>
+                            <stop offset="50%" stop-color="#a855f7"/>
+                            <stop offset="100%" stop-color="#581c87"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#c084fc" stroke-width="2"/>
+                    <polygon points="50,14 78,66 22,66" fill="none" stroke="url(#g-arthur)" stroke-width="3"/>
+                    <polygon points="50,86 78,34 22,34" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.8"/>
+                    <circle cx="50" cy="50" r="9" fill="#f3e8ff"/>
+                </svg>`
+            },
+            {
+                id: 'emma-snow',
+                name: 'Emma Snow',
+                description: 'Es una híbrida entre Sirena y un hechizero de hielo.',
+                heritage: 'Sirena + Hechicero de Hielo',
+                category: 'elemental',
+                categoryLabel: 'Hielo & Océano',
+                accent: '#38bdf8',
+                glow: 'rgba(56, 189, 248, 0.5)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <g stroke="#7dd3fc" stroke-width="3" stroke-linecap="round">
+                        <line x1="50" y1="12" x2="50" y2="88"/>
+                        <line x1="17" y1="31" x2="83" y2="69"/>
+                        <line x1="83" y1="31" x2="17" y2="69"/>
+                    </g>
+                    <polygon points="50,28 69,39 69,61 50,72 31,61 31,39" fill="#0284c7" stroke="#e0f2fe" stroke-width="2"/>
+                    <path d="M36 56 Q50 42 64 56 Q50 68 36 56 Z" fill="#bae6fd"/>
+                </svg>`
+            },
+            {
+                id: 'bella-florian',
+                name: 'Bella Florian',
+                description: 'híbrida entre bruja y hombre hada',
+                heritage: 'Bruja + Hombre Hada',
+                category: 'feerico',
+                categoryLabel: 'Brujería Feérica',
+                accent: '#34d399',
+                glow: 'rgba(52, 211, 153, 0.45)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M50 50 C25 20 12 40 34 55 C14 68 28 84 50 62 C72 84 86 68 66 55 C88 40 75 20 50 50 Z" fill="#34d399" opacity="0.85"/>
+                    <path d="M50 22 L56 44 L78 50 L56 56 L50 78 L44 56 L22 50 L44 44 Z" fill="#fef08a"/>
+                    <circle cx="50" cy="50" r="5" fill="#065f46"/>
+                </svg>`
+            },
+            {
+                id: 'stella-shimmer',
+                name: 'Stella Shimmer',
+                description: 'hija de hadas',
+                heritage: 'Linaje Puro de Hadas',
+                category: 'feerico',
+                categoryLabel: 'Estelar Feérica',
+                accent: '#facc15',
+                glow: 'rgba(250, 204, 21, 0.5)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <polygon points="50,10 60,38 90,50 60,62 50,90 40,62 10,50 40,38" fill="#fde047"/>
+                    <polygon points="50,24 56,44 76,50 56,56 50,76 44,56 24,50 44,44" fill="#ffffff"/>
+                    <circle cx="24" cy="24" r="3" fill="#fef08a"/>
+                    <circle cx="76" cy="24" r="3" fill="#fef08a"/>
+                    <circle cx="24" cy="76" r="3" fill="#fef08a"/>
+                    <circle cx="76" cy="76" r="3" fill="#fef08a"/>
+                </svg>`
+            },
+            {
+                id: 'aquamarine',
+                name: 'Aquamarine',
+                description: 'híbrida de Tritón y hada de la música.',
+                heritage: 'Tritón + Hada de la Música',
+                category: 'elemental',
+                categoryLabel: 'Armonía Oceánica',
+                accent: '#2dd4bf',
+                glow: 'rgba(45, 212, 191, 0.48)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M22 62 Q38 42 50 62 T78 62" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M22 72 Q38 52 50 72 T78 72" fill="none" stroke="#99f6e4" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M50 18 L50 52 M40 24 L40 46 M60 24 L60 46 M36 44 Q50 54 64 44" fill="none" stroke="#fde047" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="34" r="4" fill="#ffffff"/>
+                </svg>`
+            },
+            {
+                id: 'optopool',
+                name: 'Optopool',
+                description: 'Fusión entre tecnología, androide y elfo.',
+                heritage: 'Tecnología + Androide + Elfo',
+                category: 'tecno',
+                categoryLabel: 'Ciber-Elfo',
+                accent: '#fb7185',
+                glow: 'rgba(251, 113, 133, 0.48)',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <polygon points="50,14 82,32 82,68 50,86 18,68 18,32" fill="none" stroke="#fb7185" stroke-width="3"/>
+                    <path d="M30 48 L44 36 L56 36 L70 48 L56 64 L44 64 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="8" fill="#00e5ff"/>
+                    <line x1="18" y1="50" x2="30" y2="50" stroke="#fb7185" stroke-width="2.5"/>
+                    <line x1="70" y1="50" x2="82" y2="50" stroke="#fb7185" stroke-width="2.5"/>
+                </svg>`
+            }
+        ];
+
+        /* =========================================================
+           2. RENDERIZADO Y FILTRADO DE TARJETAS DE AREBORNS
+           ========================================================= */
+        const gridEl = document.getElementById('areborns-grid');
+        const searchInput = document.getElementById('areborn-search');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let activeFilter = 'all';
+
+        function renderAreborns() {
+            const query = searchInput.value.trim().toLowerCase();
+            gridEl.innerHTML = '';
+
+            const filtered = arebornsData.filter(char => {
+                const matchesCat = activeFilter === 'all' || char.category === activeFilter;
+                const matchesText =
+                    char.name.toLowerCase().includes(query) ||
+                    char.description.toLowerCase().includes(query) ||
+                    char.heritage.toLowerCase().includes(query);
+                return matchesCat && matchesText;
+            });
+
+            if (filtered.length === 0) {
+                gridEl.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-slate-900/60 border border-slate-700/70 rounded-xl">
+                        <p class="text-slate-300 font-semibold">No se encontraron Areborns con ese criterio de búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(char => {
+                const card = document.createElement('article');
+                card.className = 'areborn-card interactive-target p-5 flex flex-col justify-between';
+                card.style.setProperty('--card-accent', char.accent);
+                card.style.setProperty('--card-glow', char.glow);
+                card.onclick = () => openArebornModal(char);
+
+                card.innerHTML = `
+                    <div class="areborn-scanner"></div>
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <span class="text-[10px] font-display font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">
+                                ${char.categoryLabel}
+                            </span>
+                            <span class="w-2.5 h-2.5 rounded-full" style="background:${char.accent}; box-shadow: 0 0 10px ${char.accent};"></span>
+                        </div>
+
+                        <!-- Emblema SVG del Areborn -->
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-2xl bg-slate-950/90 border border-slate-700/80 p-3 shadow-inner flex items-center justify-center">
+                            ${char.svg}
+                        </div>
+
+                        <h3 class="text-2xl font-bold italic text-white text-center mb-2">${char.name}</h3>
+                        <p class="text-slate-300 text-sm text-center leading-relaxed mb-4">
+                            ${char.description}
+                        </p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400 truncate max-w-[65%]">${char.heritage}</span>
+                        <span class="text-xs font-bold uppercase tracking-wider" style="color:${char.accent}">Ver Ficha →</span>
+                    </div>
+                `;
+                gridEl.appendChild(card);
+            });
+
+            bindInteractiveHover();
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeFilter = btn.dataset.filter;
+                filterBtns.forEach(b => {
+                    b.className = 'interactive-target filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 border border-slate-700 text-slate-300 hover:border-sky-400 transition-all';
+                });
+                btn.className = 'interactive-target filter-btn active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-500 text-slate-950 shadow-[0_0_14px_rgba(0,229,255,0.6)] transition-all';
+                renderAreborns();
+            });
+        });
+
+        searchInput.addEventListener('input', renderAreborns);
+
+        /* =========================================================
+           3. MODAL DE EXPEDIENTE DE AREBORN
+           ========================================================= */
+        function openArebornModal(char) {
+            const modal = document.getElementById('areborn-modal');
+            const box = document.getElementById('areborn-modal-box');
+            box.style.borderColor = char.accent;
+            box.style.boxShadow = `0 0 40px ${char.glow}, inset 0 0 22px ${char.glow}`;
+
+            document.getElementById('modal-avatar').innerHTML = char.svg;
+            document.getElementById('modal-avatar').style.borderColor = char.accent;
+            document.getElementById('modal-lineage-badge').textContent = char.categoryLabel;
+            document.getElementById('modal-lineage-badge').style.color = char.accent;
+            document.getElementById('modal-lineage-badge').style.borderColor = char.accent;
+            document.getElementById('modal-char-name').textContent = char.name;
+            document.getElementById('modal-char-desc').textContent = char.description;
+            document.getElementById('modal-char-heritage').textContent = char.heritage;
+
+            modal.classList.add('active');
+        }
+
+        function closeArebornModal() {
+            document.getElementById('areborn-modal').classList.remove('active');
+        }
+
+        document.getElementById('areborn-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'areborn-modal') closeArebornModal();
+        });
+
+        /* =========================================================
+           4. CURSOR TÁCTICO AZUL GRISÁCEO + LÍNEAS ROJO RUBÍ
+           ========================================================= */
+        const cursorCore = document.getElementById('custom-cursor-core');
+        const cursorRing = document.getElementById('custom-cursor-ring');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorCore.style.left = `${mouseX}px`;
+            cursorCore.style.top = `${mouseY}px`;
