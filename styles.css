@@ -55,6 +55,9 @@
 .game-dialog section h3{font:700 14px "Space Grotesk",sans-serif;margin:0 0 9px}
 .game-dialog section p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}
 .dialog-note{margin:24px 0 0;padding:13px 15px;border-radius:13px;background:var(--surface-2);font-size:10px;line-height:1.7;color:var(--muted)}
+.game-dialog-more-info{display:flex;align-items:center;justify-content:center;gap:9px;width:fit-content;min-width:150px;margin:22px auto 0;padding:11px 24px;border:1px solid var(--line);border-radius:999px;background:#e5e7eb;color:#374151;font-size:11px;font-weight:800;text-decoration:none;transition:background .2s,transform .2s}
+.game-dialog-more-info:hover{background:#d1d5db;transform:translateY(-2px)}
+.game-dialog-more-info[hidden]{display:none}
 @media(max-width:480px){.game-details-button{padding:9px 11px}.game-dialog-poster{max-height:220px;border-radius:12px}.game-dialog-launch button{width:100%}}
 
 
