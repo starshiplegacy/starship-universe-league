@@ -177,6 +177,9 @@ const G={drama:['Romance','Fantasy','Melodrama','Mystery'],series:['Sci-Fi','Thr
 let sd=11;const rnd=()=>(sd=sd*16807%2147483647)/2147483647,pk=a=>a[rnd()*a.length|0];
 const cat=[{id:'cosmic',title:'Cosmic Love',type:'drama',genre:'LGBT · Omegaverse · Drama romántico',year:'2026',rate:'—',hue:280,img:1,wide:1,desc:'Dos hermanas que huyeron de Seúl hace diez años regresan como las mujeres que siempre debieron ser. Una historia de segundas oportunidades, secretos familiares y un amor que esperó diez años para atreverse a hablar.'}];
 let n=0;for(const t in D)D[t].forEach(x=>{const g=pk(G[t]);cat.push({id:'t'+n++,title:x,type:t,genre:g,year:2018+(rnd()*9|0),rate:pk(['TV-PG','TV-14','TV-MA','PG-13']),hue:rnd()*360|0,motif:rnd()*8|0,wide:rnd()<.35,live:t==='sport'&&rnd()<.45,desc:`A ${g.toLowerCase()} ${t==='sport'?'broadcast':t==='movie'?'feature':t==='show'?'show':'story'} where every episode pulls you further in. Watch it first on Starship.`})});
+const orbitEntry=cat.find(i=>i.title==='Orbit of Us');
+if(orbitEntry)Object.assign(orbitEntry,{id:'orbit-of-us',title:'Orbit of Us',type:'series',genre:'BL · Omegaverse · Fantasía tecnomágica · Drama · Realeza y política moderna · Misterio',year:'2026',rate:'—',hue:205,motif:4,wide:1,desc:'Perder un trono duele, pero esconder la verdad duele el doble. Soren Watsford y Avery Nightshade renunciaron a todo por un secreto que solo Jeong Garam conoce. Nueve años después, el silencio empieza a cobrar factura.'});
+else cat.push({id:'orbit-of-us',title:'Orbit of Us',type:'series',genre:'BL · Omegaverse · Fantasía tecnomágica · Drama · Realeza y política moderna · Misterio',year:'2026',rate:'—',hue:205,motif:4,wide:1,desc:'Perder un trono duele, pero esconder la verdad duele el doble. Soren Watsford y Avery Nightshade renunciaron a todo por un secreto que solo Jeong Garam conoce. Nueve años después, el silencio empieza a cobrar factura.'});
 cat.push({id:'crossing-red-line',title:'Crossing Your Red Line',type:'movie',genre:'BL · Drama romántico · Realismo mágico · Venganza',year:'2026',rate:'—',hue:345,motif:1,wide:1,img:'images/redline.jpg',desc:'Tak Hyunseo recibe una segunda oportunidad tras descubrir que su vida era una fachada. En su búsqueda de venganza conoce a Kim Nayeon y deberá decidir entre la venganza y la justicia.'},{id:'kdrama-info',title:'K-Drama',type:'drama',genre:'Por confirmar',year:'—',rate:'—',hue:275,motif:0,wide:1,desc:'Ficha en preparación. La información se mantiene limitada a las fuentes facilitadas.'});
 cat.push({id:'h2o-cosmic',title:'H2O: COSMIC',type:'drama',genre:'Por confirmar',year:'—',rate:'—',hue:190,motif:4,wide:1,img:'images/h2ocosmic.jpg',desc:'Una nueva etapa en la isla de Mako: cinco sirenas, secretos lunares y amenazas que pondrán a prueba sus vínculos. Estado: Pausada (No cancelada).'});
 cat.push({id:'descendants-rise-evil',title:'Descendants: The Rise of Evil',type:'movie',genre:'Fanfiction · Fantasía · Aventura · Wonderland',year:'2026',rate:'—',hue:282,motif:1,wide:1,img:'images/wonderland.jpg',desc:'Una continuación fanfiction de Descendants: Wicked Wonderland. Nerisse Jester descubre que la historia de su familia esconde secretos que podrían despertar un antiguo mal. Proyecto en desarrollo.'});
@@ -247,6 +250,46 @@ cast:[
 {name:'Sin intérprete asignado',role:'Nidya (La Muerte) — Entidad sobrenatural',bio:'Entidad sobrenatural que concede a Hyunseo una segunda oportunidad. Es el motor narrativo de la historia y aporta el elemento de realismo mágico a la trama.'}
 ],
 productionNotes:'El guion se articula sobre tres ejes dramáticos: el desaprendizaje de los prejuicios de Hyunseo, el despertar emocional de Nayeon frente a una amistad tóxica y la caída de Dayoung hacia el antagonismo motivada por la humillación. La producción contempla una entrega paralela para consumo audiovisual y lectura literaria, manteniendo coherencia narrativa y creativa en ambos medios.'
+},
+'orbit-of-us':{
+status:'Gran estreno · 27 de noviembre de 2026',
+originalTitle:'Orbit of Us',
+koreanTitle:'우리의 궤도 (Uri-ui Gwedo)',
+spanishTitle:'Nuestra Órbita',
+format:'Serie de streaming y YouTube + novela / lectura digital',
+genre:'BL · Omegaverse · Fantasía tecnomágica · Drama · Realeza y política moderna · Misterio',
+release:'27 de noviembre de 2026',
+languages:'Por confirmar',
+director:'Jennie Heewon Kim Jeon (escritora)',
+productionCompany:'Starship Plus Entertainment (subsidiaria de STARSHIP Legacy Entertainment, LLC)',
+studio:'Starship Plus Entertainment',
+distribution:'Starship Plus Entertainment',
+videoPlatform:'Starship Plus (@Starship_Plus)',
+readingPlatform:'Wattpad · @Im_KimHeewon',
+copyright:'© 2026 Starship Legacy Entertainment, LLC. Todos los derechos reservados.',
+synopsis:'Perder un trono duele, pero esconder la verdad duele el doble. Soren Watsford y Avery Nightshade renunciaron a todo en Atlantianix y Ocrannix por un secreto que solo Jeong Garam conoce. Todo nació de una Luna Llena, una pócima letal que encendió el celo sin medida y unas marcas en la glándula difíciles de borrar —mas no imposibles— que Arthur Blackwood y Alistair Sinclair esconden a toda costa de sus familias, aplazando cada compromiso para tapar el rastro de unos desaparecidos. Nueve años después, el silencio empieza a cobrar factura.',
+productionNotes:'Escritora: Jennie Heewon Kim Jeon. Gran estreno anunciado para el 27 de noviembre de 2026. Plataformas: streaming y YouTube en Starship Plus (@Starship_Plus); novela y lectura en Wattpad (@Im_KimHeewon).',
+seasons:[],
+trailers:[],
+cast:[
+{name:'Jennie Heewon Kim Jeon',role:'Soren Watsford',bio:'Dragón de mar de Atlantianix (Sur), de 23 años. Renunció a su corona y herencia a los 14 años tras quedar marcado en una noche de Luna Llena. Vive en la costa oeste de Incheon criando a su hijo Nereo mientras protege un secreto mortal junto a Avery.'},
+{name:'Yoon San-Ha',role:'Avery Nightshade',bio:'Caballito de mar de Ocrannix (Norte), de 26 años. Sacrificó su título real a los 17 años tras aquella misma noche de Luna Llena. Cría a su hijo Taylor frente al mar y guarda junto a Soren y Jeong Garam la verdad de lo ocurrido.'},
+{name:'Hur Hyun-jun',role:'Arthur Blackwood',bio:'Lobo Enigma de la manada Blackwood. Pareja marcada de Soren y padre biológico de Nereo; oculta a su familia la verdad de la pócima y los desaparecidos mientras pospone su boda una y otra vez.'},
+{name:'Yoo Jung-hoo',role:'Alistair Sinclair',bio:'Lobo Alfa tipo S de la familia Sinclair. Pareja marcada de Avery y padre biológico de Taylor; carga en secreto con la marca en su glándula y el peso de aquella noche para evitar que su casa descubra lo sucedido.'},
+{name:'Cha Seung-won',role:'Caspian Watsford',bio:'Patriarca de la Casa Real Watsford en Atlantianix (Sur), figura de máxima autoridad del reino marino que Soren dejó atrás.'},
+{name:'Kim Hye-soo',role:'Ondine Watsford',bio:'Miembro prominente de la Casa Real Watsford en Atlantianix, ligada al linaje real del que Soren se apartó con su carta de renuncia.'},
+{name:'Seo In-guk',role:'Dorian Watsford',bio:'Integrante de la familia real Watsford de Atlantianix, parte de la nobleza marina conectada directamente con Soren.'},
+{name:'Lee Jae-wook',role:'Kaelen Watsford',bio:'Miembro joven de la Casa Real Watsford en Atlantianix, perteneciente al entorno real que Soren abandonó años atrás.'},
+{name:'Ji Jin-hee',role:'Corwin Nightshade',bio:'Patriarca de la Casa Real Nightshade en Ocrannix (Norte), reino de los caballitos de mar al que Avery renunció por completo.'},
+{name:'Hwang Min-hyun',role:'Lucien Nightshade',bio:'Miembro de la Casa Real Nightshade en Ocrannix, vinculado al círculo familiar marino de Avery.'},
+{name:'Kim Sung-ryung',role:'Lilith Blackwood',bio:'Madre de Arthur y matriarca de noble corazón dentro de los Blackwood; es gran amiga de Seong Sinclair y desconoce el secreto de la marca de su hijo.'},
+{name:'Kim Young-dae',role:'Julián Blackwood',bio:'Hermano de Arthur y antagonista desquiciado dentro de la familia Blackwood, impulsivo y peligroso si llega a descubrir el rastro de los desaparecidos.'},
+{name:'Yoo Ji-tae',role:'Seong Sinclair',bio:'Patriarca de la influyente familia Sinclair y amigo cercano de Lilith Blackwood, firme en los acuerdos y alianzas de su casa.'},
+{name:'Han Hyo-joo',role:'Minyeong Sinclair',bio:'Hermana de Alistair y antagonista fría y calculadora, capaz de usar cualquier secreto o debilidad en beneficio propio.'},
+{name:'Kim Jisoo',role:'Jeong Garam',bio:'Loba terrestre y única confidente del secreto de Soren y Avery; fue quien les vendió su casa frente al mar en la costa oeste de Incheon.'},
+{name:'Winter',role:'Min Irene',bio:'Prometida vinculada a las alianzas matrimoniales de las manadas en tierra, atrapada en la cadena de bodas aplazadas una y otra vez.'},
+{name:'Karina',role:'Kang Junmin',bio:'Prometida dentro de los compromisos de la alta sociedad terrestre cuyos planes de boda siguen posponiéndose debido al secreto de las marcas.'}
+]
 },
 'miraculous-ecos-caos':{
 status:'Próximo estreno · 20 de noviembre de 2026',
